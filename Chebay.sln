@@ -3,7 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay", "Chebay\Chebay.csproj", "{7A39FF92-0127-419C-9607-309BEDDE8167}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontoffice", "Frontoffice\Frontoffice.csproj", "{B48A7948-A22D-4E56-86DE-F213DE2C298B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backoffice", "Backoffice\Backoffice.csproj", "{48F533CE-0E51-4937-A2E4-ECC148A54F73}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -11,10 +13,14 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{7A39FF92-0127-419C-9607-309BEDDE8167}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7A39FF92-0127-419C-9607-309BEDDE8167}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7A39FF92-0127-419C-9607-309BEDDE8167}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7A39FF92-0127-419C-9607-309BEDDE8167}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

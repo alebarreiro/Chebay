@@ -3,9 +3,15 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2013
 VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Frontoffice", "Frontoffice\Frontoffice.csproj", "{B48A7948-A22D-4E56-86DE-F213DE2C298B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.BusinessLogicLayer", "Chebay.BusinessLogicLayer\Chebay.BusinessLogicLayer.csproj", "{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Backoffice", "Backoffice\Backoffice.csproj", "{48F533CE-0E51-4937-A2E4-ECC148A54F73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.Frontoffice", "Chebay.Frontoffice\Chebay.Frontoffice.csproj", "{6D6FDC4F-FF90-4FEB-822B-0CBDABEAD462}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.Frontoffice.Tests", "Chebay.Frontoffice.Tests\Chebay.Frontoffice.Tests.csproj", "{2BF8C052-CB18-4CDE-8D2A-78871418790E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.Backoffice", "Chebay.Backoffice\Chebay.Backoffice.csproj", "{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.Backoffice.Tests", "Chebay.Backoffice.Tests\Chebay.Backoffice.Tests.csproj", "{B3BD422B-A255-4077-8D74-6F13D7D976C3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -13,14 +19,26 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B48A7948-A22D-4E56-86DE-F213DE2C298B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{48F533CE-0E51-4937-A2E4-ECC148A54F73}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6D6FDC4F-FF90-4FEB-822B-0CBDABEAD462}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6D6FDC4F-FF90-4FEB-822B-0CBDABEAD462}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6D6FDC4F-FF90-4FEB-822B-0CBDABEAD462}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6D6FDC4F-FF90-4FEB-822B-0CBDABEAD462}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2BF8C052-CB18-4CDE-8D2A-78871418790E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2BF8C052-CB18-4CDE-8D2A-78871418790E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2BF8C052-CB18-4CDE-8D2A-78871418790E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2BF8C052-CB18-4CDE-8D2A-78871418790E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B3BD422B-A255-4077-8D74-6F13D7D976C3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B3BD422B-A255-4077-8D74-6F13D7D976C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B3BD422B-A255-4077-8D74-6F13D7D976C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B3BD422B-A255-4077-8D74-6F13D7D976C3}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

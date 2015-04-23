@@ -217,6 +217,7 @@ namespace Chebay.Frontoffice.Controllers
         [AllowAnonymous]
         public ActionResult ExternalLoginCallback(string returnUrl)
         {
+            //ACA ESTA EL RESULTADO DE LA AUTENTICACION POR FACEBOOK O TWITTER
             AuthenticationResult result = OAuthWebSecurity.VerifyAuthentication(Url.Action("ExternalLoginCallback", new { ReturnUrl = returnUrl }));
             if (!result.IsSuccessful)
             {
@@ -270,6 +271,7 @@ namespace Chebay.Frontoffice.Controllers
                     if (user == null)
                     {
                         // Insert name into the profile table
+                        // ACA DEBERIAMOS AGREGAR EL USUARIO A NUESTRA BASE DE DATOS
                         db.UserProfiles.Add(new UserProfile { UserName = model.UserName });
                         db.SaveChanges();
 

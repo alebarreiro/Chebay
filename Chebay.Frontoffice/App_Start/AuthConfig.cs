@@ -21,10 +21,14 @@ namespace Chebay.Frontoffice
             //OAuthWebSecurity.RegisterTwitterClient(
             //    consumerKey: "",
             //    consumerSecret: "");
+            Dictionary<string, object> FacebooksocialData = new Dictionary<string, object>();
+            FacebooksocialData.Add("Icon", "~/Images/facebook.png");
 
             OAuthWebSecurity.RegisterFacebookClient(
                 appId: "934307863287869",
-                appSecret: "b1c707f2a41b570dd32f6a010dd2efe8");
+                appSecret: "b1c707f2a41b570dd32f6a010dd2efe8",
+                displayName: "Facebook",
+                extraData: FacebooksocialData);
 
             //OAuthWebSecurity.RegisterGoogleClient();
         }

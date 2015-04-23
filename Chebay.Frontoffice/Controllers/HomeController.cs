@@ -11,11 +11,11 @@ namespace Chebay.Frontoffice.Controllers
         public ActionResult Index(string urlTienda)
         {
             if (urlTienda != null) {
-                ViewBag.Message = "Bienvenido a la tienda " + urlTienda;
+                ViewBag.Message = urlTienda;
             }
             else
             {
-                ViewBag.Message = "Bienvenido a Chebay. Ingrese la URL de la Tienda.";
+                ViewBag.Message = "Ingresa /{nombreTienda}";
             }
             return View();
         }

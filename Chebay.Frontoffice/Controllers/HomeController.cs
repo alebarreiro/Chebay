@@ -8,10 +8,15 @@ namespace Chebay.Frontoffice.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string urlTienda)
         {
-            ViewBag.Message = "Modify this template to jump-start your ASP.NET MVC application.";
-
+            if (urlTienda != null) {
+                ViewBag.Message = "Bienvenido a la tienda " + urlTienda;
+            }
+            else
+            {
+                ViewBag.Message = "Bienvenido a Chebay. Ingrese la URL de la Tienda.";
+            }
             return View();
         }
 

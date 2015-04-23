@@ -22,7 +22,7 @@ namespace Chebay.Frontoffice
             //    consumerKey: "",
             //    consumerSecret: "");
             Dictionary<string, object> FacebooksocialData = new Dictionary<string, object>();
-            FacebooksocialData.Add("Icon", "~/Images/facebook.png");
+            FacebooksocialData.Add("Icon", "/Images/facebook.png");
 
             OAuthWebSecurity.RegisterFacebookClient(
                 appId: "934307863287869",

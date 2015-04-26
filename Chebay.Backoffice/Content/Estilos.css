@@ -1,6 +1,12 @@
 ﻿.menu {
-    border-right: 80%;
-    border-bottom: 40%;
-    border-left: 3%;
-    border-top: 10%;
+    margin-right: 80%;
+    margin-bottom: 40%;
+    margin-left: 3%;
+    margin-top: 6%;
+    width: 200px;
+}
+
+.contenido{
+    height: 100%;
+    
 }

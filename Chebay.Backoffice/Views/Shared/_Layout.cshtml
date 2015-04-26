@@ -25,21 +25,21 @@
         </div>
     </header>
     <div id="body">
-        @*@if(ViewBag.LoggedIn)
-        {*@
-            <div class="menu">
-                <div class="list-group">
-                    <a href="#" class="list-group-item active">
-                        Crear Tienda
-                    </a>
-                    <a href="#" class="list-group-item">Modificar Tienda</a>
-                    <a href="#" class="list-group-item">Configuracion</a>
+        
+
+        <section class="content-wrapper main-content clear-fix contenido">
+            @*@if(ViewBag.LoggedIn)
+            {*@
+                <div class="menu">
+                    <div class="list-group">
+                        <a href="#" class="list-group-item active">
+                            Crear Tienda
+                        </a>
+                        <a href="#" class="list-group-item">Modificar Tienda</a>
+                        <a href="#" class="list-group-item">Configuracion</a>
+                    </div>
                 </div>
-            </div>
-        @*}*@
-
-        <section class="content-wrapper main-content clear-fix">
-
+            @*}*@
             @RenderBody()
         </section>
     </div>

@@ -7,7 +7,7 @@ using System.Web.Mvc;
 namespace Chebay.Backoffice.Controllers
 {
 
-    private class DatosRegistro{
+    public class DatosRegistro{
         private string mail {get;set;}
         private string pass {get;set;}
     }

@@ -26,10 +26,9 @@
     </header>
     <div id="body">
         
-
-        <section class="content-wrapper main-content clear-fix contenido">
-            @*@if(ViewBag.LoggedIn)
-            {*@
+        <section class="main-content clear-fix">
+            @if(ViewBag.LoggedIn)
+            {
                 <div class="menu">
                     <div class="list-group">
                         <a href="#" class="list-group-item active">
@@ -39,7 +38,7 @@
                         <a href="#" class="list-group-item">Configuracion</a>
                     </div>
                 </div>
-            @*}*@
+            }
             @RenderBody()
         </section>
     </div>

@@ -9,6 +9,12 @@ namespace Chebay.Backoffice.Controllers
     public class HomeController : Controller
     {
 
+        public ActionResult Inicio()
+        {
+            ViewBag.LoggedIn = true;
+            return View();
+        }
+
         public ActionResult Index()
         {
             ViewBag.Message = "Bienvenido a Che-Buy.";

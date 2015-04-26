@@ -4,10 +4,34 @@ function login() {
     var mail = $('#mail').val();
     var pass = $('#pass').val();
 
-    $.ajax(
+    var objetoLogin = {
+        mail: mail,
+        pass: pass
+    };
 
-    )
+    $.ajax({
+        url: '/Usuarios/Login',
+        type: 'POST',
+        dataType: "json",
+        data: JSON.stringify(objetoLogin),
+        success: function (data, textStatus, jqxhr) {
+            cargarInicio();
+        },
+        error: function (data, textStatus, jqxhr) {
+            $("#container").html("<div class=\"alert alert-danger\"><strong>Error! :</strong>Datos incorrectos.</div>");
+        }
+    });
 
+}
+
+function cargarInicio() {
+    $.ajax({
+        url: '/Home/Inicio',
+        type: 'GET',
+        success: function (data, textStatus, jqxhr) {
+            $('#container').html(data);
+        }
+    });
 }
 
 function Registrarse() {
@@ -18,7 +42,7 @@ function Registrarse() {
         success: function (data, textStatus, jqxhr) {
             $('#container').html(data);
         }
-    })
+    });
 }
 
 function ConfirmarRegistro(){
@@ -38,6 +62,6 @@ function ConfirmarRegistro(){
         success: function (data, textStatus, jqxhr) {
             $('#container').html(data);
         }
-    })
+    });
 
 }

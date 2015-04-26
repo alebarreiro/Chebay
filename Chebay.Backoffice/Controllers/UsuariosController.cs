@@ -14,6 +14,19 @@ namespace Chebay.Backoffice.Controllers
 
     public class UsuariosController : Controller
     {
+
+        //POST: /Usuarios/Login
+        [HttpPost]
+        public ActionResult Login(DatosRegistro datos)
+        {
+
+            //invocar a la funcion de la logica de login y si no existe el usuario o los datos son erroneos
+            //devolver un Json success = false
+            ViewBag.LoggedIn = true;
+            return Json(new { success = true, responseText = "Usted se ha loggeado correctamente." }
+                , JsonRequestBehavior.AllowGet);
+        }
+
         //
         // GET: /Usuarios/Registro
         [HttpGet]

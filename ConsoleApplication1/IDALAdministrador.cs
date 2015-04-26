@@ -16,5 +16,8 @@ namespace DataAccessLayer
         Administrador ObtenerAdministrador(string username);
 
         Administrador ObtenerAdministradorTienda(int idTienda);
+
+        bool AutenticarAdministrador(string user, string password);
+        //Devuelve true si es el password correcto para el usuario.
     }
 }

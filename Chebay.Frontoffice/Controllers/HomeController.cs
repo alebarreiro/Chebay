@@ -12,6 +12,7 @@ namespace Chebay.Frontoffice.Controllers
         {
             if (urlTienda != null) {
                 ViewBag.Message = urlTienda;
+
             }
             else
             {

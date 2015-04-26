@@ -8,7 +8,7 @@ using Shared.Entities;
 
 namespace DataAccessLayer
 {
-    public interface IDALUsuarios
+    public interface IDALUsuario
     {
         void AgregarUsuario(Usuario u);
 

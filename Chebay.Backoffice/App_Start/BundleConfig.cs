@@ -8,8 +8,12 @@ namespace Chebay.Backoffice
         // For more information on Bundling, visit http://go.microsoft.com/fwlink/?LinkId=254725
         public static void RegisterBundles(BundleCollection bundles)
         {
+            bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include("~/Scripts/Login.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-2.1.3.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryui").Include(
                         "~/Scripts/jquery-ui-{version}.js"));
@@ -23,13 +27,22 @@ namespace Chebay.Backoffice
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
+            bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css",
+                        "~/Content/bootstrap-theme.css",
+                        "~/Content/bootstrap.css",
+                        "~/Content/Estilos.css",
+                        "~/Content/bootstrap.min.css"
+                
+                ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(
                         "~/Content/themes/base/jquery.ui.core.css",
                         "~/Content/themes/base/jquery.ui.resizable.css",
                         "~/Content/themes/base/jquery.ui.selectable.css",
                         "~/Content/themes/base/jquery.ui.accordion.css",
+                        "~/Content/bootstrap-theme.css",
+                        "~/Content/bootstrap.css",
+                        "~/Content/bootstrap.min.css",
                         "~/Content/themes/base/jquery.ui.autocomplete.css",
                         "~/Content/themes/base/jquery.ui.button.css",
                         "~/Content/themes/base/jquery.ui.dialog.css",

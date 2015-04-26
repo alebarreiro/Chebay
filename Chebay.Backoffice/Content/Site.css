@@ -431,7 +431,7 @@ input, textarea {
     font-size: 1.2em;
     margin: 5px 0 6px 0;
     padding: 5px;
-    width: 300px;
+    width: 100px;
 }
 
 textarea {
@@ -449,26 +449,7 @@ textarea {
         width: auto;
     }
 
-    input[type="submit"],
-    input[type="button"],
-    button {
-        background-color: #d3dce0;
-        border: 1px solid #787878;
-        cursor: pointer;
-        font-size: 1.2em;
-        font-weight: 600;
-        padding: 7px;
-        margin-right: 8px;
-        width: auto;
-    }
 
-    td input[type="submit"],
-    td input[type="button"],
-    td button {
-        font-size: 1em;
-        padding: 4px;
-        margin-right: 4px;
-    }
 
 /* info and errors */
 .message-info {
@@ -715,7 +696,7 @@ tr.pager td {
 
     /* forms */
     input {
-        width: 90%;
+        width: 40%;
     }
 
     /* login page */

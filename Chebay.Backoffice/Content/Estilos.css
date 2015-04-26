@@ -1,0 +1,17 @@
+﻿.menu {
+    position: absolute;
+    margin-right: 2%;
+    margin-bottom: 40%;
+    margin-left: 0%;
+    margin-top: 2%;
+    width: 200px;
+}
+
+.contenido{
+    height: 1000px;
+    width: 450px;
+}
+
+.contenidoPrincipal{
+    
+}

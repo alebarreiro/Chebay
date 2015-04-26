@@ -25,7 +25,7 @@ namespace Chebay.Frontoffice
 
             //bundles.Add(new StyleBundle("~/Content/css").Include("~/Content/site.css"));
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                        "~/Content/main.css",
+                        "~/Content/sections/main/main.css",
                         "~/Content/normalize.css",
                         "~/Content/normalize.min.css"));
 
@@ -42,7 +42,8 @@ namespace Chebay.Frontoffice
                         "~/Content/themes/base/jquery.ui.tabs.css",
                         "~/Content/themes/base/jquery.ui.datepicker.css",
                         "~/Content/themes/base/jquery.ui.progressbar.css",
-                        "~/Content/themes/base/jquery.ui.theme.css"));
+                        "~/Content/themes/base/jquery.ui.theme.css",
+                        "~/Content/themes/base/sweetalert.css"));
         }
     }
 }

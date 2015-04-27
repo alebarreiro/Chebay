@@ -50,12 +50,11 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChebayDBContext.cs" />
-    <Compile Include="DALAdministradorEF.cs" />
+    <Compile Include="DALTiendaEF.cs" />
     <Compile Include="DALUsuarioEF.cs" />
-    <Compile Include="IDALAdministrador.cs" />
+    <Compile Include="IDALTienda.cs" />
     <Compile Include="IDALCategoria.cs" />
     <Compile Include="IDALProducto.cs" />
-    <Compile Include="IDALTienda.cs" />
     <Compile Include="IDALUsuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

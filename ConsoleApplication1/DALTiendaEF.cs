@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
-    public class DALAdministradorEF : IDALAdministrador
+    public class DALTiendaEF : IDALTienda
     {
         void AgregarAdministrador(Administrador a)
         {

@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChebayDBContext.cs" />
+    <Compile Include="DALAdministradorEF.cs" />
     <Compile Include="DALUsuarioEF.cs" />
     <Compile Include="IDALAdministrador.cs" />
     <Compile Include="IDALCategoria.cs" />

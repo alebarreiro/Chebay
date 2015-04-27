@@ -39,6 +39,7 @@ namespace DataAccessLayer
         public DbSet<Mensaje> mensajes { get; set; }
         public DbSet<Visita> visitas { get; set; }
         public DbSet<Favorito> favoritos { get; set; }
+        public DbSet<Administrador> administradores { get; set; } //nueva
 
 
 

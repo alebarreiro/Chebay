@@ -53,7 +53,6 @@
     <Compile Include="DALTiendaEF.cs" />
     <Compile Include="DALUsuarioEF.cs" />
     <Compile Include="IDALTienda.cs" />
-    <Compile Include="IDALCategoria.cs" />
     <Compile Include="IDALProducto.cs" />
     <Compile Include="IDALUsuario.cs" />
     <Compile Include="Program.cs" />

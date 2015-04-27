@@ -8,9 +8,9 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyTitle("Shared")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
-[assembly: AssemblyCompany("Toshiba")]
+[assembly: AssemblyCompany("")]
 [assembly: AssemblyProduct("Shared")]
-[assembly: AssemblyCopyright("Copyright © Toshiba 2015")]
+[assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // El siguiente GUID sirve como identificador de typelib si este proyecto se expone a COM
-[assembly: Guid("0897c1aa-668b-4b71-914d-a65615ddbb7e")]
+[assembly: Guid("9053f267-9726-4f49-83d7-2baa597c4b67")]
 
 // La información de versión de un ensamblado consta de los cuatro valores siguientes:
 //

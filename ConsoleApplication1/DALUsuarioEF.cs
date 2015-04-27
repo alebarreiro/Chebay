@@ -23,7 +23,7 @@ namespace DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Error: "+e.Message);
+                    System.Console.WriteLine(e.Message);
                 }
             }
         }
@@ -50,14 +50,14 @@ namespace DataAccessLayer
             }
         }*/
 
-        Usuario ObtenerUsuario(string id)
+        Usuario ObtenerUsuario(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
                 try
                 {
                     var query = from usr in context.usuarios
-                                where usr.UsuarioID == id
+                                where usr.UsuarioID == idUsuario
                                 select usr;
                     if (query.Count() > 0)
                         return query.First();
@@ -66,7 +66,7 @@ namespace DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Error: " + e.Message);
+                    Debug.WriteLine(e.Message);
                     return null;
                 }
             }
@@ -85,7 +85,7 @@ namespace DataAccessLayer
 
                 catch (Exception e)
                 {
-                    Debug.WriteLine("Error: " + e.Message);
+                    System.Console.WriteLine(e.Message);
                     return null;
                 }
             }

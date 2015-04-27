@@ -15,5 +15,10 @@ namespace DataAccessLayer
         Usuario ObtenerUsuario(string id);
         List<Usuario> ObtenerTodosUsuarios();
         
+        //Falta completar
+        void AgregarVisita(string idUsuario, Visita visita);
+        void AgregarFavorito(string idUsuario);
+        
+                
     }
 }

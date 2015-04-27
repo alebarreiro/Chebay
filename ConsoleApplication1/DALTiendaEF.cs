@@ -286,7 +286,7 @@ namespace DataAccessLayer
             }
         }
 
-        //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
+    //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
         bool AgregarCategoriaCompuesta(string idCategoria, string idPadre)
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
@@ -373,7 +373,37 @@ namespace DataAccessLayer
             }
         }
 
-        //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
+    //CU: Alta Subasta
+        List<Categoria> ListarCategorias(string idTienda)
+        //Lista las Categorias de idTienda.
+        {
+            using (var context = new ChebayDBContext())
+            {
+                try
+                {
+                    var query = from t in context.tiendas
+                                where t.TiendaID == idTienda
+                                select t;
+                    if (query == null)
+                        return null;
+                    else //Si existe la Tienda idTienda.
+                    {
+                        Tienda t = query.FirstOrDefault();
+                        List<Categoria> ret = new List<Categoria>();
+                        //Recorrer todas las categorias desde la Raiz y agregarlas a ret.
+                        //En Tienda tiene que haber una referencia a la raiz.
+                        return ret;
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
+                    return null;
+                }
+            }
+        }
+
+    //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
         void AgregarAtributo(string idCategoria, string idAtributo, string valor)
         {
             using (var context = new ChebayDBContext())
@@ -388,6 +418,5 @@ namespace DataAccessLayer
                 }
             }
         }
-
     }
 }

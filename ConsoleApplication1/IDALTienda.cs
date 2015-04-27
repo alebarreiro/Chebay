@@ -59,6 +59,10 @@ namespace DataAccessLayer
         //idPadre no puede ser null.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre.
 
+    //CU: Alta Subasta
+        List<Categoria> ListarCategorias(string idTienda);
+        //Lista las Categorias de idTienda.
+
     //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
         void AgregarAtributo(string idCategoria, string idAtributo, string valor);
     }

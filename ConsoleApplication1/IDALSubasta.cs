@@ -7,7 +7,7 @@ using Shared.Entities;
 
 namespace DataAccessLayer
 {
-    public interface IDALProducto
+    public interface IDALSubasta
     {
         void AgregarProducto(Producto p);
 
@@ -21,15 +21,15 @@ namespace DataAccessLayer
 
         List<Producto> ObtenerProductosCategoria(string nombreTienda, string nombreCategoria);
 
-        List<Producto> ObtenerProductosVisitados(int idUsuario);
+        List<Producto> ObtenerProductosVisitados(string idUsuario);
 
-        List<Producto> ObtenerProductosFavoritos(int idUsuario);
+        List<Producto> ObtenerProductosFavoritos(string idUsuario);
 
-        List<Producto> ObtenerProductosComprados(int idUsuario);
+        List<Producto> ObtenerProductosComprados(string idUsuario);
 
-        List<Producto> ObtenerProductosOfertados(int idUsuario);
+        List<Producto> ObtenerProductosOfertados(string idUsuario);
 
-        List<Producto> ObtenerProductosPublicados(int idUsuario);
+        List<Producto> ObtenerProductosPublicados(string idUsuario);
 
     }
 }

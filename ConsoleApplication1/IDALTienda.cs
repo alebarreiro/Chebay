@@ -11,8 +11,7 @@ namespace DataAccessLayer
     interface IDALTienda
     {
         // -- ADMINISTRADORES --
-
-        void AgregarAdministrador(Administrador a);
+        void AgregarAdministrador(string idAdmin, string pass);
 
         //void ModificarAdministrador(Administrador a);
 

@@ -9,9 +9,9 @@ namespace DataAccessLayer
 {
     public interface IDALSubasta
     {
-        void AgregarProducto(Producto p);
+        void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria);
 
-        void ModificarProducto(Producto p);
+
 
         //void AgregarImagenProducto(Imagen img, Producto p);
 

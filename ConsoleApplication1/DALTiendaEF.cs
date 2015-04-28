@@ -9,12 +9,15 @@ namespace DataAccessLayer
 {
     public class DALTiendaEF : IDALTienda
     {
-        void AgregarAdministrador(Administrador a)
+        void AgregarAdministrador(string idAdmin, string pass)
         {
             using (var context = new ChebayDBContext())
             {
                 try
                 {
+                    Administrador a = new Administrador();
+                    a.AdministradorID = idAdmin;
+                    a.password = pass;
                     context.administradores.Add(a);
                     context.SaveChanges();
                 }

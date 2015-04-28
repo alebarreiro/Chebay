@@ -9,7 +9,20 @@ namespace DataAccessLayer
 {
     public class DALSubastaEF : IDALSubasta
     {
-        void AgregarProducto(Producto p);
+        void AgregarProducto(Producto p)
+        {
+            using (var context = new ChebayDBContext())
+            {
+                try
+                {
+         
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
+                }
+            }
+        }
 
         void ModificarProducto(Producto p);
 
@@ -17,7 +30,44 @@ namespace DataAccessLayer
 
         //void AgregarComentarioProducto(Comentario, Producto p);
 
-        Producto ObtenerProducto(int id);
+        Producto ObtenerProducto(long idProducto, string idUsuario)
+        {
+            using (var context = new ChebayDBContext())
+            {
+                try
+                {
+                    var prod = from p in context.productos
+                               where p.ProductoID == idProducto
+                               select p;
+                    var usr = from u in context.usuarios
+                              where u.UsuarioID == idUsuario
+                              select u;
+
+                    if (prod.Count() > 0 && usr.Count() > 0)
+                    {
+                        Producto pr = prod.FirstOrDefault();
+                        Usuario user = usr.FirstOrDefault();
+                        Visita v = new Visita();
+                        v.ProductoID = idProducto;
+                        v.producto = pr;
+                        v.UsuarioID = idUsuario;
+                        v.usuario = user;
+                        pr.visitas.Add(v);
+                        user.visitas.Add(v);
+                        context.visitas.Add(v);
+                        context.SaveChanges(); 
+                        return pr;
+                    }
+                    else
+                        return null;
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
+                    return null;
+                }
+            }
+        }
 
         List<Producto> ObtenerProductosCategoria(string nombreTienda, string nombreCategoria)
         {
@@ -190,6 +240,42 @@ namespace DataAccessLayer
                 {
                     System.Console.WriteLine(e.Message);
                     return null;
+                }
+            }
+        }
+
+        void AgregarComentario(string texto, long idProducto, string idUsuario)
+        {
+            using (var context = new ChebayDBContext())
+            {
+                try
+                {
+                    var prod = from p in context.productos
+                               where p.ProductoID == idProducto
+                               select p;
+                    var user = from u in context.usuarios
+                               where u.UsuarioID == idUsuario
+                               select u;
+                    if (prod != null && user != null)
+                    {
+                        Usuario u = user.FirstOrDefault();
+                        Producto p = prod.FirstOrDefault();
+                        Comentario c = new Comentario();
+                        c.fecha = (DateTime)System.DateTime.Now;
+                        c.ProductoID = idProducto;
+                        c.UsuarioID = idUsuario;
+                        c.usuario = u;
+                        c.producto = p;
+                        c.texto = texto;
+                        context.comentarios.Add(c);
+                        u.comentarios.Add(c);
+                        p.comentarios.Add(c);
+                        context.SaveChanges();
+                    }
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
                 }
             }
         }

@@ -15,9 +15,7 @@ namespace DataAccessLayer
 
         //void AgregarImagenProducto(Imagen img, Producto p);
 
-        //void AgregarComentarioProducto(Comentario, Producto p);
-
-        Producto ObtenerProducto(int id);
+        Producto ObtenerProducto(long idProducto, string idUsuario);
 
         List<Producto> ObtenerProductosCategoria(string nombreTienda, string nombreCategoria);
 
@@ -30,6 +28,9 @@ namespace DataAccessLayer
         List<Producto> ObtenerProductosOfertados(string idUsuario);
 
         List<Producto> ObtenerProductosPublicados(string idUsuario);
+
+        void AgregarComentario(string texto, long idProducto, string idUsuario);
+        
 
     }
 }

@@ -13,7 +13,7 @@ namespace Shared.Entities
     {
         public long VisitaID { get; set; }
         public string UsuarioID { get; set; }
-        public string ProductoID { get; set; }
+        public long ProductoID { get; set; }
         public virtual Producto producto { get; set; }
         public virtual Usuario usuario { get; set; }
     }

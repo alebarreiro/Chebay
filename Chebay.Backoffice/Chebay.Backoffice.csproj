@@ -183,6 +183,7 @@
     <Compile Include="App_Start\WebApiConfig.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\TiendaController.cs" />
     <Compile Include="Controllers\UsuariosController.cs" />
     <Compile Include="Filters\InitializeSimpleMembershipAttribute.cs" />
     <Compile Include="Global.asax.cs">
@@ -301,12 +302,23 @@
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\Usuarios\Registro.cshtml" />
+    <Content Include="Views\Tienda\CrearTienda.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Chebay.BusinessLogicLayer\Chebay.BusinessLogicLayer.csproj">
+      <Project>{7862af7b-4bf3-4989-9200-4add4897eb2f}</Project>
+      <Name>Chebay.BusinessLogicLayer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ConsoleApplication1\Chebay.DataAccessLayer.csproj">
+      <Project>{e087801e-b9b8-4ce0-813d-5527a19396a0}</Project>
+      <Name>Chebay.DataAccessLayer</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

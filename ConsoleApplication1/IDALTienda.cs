@@ -28,7 +28,7 @@ namespace DataAccessLayer
 
         // -- TIENDAS --
 
-        bool AgregarTienda(string nom, string desc, string url);
+        bool AgregarTienda(string nom, string desc, string url, string idAdmin);
         //Completa el nombre, descripción, una URL (TiendaID).
         //Devuelve FALSE si ya existe una Tienda con la misma URL.
 

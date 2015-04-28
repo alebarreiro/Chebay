@@ -25,7 +25,8 @@ namespace Shared.Entities
         public virtual ICollection<Visita> visitas { get; set; }
         public virtual ICollection<Favorito> favoritos { get; set; }
         public virtual ICollection<Oferta> ofertas { get; set; }
-        public virtual ICollection<Compra> compras { get; set; }
+        public virtual ICollection<Compra> compras { get; set; } //tiene una única compra.
+        public virtual ICollection<Comentario> comentarios { get; set; } //nuevo
 
         //se deducen los atributos
         public virtual CategoriaSimple categoria { get; set; }

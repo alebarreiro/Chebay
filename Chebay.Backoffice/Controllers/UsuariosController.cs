@@ -3,9 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using DataAccessLayer;
 
 namespace Chebay.Backoffice.Controllers
 {
+    
+    
 
     public class DatosRegistro{
         private string mail {get;set;}
@@ -15,11 +18,12 @@ namespace Chebay.Backoffice.Controllers
     public class UsuariosController : Controller
     {
 
+        DALTiendaEF dalTienda = new DALTiendaEF();
         //POST: /Usuarios/Login
         [HttpPost]
         public ActionResult Login(DatosRegistro datos)
         {
-
+            
             //invocar a la funcion de la logica de login y si no existe el usuario o los datos son erroneos
             //devolver un Json success = false
             ViewBag.LoggedIn = true;

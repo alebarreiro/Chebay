@@ -15,7 +15,13 @@ namespace Chebay.Backoffice.Controllers
 
         public ActionResult CrearTienda()
         {
-            return View();
+            string pagina = "<div class=\"btn-group\">"
+                + "<button type=\"button\" class=\"btn btn-primary\" onclick=\"datosGenerales()\">Datos Generales<span class=\"badge pull-right\">1</span></button>"
+                + "<button type=\"button\" class=\"btn btn-success\" onclick=\"crearCategorias()\">Categorías<span class=\"badge pull-right\">2</span></button>"
+                + "<button type=\"button\" class=\"btn btn-warning\" onclick=\"crearTiposAtributo()\">Tipos de Atributo<span class=\"badge pull-right\">3</span></button>"
+                + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"crearPersonalizacion()\">Personalización<span class=\"badge pull-right\">4</span></button>"
+                + "</div>"
+            return Content(pagina);
         }
 
         // GET: /Tienda/DatosGenerales

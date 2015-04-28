@@ -18,7 +18,7 @@ namespace Chebay.Backoffice.Controllers
     public class UsuariosController : Controller
     {
 
-        DALTiendaEF dalTienda = new DALTiendaEF();
+        IDALTienda dalTienda = new DALTiendaEF();
         //POST: /Usuarios/Login
         [HttpPost]
         public ActionResult Login(DatosRegistro datos)

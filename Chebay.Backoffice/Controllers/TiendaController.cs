@@ -16,10 +16,12 @@ namespace Chebay.Backoffice.Controllers
         public ActionResult CrearTienda()
         {
             string pagina = "<div class=\"btn-group\">"
-                + "<button type=\"button\" class=\"btn btn-primary\" onclick=\"datosGenerales()\">Datos Generales<span class=\"badge pull-right\">1</span></button>"
-                + "<button type=\"button\" class=\"btn btn-success\" onclick=\"crearCategorias()\">Categorías<span class=\"badge pull-right\">2</span></button>"
-                + "<button type=\"button\" class=\"btn btn-warning\" onclick=\"crearTiposAtributo()\">Tipos de Atributo<span class=\"badge pull-right\">3</span></button>"
-                + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"crearPersonalizacion()\">Personalización<span class=\"badge pull-right\">4</span></button>"
+                + "<button type=\"button\" class=\"btn btn-primary\" onclick=\"datosGenerales()\">Datos Generales&nbsp;&nbsp;<span class=\"badge pull-right\">1</span></button>"
+                + "<button type=\"button\" class=\"btn btn-success\" onclick=\"crearCategorias()\">Categorías&nbsp;&nbsp;<span class=\"badge pull-right\">2</span></button>"
+                + "<button type=\"button\" class=\"btn btn-warning\" onclick=\"crearTiposAtributo()\">Tipos de Atributo&nbsp;&nbsp;<span class=\"badge pull-right\">3</span></button>"
+                + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"crearPersonalizacion()\">Personalización&nbsp;&nbsp;<span class=\"badge pull-right\">4</span></button>"
+                + "</div>"
+                + "<div id=\"contenidoCrearTienda\" class=\"contenidoCrearTienda\">"
                 + "</div>";
             return Content(pagina);
         }
@@ -28,7 +30,17 @@ namespace Chebay.Backoffice.Controllers
 
         public ActionResult DatosGenerales()
         {
-            return View();
+            string pagina = "<br><br>"
+                            + "<div class=\"input-group\">"
+                            + "<span class=\"input-group-addon\">Título :</span>"
+                            + "<input type=\"text\" id=\"tituloTienda\" class=\"form-control\" placeholder=\"Título de la Tienda\">"
+                            + "</div>"
+                            + "<br><br>"
+                            + "<div class=\"input-group\">"
+                            + "<span class=\"input-group-addon\">Descripción :</span>"
+                            + "<textarea id=\"descripcionTienda\" class=\"form-control\" placeholder=\"Descripción de la Tienda\"></textarea>"
+                            + "</div>";
+            return Content(pagina);
         }
 
         // GET: /Tienda/CrearCategorias

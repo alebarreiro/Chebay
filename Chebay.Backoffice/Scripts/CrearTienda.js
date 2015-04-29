@@ -1,10 +1,20 @@
-﻿
+﻿function DirigirCrearTienda() {
+    $.ajax({
+        url: '/Tienda/CrearTienda',
+        type: 'GET',
+        success: function (data, textStatus, jqxhr) {
+            $('#container').html(data);
+        }
+    });
+}
+
+
 function datosGenerales() {
     $.ajax({
         url: '/Tienda/DatosGenerales',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
-            $('#container').html(data);
+            $('#contenidoCrearTienda').html(data);
         }
     });
 }
@@ -14,7 +24,7 @@ function crearCategorias() {
         url: '/Tienda/CrearCategorias',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
-            $('#container').html(data);
+            $('#contenidoCrearTienda').html(data);
         }
     });
 }
@@ -24,7 +34,7 @@ function crearTiposAtributo() {
         url: '/Tienda/CrearTiposAtributo',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
-            $('#container').html(data);
+            $('#contenidoCrearTienda').html(data);
         }
     });
 }
@@ -34,7 +44,7 @@ function crearPersonalizacion() {
         url: '/Tienda/CrearPersonalizacion',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
-            $('#container').html(data);
+            $('#contenidoCrearTienda').html(data);
         }
     });
 }

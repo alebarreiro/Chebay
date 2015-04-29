@@ -27,18 +27,18 @@
     <div id="body">
         
         <section class="main-content clear-fix">
-            @if(ViewBag.LoggedIn)
-            {
+            @*@if(ViewBag.LoggedIn)
+            {*@
                 <div class="menu">
                     <div class="list-group">
-                        <a href="#" class="list-group-item active">
+                        <a href="#" class="list-group-item active" onclick="DirigirCrearTienda()">
                             Crear Tienda
                         </a>
                         <a href="#" class="list-group-item">Modificar Tienda</a>
                         <a href="#" class="list-group-item">Configuracion</a>
                     </div>
                 </div>
-            }
+            @*}*@
             @RenderBody()
         </section>
     </div>

@@ -9,7 +9,12 @@
 
 .contenido{
     height: 1000px;
-    width: 450px;
+    width: 750px;
+}
+
+.contenidoCrearTienda{
+    height: 800px;
+    width: 550px;
 }
 
 .contenidoPrincipal{

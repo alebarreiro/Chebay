@@ -20,7 +20,7 @@ namespace Chebay.Backoffice.Controllers
                 + "<button type=\"button\" class=\"btn btn-success\" onclick=\"crearCategorias()\">Categorías<span class=\"badge pull-right\">2</span></button>"
                 + "<button type=\"button\" class=\"btn btn-warning\" onclick=\"crearTiposAtributo()\">Tipos de Atributo<span class=\"badge pull-right\">3</span></button>"
                 + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"crearPersonalizacion()\">Personalización<span class=\"badge pull-right\">4</span></button>"
-                + "</div>"
+                + "</div>";
             return Content(pagina);
         }
 

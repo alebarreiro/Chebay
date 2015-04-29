@@ -8,7 +8,7 @@ using Shared.Entities;
 
 namespace DataAccessLayer
 {
-    interface IDALTienda
+    public interface IDALTienda
     {
         // -- ADMINISTRADORES --
         void AgregarAdministrador(string idAdmin, string pass);

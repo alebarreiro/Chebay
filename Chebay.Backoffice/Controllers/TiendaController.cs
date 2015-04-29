@@ -36,10 +36,8 @@ namespace Chebay.Backoffice.Controllers
                             + "<input type=\"text\" id=\"tituloTienda\" class=\"form-control\" placeholder=\"Título de la Tienda\">"
                             + "</div>"
                             + "<br><br>"
-                            + "<div class=\"input-group\">"
-                            + "<span class=\"input-group-addon\">Descripción :</span>"
-                            + "<textarea id=\"descripcionTienda\" class=\"form-control\" placeholder=\"Descripción de la Tienda\"></textarea>"
-                            + "</div>";
+                            + "Descripción :<br>"
+                            + "<textarea id=\"descripcionTienda\" class=\"form-control\" placeholder=\"Descripción de la Tienda\"></textarea>";
             return Content(pagina);
         }
 

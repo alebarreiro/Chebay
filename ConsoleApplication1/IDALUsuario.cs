@@ -14,10 +14,12 @@ namespace DataAccessLayer
         void ActualizarUsuario(Usuario u);
         Usuario ObtenerUsuario(string id);
         List<Usuario> ObtenerTodosUsuarios();
-        
         //Falta completar
         void AgregarVisita(string idUsuario, Visita visita);
         void AgregarFavorito(string idUsuario);
+
+
+
         
                 
     }

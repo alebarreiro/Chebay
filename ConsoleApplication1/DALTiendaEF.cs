@@ -9,7 +9,7 @@ namespace DataAccessLayer
 {
     public class DALTiendaEF : IDALTienda
     {
-        void AgregarAdministrador(string idAdmin, string pass)
+        public void AgregarAdministrador(string idAdmin, string pass)
         {
             using (var context = new ChebayDBContext())
             {
@@ -28,28 +28,8 @@ namespace DataAccessLayer
             }
         }
 
-        /*void ModificarAdministrador(Administrador a)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from admin in context.administradores
-                                where admin.AdministradorID == a.AdministradorID
-                                select admin;
-                    Administrador adm = query.FirstOrDefault();
-                    adm.password = a.password;
-                    adm.TiendaID = a.TiendaID;
-                    context.SaveChanges();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                }
-            }
-        }*/
-
-        Administrador ObtenerAdministrador(string idAdministrador)
+      
+        public Administrador ObtenerAdministrador(string idAdministrador)
         {
             using (var context = new ChebayDBContext())
             {
@@ -68,7 +48,7 @@ namespace DataAccessLayer
             }
         }
 
-        Administrador ObtenerAdministradorTienda(string idTienda)
+        public Administrador ObtenerAdministradorTienda(string idTienda)
         {
             using (var context = new ChebayDBContext())
             {
@@ -87,7 +67,7 @@ namespace DataAccessLayer
             }
         }
 
-        bool AutenticarAdministrador(string idAdministrador, string passwd)
+        public bool AutenticarAdministrador(string idAdministrador, string passwd)
         //Devuelve true si es el password correcto para el usuario.
         {
             using (var context = new ChebayDBContext())
@@ -111,7 +91,7 @@ namespace DataAccessLayer
             }
         }
 
-        bool CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva)
+        public bool CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva)
         //Devuelve true si passwdVieja es la password del idAdministrador y pudo cambiarla por passwdNueva.
         {
             using (var context = new ChebayDBContext())
@@ -139,7 +119,7 @@ namespace DataAccessLayer
             }
         }
 
-        bool AgregarTienda(string nom, string desc, string url, string idAdmin)
+        public void AgregarTienda(string nom, string desc, string url, string idAdmin)
         //Completa el nombre, descripción, una URL (TiendaID).
         //Devuelve FALSE si ya existe una Tienda con la misma URL.
         {
@@ -147,7 +127,7 @@ namespace DataAccessLayer
             {
                 try
                 {
-                    var query = from tienda in context.tiendas
+                   /* var query = from tienda in context.tiendas
                                 where tienda.TiendaID == t.TiendaID
                                 select tienda;
                     if (query != null)
@@ -157,24 +137,25 @@ namespace DataAccessLayer
                         return true;
                     }
                     else
-                        return false;
+                        return false;*/
+                 
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                    return false;
+                 
                 }
             }
         }
 
-        void ActualizarTienda(Tienda t)
+        public void ActualizarTienda(string nom, string desc, string url)
         //Cambiar nombre o descripción de t.
         {
             using (var context = new ChebayDBContext())
             {
                 try
                 {
-                    var query = from tienda in context.tiendas
+                   /* var query = from tienda in context.tiendas
                                 where tienda.TiendaID == t.TiendaID
                                 select tienda;
                     if (query != null)
@@ -183,7 +164,7 @@ namespace DataAccessLayer
                         tnd.descripcion = t.descripcion;
                         tnd.nombre = tnd.nombre;
                         context.SaveChanges();
-                    }
+                    }*/
                 }
                 catch (Exception e)
                 {
@@ -192,7 +173,7 @@ namespace DataAccessLayer
             }
         }
 
-        bool CambiarURLTienda(string idTienda, string nuevaURL)
+        public bool CambiarURLTienda(string idTienda, string nuevaURL)
         //Cambia la URL de idTienda por nuevaURL.
         //Devuelve FALSE si ya existe una tienda con URL nuevaURL.
         {
@@ -225,7 +206,7 @@ namespace DataAccessLayer
             }
         }
 
-        Tienda ObtenerTienda(string idTienda)
+        public Tienda ObtenerTienda(string idTienda)
         {
             using (var context = new ChebayDBContext())
             {
@@ -241,7 +222,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Tienda> ObtenerTodasTiendas()
+        public List<Tienda> ObtenerTodasTiendas()
         {
             using (var context = new ChebayDBContext())
             {
@@ -257,7 +238,7 @@ namespace DataAccessLayer
             }
         }
 
-        Tienda ObtenerTiendasAdministrador(string idAdministrador)
+        public Tienda ObtenerTiendasAdministrador(string idAdministrador)
         {
             using (var context = new ChebayDBContext())
             {
@@ -273,7 +254,7 @@ namespace DataAccessLayer
             }
         }
 
-        void AgregarAdminTienda(string idAdministrador, string idTienda)
+        public void AgregarAdminTienda(string idAdministrador, string idTienda)
         //Agrega a idAdministrador a idTienda.
         {
             using (var context = new ChebayDBContext())
@@ -290,7 +271,7 @@ namespace DataAccessLayer
         }
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        bool AgregarCategoriaCompuesta(string idCategoria, string idPadre)
+        public bool AgregarCategoriaCompuesta(string idCategoria, string idPadre)
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
         {
@@ -333,7 +314,7 @@ namespace DataAccessLayer
             }
         }
 
-        bool AgregarCategoriaSimple(string idCategoria, string idPadre)
+        public bool AgregarCategoriaSimple(string idCategoria, string idPadre)
         //idPadre no puede ser null.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
         {
@@ -377,7 +358,7 @@ namespace DataAccessLayer
         }
 
     //CU: Alta Subasta
-        List<Categoria> ListarCategorias(string idTienda)
+        public List<Categoria> ListarCategorias(string idTienda)
         //Lista las Categorias de idTienda.
         {
             using (var context = new ChebayDBContext())
@@ -407,7 +388,7 @@ namespace DataAccessLayer
         }
 
     //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
-        void AgregarAtributo(string idCategoria, string idAtributo, string valor)
+        public void AgregarAtributo(string idCategoria, string idAtributo, string valor)
         {
             using (var context = new ChebayDBContext())
             {
@@ -420,6 +401,11 @@ namespace DataAccessLayer
                     System.Console.WriteLine(e.Message);
                 }
             }
+        }
+
+        public List<Administrador> ObtenerAdministradoresTienda(int idTienda)
+        {
+            return null;
         }
     }
 }

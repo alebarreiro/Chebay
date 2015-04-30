@@ -12,7 +12,7 @@ namespace DataAccessLayer
 {
     public class DALUsuarioEF : IDALUsuario
     {
-        void AgregarUsuario(Usuario u)
+        public void AgregarUsuario(Usuario u)
         {
             using (var context = new ChebayDBContext())
             {
@@ -28,7 +28,7 @@ namespace DataAccessLayer
             }
         }
 
-      /*  void ActualizarUsuario(Usuario u)
+        public void ActualizarUsuario(Usuario u)
         {
             using (var context = new ChebayDBContext())
             {
@@ -39,7 +39,6 @@ namespace DataAccessLayer
                                 select usr;
 
                     Usuario user = query.FirstOrDefault();
-                    user.token
                     context.SaveChanges();
                 }
 
@@ -48,9 +47,9 @@ namespace DataAccessLayer
                     Debug.WriteLine("Error: "+e.Message);
                 }
             }
-        }*/
+        }
 
-        Usuario ObtenerUsuario(string idUsuario)
+        public Usuario ObtenerUsuario(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -72,7 +71,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Usuario> ObtenerTodosUsuarios()
+        public List<Usuario> ObtenerTodosUsuarios()
         {
             using (var context = new ChebayDBContext())
             {
@@ -89,6 +88,16 @@ namespace DataAccessLayer
                     return null;
                 }
             }
+        }
+
+        public void AgregarVisita(string idUsuario, Visita visita)
+        {
+
+        }
+
+        public void AgregarFavorito(string idUsuario)
+        {
+           
         }
     }
 } 

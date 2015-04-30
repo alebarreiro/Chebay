@@ -13,12 +13,6 @@ namespace DataAccessLayer
         // -- ADMINISTRADORES --
         void AgregarAdministrador(string idAdmin, string pass);
 
-        //void ModificarAdministrador(Administrador a);
-
-        Administrador ObtenerAdministrador(string idAdministrador);
-
-        List<Administrador> ObtenerAdministradoresTienda(int idTienda);
-    
     //CU: 1.1 INICIAR SESIÓN BACK OFFICE
         bool AutenticarAdministrador(string idAdministrador, string passwd);
         //Devuelve true si es el password correcto para el usuario.
@@ -28,11 +22,12 @@ namespace DataAccessLayer
 
         // -- TIENDAS --
 
-        bool AgregarTienda(string nom, string desc, string url, string idAdmin);
+    //En la Parte 1 del BackOffice
+        void AgregarTienda(string nom, string desc, string url, string idAdmin);
         //Completa el nombre, descripción, una URL (TiendaID).
         //Devuelve FALSE si ya existe una Tienda con la misma URL.
 
-        void ActualizarTienda(string nom, string desc, string urlNueva, string urlVieja);
+        void ActualizarTienda(string nom, string desc, string url);
         //Cambiar nombre o descripción de t.
 
         bool CambiarURLTienda(string idTienda, string nuevaURL);

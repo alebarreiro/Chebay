@@ -9,7 +9,7 @@ namespace DataAccessLayer
 {
     public class DALSubastaEF : IDALSubasta
     {
-        void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria)
+        public void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria)
         {
             using (var context = new ChebayDBContext())
             {
@@ -50,7 +50,7 @@ namespace DataAccessLayer
             }
         }
 
-        void ModificarProducto(long idProducto, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria)
+        public void ModificarProducto(long idProducto, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria)
         {
             using (var context = new ChebayDBContext())
             {
@@ -82,7 +82,7 @@ namespace DataAccessLayer
 
                         }
                         
-                        c.productos.Add(p);
+                        //c.productos.Add(p);
                         context.productos.Add(p);
                         context.SaveChanges();
                     }
@@ -98,7 +98,7 @@ namespace DataAccessLayer
 
         //void AgregarComentarioProducto(Comentario, Producto p);
 
-        Producto ObtenerProducto(long idProducto, string idUsuario)
+        public Producto ObtenerProducto(long idProducto, string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -137,7 +137,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Producto> ObtenerProductosCategoria(string nombreTienda, string nombreCategoria)
+        public List<Producto> ObtenerProductosCategoria(string nombreCategoria)
         {
             using (var context = new ChebayDBContext())
             {
@@ -162,7 +162,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Producto> ObtenerProductosVisitados(string idUsuario)
+        public List<Producto> ObtenerProductosVisitados(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -194,7 +194,7 @@ namespace DataAccessLayer
         }
 
 
-        List<Producto> ObtenerProductosFavoritos(string idUsuario)
+        public List<Producto> ObtenerProductosFavoritos(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -225,7 +225,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Producto> ObtenerProductosComprados(string idUsuario)
+        public List<Producto> ObtenerProductosComprados(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -256,7 +256,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Producto> ObtenerProductosOfertados(string idUsuario)
+        public List<Producto> ObtenerProductosOfertados(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -287,7 +287,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Producto> ObtenerProductosPublicados(string idUsuario)
+        public List<Producto> ObtenerProductosPublicados(string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -312,7 +312,7 @@ namespace DataAccessLayer
             }
         }
 
-        void AgregarComentario(string texto, long idProducto, string idUsuario)
+        public void AgregarComentario(string texto, long idProducto, string idUsuario)
         {
             using (var context = new ChebayDBContext())
             {
@@ -347,5 +347,11 @@ namespace DataAccessLayer
                 }
             }
         }
+
+        public void OfertarProducto(string idOfertante, long idProducto, double monto)
+        {
+
+        }
+
     }
 }

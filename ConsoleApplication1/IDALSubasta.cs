@@ -10,14 +10,19 @@ namespace DataAccessLayer
     public interface IDALSubasta
     {
         void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria);
+        //Crea una subasta.
 
+       // List<DataProducto> ObtenerProductosPersonalizados();
+        //Devuelve los últimos 10 productos publicados para el index.
 
+        //DataProductoFull ObtenerProducto(long idProducto);
+        //Devuelve toda la info del producto idProducto.
+
+        void OfertarProducto(string idOfertante, long idProducto, double monto);
 
         //void AgregarImagenProducto(Imagen img, Producto p);
 
-        Producto ObtenerProducto(long idProducto, string idUsuario);
-
-        List<Producto> ObtenerProductosCategoria(string nombreTienda, string nombreCategoria);
+        List<Producto> ObtenerProductosCategoria(string nombreCategoria);
 
         List<Producto> ObtenerProductosVisitados(string idUsuario);
 

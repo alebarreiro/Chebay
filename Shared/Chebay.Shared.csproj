@@ -42,6 +42,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\DataProducto.cs" />
+    <Compile Include="DataTypes\DataProductoFull.cs" />
     <Compile Include="Entities\Administrador.cs" />
     <Compile Include="Entities\Atributo.cs" />
     <Compile Include="Entities\Calificacion.cs" />

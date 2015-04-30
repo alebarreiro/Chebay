@@ -1,4 +1,5 @@
 ﻿using Shared.Entities;
+using Shared.DataTypes;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -351,6 +352,23 @@ namespace DataAccessLayer
         public void OfertarProducto(string idOfertante, long idProducto, double monto)
         {
 
+        }
+
+        public List<DataProducto> ObtenerProductosPersonalizados()
+        //Devuelve los últimos 10 productos publicados para el index.
+        {
+            using (var context = new ChebayDBContext())
+            {
+                try
+                {
+                    
+                }
+                catch (Exception e)
+                {
+                    System.Console.WriteLine(e.Message);
+                }
+                return null;
+            }
         }
 
     }

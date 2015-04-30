@@ -25,7 +25,6 @@ namespace DataAccessLayer
             base.Database.Connection.ConnectionString = con;
         }
 
-
         public DbSet<Tienda> tiendas { get; set; }
         public DbSet<Producto> productos { get; set; }
         public DbSet<Categoria> categorias { get; set; }
@@ -149,8 +148,6 @@ namespace DataAccessLayer
             string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
             base.Database.Connection.ConnectionString = con;
         }
-
-
 
         public DbSet<Administrador> administradores { get; set; }
         public DbSet<Tienda> tiendas { get; set; }

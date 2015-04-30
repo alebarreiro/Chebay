@@ -29,9 +29,31 @@ namespace DataAccessLayer
 
                 using (var schema = ChebayDBPublic.CreatePublic(db))
                 {
+                    IDALTienda it = new DALTiendaEF();
+                    it.AgregarAdministrador("idAdmin2", "pass123");
+                    System.Console.WriteLine("ID      pass");
                     foreach (var a in schema.administradores.ToList())
                     {
-                        Debug.WriteLine(a.AdministradorID + a.password);
+                        System.Console.WriteLine(a.AdministradorID + "     " + a.password);
+                    }
+                    bool asdf = it.AutenticarAdministrador("idAdmin", "pass123");
+                    System.Console.WriteLine(asdf);
+                    it.AutenticarAdministrador("idAdmin", "pass1234");
+                    System.Console.WriteLine(asdf);
+                    it.AgregarTienda("Amazon", "desc1", "www.amazon.com", "idAdmin");
+
+
+                    System.Console.WriteLine("");
+                    System.Console.WriteLine("url    nombre      desc    admin");
+                    foreach (var a in schema.tiendas.ToList())
+                    {
+                        System.Console.Write(a.TiendaID +
+                            "     " + a.nombre +
+                            "   " + a.descripcion);
+                        foreach (var adm in a.administradores.ToList())
+                        {
+                            System.Console.WriteLine("    " + adm.AdministradorID);
+                        }
                     }
                 }
 
@@ -43,8 +65,10 @@ namespace DataAccessLayer
                                 select p;
                     foreach (var p in query.ToList())
                     {
-                        Debug.WriteLine(p.nombre);
+                        System.Console.WriteLine(p.nombre);
                     }
+                    
+                    System.Console.Read();
 
                     //Ejemplos agregar atributo y administrador
                     /*

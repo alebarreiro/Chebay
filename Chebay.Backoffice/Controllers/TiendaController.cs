@@ -48,21 +48,48 @@ namespace Chebay.Backoffice.Controllers
 
         public ActionResult CrearCategorias()
         {
-            return View();
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/CrearCategorias.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
+            return Content(pagina);
         }
 
         // GET: /Tienda/CrearTiposAtributo
 
         public ActionResult CrearTiposAtributo()
         {
-            return View();
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/CrearTiposAtributo.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
+            return Content(pagina);
         }
 
         // GET: /Tienda/CrearPersonalizacion
 
         public ActionResult CrearPersonalizacion()
         {
-            return View();
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/CrearPersonalizacion.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
+            return Content(pagina);
         }
 
     }

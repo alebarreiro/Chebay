@@ -1,4 +1,32 @@
-﻿function DirigirCrearTienda() {
+﻿function borrarCategoria(categoria) {
+    var categorias = $("#divTiposAtributo").html();
+    categorias = categorias.replace("&nbsp;&nbsp;<button id=\"" + categoria + "\" class=\"btn btn-primary\" onclick=\"borrarCategoria('" + categoria + "')\">" + categoria + "</button>", " ");
+    $("#divTiposAtributo").html(categorias);
+}
+
+function agregarTipoAtributo() {
+    var nombre = $("#nombreTipoAtributo").val();
+
+    var categorias = $("#divTiposAtributo").html();
+
+    $("#divTiposAtributo").html(categorias + "&nbsp;&nbsp;<button id=\"" + nombre + "\" class=\"btn btn-primary\" onclick=\"borrarCategoria('" + nombre + "')\">" + nombre + "</button>");
+}
+
+function borrarCategoria(categoria) {
+    var categorias = $("#divCategorias").html();
+    categorias = categorias.replace("&nbsp;&nbsp;<button id=\"" + categoria + "\" class=\"btn btn-primary\" onclick=\"borrarCategoria('" + categoria + "')\">" + categoria + "</button>", " ");
+    $("#divCategorias").html(categorias);
+}
+
+function agregarCategoria() {
+    var nombre = $("#nombreCategoria").val();
+
+    var categorias = $("#divCategorias").html();
+
+    $("#divCategorias").html(categorias + "&nbsp;&nbsp;<button id=\"" + nombre + "\" class=\"btn btn-primary\" onclick=\"borrarCategoria('" + nombre + "')\">" + nombre + "</button>");
+}
+
+function DirigirCrearTienda() {
     $.ajax({
         url: '/Tienda/CrearTienda',
         type: 'GET',

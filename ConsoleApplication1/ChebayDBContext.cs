@@ -26,6 +26,19 @@ namespace DataAccessLayer
             base.Database.Connection.ConnectionString = con;
         }
 
+        public static ChebayDBContext CreatePublic(DbConnection connection, string schema)
+        {
+            var builder = new DbModelBuilder();
+            builder.Entity<Administrador>().ToTable("Administradores", schema);
+            builder.Entity<Tienda>().ToTable("Tiendas", schema);
+
+            var model = builder.Build(connection);
+            DbCompiledModel compModel = model.Compile();
+            var compiledModel = modelCache.GetOrAdd(schema, compModel);
+            return new ChebayDBContext(connection.ConnectionString, compiledModel);
+        }
+
+
         public DbSet<Tienda> tiendas { get; set; }
         public DbSet<Producto> productos { get; set; }
         public DbSet<Categoria> categorias { get; set; }
@@ -39,10 +52,7 @@ namespace DataAccessLayer
         public DbSet<Mensaje> mensajes { get; set; }
         public DbSet<Visita> visitas { get; set; }
         public DbSet<Favorito> favoritos { get; set; }
-        public DbSet<Administrador> administradores { get; set; } //nueva
-
-
-
+        
         private ChebayDBContext(string connection, DbCompiledModel model)
             : base(connection, model)
         {

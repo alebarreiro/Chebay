@@ -5,6 +5,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Data.SqlClient;
+using System.Diagnostics;
 
 namespace DataAccessLayer
 {
@@ -355,20 +357,40 @@ namespace DataAccessLayer
 
         }
 
-        public List<DataProducto> ObtenerProductosPersonalizados()
+        public List<DataProducto> ObtenerProductosPersonalizados(string urlTienda)
         //Devuelve los últimos 10 productos publicados para el index.
         {
-            using (var context = new ChebayDBContext())
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBContext.CreateTenant(urlTienda, db))
             {
                 try
                 {
-                    
+                    var qProductos = from p in context.productos
+                                     select p;
+                    if (qProductos.Count() > 0)
+                    {
+                        List<DataProducto> ret = new List<DataProducto>();
+                        foreach (Producto p in qProductos)
+                        {
+                            DataProducto dp = new DataProducto();
+                            dp.descripcion = p.descripcion;
+                            dp.fecha_cierre = p.fecha_cierre;
+                            dp.nombre = p.nombre;
+                            dp.precio_base_subasta = p.precio_base_subasta;
+                            dp.precio_compra = p.precio_compra;
+                            ret.Add(dp);
+                        }
+                        return ret;
+                    }
+                    else
+                        throw new Exception("No hay productos.");
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
+                    return null;
                 }
-                return null;
             }
         }
 

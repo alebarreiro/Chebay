@@ -80,14 +80,14 @@ namespace DataAccessLayer
             }
         }
 
-        public bool CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva)
+        public void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva)
         //Devuelve true si passwdVieja es la password del idAdministrador y pudo cambiarla por passwdNueva.
         {
             using (var context = new ChebayDBContext())
             {
                 try
                 {
-                    var query = from admin in context.administradores
+                    /*var query = from admin in context.administradores
                                 where admin.AdministradorID == idAdministrador
                                 select admin;
                     Administrador adm = query.FirstOrDefault();
@@ -98,12 +98,11 @@ namespace DataAccessLayer
                         return true;
                     }
                     else
-                        return false;
+                        return false;*/
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                    return false;
                 }
             }
         }
@@ -261,43 +260,36 @@ namespace DataAccessLayer
         }
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        public void AgregarCategoriaCompuesta(string idCategoria, string idPadre)
+        public void AgregarCategoriaCompuesta(string idCategoria, string idPadre, string urlTienda)
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
-        //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
         {
-            using (var context = new ChebayDBContext())
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            
+            using (var context = ChebayDBContext.CreateTenant(urlTienda, db))
             {
                 try
                 {
                     var existeCat = from c in context.categorias
                                     where c.CategoriaID == idCategoria
                                     select c;
-                    if (existeCat != null)
-                        throw new Exception("");
+                    if (existeCat.Count() > 0)
+                        throw new Exception("Ya existe la categoria " + idCategoria);
                     else
                     {
-                        var existePadre = from p in context.categorias
-                                          where p.CategoriaID == idPadre
-                                          select p;
-                        if (existePadre == null)
-                            throw new Exception("");
-                        else
-                        {
-                            CategoriaCompuesta padre = (CategoriaCompuesta)existePadre.FirstOrDefault();
-                            CategoriaCompuesta ret = new CategoriaCompuesta();
+                        CategoriaCompuesta ret = new CategoriaCompuesta();
                             ret.CategoriaID = idCategoria;
-                            ret.padre = padre;
                             ret.hijas = new List<Categoria>();
                             ret.atributos = new List<Atributo>();
-                            padre.hijas.Add(ret);
                             context.categorias.Add(ret);
                             context.SaveChanges();
+                            Debug.WriteLine("Categoría " + idCategoria + " creada con éxito.");
                         }
                     }
-                }
+               // }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                    
                 }
             }

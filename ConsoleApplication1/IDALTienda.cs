@@ -19,7 +19,7 @@ namespace DataAccessLayer
         //Devuelve true si es el password correcto para el usuario.
         //TESTEADA.
         
-        bool CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva);
+        void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva);
         //Devuelve true si passwdVieja es la password del idAdministrador y pudo cambiarla por passwdNueva.
 
         // -- TIENDAS --
@@ -42,7 +42,7 @@ namespace DataAccessLayer
         // -- CATEGORIAS --
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        void AgregarCategoriaCompuesta(string idCategoria, string idPadre);
+        void AgregarCategoriaCompuesta(string idCategoria, string idPadre, string urlTienda);
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
 
         void AgregarCategoriaSimple(string idCategoria, string idPadre);

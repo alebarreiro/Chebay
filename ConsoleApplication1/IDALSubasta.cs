@@ -13,7 +13,7 @@ namespace DataAccessLayer
         void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria);
         //Crea una subasta.
 
-        List<DataProducto> ObtenerProductosPersonalizados();
+        List<DataProducto> ObtenerProductosPersonalizados(string urlTienda);
         //Devuelve los últimos 10 productos publicados para el index.
 
         //DataProductoFull ObtenerProducto(long idProducto);

@@ -1,6 +1,7 @@
 ﻿using Shared.Entities;
 using System;
 using System.Collections.Generic;
+using System.Data.SqlClient;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,58 +12,31 @@ namespace DataAccessLayer
     {
         public void AgregarAdministrador(string idAdmin, string pass)
         {
-            using (var context = new ChebayDBContext())
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
             {
                 try
                 {
-                    Administrador a = new Administrador();
-                    a.AdministradorID = idAdmin;
-                    a.password = pass;
-                    context.administradores.Add(a);
-                    context.SaveChanges();
+                    var query = from adm in context.administradores
+                                where adm.AdministradorID == idAdmin
+                                select adm;
+                    if (query.Count() == 0)
+                    {
+                        Administrador a = new Administrador();
+                        a.AdministradorID = idAdmin;
+                        a.password = pass;
+                        context.administradores.Add(a);
+                        context.SaveChanges();
+                    } 
+                    else
+                    {
+                        throw new Exception("Ya existe un administrador " + idAdmin);
+                    }
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                }
-            }
-        }
-
-      
-        public Administrador ObtenerAdministrador(string idAdministrador)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from admin in context.administradores
-                                where admin.AdministradorID == idAdministrador
-                                select admin;
-                    return query.FirstOrDefault();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-        public Administrador ObtenerAdministradorTienda(string idTienda)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from admin in context.administradores
-                                where admin.TiendaID == idTienda
-                                select admin;
-                    return query.FirstOrDefault();
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
                 }
             }
         }
@@ -70,18 +44,28 @@ namespace DataAccessLayer
         public bool AutenticarAdministrador(string idAdministrador, string passwd)
         //Devuelve true si es el password correcto para el usuario.
         {
-            using (var context = new ChebayDBContext())
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
             {
                 try
                 {
                     var query = from admin in context.administradores
                                 where admin.AdministradorID == idAdministrador
                                 select admin;
-                    Administrador adm = query.FirstOrDefault();
-                    if (adm != null && adm.password == passwd)
-                        return true;
+                    if (query.Count() == 0)
+                    {
+                        throw new Exception("El nombre de usuario no es correcto.");
+                    }
                     else
-                        return false;
+                    {
+                        Administrador adm = query.FirstOrDefault();
+                        if (adm != null && adm.password == passwd)
+                            return true;
+                        else
+                            throw new Exception("La contraseña no es correcta.");
+
+                    }
                 }
                 catch (Exception e)
                 {
@@ -121,29 +105,47 @@ namespace DataAccessLayer
 
         public void AgregarTienda(string nom, string desc, string url, string idAdmin)
         //Completa el nombre, descripción, una URL (TiendaID).
-        //Devuelve FALSE si ya existe una Tienda con la misma URL.
         {
-            using (var context = new ChebayDBContext())
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
             {
                 try
                 {
-                   /* var query = from tienda in context.tiendas
-                                where tienda.TiendaID == t.TiendaID
-                                select tienda;
-                    if (query != null)
+                    var query = from t in context.tiendas
+                                where t.TiendaID == url
+                                select t;
+                    if (query.Count() == 0)
                     {
-                        context.tiendas.Add(t);
-                        context.SaveChanges();
-                        return true;
+                        Tienda tnd = new Tienda();
+                        tnd.descripcion = desc;
+                        tnd.nombre = nom;
+                        tnd.TiendaID = url;
+                        var ad = from a in context.administradores
+                                 where a.AdministradorID == idAdmin
+                                 select a;
+                        if (ad.Count() == 0)
+                        {
+                            throw new Exception("No existe el administrador " + idAdmin);
+                        }
+                        else
+                        {
+                            if (tnd.administradores == null)
+                                tnd.administradores = new HashSet<Administrador>();
+                            tnd.administradores.Add(ad.FirstOrDefault());
+                            ad.FirstOrDefault().TiendaID = url;
+                            context.tiendas.Add(tnd);
+                            context.SaveChanges();
+                        }
                     }
                     else
-                        return false;*/
-                 
+                    {
+                        throw new Exception("Ya existe una tienda con url " + url);
+                    }
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                 
                 }
             }
         }

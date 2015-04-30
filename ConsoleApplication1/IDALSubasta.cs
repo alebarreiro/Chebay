@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Entities;
+using Shared.DataTypes;
 
 namespace DataAccessLayer
 {
@@ -12,7 +13,7 @@ namespace DataAccessLayer
         void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria);
         //Crea una subasta.
 
-       // List<DataProducto> ObtenerProductosPersonalizados();
+        List<DataProducto> ObtenerProductosPersonalizados();
         //Devuelve los últimos 10 productos publicados para el index.
 
         //DataProductoFull ObtenerProducto(long idProducto);

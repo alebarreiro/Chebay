@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -28,6 +29,7 @@ namespace DataAccessLayer
                         a.password = pass;
                         context.administradores.Add(a);
                         context.SaveChanges();
+                        Debug.WriteLine("Administrador " + idAdmin + " creado correctamente");
                     } 
                     else
                     {
@@ -36,7 +38,7 @@ namespace DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                 }
             }
         }
@@ -61,7 +63,10 @@ namespace DataAccessLayer
                     {
                         Administrador adm = query.FirstOrDefault();
                         if (adm != null && adm.password == passwd)
+                        {
+                            Debug.WriteLine(idAdministrador + " ha sido correctamente autenticado.");
                             return true;
+                        }
                         else
                             throw new Exception("La contraseña no es correcta.");
 
@@ -69,7 +74,7 @@ namespace DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                     return false;
                 }
             }
@@ -125,9 +130,7 @@ namespace DataAccessLayer
                                  where a.AdministradorID == idAdmin
                                  select a;
                         if (ad.Count() == 0)
-                        {
                             throw new Exception("No existe el administrador " + idAdmin);
-                        }
                         else
                         {
                             if (tnd.administradores == null)
@@ -135,17 +138,19 @@ namespace DataAccessLayer
                             tnd.administradores.Add(ad.FirstOrDefault());
                             ad.FirstOrDefault().TiendaID = url;
                             context.tiendas.Add(tnd);
+                            ChebayDBContext.ProvisionTenant(url, db);
+                            var schema = new ChebayDBContext();
+                            schema.SaveChanges();
                             context.SaveChanges();
+                            Debug.WriteLine("Tienda " + url + " creada con éxito.");
                         }
                     }
                     else
-                    {
                         throw new Exception("Ya existe una tienda con url " + url);
-                    }
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                 }
             }
         }
@@ -175,9 +180,8 @@ namespace DataAccessLayer
             }
         }
 
-        public bool CambiarURLTienda(string idTienda, string nuevaURL)
+        public void CambiarURLTienda(string idTienda, string nuevaURL)
         //Cambia la URL de idTienda por nuevaURL.
-        //Devuelve FALSE si ya existe una tienda con URL nuevaURL.
         {
             using (var context = new ChebayDBContext())
             {
@@ -195,31 +199,11 @@ namespace DataAccessLayer
                         Tienda tnd = query.FirstOrDefault();
                         tnd.TiendaID = nuevaURL;
                         context.SaveChanges();
-                        return true;
                     }
-                    else
-                        return false;
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                    return false;
-                }
-            }
-        }
-
-        public Tienda ObtenerTienda(string idTienda)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    return null;
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
                 }
             }
         }
@@ -273,7 +257,7 @@ namespace DataAccessLayer
         }
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        public bool AgregarCategoriaCompuesta(string idCategoria, string idPadre)
+        public void AgregarCategoriaCompuesta(string idCategoria, string idPadre)
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
         {
@@ -285,17 +269,17 @@ namespace DataAccessLayer
                                     where c.CategoriaID == idCategoria
                                     select c;
                     if (existeCat != null)
-                        return false;
+                        throw new Exception("");
                     else
                     {
                         var existePadre = from p in context.categorias
                                           where p.CategoriaID == idPadre
                                           select p;
                         if (existePadre == null)
-                            return false;
+                            throw new Exception("");
                         else
                         {
-                            CategoriaCompuesta padre = (CategoriaCompuesta) existePadre.FirstOrDefault();
+                            CategoriaCompuesta padre = (CategoriaCompuesta)existePadre.FirstOrDefault();
                             CategoriaCompuesta ret = new CategoriaCompuesta();
                             ret.CategoriaID = idCategoria;
                             ret.padre = padre;
@@ -304,19 +288,18 @@ namespace DataAccessLayer
                             padre.hijas.Add(ret);
                             context.categorias.Add(ret);
                             context.SaveChanges();
-                            return true;
                         }
                     }
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                    return false;
+                   
                 }
             }
         }
 
-        public bool AgregarCategoriaSimple(string idCategoria, string idPadre)
+        public void AgregarCategoriaSimple(string idCategoria, string idPadre)
         //idPadre no puede ser null.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
         {
@@ -328,14 +311,14 @@ namespace DataAccessLayer
                                     where c.CategoriaID == idCategoria
                                     select c;
                     if (existeCat != null)
-                        return false;
+                        throw new Exception("");
                     else
                     {
                         var existePadre = from p in context.categorias
                                           where p.CategoriaID == idPadre
                                           select p;
                         if (existePadre == null)
-                            return false;
+                            throw new Exception("");
                         else
                         {
                             CategoriaCompuesta padre = (CategoriaCompuesta)existePadre.FirstOrDefault();
@@ -347,14 +330,12 @@ namespace DataAccessLayer
                             padre.hijas.Add(ret);
                             context.categorias.Add(ret);
                             context.SaveChanges();
-                            return true;
                         }
                     }
                 }
                 catch (Exception e)
                 {
                     System.Console.WriteLine(e.Message);
-                    return false;
                 }
             }
         }
@@ -408,6 +389,113 @@ namespace DataAccessLayer
         public List<Administrador> ObtenerAdministradoresTienda(int idTienda)
         {
             return null;
+        }
+
+        public void EliminarAdministrador(string idAdministrador)
+        {
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
+            {
+                try
+                {
+                    var query = from adm in context.administradores
+                                where adm.AdministradorID == idAdministrador
+                                select adm;
+                    if (query.Count() > 0)
+                    {
+                        context.administradores.Remove(query.FirstOrDefault());
+                        context.SaveChanges();
+                        Debug.WriteLine("El administrador " + idAdministrador + " ha sido eliminado.");
+                    }
+                    else
+                        throw new Exception("No existe un administrador " + idAdministrador);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+            }
+        }
+
+        public Administrador ObtenerAdministrador(string idAdministrador)
+        {
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
+            {
+                try
+                {
+                    var query = from adm in context.administradores
+                                where adm.AdministradorID == idAdministrador
+                                select adm;
+                    if (query.Count() > 0)
+                    {
+                        return query.FirstOrDefault();
+                    }
+                    else
+                        throw new Exception("No existe un administrador " + idAdministrador);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return null;
+                }
+            }
+        }
+
+        public void EliminarTienda(string idTienda)
+        {
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
+            {
+                try
+                {
+                    var query = from t in context.tiendas
+                                where t.TiendaID == idTienda
+                                select t;
+                    if (query.Count() > 0)
+                    {
+                        Tienda tnd = query.FirstOrDefault();
+                        context.tiendas.Remove(tnd);
+                        context.SaveChanges();
+                        Debug.WriteLine("La tienda " + idTienda + " ha sido eliminada.");
+                    }
+                    else
+                        throw new Exception("No existe una tienda con url " + idTienda);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+            }
+        }
+
+        public Tienda ObtenerTienda(string idTienda)
+        {
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
+            {
+                try
+                {
+                    var query = from t in context.tiendas
+                                where t.TiendaID == idTienda
+                                select t;
+                    if (query.Count() > 0)
+                    {
+                        return query.FirstOrDefault();
+                    }
+                    else
+                        throw new Exception("No existe una tienda " + idTienda);
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    return null;
+                }
+            }
         }
     }
 }

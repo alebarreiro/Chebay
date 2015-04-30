@@ -32,7 +32,7 @@ namespace DataAccessLayer
         void ActualizarTienda(string nom, string desc, string url);
         //Cambiar nombre o descripción de t.
 
-        bool CambiarURLTienda(string idTienda, string nuevaURL);
+        void CambiarURLTienda(string idTienda, string nuevaURL);
         //Cambia la URL de idTienda por nuevaURL.
         //Devuelve FALSE si ya existe una tienda con URL nuevaURL.
 
@@ -42,12 +42,11 @@ namespace DataAccessLayer
         // -- CATEGORIAS --
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        bool AgregarCategoriaCompuesta(string idCategoria, string idPadre);
+        void AgregarCategoriaCompuesta(string idCategoria, string idPadre);
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
-        //Devuelve FALSE si ya existe una Categoria con el mismo nombre.
-        bool AgregarCategoriaSimple(string idCategoria, string idPadre);
+
+        void AgregarCategoriaSimple(string idCategoria, string idPadre);
         //idPadre no puede ser null.
-        //Devuelve FALSE si ya existe una Categoria con el mismo nombre.
 
     //CU: Alta Subasta
         List<Categoria> ListarCategorias(string idTienda);
@@ -55,5 +54,11 @@ namespace DataAccessLayer
 
     //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
         void AgregarAtributo(string idCategoria, string idAtributo, string valor);
+
+        void EliminarAdministrador(string idAdministrador);
+        Administrador ObtenerAdministrador(string idAdministrador);
+        void EliminarTienda(string idTienda);
+        Tienda ObtenerTienda(string idTienda);
+
     }
 }

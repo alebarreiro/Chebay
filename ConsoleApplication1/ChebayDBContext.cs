@@ -12,6 +12,7 @@ using System.Data.Entity.Infrastructure;
 using System.Data.Entity.ModelConfiguration;
 using System.Configuration;
 using Shared;
+using System.Diagnostics;
 
 namespace DataAccessLayer
 {
@@ -60,7 +61,6 @@ namespace DataAccessLayer
 
         public static ChebayDBContext CreateTenant(string schemaName, DbConnection connection)
         {
-
             var builder = new DbModelBuilder();
             builder.Entity<Atributo>().ToTable("Atributos", schemaName);
             builder.Entity<Calificacion>().ToTable("Calificaciones", schemaName);
@@ -75,12 +75,11 @@ namespace DataAccessLayer
             builder.Entity<Visita>().ToTable("Visitas", schemaName);
             builder.Entity<Favorito>().ToTable("Favoritos", schemaName);
 
-
-
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schemaName, compModel);
-            return new ChebayDBContext(connection.ConnectionString, compiledModel);
+            ChebayDBContext ret = new ChebayDBContext(connection.ConnectionString, compiledModel);
+            return ret;
         }
 
         public static void ProvisionTenant(string tenantSchema, DbConnection connection)
@@ -103,11 +102,10 @@ namespace DataAccessLayer
             }
             catch (Exception)
             {
-
                 throw;
             }
         }
-
+        
         public void seed()
         {
             Usuario[] users = { new Usuario{UsuarioID="Dexter" },
@@ -136,11 +134,10 @@ namespace DataAccessLayer
             SaveChanges();
 
         }
-
     }
 
 
-    class ChebayDBPublic : DbContext
+    public class ChebayDBPublic : DbContext
     {
         public ChebayDBPublic()
         {

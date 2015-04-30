@@ -16,33 +16,33 @@ namespace DataAccessLayer
             {
                 try
                 {
-                    var usr = from u in context.usuarios
-                              where u.UsuarioID == idUsuario
-                              select u;
-                    var cat = from c in context.categorias
-                              where c.CategoriaID == idCategoria
-                              select c;
-                    if (usr == null || cat == null)
-                        throw new Exception("No existe el usuario o la categoría.");
-                    else
-                    {
-                        Producto p = new Producto();
-                        p.UsuarioID = idUsuario;
-                        p.CategoriaID = idCategoria;
-                        p.nombre = nomProducto;
-                        p.descripcion = descProducto;
-                        p.precio_base_subasta = precioBase;
-                        p.precio_compra = precioCompra;
-                        p.fecha_cierre = fechaCierre;
-                        Usuario user = usr.FirstOrDefault();
-                        p.usuario = user;
-                        CategoriaSimple c = (CategoriaSimple)cat.FirstOrDefault();
-                        p.categoria = c;
-                        c.productos.Add(p);
-                        user.publicados.Add(p);
-                        context.productos.Add(p);
-                        context.SaveChanges();
-                    }
+                    /* var usr = from u in context.usuarios
+                               where u.UsuarioID == idUsuario
+                               select u;
+                     var cat = from c in context.categorias
+                               where c.CategoriaID == idCategoria
+                               select c;
+                     if (usr == null || cat == null)
+                         throw new Exception("No existe el usuario o la categoría.");
+                     else
+                     {
+                         Producto p = new Producto();
+                         p.UsuarioID = idUsuario;
+                         p.CategoriaID = idCategoria;
+                         p.nombre = nomProducto;
+                         p.descripcion = descProducto;
+                         p.precio_base_subasta = precioBase;
+                         p.precio_compra = precioCompra;
+                         p.fecha_cierre = fechaCierre;
+                         Usuario user = usr.FirstOrDefault();
+                         p.usuario = user;
+                         CategoriaSimple c = (CategoriaSimple)cat.FirstOrDefault();
+                         p.categoria = c;
+                         c.productos.Add(p);
+                         user.publicados.Add(p);
+                         context.productos.Add(p);
+                         context.SaveChanges();
+                     }*/
                 }
                 catch (Exception e)
                 {
@@ -57,7 +57,7 @@ namespace DataAccessLayer
             {
                 try
                 {
-                    var prd = from p in context.productos
+                    /*var prd = from p in context.productos
                               where p.ProductoID == idProducto
                               select p;
                     var catNueva = from c in context.categorias
@@ -86,7 +86,7 @@ namespace DataAccessLayer
                         //c.productos.Add(p);
                         context.productos.Add(p);
                         context.SaveChanges();
-                    }
+                    }*/
                 }
                 catch (Exception e)
                 {
@@ -144,7 +144,7 @@ namespace DataAccessLayer
             {
                 try
                 {
-                    var query = from c in context.categorias
+                    /*var query = from c in context.categorias
                                 where c.CategoriaID == nombreCategoria
                                 select c;
                     if (query == null)
@@ -153,7 +153,8 @@ namespace DataAccessLayer
                     {
                         CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
                         return cs.productos.ToList();
-                    }
+                    }*/
+                    return null;
                 }
                 catch (Exception e)
                 {

@@ -304,6 +304,7 @@
     <Content Include="Views\Web.config" />
     <Content Include="Views\Usuarios\Registro.cshtml" />
     <Content Include="Views\Tienda\DatosGeneralesTienda.cshtml" />
+    <Content Include="Views\Tienda\CrearTienda.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

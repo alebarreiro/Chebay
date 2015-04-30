@@ -15,14 +15,16 @@ namespace Chebay.Backoffice.Controllers
 
         public ActionResult CrearTienda()
         {
-            string pagina = "<div class=\"btn-group\">"
-                + "<button type=\"button\" class=\"btn btn-primary\" onclick=\"datosGenerales()\">Datos Generales&nbsp;&nbsp;<span class=\"badge pull-right\">1</span></button>"
-                + "<button type=\"button\" class=\"btn btn-success\" onclick=\"crearCategorias()\">Categorías&nbsp;&nbsp;<span class=\"badge pull-right\">2</span></button>"
-                + "<button type=\"button\" class=\"btn btn-warning\" onclick=\"crearTiposAtributo()\">Tipos de Atributo&nbsp;&nbsp;<span class=\"badge pull-right\">3</span></button>"
-                + "<button type=\"button\" class=\"btn btn-danger\" onclick=\"crearPersonalizacion()\">Personalización&nbsp;&nbsp;<span class=\"badge pull-right\">4</span></button>"
-                + "</div>"
-                + "<div id=\"contenidoCrearTienda\" class=\"contenidoCrearTienda\">"
-                + "</div>";
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/CrearTienda.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
+
             return Content(pagina);
         }
 
@@ -30,14 +32,15 @@ namespace Chebay.Backoffice.Controllers
 
         public ActionResult DatosGenerales()
         {
-            string pagina = "<br><br>"
-                            + "<div class=\"input-group\">"
-                            + "<span class=\"input-group-addon\">Título :</span>"
-                            + "<input type=\"text\" id=\"tituloTienda\" class=\"form-control\" placeholder=\"Título de la Tienda\">"
-                            + "</div>"
-                            + "<br><br>"
-                            + "Descripción :<br>"
-                            + "<textarea id=\"descripcionTienda\" class=\"form-control\" placeholder=\"Descripción de la Tienda\"></textarea>";
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/DatosGeneralesTienda.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
             return Content(pagina);
         }
 

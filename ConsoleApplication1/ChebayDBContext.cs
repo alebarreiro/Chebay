@@ -65,6 +65,8 @@ namespace DataAccessLayer
             builder.Entity<Atributo>().ToTable("Atributos", schemaName);
             builder.Entity<Calificacion>().ToTable("Calificaciones", schemaName);
             builder.Entity<Categoria>().ToTable("Categorias", schemaName);
+            builder.Entity<CategoriaSimple>().ToTable("CategoriasSimples", schemaName);
+            builder.Entity<CategoriaCompuesta>().ToTable("CategoriasCompuestas", schemaName);
             builder.Entity<Comentario>().ToTable("Comentarios", schemaName);
             builder.Entity<Compra>().ToTable("Compras", schemaName);
             builder.Entity<Conversacion>().ToTable("Conversaciones", schemaName);
@@ -97,7 +99,7 @@ namespace DataAccessLayer
                     {
                         var createScript = ((IObjectContextAdapter)ctx).ObjectContext.CreateDatabaseScript();
                         ctx.Database.ExecuteSqlCommand(createScript);
-                    }
+                     }
                 }
             }
             catch (Exception)
@@ -197,8 +199,9 @@ namespace DataAccessLayer
                     }
                 }
             }
-            catch (Exception)
+            catch (Exception e)
             {
+                Debug.WriteLine(e.Message);
                 throw;
             }
         }

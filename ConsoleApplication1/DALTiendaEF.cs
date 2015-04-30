@@ -139,8 +139,6 @@ namespace DataAccessLayer
                             ad.FirstOrDefault().TiendaID = url;
                             context.tiendas.Add(tnd);
                             ChebayDBContext.ProvisionTenant(url, db);
-                            var schema = new ChebayDBContext();
-                            schema.SaveChanges();
                             context.SaveChanges();
                             Debug.WriteLine("Tienda " + url + " creada con éxito.");
                         }
@@ -151,31 +149,37 @@ namespace DataAccessLayer
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
+                    //Dropear las tablas creadas.
                 }
             }
         }
 
-        public void ActualizarTienda(string nom, string desc, string url)
+        public void ActualizarTienda(string nomNuevo, string descNueva, string urlVieja)
         //Cambiar nombre o descripción de t.
         {
-            using (var context = new ChebayDBContext())
+            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            var db = new SqlConnection(connection);
+            using (var context = ChebayDBPublic.CreatePublic(db))
             {
                 try
                 {
-                   /* var query = from tienda in context.tiendas
-                                where tienda.TiendaID == t.TiendaID
-                                select tienda;
-                    if (query != null)
+                    var qTienda = from t in context.tiendas
+                                where t.TiendaID == urlVieja
+                                select t;
+                    if (qTienda.Count() > 0)
                     {
-                        Tienda tnd = query.FirstOrDefault();
-                        tnd.descripcion = t.descripcion;
-                        tnd.nombre = tnd.nombre;
+                        Tienda tnd = qTienda.FirstOrDefault();
+                        tnd.descripcion = descNueva;
+                        tnd.nombre = nomNuevo;
                         context.SaveChanges();
-                    }*/
+                        Debug.WriteLine("Tienda " + urlVieja + " actualizada con éxito.");
+                    }
+                    else
+                        throw new Exception("No existe una tienda con URL " + urlVieja);
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
                 }
             }
         }

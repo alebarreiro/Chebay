@@ -26,21 +26,13 @@ namespace DataAccessLayer
                 using (var schema = ChebayDBPublic.CreatePublic())
                 {
                     IDALTienda it = new DALTiendaEF();
-                    it.AgregarAdministrador("idAdmin2", "pass123");
+                   // it.AgregarAdministrador("idAdmin2", "pass123");
                     System.Console.WriteLine("ID      pass");
                     foreach (var a in schema.administradores.ToList())
                     {
                         System.Console.WriteLine(a.AdministradorID + "     " + a.password);
                     }
-                    bool asdf = it.AutenticarAdministrador("idAdmin", "pass123");
-                    System.Console.WriteLine(asdf);
-                    it.AutenticarAdministrador("idAdmin", "pass1234");
-                    System.Console.WriteLine(asdf);
-                    it.AgregarTienda("Amazon", "desc1", "www.amazon.com", "idAdmin");
-
-
-                    System.Console.WriteLine("");
-                    System.Console.WriteLine("url    nombre      desc    admin");
+                    
                     foreach (var a in schema.tiendas.ToList())
                     {
                         System.Console.Write(a.TiendaID +

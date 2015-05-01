@@ -11,14 +11,14 @@ namespace Chebay.Backoffice.Controllers
 
         public ActionResult Inicio()
         {
-            ViewBag.LoggedIn = true;
+            Session["loggeado"] = true;
             return View();
         }
 
         public ActionResult Index()
         {
             ViewBag.Message = "Bienvenido a Che-Buy.";
-            ViewBag.LoggedIn = false;
+            Session["loggeado"] = false;
             return View();
         }
 

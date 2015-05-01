@@ -19,7 +19,7 @@ namespace DataAccessLayer
 
                 //Ejemplo para crear schema
                 //ChebayDBContext.ProvisionTenant("Tienda1");
-                ChebayDBContext.ProvisionTenant("Tienda2");
+                //ChebayDBContext.ProvisionTenant("Tienda2");
                 //ChebayDBPublic.ProvidePublicSchema();
 
             /*

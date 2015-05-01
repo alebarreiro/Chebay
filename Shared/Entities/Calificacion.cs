@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Entities
 {
@@ -14,12 +15,12 @@ namespace Shared.Entities
         public long ID { get; set; }
         public int puntaje { get; set; }
 
-        [ForeignKey("usuario_e")]
         public string UsuarioEvalua { get; set; }
-        [ForeignKey("usuario_c")]
         public string UsuarioCalificado { get; set; }
 
+        [ForeignKey("UsuarioEvalua")]
         public virtual Usuario usuario_e { get; set; }
+        [ForeignKey("UsuarioCalificado")]
         public virtual Usuario usuario_c { get; set; }
     }
 }

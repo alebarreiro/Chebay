@@ -52,13 +52,11 @@
     <Compile Include="Entities\Comentario.cs" />
     <Compile Include="Entities\Compra.cs" />
     <Compile Include="Entities\Conversacion.cs" />
-    <Compile Include="Entities\Favorito.cs" />
     <Compile Include="Entities\Mensaje.cs" />
     <Compile Include="Entities\Oferta.cs" />
     <Compile Include="Entities\Producto.cs" />
     <Compile Include="Entities\Tienda.cs" />
     <Compile Include="Entities\Usuario.cs" />
-    <Compile Include="Entities\Visita.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

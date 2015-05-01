@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Entities
 {
@@ -12,10 +13,10 @@ namespace Shared.Entities
     {
         //url
         public string TiendaID { get; set; }
+        [Required]
         public string nombre { get; set; }
         public string descripcion { get; set; }
 
-        //public virtual ICollection<Usuario> usuarios { get; set; }
         public virtual ICollection<Administrador> administradores { get; set; }
     }
 }

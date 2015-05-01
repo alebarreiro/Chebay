@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Entities
 {
@@ -13,22 +14,28 @@ namespace Shared.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ProductoID { get; set; }
         public string UsuarioID { get; set; }
+        [Required]
         public string nombre { get; set; }
         public string descripcion { get; set; }
+        [Required]
         public int precio_base_subasta {get; set;}
+        [Required]
         public int precio_compra { get; set; }
+        [Required]
         public DateTime fecha_cierre { get; set; }
 
         public long CategoriaID { get; set; }
 
+        [ForeignKey("UsuarioID")]
         public virtual Usuario usuario { get; set; }
-        public virtual ICollection<Visita> visitas { get; set; }
-        public virtual ICollection<Favorito> favoritos { get; set; }
+        public virtual ICollection<Usuario> visitas { get; set; }
+        public virtual ICollection<Usuario> favoritos { get; set; }
         public virtual ICollection<Oferta> ofertas { get; set; }
         public virtual ICollection<Compra> compras { get; set; } //tiene una única compra.
         public virtual ICollection<Comentario> comentarios { get; set; } //nuevo
 
         //se deducen los atributos
+        [ForeignKey("CategoriaID")]
         public virtual CategoriaSimple categoria { get; set; }
     }
 }

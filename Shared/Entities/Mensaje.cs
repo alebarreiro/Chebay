@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Entities
 {
@@ -17,22 +18,24 @@ namespace Shared.Entities
     public class Mensaje
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long ID { get; set; }
+        public long MensajeID { get; set; }
+        [Required]
         public string contenido { get; set; }
+        [Required]
         public DateTime fecha { get; set; }
+        [Required]
         public MsgType tipo { get; set; }
 
-        [ForeignKey("emisor")]
         public string usuarioEmisor { get; set; }
-        [ForeignKey("receptor")]
         public string usuarioReceptor { get; set; }
-        //[ForeignKey("conversacion")]
         public long ConversacionID { get; set; }
 
-
+        [ForeignKey("usuarioEmisor"), Required]
         public virtual Usuario emisor { get; set; }
         //null if broadcast
+        [ForeignKey("usuarioReceptor")]
         public virtual Usuario receptor { get; set; }
+        [ForeignKey("ConversacionID")]
         public virtual Conversacion conversacion { get; set; }
     }
 }

@@ -90,7 +90,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void AgregarVisita(string idUsuario, Visita visita)
+        public void AgregarVisita(string idUsuario, string idProducto)
         {
 
         }

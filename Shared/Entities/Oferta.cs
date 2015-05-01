@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Entities
 {
@@ -11,15 +12,17 @@ namespace Shared.Entities
     public class Oferta
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long ID { get; set; }
+        public long OfertaID { get; set; }
+        [Required]
         public bool esFinal { get; set; }
+        [Required]
         public int monto { get; set; }
-        //[ForeignKey("producto")]
         public long ProductoID { get; set; }
-        //[ForeignKey("usuario")]
         public string UsuarioID { get; set; }
 
+        [ForeignKey("ProductoID")]
         public virtual Producto producto { get; set; }
+        [ForeignKey("UsuarioID"), Required]
         public virtual Usuario usuario { get; set; }
     }
 }

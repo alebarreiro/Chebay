@@ -27,6 +27,12 @@ namespace Frontoffice.Controllers
                 p2.descripcion = "descripcion del producto";
                 prods.Add(p1);
                 prods.Add(p2);
+                prods.Add(p1);
+                prods.Add(p2);
+                prods.Add(p1);
+                prods.Add(p2);
+                prods.Add(p1);
+                prods.Add(p2);
             }
             ViewBag.productos = prods;
             return View();

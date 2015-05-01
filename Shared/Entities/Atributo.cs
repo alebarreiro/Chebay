@@ -11,7 +11,8 @@ namespace Shared.Entities
     public class Atributo
     {
         //etiqueta
-        public string AtributoID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long AtributoID { get; set; }
         public string CategoriaID { get; set; }
         public string valor { get; set; }
 

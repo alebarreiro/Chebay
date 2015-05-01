@@ -16,6 +16,7 @@ namespace Shared.Entities
     [Table("Mensajes")]
     public class Mensaje
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         public string contenido { get; set; }
         public DateTime fecha { get; set; }

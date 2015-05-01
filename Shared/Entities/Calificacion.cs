@@ -10,6 +10,7 @@ namespace Shared.Entities
     [Table("Calificaciones")]
     public class Calificacion
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         public int puntaje { get; set; }
 

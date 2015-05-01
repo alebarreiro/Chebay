@@ -10,6 +10,7 @@ namespace Shared.Entities
     [Table("Productos")]
     public class Producto
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ProductoID { get; set; }
         public string UsuarioID { get; set; }
         public string nombre { get; set; }
@@ -18,8 +19,7 @@ namespace Shared.Entities
         public int precio_compra { get; set; }
         public DateTime fecha_cierre { get; set; }
 
-        //[ForeignKey("categoria")]
-        public string CategoriaID { get; set; }
+        public long CategoriaID { get; set; }
 
         public virtual Usuario usuario { get; set; }
         public virtual ICollection<Visita> visitas { get; set; }

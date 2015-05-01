@@ -31,19 +31,6 @@ namespace DataAccessLayer
             base.Database.Connection.ConnectionString = con;
         }
 
-        public static ChebayDBContext CreatePublic(string schema)
-        {
-            var builder = new DbModelBuilder();
-            builder.Entity<Administrador>().ToTable("Administradores", schema);
-            builder.Entity<Tienda>().ToTable("Tiendas", schema);
-
-            var model = builder.Build(connection);
-            DbCompiledModel compModel = model.Compile();
-            var compiledModel = modelCache.GetOrAdd(schema, compModel);
-            return new ChebayDBContext(compiledModel);
-        }
-
-
         public DbSet<Tienda> tiendas { get; set; }
         public DbSet<Producto> productos { get; set; }
         public DbSet<Categoria> categorias { get; set; }
@@ -132,14 +119,14 @@ namespace DataAccessLayer
                 usuarios.Add(u);
             }
 
-            Categoria[] cats = { new CategoriaSimple { CategoriaID = "Bestias" } };
+            Categoria[] cats = { new CategoriaSimple { Nombre = "Bestias" } };
             foreach (var c in cats)
             {
                 categorias.Add(c);
             }
 
-            Producto[] products = { new Producto{ProductoID=1, UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", CategoriaID="Bestias", fecha_cierre= DateTime.Now},
-                                    new Producto{ProductoID=2, UsuarioID="Newton", nombre="Samsung S5", descripcion="bestia", CategoriaID="Bestias", fecha_cierre= DateTime.Now }
+            Producto[] products = { new Producto{UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now},
+                                    new Producto{UsuarioID="Newton", nombre="Samsung S5", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now }
                                   };
 
             foreach (var p in products)
@@ -161,7 +148,6 @@ namespace DataAccessLayer
         public ChebayDBPublic()
         {
             Database.SetInitializer<ChebayDBPublic>(null);
-            //string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
             base.Database.Connection.ConnectionString = con;
         }
 

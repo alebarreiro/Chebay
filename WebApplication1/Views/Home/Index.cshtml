@@ -1,0 +1,21 @@
+﻿@using Shared.Entities
+@using Shared.DataTypes
+
+@{
+    ViewBag.Title = "Home Page";
+    var productos = ViewBag.productos;
+}
+
+
+<div class="row">
+    @foreach (var dp in productos)
+    {
+        <div class="product-item">
+            <div class="product-item-header">@dp.nombre</div>
+            <p>
+                @dp.descripcion
+            </p>
+            <p>NO TE LO PIERDAS!</p>
+        </div>
+    }
+</div>

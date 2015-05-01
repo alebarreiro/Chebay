@@ -12,6 +12,28 @@
     {
         <div class="product-item">
             <div class="product-item-header">@dp.nombre</div>
+            <div id="myCarousel" class="carousel slide">
+                <ol class="carousel-indicators">
+                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
+                    <li data-target="#myCarousel" data-slide-to="1"></li>
+                    <li data-target="#myCarousel" data-slide-to="2"></li>
+                </ol>
+                <!-- SE ARMA EL VISOR -->
+                <div class="carousel-inner" style="height: 195px">
+                   @{
+                        var primeraImagen = "/Content/Images/wat.png";
+                        var segundaImagen = "/Content/Images/wat2.jpg";
+                        var terceraImagen = primeraImagen;
+                    }
+
+                        <div class="active item" style="max-height: 380px"><img src="@primeraImagen" alt="Slide 1" height="380"></div>
+                        <div class="item" style="max-height: 380px"><img src="@segundaImagen" alt="Slide 2" height="380"></div>
+                        <div class="item" style="max-height: 380px"><img src="@terceraImagen" alt="Slide 3" height="380"></div>
+                </div>
+                <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
+                <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
+                <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
+            </div>
             <p>
                 @dp.descripcion
             </p>
@@ -19,3 +41,9 @@
         </div>
     }
 </div>
+
+<script>
+    $('.carousel').carousel({
+       'interval': 2000
+    });
+</script>

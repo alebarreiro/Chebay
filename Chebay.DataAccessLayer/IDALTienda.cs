@@ -45,7 +45,7 @@ namespace DataAccessLayer
         void AgregarCategoriaCompuesta(string idCategoria, string idPadre, string urlTienda);
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
 
-        void AgregarCategoriaSimple(string idCategoria, string idPadre);
+        void AgregarCategoriaSimple(string idCategoria, long idPadre);
         //idPadre no puede ser null.
 
     //CU: Alta Subasta
@@ -53,7 +53,7 @@ namespace DataAccessLayer
         //Lista las Categorias de idTienda.
 
     //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
-        void AgregarAtributo(string idCategoria, string idAtributo, string valor);
+        void AgregarAtributo(string urltienda, string idCategoria, string idAtributo, string valor);
 
         void EliminarAdministrador(string idAdministrador);
         Administrador ObtenerAdministrador(string idAdministrador);

@@ -10,6 +10,7 @@ namespace Shared.Entities
     [Table("Favoritos")]
     public class Favorito
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long FavoritoID { get; set; }
         public string UsuarioID { get; set; }
         public string ProductoID { get; set; }

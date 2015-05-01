@@ -10,6 +10,7 @@ namespace Shared.Entities
     [Table("Comentarios")]
     public class Comentario
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ComentarioID { get; set; }
         public string texto { get; set; }
         public DateTime fecha { get; set; }

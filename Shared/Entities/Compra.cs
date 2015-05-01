@@ -10,6 +10,7 @@ namespace Shared.Entities
     [Table("Compras")]
     public class Compra
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         public int monto { get; set; }
 

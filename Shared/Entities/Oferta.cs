@@ -10,6 +10,7 @@ namespace Shared.Entities
     [Table("Ofertas")]
     public class Oferta
     {
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ID { get; set; }
         public bool esFinal { get; set; }
         public int monto { get; set; }

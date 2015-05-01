@@ -11,7 +11,9 @@ namespace Shared.Entities
     public abstract class Categoria
     {
         //id
-        public string CategoriaID { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public long CategoriaID { get; set; }
+        public string Nombre { get; set; }
    
         public ICollection<Atributo> atributos { get; set; }
 

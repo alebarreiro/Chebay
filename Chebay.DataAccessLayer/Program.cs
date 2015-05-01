@@ -18,8 +18,8 @@ namespace DataAccessLayer
                 //Creo schemas
 
                 //Ejemplo para crear schema
-                //ChebayDBContext.ProvisionTenant("Tienda1");
-                //ChebayDBContext.ProvisionTenant("Tienda2");
+                ChebayDBContext.ProvisionTenant("Tienda1");
+                ChebayDBContext.ProvisionTenant("Tienda2");
                 //ChebayDBPublic.ProvidePublicSchema();
 
             /*
@@ -52,15 +52,13 @@ namespace DataAccessLayer
                         }
                     }
                 }
-
+            */
                 //Ejemplo uso de un schema en particular
                 using (var schema = ChebayDBContext.CreateTenant("Tienda1"))
                 {
-
-
-            
+                    schema.seed();
                 }
-            */
+            
             
         }
     }

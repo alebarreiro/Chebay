@@ -13,8 +13,6 @@ namespace DataAccessLayer
     {
         public void AgregarAdministrador(string idAdmin, string pass)
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -46,8 +44,6 @@ namespace DataAccessLayer
         public bool AutenticarAdministrador(string idAdministrador, string passwd)
         //Devuelve true si es el password correcto para el usuario.
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -83,7 +79,7 @@ namespace DataAccessLayer
         public void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva)
         //Devuelve true si passwdVieja es la password del idAdministrador y pudo cambiarla por passwdNueva.
         {
-            using (var context = new ChebayDBContext())
+            using (var context =  ChebayDBPublic.CreatePublic())
             {
                 try
                 {
@@ -154,8 +150,6 @@ namespace DataAccessLayer
         public void ActualizarTienda(string nomNuevo, string descNueva, string urlVieja)
         //Cambiar nombre o descripción de t.
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -184,7 +178,7 @@ namespace DataAccessLayer
         public void CambiarURLTienda(string idTienda, string nuevaURL)
         //Cambia la URL de idTienda por nuevaURL.
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
                 {
@@ -211,7 +205,7 @@ namespace DataAccessLayer
 
         public List<Tienda> ObtenerTodasTiendas()
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
                 {
@@ -227,7 +221,7 @@ namespace DataAccessLayer
 
         public Tienda ObtenerTiendasAdministrador(string idAdministrador)
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
                 {
@@ -244,7 +238,7 @@ namespace DataAccessLayer
         public void AgregarAdminTienda(string idAdministrador, string idTienda)
         //Agrega a idAdministrador a idTienda.
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
                 {
@@ -258,33 +252,22 @@ namespace DataAccessLayer
         }
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        public void AgregarCategoriaCompuesta(string idCategoria, string idPadre, string urlTienda)
+        public void AgregarCategoriaCompuesta(string nombre, string idPadre, string urlTienda)
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
-        {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
-            
+        {            
             using (var context = ChebayDBContext.CreateTenant(urlTienda))
             {
                 try
                 {
-                    var existeCat = from c in context.categorias
-                                    where c.CategoriaID == idCategoria
-                                    select c;
-                    if (existeCat.Count() > 0)
-                        throw new Exception("Ya existe la categoria " + idCategoria);
-                    else
-                    {
-                        CategoriaCompuesta ret = new CategoriaCompuesta();
-                            ret.CategoriaID = idCategoria;
-                            ret.hijas = new List<Categoria>();
-                            ret.atributos = new List<Atributo>();
-                            context.categorias.Add(ret);
-                            context.SaveChanges();
-                            Debug.WriteLine("Categoría " + idCategoria + " creada con éxito.");
-                        }
-                    }
-               // }
+                    CategoriaCompuesta ret = new CategoriaCompuesta();
+                    ret.Nombre = nombre;
+                    ret.hijas = new List<Categoria>();
+                    ret.atributos = new List<Atributo>();
+                    context.categorias.Add(ret);
+                    context.SaveChanges();
+                    Debug.WriteLine("Categoría " + nombre + " creada con éxito.");
+                        
+                }
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
@@ -293,7 +276,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void AgregarCategoriaSimple(string idCategoria, string idPadre)
+        public void AgregarCategoriaSimple(string nombre, long idPadre)
         //idPadre no puede ser null.
         //Devuelve FALSE si ya existe una Categoria con el mismo nombre o no existe el padre.
         {
@@ -301,31 +284,26 @@ namespace DataAccessLayer
             {
                 try
                 {
-                    var existeCat = from c in context.categorias
-                                    where c.CategoriaID == idCategoria
-                                    select c;
-                    if (existeCat != null)
+
+                    var existePadre = from p in context.categorias
+                                        where p.CategoriaID == idPadre
+                                        select p;
+                    if (existePadre == null)
                         throw new Exception("");
                     else
                     {
-                        var existePadre = from p in context.categorias
-                                          where p.CategoriaID == idPadre
-                                          select p;
-                        if (existePadre == null)
-                            throw new Exception("");
-                        else
-                        {
-                            CategoriaCompuesta padre = (CategoriaCompuesta)existePadre.FirstOrDefault();
-                            CategoriaSimple ret = new CategoriaSimple();
-                            ret.CategoriaID = idCategoria;
-                            ret.padre = padre;
-                            ret.productos = new List<Producto>();
-                            ret.atributos = new List<Atributo>();
-                            padre.hijas.Add(ret);
-                            context.categorias.Add(ret);
-                            context.SaveChanges();
-                        }
+                        CategoriaCompuesta padre = (CategoriaCompuesta)existePadre.FirstOrDefault();
+                        CategoriaSimple ret = new CategoriaSimple();
+                        //ret.CategoriaID = idCategoria;
+                        ret.Nombre = nombre;
+                        ret.padre = padre;
+                        ret.productos = new List<Producto>();
+                        ret.atributos = new List<Atributo>();
+                        padre.hijas.Add(ret);
+                        context.categorias.Add(ret);
+                        context.SaveChanges();
                     }
+                    
                 }
                 catch (Exception e)
                 {
@@ -338,7 +316,7 @@ namespace DataAccessLayer
         public List<Categoria> ListarCategorias(string idTienda)
         //Lista las Categorias de idTienda.
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
             {
                 try
                 {
@@ -350,10 +328,15 @@ namespace DataAccessLayer
                     else //Si existe la Tienda idTienda.
                     {
                         Tienda t = query.FirstOrDefault();
-                        List<Categoria> ret = new List<Categoria>();
+                        //List<Categoria> ret = new List<Categoria>();
+
                         //Recorrer todas las categorias desde la Raiz y agregarlas a ret.
                         //En Tienda tiene que haber una referencia a la raiz.
-                        return ret;
+                        //return ret;
+
+                        //mas facil..
+                        return context.categorias.ToList();
+
                     }
                 }
                 catch (Exception e)
@@ -365,9 +348,9 @@ namespace DataAccessLayer
         }
 
     //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
-        public void AgregarAtributo(string idCategoria, string idAtributo, string valor)
+        public void AgregarAtributo(string urltienda, string idCategoria, string idAtributo, string valor)
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBContext.CreateTenant(urltienda))
             {
                 try
                 {
@@ -387,8 +370,6 @@ namespace DataAccessLayer
 
         public void EliminarAdministrador(string idAdministrador)
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -414,8 +395,6 @@ namespace DataAccessLayer
 
         public Administrador ObtenerAdministrador(string idAdministrador)
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -440,8 +419,6 @@ namespace DataAccessLayer
 
         public void EliminarTienda(string idTienda)
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -468,8 +445,6 @@ namespace DataAccessLayer
 
         public Tienda ObtenerTienda(string idTienda)
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try

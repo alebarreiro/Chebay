@@ -138,21 +138,44 @@ namespace DataAccessLayer
         
         public void seed()
         {
-            Usuario[] users = { new Usuario{UsuarioID="Dexter" },
-                                new Usuario{UsuarioID="Newton" }
+            Usuario[] users = { new Usuario{ UsuarioID="Dexter" },
+                                new Usuario{ UsuarioID="Newton" },
+                                new Usuario{ UsuarioID="Cantor" },
+                                new Usuario{ UsuarioID="Arquimedes" },
+                                new Usuario{ UsuarioID="Gauss"},
+                                new Usuario{ UsuarioID="Euler"}
                               };
             foreach (var u in users)
             {
                 usuarios.Add(u);
             }
+            SaveChanges();
 
-            Categoria[] cats = { new CategoriaSimple { Nombre = "Bestias" } };
+            Categoria[] cats = {new CategoriaCompuesta {Nombre = "Raiz", padre=null},
+                                new CategoriaSimple { Nombre = "Samsung" },
+                                new CategoriaSimple { Nombre = "Apple"},
+                                new CategoriaSimple { Nombre = "LG"},
+                                new CategoriaSimple { Nombre = "Sony"}
+                               };
             foreach (var c in cats)
             {
                 categorias.Add(c);
             }
+            SaveChanges();
 
-            Producto[] products = { new Producto{UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now},
+            //Samsung sample
+            Atributo[] atrs = { new Atributo{ CategoriaID = 2, etiqueta="Modelo", valor="X82" },
+                                new Atributo{ CategoriaID = 2, etiqueta="Screen Size", valor="5"},
+                                new Atributo{ CategoriaID = 2, etiqueta= "Camera resolution", valor="13"}
+                              };
+
+            foreach (var a in atrs)
+            {
+                atributos.Add(a);
+            }
+            SaveChanges();
+
+            Producto[] products = { new Producto{UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now },
                                     new Producto{UsuarioID="Newton", nombre="Samsung S5", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now }
                                   };
 
@@ -163,6 +186,28 @@ namespace DataAccessLayer
 
             SaveChanges();
 
+            System.Console.WriteLine("Lista de Usuarios:");
+            foreach (var u in usuarios)
+            {
+                System.Console.WriteLine(u.UsuarioID);
+            }
+
+            System.Console.WriteLine("Lista de Productos");
+            foreach (var p in productos)
+            {
+                System.Console.WriteLine(p.ProductoID + " " + p.CategoriaID + " " + p.nombre + "" + p.descripcion + " " + p.UsuarioID );
+            }
+
+            System.Console.WriteLine("Lista de Categorias");
+            foreach(var c in categorias){
+                System.Console.WriteLine(c.CategoriaID + " " + c.Nombre);
+            }
+
+            System.Console.WriteLine("Lista de Atributos");
+            foreach (var a in atributos)
+            {
+                System.Console.WriteLine(a.AtributoID + " " + a.CategoriaID+ " " + a.etiqueta + " " + a.valor);
+            }
         }
     }
 

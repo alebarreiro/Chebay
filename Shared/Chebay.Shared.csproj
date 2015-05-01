@@ -42,6 +42,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypes\DataProducto.cs" />
     <Compile Include="Entities\Administrador.cs" />
     <Compile Include="Entities\Atributo.cs" />
     <Compile Include="Entities\Calificacion.cs" />
@@ -65,7 +66,6 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="DataTypes\" />
     <Folder Include="enum\" />
     <Folder Include="Exceptions\" />
   </ItemGroup>

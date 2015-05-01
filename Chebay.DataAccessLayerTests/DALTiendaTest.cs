@@ -14,10 +14,9 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void Test0Inicial()
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            using (var db = new SqlConnection(connection))
+            ChebayDBPublic cdbp = new ChebayDBPublic();
+            using (var schema = ChebayDBPublic.CreatePublic())
             {
-                var schema = ChebayDBPublic.CreatePublic(db);
                 IDALTienda it = new DALTiendaEF();
                 Debug.WriteLine("INICIO");
                 Debug.WriteLine("0.1. Elimino TestAdmin.");
@@ -169,42 +168,53 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarCategoria()
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            using (var db = new SqlConnection(connection))
+            IDALTienda it = new DALTiendaEF();
+            List<Categoria> lc = new List<Categoria>();
+            for (int i = 1; i < 10; i++ )
             {
-                IDALTienda it = new DALTiendaEF();
-                List<Categoria> lc = new List<Categoria>();
-                for (int i = 1; i < 10; i++ )
-                {
-                    CategoriaCompuesta cc = new CategoriaCompuesta();
-                    cc.CategoriaID = "CategoriaCompuesta" + i.ToString();
-                    cc.PadreID = "/";
-                    cc.hijas = new List<Categoria>();
-                    lc.Add(cc);
-                }
-                it.AgregarCategorias(lc, "TestURL");
+                CategoriaCompuesta cc = new CategoriaCompuesta();
+                cc.Nombre = "CatPrueba" + i.ToString();
+                cc.PadreID = 1;
+                cc.hijas = new List<Categoria>();
+                lc.Add(cc);
+            }
+            for (int i = 1; i < 10; i++)
+            {
+                CategoriaSimple cc = new CategoriaSimple();
+                cc.Nombre = "CatPruebaSimple" + i.ToString();
+                cc.PadreID = 5;
+                cc.productos = new List<Producto>();
+                lc.Add(cc);
+            }
+            for (int i = 1; i < 10; i++)
+            {
+                CategoriaSimple cc = new CategoriaSimple();
+                cc.Nombre = "CatPruebaSimple" + i.ToString();
+                cc.PadreID = 7;
+                cc.productos = new List<Producto>();
+                lc.Add(cc);
+            }
+            it.AgregarCategorias(lc, "TestURL");
 
-                CategoriaCompuesta c = (CategoriaCompuesta)it.ObtenerCategoria("TestURL", "CategoriaCompuesta3");
-                Assert.AreEqual(c.CategoriaID,"CategoriaCompuesta3");
-                Assert.AreEqual(c.PadreID,"/");
+            for (int i = 1; i<10; i++)
+            {
+                CategoriaCompuesta c = (CategoriaCompuesta)it.ObtenerCategoria("TestURL", i+1);
+                Assert.AreEqual(c.CategoriaID, i+1);
+                Assert.AreEqual(c.Nombre, "CatPrueba"+i);
+                Assert.AreEqual(c.PadreID, 1);
             }
         }
-        /*
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void AgregarCategoria_Existente()
-        {
-            Debug.WriteLine("5.2. Agregar Categoria Raiz de vuelta.");
-            IDALTienda it = new DALTiendaEF();
-            it.AgregarCategoriaCompuesta("CatPrueba", "/", "www.TestURL.com");
-        }
-
+        
         [TestMethod]
         [ExpectedException(typeof(Exception))]
         public void AgregarCategoria_ConPadreNULL()
         {
             IDALTienda it = new DALTiendaEF();
-            it.AgregarCategoriaCompuesta("CatPrueba", null, "www.TestURL.com");
+            CategoriaCompuesta cc = new CategoriaCompuesta();
+            cc.Nombre = "CatPrueba";
+            List<Categoria> lc = new List<Categoria>();
+            lc.Add(cc);
+            it.AgregarCategorias(lc, "TestURL");
         }
 
         [TestMethod]
@@ -212,7 +222,11 @@ namespace Chebay.DataAccessLayerTests
         public void AgregarCategoria_TiendaInexistente()
         {
             IDALTienda it = new DALTiendaEF();
-            it.AgregarCategoriaCompuesta("CatPrueba", "/", "www.TestURL.com123123123");
+            CategoriaCompuesta cc = new CategoriaCompuesta();
+            cc.Nombre = "CatPrueba";
+            cc.PadreID = 1;
+            List<Categoria> lc = new List<Categoria>();
+            it.AgregarCategorias(lc, "TestURLxxxxx");
         }
 
         [TestMethod]
@@ -220,7 +234,21 @@ namespace Chebay.DataAccessLayerTests
         public void AgregarCategoria_ConPadreInexistente()
         {
             IDALTienda it = new DALTiendaEF();
-            it.AgregarCategoriaCompuesta("CatPrueba", "SinPadre", "www.TestURL.com");
-        }*/
+            CategoriaCompuesta cc = new CategoriaCompuesta();
+            cc.Nombre = "CatPrueba";
+            cc.PadreID = 12342341234;
+            List<Categoria> lc = new List<Categoria>();
+            it.AgregarCategorias(lc, "TestURL");
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(Exception))]
+        public void ListarCategorias()
+        {
+            IDALTienda it = new DALTiendaEF();
+            List<Categoria> lc = it.ListarCategorias("TestURL");
+            Assert.AreEqual(28, lc.Count);
+        }
+
     }
 }

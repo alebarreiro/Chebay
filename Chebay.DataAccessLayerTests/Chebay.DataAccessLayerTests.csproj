@@ -69,6 +69,10 @@
       <Project>{e087801e-b9b8-4ce0-813d-5527a19396a0}</Project>
       <Name>Chebay.DataAccessLayer</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Shared\Chebay.Shared.csproj">
+      <Project>{d2b04c74-9025-4cc2-a71c-dbe12277db0e}</Project>
+      <Name>Chebay.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

@@ -19,9 +19,10 @@ using System.Data.SqlClient;
 namespace DataAccessLayer
 {
 
-    class ChebayDBContext : DbContext
+    public class ChebayDBContext : DbContext
     {
-        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBContext()//(string connection): base(connection)
@@ -142,7 +143,8 @@ namespace DataAccessLayer
 
     public class ChebayDBPublic : DbContext
     {
-        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBPublic()
@@ -177,7 +179,6 @@ namespace DataAccessLayer
             var builder = new DbModelBuilder();
             builder.Entity<Administrador>().ToTable("Administradores", schema);
             builder.Entity<Tienda>().ToTable("Tiendas", schema);
-
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schema, compModel);

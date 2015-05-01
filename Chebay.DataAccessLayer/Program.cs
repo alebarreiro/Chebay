@@ -18,11 +18,11 @@ namespace DataAccessLayer
                 //Creo schemas
 
                 //Ejemplo para crear schema
-                ChebayDBContext.ProvisionTenant("Tienda1");
-                ChebayDBContext.ProvisionTenant("Tienda2");
+          //      ChebayDBContext.ProvisionTenant("Tienda1");
+          //      ChebayDBContext.ProvisionTenant("Tienda2");
                 //ChebayDBPublic.ProvidePublicSchema();
 
-            /*
+            
                 using (var schema = ChebayDBPublic.CreatePublic())
                 {
                     IDALTienda it = new DALTiendaEF();
@@ -43,13 +43,14 @@ namespace DataAccessLayer
                             System.Console.WriteLine("    " + adm.AdministradorID);
                         }
                     }
+                    System.Console.ReadLine();
                 }
-            */
+            
                 //Ejemplo uso de un schema en particular
-                using (var schema = ChebayDBContext.CreateTenant("Tienda1"))
-                {
-                    schema.seed();
-                }
+             //   using (var schema = ChebayDBContext.CreateTenant("Tienda1"))
+              //  {
+              //      schema.seed();
+              //  }
             
             
         }

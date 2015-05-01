@@ -14,6 +14,7 @@ namespace Shared.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long CategoriaID { get; set; }
         public string Nombre { get; set; }
+        public long PadreID { get; set; }
    
         public ICollection<Atributo> atributos { get; set; }
 

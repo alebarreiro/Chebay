@@ -13,7 +13,8 @@ namespace Shared.Entities
         //etiqueta
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long AtributoID { get; set; }
-        public string CategoriaID { get; set; }
+        public long CategoriaID { get; set; }
+        public string etiqueta { get; set; }
         public string valor { get; set; }
 
         public virtual Categoria categorias { get; set; }

@@ -344,14 +344,14 @@ namespace DataAccessLayer
                     var query = from t in context.tiendas
                                 where t.TiendaID == idTienda
                                 select t;
-                    if (query == null)
-                        return null;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe la tienda " + idTienda);
                     else //Si existe la Tienda idTienda.
                     {
                         var schema = ChebayDBContext.CreateTenant(idTienda);
                         Tienda t = query.FirstOrDefault();
                         List<Categoria> ret = new List<Categoria>();
-                        
+
                         var qCat = from c in schema.categorias
                                    orderby c.CategoriaID
                                    select c;
@@ -376,15 +376,43 @@ namespace DataAccessLayer
         public void AgregarAtributos(List<Atributo> lAtributos, string urlTienda)
         //FALTA IMPLEMENTAR.
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
                 {
-
+                    if (lAtributos == null)
+                        throw new Exception("Debe pasar una Lista de Atributos.");
+                    var query = from t in context.tiendas
+                                where t.TiendaID == urlTienda
+                                select t;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe la tienda " + urlTienda);
+                    else //Si existe la Tienda idTienda.
+                    {
+                        var schema = ChebayDBContext.CreateTenant(urlTienda);
+                        foreach (Atributo a in lAtributos)
+                        try
+                        {
+                            var existeCat = from c in schema.categorias
+                                            where c.CategoriaID == a.CategoriaID
+                                            select c;
+                            if (existeCat.Count() == 0)
+                                throw new Exception("No existe la categoria " + a.CategoriaID);
+                            schema.atributos.Add(a);
+                            existeCat.FirstOrDefault().atributos.Add(a);
+                            schema.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                            throw;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
+                    throw;
                 }
             }
         }

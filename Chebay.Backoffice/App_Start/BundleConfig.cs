@@ -10,7 +10,10 @@ namespace Chebay.Backoffice
         {
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
 
-            bundles.Add(new ScriptBundle("~/bundles/scripts").Include("~/Scripts/Login.js", "~/Scripts/CrearTienda.js"));
+            bundles.Add(new ScriptBundle("~/bundles/scripts").Include("~/Scripts/Login.js", "~/Scripts/CrearTienda.js",
+                "~/Scripts/bootstrap-notify.min.js",
+                "~/Scripts/bootstrap-notify.js",
+                "~/Scripts/jquery.treeview.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-2.1.3.js"));
@@ -31,8 +34,8 @@ namespace Chebay.Backoffice
                         "~/Content/bootstrap-theme.css",
                         "~/Content/bootstrap.css",
                         "~/Content/Estilos.css",
-                        "~/Content/bootstrap.min.css"
-                
+                        "~/Content/bootstrap.min.css",
+                        "~/Content/animate.css"
                 ));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/css").Include(

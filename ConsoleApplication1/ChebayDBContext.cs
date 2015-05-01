@@ -13,12 +13,17 @@ using System.Data.Entity.ModelConfiguration;
 using System.Configuration;
 using Shared;
 using System.Diagnostics;
+using System.Data.SqlClient;
+
 
 namespace DataAccessLayer
 {
 
     class ChebayDBContext : DbContext
     {
+        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        static DbConnection connection = new SqlConnection(con);
+
         public ChebayDBContext()//(string connection): base(connection)
         {
             Database.SetInitializer<ChebayDBContext>(null);
@@ -26,7 +31,7 @@ namespace DataAccessLayer
             base.Database.Connection.ConnectionString = con;
         }
 
-        public static ChebayDBContext CreatePublic(DbConnection connection, string schema)
+        public static ChebayDBContext CreatePublic(string schema)
         {
             var builder = new DbModelBuilder();
             builder.Entity<Administrador>().ToTable("Administradores", schema);
@@ -35,7 +40,7 @@ namespace DataAccessLayer
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schema, compModel);
-            return new ChebayDBContext(connection.ConnectionString, compiledModel);
+            return new ChebayDBContext(compiledModel);
         }
 
 
@@ -53,13 +58,11 @@ namespace DataAccessLayer
         public DbSet<Visita> visitas { get; set; }
         public DbSet<Favorito> favoritos { get; set; }
         
-        private ChebayDBContext(string connection, DbCompiledModel model)
-            : base(connection, model)
+        private ChebayDBContext(DbCompiledModel model)
+            : base(con, model)
         {
             Database.SetInitializer<ChebayDBContext>(null);
         }
-
-        //: base(connection, model, contextOwnsConnection: false) { }
 
         private static ConcurrentDictionary<string, DbCompiledModel> modelCache = new ConcurrentDictionary<string, DbCompiledModel>();
 
@@ -69,14 +72,15 @@ namespace DataAccessLayer
 
         }
 
-        public static ChebayDBContext CreateTenant(string schemaName, DbConnection connection)
+        public static ChebayDBContext CreateTenant(string schemaName)
         {
             var builder = new DbModelBuilder();
             builder.Entity<Atributo>().ToTable("Atributos", schemaName);
             builder.Entity<Calificacion>().ToTable("Calificaciones", schemaName);
-            builder.Entity<Categoria>().ToTable("Categorias", schemaName);
-            builder.Entity<CategoriaSimple>().ToTable("CategoriasSimples", schemaName);
-            builder.Entity<CategoriaCompuesta>().ToTable("CategoriasCompuestas", schemaName);
+            builder.Entity<Categoria>()
+                .Map<CategoriaCompuesta>(m => m.Requires("TipoCategoria").HasValue(0))
+                .Map<CategoriaSimple>(m => m.Requires("TipoCategoria").HasValue(1))
+                .ToTable("Categorias", schemaName);  
             builder.Entity<Comentario>().ToTable("Comentarios", schemaName);
             builder.Entity<Compra>().ToTable("Compras", schemaName);
             builder.Entity<Conversacion>().ToTable("Conversaciones", schemaName);
@@ -90,16 +94,16 @@ namespace DataAccessLayer
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schemaName, compModel);
-            ChebayDBContext ret = new ChebayDBContext(connection.ConnectionString, compiledModel);
+            ChebayDBContext ret = new ChebayDBContext(compiledModel);
             return ret;
         }
 
-        public static void ProvisionTenant(string tenantSchema, DbConnection connection)
+        public static void ProvisionTenant(string tenantSchema)
         {
             try
             {
 
-                using (var ctx = CreateTenant(tenantSchema, connection))
+                using (var ctx = CreateTenant(tenantSchema))
                 {
                     if (!ctx.Database.Exists())
                     {
@@ -121,7 +125,7 @@ namespace DataAccessLayer
         public void seed()
         {
             Usuario[] users = { new Usuario{UsuarioID="Dexter" },
-                                new Usuario{UsuarioID="Newton"}
+                                new Usuario{UsuarioID="Newton" }
                               };
             foreach (var u in users)
             {
@@ -151,10 +155,13 @@ namespace DataAccessLayer
 
     public class ChebayDBPublic : DbContext
     {
+        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        static DbConnection connection = new SqlConnection(con);
+
         public ChebayDBPublic()
         {
             Database.SetInitializer<ChebayDBPublic>(null);
-            string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+            //string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
             base.Database.Connection.ConnectionString = con;
         }
 
@@ -162,8 +169,8 @@ namespace DataAccessLayer
         public DbSet<Tienda> tiendas { get; set; }
 
 
-        private ChebayDBPublic(string connection, DbCompiledModel model)
-            : base(connection, model)
+        private ChebayDBPublic(DbCompiledModel model)
+            : base(con, model)
         {
             Database.SetInitializer<ChebayDBPublic>(null);
         }
@@ -178,7 +185,7 @@ namespace DataAccessLayer
         }
 
 
-        public static ChebayDBPublic CreatePublic(DbConnection connection)
+        public static ChebayDBPublic CreatePublic()
         {
             string schema = "global";
             var builder = new DbModelBuilder();
@@ -188,15 +195,15 @@ namespace DataAccessLayer
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schema, compModel);
-            return new ChebayDBPublic(connection.ConnectionString, compiledModel);
+            return new ChebayDBPublic(compiledModel);
         }
 
 
-        public static void ProvidePublicSchema(DbConnection connection)
+        public static void ProvidePublicSchema()
         {
             try
             {
-                using (var ctx = CreatePublic(connection))
+                using (var ctx = CreatePublic())
                 {
                     if (!ctx.Database.Exists())
                     {
@@ -218,14 +225,14 @@ namespace DataAccessLayer
 
         public void Seed()
         {
-            Administrador[] admins = { new Administrador {AdministradorID = "Admin1", TiendaID="mytienda1", password= "admin1"},
-                                       new Administrador {AdministradorID= "Admin2", TiendaID="mytienda1", password= "admin2"},
-                                       new Administrador {AdministradorID = "Admin3", TiendaID="mytienda2", password= "admin3"},
-                                       new Administrador {AdministradorID= "Admin4", TiendaID="mytienda2", password= "admin4"}
+            Administrador[] admins = { new Administrador { AdministradorID= "Admin1", TiendaID="mytienda1", password= "admin1"},
+                                       new Administrador { AdministradorID= "Admin2", TiendaID="mytienda1", password= "admin2"},
+                                       new Administrador { AdministradorID= "Admin3", TiendaID="mytienda2", password= "admin3"},
+                                       new Administrador { AdministradorID= "Admin4", TiendaID="mytienda2", password= "admin4"}
                                      
                                      };
             Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale" },
-                                        new Tienda{TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok"}
+                                        new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok"}
                                     };
 
             foreach (var a in admins)

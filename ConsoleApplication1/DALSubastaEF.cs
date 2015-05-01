@@ -360,9 +360,7 @@ namespace DataAccessLayer
         public List<DataProducto> ObtenerProductosPersonalizados(string urlTienda)
         //Devuelve los últimos 10 productos publicados para el index.
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
-            using (var context = ChebayDBContext.CreateTenant(urlTienda, db))
+            using (var context = ChebayDBContext.CreateTenant(urlTienda))
             {
                 try
                 {

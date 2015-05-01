@@ -1,0 +1,24 @@
+﻿.product-item {
+    -webkit-box-shadow: 0 5px 10px #aaa;
+       -moz-box-shadow: 0 5px 10px #aaa;
+            box-shadow: 0 5px 10px #aaa;
+
+  float: left;
+  height: 300px;
+  margin: 0px 30px 20px 0px;
+  position: relative;
+  width: 200px;
+  border: 2px solid #e44d26;
+  text-align: center;
+}
+
+.product-item-header {
+    text-align: center;
+    font-size: 25px;
+    height: 65px;
+    border-bottom: 1px dotted #e44d26
+}
+
+.product.item-body {
+
+}

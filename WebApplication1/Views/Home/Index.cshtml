@@ -12,32 +12,46 @@
     {
         <div class="product-item">
             <div class="product-item-header">@dp.nombre</div>
-            <div id="myCarousel" class="carousel slide">
-                <ol class="carousel-indicators">
-                    <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-                    <li data-target="#myCarousel" data-slide-to="1"></li>
-                    <li data-target="#myCarousel" data-slide-to="2"></li>
-                </ol>
-                <!-- SE ARMA EL VISOR -->
-                <div class="carousel-inner" style="height: 195px">
-                   @{
-                        var primeraImagen = "/Content/Images/wat.png";
-                        var segundaImagen = "/Content/Images/wat2.jpg";
-                        var terceraImagen = primeraImagen;
-                    }
+            @{
+                var primeraImagen = "/Content/Images/wat.png";
+                var segundaImagen = "/Content/Images/wat2.jpg";
+                var terceraImagen = primeraImagen;
+            }
+            <div class="c-wrapper">
+                <div id="carousel-example-generic" class="carousel slide">
+                    <!-- INDICATORS
+                    <ol class="carousel-indicators">
+                        <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="1"></li>
+                        <li data-target="#carousel-example-generic" data-slide-to="2"></li>
+                    </ol> -->
 
-                        <div class="active item" style="max-height: 380px"><img src="@primeraImagen" alt="Slide 1" height="380"></div>
-                        <div class="item" style="max-height: 380px"><img src="@segundaImagen" alt="Slide 2" height="380"></div>
-                        <div class="item" style="max-height: 380px"><img src="@terceraImagen" alt="Slide 3" height="380"></div>
+                    <!-- SE ARMA EL VISOR -->
+                    <div class="carousel-inner">
+                        <div class="item active">
+                            <img src="@primeraImagen">
+                        </div>
+                        <div class="item">
+                            <img src="@segundaImagen">
+                        </div>
+                        <div class="item">
+                            <img src="http://placehold.it/700x400">
+                        </div>
+                    </div>
+
+                    <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
+                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                        <span class="icon-prev"></span>
+                    </a>
+                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                        <span class="icon-next"></span>
+                    </a>
                 </div>
-                <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
-                <a class="carousel-control left" href="#myCarousel" data-slide="prev">&lsaquo;</a>
-                <a class="carousel-control right" href="#myCarousel" data-slide="next">&rsaquo;</a>
             </div>
             <p>
                 @dp.descripcion
             </p>
-            <p>NO TE LO PIERDAS!</p>
+
         </div>
     }
 </div>
@@ -47,3 +61,17 @@
        'interval': 2000
     });
 </script>
+
+<style>
+    div.c-wrapper{
+        width: auto; 
+        margin: auto;
+    }
+
+    .carousel-inner > .item > img, 
+    .carousel-inner > .item > a > img{
+        width:auto;
+        height:200px;
+        margin: auto;
+    }
+</style>

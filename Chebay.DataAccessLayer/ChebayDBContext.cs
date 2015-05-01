@@ -21,8 +21,8 @@ namespace DataAccessLayer
 
     public class ChebayDBContext : DbContext
     {
-        //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        //static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBContext()//(string connection): base(connection)
@@ -43,8 +43,6 @@ namespace DataAccessLayer
         public DbSet<Comentario> comentarios { get; set; }
         public DbSet<Conversacion> conversaciones { get; set; }
         public DbSet<Mensaje> mensajes { get; set; }
-        public DbSet<Visita> visitas { get; set; }
-        public DbSet<Favorito> favoritos { get; set; }
         
         private ChebayDBContext(DbCompiledModel model)
             : base(con, model)
@@ -76,8 +74,36 @@ namespace DataAccessLayer
             builder.Entity<Oferta>().ToTable("Ofertas", schemaName);
             builder.Entity<Producto>().ToTable("Productos", schemaName);
             builder.Entity<Usuario>().ToTable("Usuarios", schemaName);
-            builder.Entity<Visita>().ToTable("Visitas", schemaName);
-            builder.Entity<Favorito>().ToTable("Favoritos", schemaName);
+
+            //relaciones
+            builder.Entity<Usuario>().HasMany<Producto>(s => s.visitas)
+                .WithMany(s => s.visitas)
+                .Map(ps =>
+                {
+                    ps.MapLeftKey("UsuarioID");
+                    ps.MapRightKey("ProductoID");
+                    ps.ToTable("Visitas", schemaName);
+                });
+
+            builder.Entity<Usuario>().HasMany<Producto>(s => s.favoritos)
+                .WithMany(s => s.favoritos)
+                .Map(ps =>
+                {
+                    ps.MapLeftKey("UsuarioID");
+                    ps.MapRightKey("ProductoID");
+                    ps.ToTable("Favoritos", schemaName);
+                });
+
+            builder.Entity<Producto>().HasMany<Oferta>(p => p.ofertas);
+            builder.Entity<Producto>().HasMany<Comentario>(p => p.comentarios);
+            builder.Entity<Producto>().HasMany<Compra>(p=> p.compras);
+
+
+            builder.Entity<Usuario>().HasMany<Oferta>(p => p.ofertas);
+            builder.Entity<Usuario>().HasMany<Comentario>(p => p.comentarios);
+            builder.Entity<Usuario>().HasMany<Compra>(p => p.compras);
+            builder.Entity<Usuario>().HasMany<Producto>(p => p.publicados);
+
 
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
@@ -143,8 +169,8 @@ namespace DataAccessLayer
 
     public class ChebayDBPublic : DbContext
     {
-        //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        //static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBPublic()
@@ -179,6 +205,17 @@ namespace DataAccessLayer
             var builder = new DbModelBuilder();
             builder.Entity<Administrador>().ToTable("Administradores", schema);
             builder.Entity<Tienda>().ToTable("Tiendas", schema);
+
+            builder.Entity<Tienda>().HasMany<Administrador>(s => s.administradores)
+                .WithMany(s => s.tiendas)
+                .Map(ps =>
+                {
+                    ps.MapLeftKey("TiendaID");
+                    ps.MapRightKey("AdministradorID");
+                    ps.ToTable("AdminTienda", schema);
+                });
+
+
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schema, compModel);
@@ -212,15 +249,22 @@ namespace DataAccessLayer
 
         public void Seed()
         {
-            Administrador[] admins = { new Administrador { AdministradorID= "Admin1", TiendaID="mytienda1", password= "admin1"},
-                                       new Administrador { AdministradorID= "Admin2", TiendaID="mytienda1", password= "admin2"},
-                                       new Administrador { AdministradorID= "Admin3", TiendaID="mytienda2", password= "admin3"},
-                                       new Administrador { AdministradorID= "Admin4", TiendaID="mytienda2", password= "admin4"}
-                                     
-                                     };
             Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale" },
                                         new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok"}
                                     };
+            Administrador[] admins = { new Administrador { AdministradorID= "Admin1", password= "admin1"},
+                                       new Administrador { AdministradorID= "Admin2", password= "admin2"},
+                                       new Administrador { AdministradorID= "Admin3", password= "admin3"},
+                                       new Administrador { AdministradorID= "Admin4", password= "admin4"}
+                                     
+                                     };
+            foreach (var a in admins)
+            {
+                foreach (var t in tiendasarray){
+                    a.tiendas.Add(t);
+                    t.administradores.Add(a);
+                }
+            }
 
             foreach (var a in admins)
             {

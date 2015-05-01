@@ -118,14 +118,16 @@ namespace DataAccessLayer
                     {
                         Producto pr = prod.FirstOrDefault();
                         Usuario user = usr.FirstOrDefault();
-                        Visita v = new Visita();
-                        v.ProductoID = idProducto;
-                        v.producto = pr;
-                        v.UsuarioID = idUsuario;
-                        v.usuario = user;
-                        pr.visitas.Add(v);
-                        user.visitas.Add(v);
-                        context.visitas.Add(v);
+                        //Visita v = new Visita();
+                        //v.ProductoID = idProducto;
+                        //v.producto = pr;
+                        //v.UsuarioID = idUsuario;
+                        //v.usuario = user;
+                        //pr.visitas.Add(v);
+                        //user.visitas.Add(v);
+                        pr.visitas.Add(user);
+                        user.visitas.Add(pr);
+                        //context.visitas.Add(v);
                         context.SaveChanges(); 
                         return pr;
                     }
@@ -180,12 +182,7 @@ namespace DataAccessLayer
                     else
                     {
                         Usuario u = query.FirstOrDefault();
-                        List<Visita> lv = (List<Visita>)u.visitas;
-                        List<Producto> ret = new List<Producto>();
-                        foreach(Visita v in lv)
-                        {
-                            ret.Add(v.producto);
-                        }
+                        List<Producto> ret = u.visitas.ToList();
                         return ret;
                     }
                 }
@@ -212,13 +209,7 @@ namespace DataAccessLayer
                     else
                     {
                         Usuario u = query.FirstOrDefault();
-                        List<Favorito> lf = (List<Favorito>)u.favoritos;
-                        List<Producto> ret = new List<Producto>();
-                        foreach (Favorito f in lf)
-                        {
-                            ret.Add(f.producto);
-                        }
-                        return ret;
+                        return u.favoritos.ToList();
                     }
                 }
                 catch (Exception e)

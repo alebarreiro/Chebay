@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
+using System.ComponentModel.DataAnnotations;
 
 namespace Shared.Entities
 {
@@ -12,15 +13,17 @@ namespace Shared.Entities
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long ComentarioID { get; set; }
+        [Required]
         public string texto { get; set; }
         public DateTime fecha { get; set; }
 
-        //[ForeignKey("producto")]
         public long ProductoID { get; set; }
-        //[ForeignKey("usuario")]
         public string UsuarioID { get; set; }
 
+        [ForeignKey("ProductoID")]
         public virtual Producto producto { get; set; }
+        [ForeignKey("UsuarioID"), Required]
         public virtual Usuario usuario { get; set; }
+
     }
 }

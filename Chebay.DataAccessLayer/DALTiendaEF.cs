@@ -25,11 +25,12 @@ namespace DataAccessLayer
                                 select adm;
                     if (query.Count() == 0)
                     {
-                        Administrador a = new Administrador();
-                        a.AdministradorID = admin.AdministradorID;
-                        a.password = admin.password;
-                        a.TiendaID = null;
-                        context.administradores.Add(a);
+                        //NO es necesario
+                        //Administrador a = new Administrador();
+                        //a.AdministradorID = admin.AdministradorID;
+                        //a.password = admin.password;
+                        //a.TiendaID = null;
+                        context.administradores.Add(admin);
                         context.SaveChanges();
                         Debug.WriteLine("Administrador " + admin.AdministradorID + " creado correctamente");
                     }
@@ -113,8 +114,8 @@ namespace DataAccessLayer
         public void AgregarTienda(Tienda tienda, string idAdmin)
         //Completa el nombre, descripción, una URL (TiendaID).
         {
-            var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-            var db = new SqlConnection(connection);
+            //var connection = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+            //var db = new SqlConnection(connection);
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
@@ -138,7 +139,8 @@ namespace DataAccessLayer
                             if (tnd.administradores == null)
                                 tnd.administradores = new HashSet<Administrador>();
                             tnd.administradores.Add(ad.FirstOrDefault());
-                            ad.FirstOrDefault().TiendaID = tienda.TiendaID;
+                            //ad.FirstOrDefault().TiendaID = tienda.TiendaID;
+                            ad.FirstOrDefault().tiendas.Add(tienda);
                             context.tiendas.Add(tnd);
                             ChebayDBContext.ProvisionTenant(tienda.TiendaID);
                             context.SaveChanges();
@@ -303,14 +305,14 @@ namespace DataAccessLayer
                                 throw new Exception("Ya existe la categoria " + dc.CategoriaID);
 
                             var existePadre = from p in context.categorias
-                                              where p.CategoriaID == dc.PadreID
+                                              where p.CategoriaID == dc.padre.CategoriaID
                                               select p;
                             if (existePadre.Count() == 0)
-                                throw new Exception("No existe la categoría padre " + dc.PadreID);
+                                throw new Exception("No existe la categoría padre " + dc.padre.CategoriaID);
 
                             Categoria catPadre = existePadre.FirstOrDefault();
                             if (catPadre.GetType().Equals(typeof(CategoriaSimple)))
-                                throw new Exception("La categoría padre " + dc.PadreID + " no es compuesta.");
+                                throw new Exception("La categoría padre " + dc.CategoriaID + " no es compuesta.");
 
                             CategoriaCompuesta catPadreC = (CategoriaCompuesta)catPadre;
                             catPadreC.hijas.Add(dc);
@@ -344,14 +346,14 @@ namespace DataAccessLayer
                     var query = from t in context.tiendas
                                 where t.TiendaID == idTienda
                                 select t;
-                    if (query == null)
-                        return null;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe la tienda " + idTienda);
                     else //Si existe la Tienda idTienda.
                     {
                         var schema = ChebayDBContext.CreateTenant(idTienda);
                         Tienda t = query.FirstOrDefault();
                         List<Categoria> ret = new List<Categoria>();
-                        
+
                         var qCat = from c in schema.categorias
                                    orderby c.CategoriaID
                                    select c;
@@ -376,15 +378,43 @@ namespace DataAccessLayer
         public void AgregarAtributos(List<Atributo> lAtributos, string urlTienda)
         //FALTA IMPLEMENTAR.
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 try
                 {
-
+                    if (lAtributos == null)
+                        throw new Exception("Debe pasar una Lista de Atributos.");
+                    var query = from t in context.tiendas
+                                where t.TiendaID == urlTienda
+                                select t;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe la tienda " + urlTienda);
+                    else //Si existe la Tienda idTienda.
+                    {
+                        var schema = ChebayDBContext.CreateTenant(urlTienda);
+                        foreach (Atributo a in lAtributos)
+                        try
+                        {
+                            var existeCat = from c in schema.categorias
+                                            where c.CategoriaID == a.CategoriaID
+                                            select c;
+                            if (existeCat.Count() == 0)
+                                throw new Exception("No existe la categoria " + a.CategoriaID);
+                            schema.atributos.Add(a);
+                            existeCat.FirstOrDefault().atributos.Add(a);
+                            schema.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                            throw;
+                        }
+                    }
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
+                    throw;
                 }
             }
         }

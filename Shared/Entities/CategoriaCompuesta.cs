@@ -9,6 +9,5 @@ namespace Shared.Entities
     public class CategoriaCompuesta : Categoria
     {
         public virtual ICollection<Categoria> hijas { get; set; }
-        //public virtual Tienda tienda { get; set; }
     }
 }

@@ -17,8 +17,8 @@ namespace Shared.Entities
         public int ventas_valor { get; set; }
 
         public virtual ICollection<Producto> publicados { get; set; }
-        public virtual ICollection<Visita> visitas { get; set; }
-        public virtual ICollection<Favorito> favoritos { get; set; }
+        public virtual ICollection<Producto> visitas { get; set; }
+        public virtual ICollection<Producto> favoritos { get; set; }
         public virtual ICollection<Oferta> ofertas { get; set; }
         public virtual ICollection<Compra> compras { get; set; }
         public virtual ICollection<Comentario> comentarios { get; set; }

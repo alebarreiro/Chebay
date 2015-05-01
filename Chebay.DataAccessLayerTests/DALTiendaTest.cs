@@ -242,13 +242,32 @@ namespace Chebay.DataAccessLayerTests
         }
 
         [TestMethod]
-        [ExpectedException(typeof(Exception))]
         public void ListarCategorias()
         {
             IDALTienda it = new DALTiendaEF();
             List<Categoria> lc = it.ListarCategorias("TestURL");
             Assert.AreEqual(28, lc.Count);
         }
+
+        [TestMethod]
+        public void AgregarAtributos()
+        {
+            IDALTienda it = new DALTiendaEF();
+            List<Atributo> lAtributos = new List<Atributo>();
+            for (int i = 1; i < 10; i++ )
+            {
+                Atributo a = new Atributo();
+                a.CategoriaID = 3;
+                a.etiqueta = "Pantalla";
+                a.valor = (i*100).ToString();
+                lAtributos.Add(a);
+            }
+            it.AgregarAtributos(lAtributos, "TestURL");
+
+        }
+
+         
+
 
     }
 }

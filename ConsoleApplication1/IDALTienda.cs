@@ -4,13 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Entities;
+using Shared.DataTypes;
 
 
 namespace DataAccessLayer
 {
     public interface IDALTienda
     {
-        void AgregarAdministrador(string idAdmin, string pass);
+        void AgregarAdministrador(Administrador a);
         //Agrega el Administrador idAdmin con password pass a la base de datos.
         //TESTEADA.
 
@@ -25,12 +26,13 @@ namespace DataAccessLayer
         // -- TIENDAS --
 
     //En la Parte 1 del BackOffice
-        void AgregarTienda(string nom, string desc, string url, string idAdmin);
+        void AgregarTienda(Tienda t, string idAdmin);
         //Completa el nombre, descripción, una URL (TiendaID).
         //TESTEADA.
 
-        void ActualizarTienda(string nomNuevo, string descNueva, string urlVieja);
+        void ActualizarTienda(Tienda t);
         //Cambiar nombre o descripción de t.
+        //NO ACTUALIZAR LA URL.
         //TESTEADA.
 
         void CambiarURLTienda(string idTienda, string nuevaURL);
@@ -42,11 +44,8 @@ namespace DataAccessLayer
         // -- CATEGORIAS --
 
     //CU: 1.2 INGRESAR CATEGORIA Y 1.3 ALTA CATEGORIA
-        void AgregarCategoriaCompuesta(string idCategoria, string idPadre, string urlTienda);
+        void AgregarCategorias(List<Categoria> lCategorias, string urlTienda);
         //idPadre no puede ser null. La categoría raiz se crea cuando se crea la tienda.
-
-        void AgregarCategoriaSimple(string idCategoria, string idPadre);
-        //idPadre no puede ser null.
 
     //CU: Alta Subasta
         List<Categoria> ListarCategorias(string idTienda);
@@ -59,6 +58,7 @@ namespace DataAccessLayer
         Administrador ObtenerAdministrador(string idAdministrador);
         void EliminarTienda(string idTienda);
         Tienda ObtenerTienda(string idTienda);
+        Categoria ObtenerCategoria(string idTienda, string idCategoria);
 
     }
 }

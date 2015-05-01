@@ -12,7 +12,7 @@ namespace Shared.Entities
     {
         //id
         public string CategoriaID { get; set; }
-   
+        public string PadreID { get; set; }
         public ICollection<Atributo> atributos { get; set; }
 
         //puede ser null

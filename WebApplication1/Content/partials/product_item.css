@@ -4,10 +4,10 @@
             box-shadow: 0 5px 10px #aaa;
 
   float: left;
-  height: 300px;
-  margin: 0px 30px 20px 0px;
+  height: 280px;
+  margin: 15px;
   position: relative;
-  width: 260px;
+  width: 230px;
   border: 2px solid #e44d26;
   text-align: center;
 }

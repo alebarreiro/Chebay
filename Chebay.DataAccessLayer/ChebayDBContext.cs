@@ -21,8 +21,8 @@ namespace DataAccessLayer
 
     public class ChebayDBContext : DbContext
     {
-        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        //static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBContext()//(string connection): base(connection)
@@ -126,6 +126,7 @@ namespace DataAccessLayer
                     else
                     {
                         var createScript = ((IObjectContextAdapter)ctx).ObjectContext.CreateDatabaseScript();
+                        Debug.WriteLine("11");
                         ctx.Database.ExecuteSqlCommand(createScript);
                      }
                 }
@@ -214,8 +215,8 @@ namespace DataAccessLayer
 
     public class ChebayDBPublic : DbContext
     {
-        static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        //static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
+        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBPublic()

@@ -9,7 +9,7 @@ using Shared.Entities;
 namespace Chebay.Backoffice.Controllers
 {
 
-    class DatosGeneralesTienda
+    public class DatosGeneralesTienda
     {
         public string titulo { get; set; }
         public string descripcion { get; set; }

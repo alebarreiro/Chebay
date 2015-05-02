@@ -15,8 +15,9 @@
 .product-item-header {
     text-align: center;
     font-size: 25px;
-    height: 65px;
-    border-bottom: 1px dotted #e44d26
+    height: 40px;
+    background: #e44d26;
+    color: white;
 }
 
 .product.item-body {

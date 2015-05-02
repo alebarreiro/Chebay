@@ -4,12 +4,14 @@
 @{
     ViewBag.Title = "Home Page";
     var productos = ViewBag.productos;
+    var idProd = 0;
 }
 
 
 <div class="row">
     @foreach (var dp in productos)
     {
+        {idProd++;}
         <div class="product-item">
             <div class="product-item-header">@dp.nombre</div>
             @{
@@ -18,7 +20,7 @@
                 var terceraImagen = primeraImagen;
             }
             <div class="c-wrapper">
-                <div id="carousel-example-generic" class="carousel slide">
+                <div id="myCarousel-@idProd" class="carousel slide">
                     <!-- INDICATORS
                     <ol class="carousel-indicators">
                         <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
@@ -40,10 +42,10 @@
                     </div>
 
                     <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
-                    <a class="left carousel-control" href="#carousel-example-generic" data-slide="prev">
+                    <a class="left carousel-control" href="#myCarousel-@idProd" data-slide="prev">
                         <span class="icon-prev"></span>
                     </a>
-                    <a class="right carousel-control" href="#carousel-example-generic" data-slide="next">
+                    <a class="right carousel-control" href="#myCarousel-@idProd" data-slide="next">
                         <span class="icon-next"></span>
                     </a>
                 </div>
@@ -71,7 +73,7 @@
     .carousel-inner > .item > img, 
     .carousel-inner > .item > a > img{
         width:auto;
-        height:150px;
+        height:170px;
         margin: auto;
     }
 </style>

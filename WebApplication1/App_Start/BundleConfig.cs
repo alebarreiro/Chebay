@@ -28,7 +28,18 @@ namespace Frontoffice
                       "~/Content/sections/main/main.css",
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",
-                      "~/Content/partials/product_item.css"));                  
+                      "~/Content/partials/product_item.css"));
+
+            bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
+                "~/Content/personalizacion/EstiloUno/orangeStyle.css"
+            ));
+
+            bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
+                "~/Content/personalizacion/EstiloDos/violetStyle.css"
+            ));
+
+
+ 
         }
     }
 }

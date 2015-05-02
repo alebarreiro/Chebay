@@ -1,0 +1,35 @@
+/* ================
+    Estilo "Violeta" y fonts blancas
+   ================ */
+
+.header-container {
+    border-bottom: 20px solid #63589F;
+}
+
+.footer-container,
+.main aside {
+    border-top: 20px solid #63589F;
+}
+
+.header-container,
+.footer-container,
+.main aside {
+    background: #65649F;
+}
+
+.title {
+    color: white;
+}
+
+nav a {
+    color: white;
+    background: #63589F;
+}
+
+.product-item {
+  border: 2px solid #63589F;
+}
+
+.product-item-header {
+    background: #63589F;
+}

@@ -35,6 +35,8 @@ namespace Frontoffice.Controllers
                 prods.Add(p2);
             }
             ViewBag.productos = prods;
+            //Elegimos el estilo, por ahora los posibles valores son 1 o 2
+            ViewBag.personalizacion = 1;
             return View();
         }
 

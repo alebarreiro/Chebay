@@ -17,6 +17,15 @@
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+    @if(ViewBag.personalizacion == 1)
+    {
+      @Styles.Render("~/Content/personalizacion/EstiloUno/css")
+    }
+    else if (ViewBag.personalizacion == 2)
+    {
+        @Styles.Render("~/Content/personalizacion/EstiloDos/css")
+    }
 </head>
 <body>
     <!--[if lt IE 8]>

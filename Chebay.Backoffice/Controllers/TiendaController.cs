@@ -9,11 +9,17 @@ using Shared.Entities;
 namespace Chebay.Backoffice.Controllers
 {
 
-    class DatosGeneralesTienda
+    public class DatosGeneralesTienda
     {
         public string titulo { get; set; }
         public string descripcion { get; set; }
         public string URL { get; set; }
+    }
+
+    public class DatosCategoriaNueva
+    {
+        public string nombre { get; set; }
+        public long padre { get; set; }
     }
 
     public class TiendaController : Controller
@@ -63,7 +69,8 @@ namespace Chebay.Backoffice.Controllers
         {
             string pagina = "";
             string line = "";
-            
+            //List<Categoria> categorias = idalTienda.ListarCategorias((string)Session["tienda"]);
+            //Session["categorias"] = categorias;
             System.IO.StreamReader file =
                 new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/CrearCategorias.cshtml");
             while ((line = file.ReadLine()) != null)
@@ -71,7 +78,65 @@ namespace Chebay.Backoffice.Controllers
                 pagina += line;
             }
             file.Close();
-            return Content(pagina);
+
+
+            ActionResult contenido = Content(pagina);
+            return contenido;
+        }
+
+
+
+        public string RecursionCategorias(CategoriaCompuesta categoria)
+        {
+            string resultado = "";
+            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
+            //debo crear un arreglo JSON con las categorias
+            if (categoria.hijas.Count() > 0)
+            {
+                resultado += "<ul>";
+                foreach(Categoria hija in categoria.hijas){
+                    if (hija.GetType() == typeof(CategoriaCompuesta))
+                    {
+                        resultado += RecursionCategorias((CategoriaCompuesta) hija);
+                    }
+                    else
+                    {
+                        resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                    }
+                }
+                resultado += "</ul>";
+            }
+            resultado += "</li>";
+            return resultado;
+        }
+
+        //GET: /Tienda/AgregarCategoria
+        [HttpPost]
+        public ActionResult AgregarCategoria(DatosCategoriaNueva datos)
+        {
+            try
+            {
+                
+                var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = "Error al guardar los datos generales" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //GET: /Tienda/ObtenerCategorias
+        [HttpGet]
+        public ActionResult ObtenerCategorias()
+        {
+            string tablaCategorias = "";
+            List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
+            tablaCategorias += "<ul>";
+            tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
+            tablaCategorias += "</ul>";
+            return Content(tablaCategorias);
         }
 
         // GET: /Tienda/CrearTiposAtributo
@@ -124,7 +189,7 @@ namespace Chebay.Backoffice.Controllers
             return Content(pagina);
         }
 
-        // POST : /Tienda/FinalizarDatosGenerales
+        // POST : /Tienda/GuardarDatosGenerales
         [HttpPost]
         public ActionResult GuardarDatosGenerales(DatosGeneralesTienda datosGenerales)
         {
@@ -132,12 +197,25 @@ namespace Chebay.Backoffice.Controllers
 
             try
             {
-                string idAdmin = (string) Session["admin"];
-                Tienda t = new Tienda();
-                t.descripcion = datosGenerales.descripcion;
-                t.nombre = datosGenerales.titulo;
-                idalTienda.AgregarTienda(t, idAdmin);
-                Session["tienda"] = t.nombre;
+                if (Session["tienda"] == null)
+                {
+                    string idAdmin = (string)Session["admin"];
+                    Tienda t = new Tienda();
+                    t.descripcion = datosGenerales.descripcion;
+                    t.nombre = datosGenerales.titulo;
+                    idalTienda.AgregarTienda(t, idAdmin);
+                    Session["tienda"] = t.nombre;
+                }
+                else
+                {
+                    string idAdmin = (string)Session["admin"];
+                    Tienda t = new Tienda();
+                    t.descripcion = datosGenerales.descripcion;
+                    t.nombre = datosGenerales.titulo;
+                    idalTienda.ActualizarTienda(t);
+                    Session["tienda"] = t.nombre;
+                }
+                
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

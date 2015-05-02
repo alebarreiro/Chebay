@@ -13,7 +13,9 @@ namespace Chebay.Backoffice
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include("~/Scripts/Login.js", "~/Scripts/CrearTienda.js",
                 "~/Scripts/bootstrap-notify.min.js",
                 "~/Scripts/bootstrap-notify.js",
-                "~/Scripts/jquery.treeview.js"));
+                "~/Scripts/TreeView/js/jquery.treegrid.js",
+                "~/Scripts/TreeView/js/jquery.treegrid.bootstrap3.js",
+                "~/Scripts/bootstrap-treeview/src/js/bootstrap-treeview.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
                         "~/Scripts/jquery-2.1.3.js"));

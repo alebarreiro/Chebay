@@ -21,14 +21,14 @@ namespace DataAccessLayer
           //      ChebayDBContext.ProvisionTenant("Tienda1");
           //      ChebayDBContext.ProvisionTenant("Tienda2");
                 //ChebayDBPublic.ProvidePublicSchema();
-                ChebayDBContext.ProvisionTenant("PhoneBay");
+                //ChebayDBContext.ProvisionTenant("PhoneBay");
 
-                using (var schema = ChebayDBContext.CreateTenant("PhoneBay"))
-                {
-                    schema.seed();
-                }
-
-            /*
+///                using (var schema = ChebayDBContext.CreateTenant("PhoneBay"))
+   //             {
+     //               schema.seed();
+            //    }
+        //
+            
                 using (var schema = ChebayDBPublic.CreatePublic())
                 {
                     IDALTienda it = new DALTiendaEF();
@@ -50,7 +50,7 @@ namespace DataAccessLayer
                         }
                     }
                     System.Console.ReadLine();
-                }*/
+                }
             
 
             

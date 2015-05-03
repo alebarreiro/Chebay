@@ -296,7 +296,7 @@ namespace DataAccessLayer
                                 throw new Exception("La categoría padre " + dc.CategoriaID + " no es compuesta.");
 
                             CategoriaCompuesta catPadreC = (CategoriaCompuesta)catPadre;
-                            catPadreC.hijas.Add(dc);
+                            //catPadreC.hijas.Add(dc);
                             context.categorias.Add(dc);
                             context.SaveChanges();
                             Debug.WriteLine("Categoría " + dc.CategoriaID + " creada con éxito.");

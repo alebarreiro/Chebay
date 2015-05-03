@@ -3,6 +3,26 @@ var categoriasCreadas = false;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 idCategorias = idTiposAtributo = 1;
 
+var paginaAntesLoading, padreAgregarCategoria;
+
+function modalAgregarCategoria(padre) {
+    padreAgregarCategoria = padre;
+    $("#modalAgregarCategoria").modal();
+}
+
+
+function cargando() {
+    paginaAntesLoading = $("#container").html();
+
+    var loading = "<img src=\"Images/cargando.gif\" class=\"cargando\">";
+
+    $("#container").html(loading);
+}
+
+function finCargando() {
+    $("#container").html(paginaAntesLoading);
+}
+
 function finalizarCreacionCategorias() {
     var categorias = new Array();
 
@@ -21,12 +41,15 @@ function finalizarDatosGenerales(){
         descripcion : descripcion
     }
 
+    cargando();
+
     $.ajax({
         url: '/Tienda/GuardarDatosGenerales',
         type: 'POST',
         dataType: "json",
         data : JSON.stringify(datosGenerales),
         success: function (data, textStatus, jqxhr) {
+            finCargando();
             $.notify({
                 // options
                 message: 'Se han guardado los datos generales correctamente.'
@@ -36,6 +59,7 @@ function finalizarDatosGenerales(){
             });
         },
         error: function (data, textStatus, jqxhr) {
+            finCargando();
             $.notify({
                 // options
                 message: 'Error al guardar los datos generales.'
@@ -48,6 +72,7 @@ function finalizarDatosGenerales(){
 
 
     hayDatosGenerales = true;
+    tiendaCreada = true;
 }
 
 function finalizarCrearTienda() {
@@ -117,14 +142,52 @@ function borrarCategoria(idCategoria, nombre) {
     $("#divCategorias").html(categorias);
 }
 
+
+
 function agregarCategoria() {
     var nombre = $("#nombreCategoria").val();
 
-    var categorias = $("#divCategorias").html();
+    var categoriaNueva = {
+        nombre: nombre,
+        padre : padreAgregarCategoria
+    }
 
-    $("#divCategorias").html(categorias + "&nbsp;&nbsp;<button id=\"" + idCategorias + "\" class=\"btn btn-primary\" onclick=\"borrarCategoria('" + idCategorias + "', '" + nombre + "')\">" + nombre + "</button>");
+    $.ajax({
+        url: '/Tienda/AgregarCategoria',
+        type: 'POST',
+        dataType: "json",
+        data: JSON.stringify(categoriaNueva),
+        success: function (data, textStatus, jqxhr) {
+            finCargando();
+            $.notify({
+                // options
+                message: 'Se ha agregado la categoría correctamente.'
+            }, {
+                // settings
+                type: 'success'
+            });
+        },
+        error: function (data, textStatus, jqxhr) {
+            finCargando();
+            $.notify({
+                // options
+                message: 'Error al agregar la categoría.'
+            }, {
+                // settings
+                type: 'danger'
+            });
+        }
+    });
 
-    idCategorias++;
+    //refresca las categorias
+    $.ajax({
+        url: '/Tienda/ObtenerCategorias',
+        type: 'GET',
+        success: function (data, textStatus, jqxhr) {
+            $('#divCategorias').html(data);
+        }
+    });
+
 }
 
 function DirigirCrearTienda() {
@@ -164,6 +227,15 @@ function crearCategorias() {
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#contenidoCrearTienda').html(data);
+            }
+        });
+
+        $.ajax({
+            url: '/Tienda/ObtenerCategorias',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#divCategorias').html(data);
+                $(".tree").treegrid();
             }
         });
     }

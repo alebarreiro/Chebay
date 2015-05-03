@@ -25,6 +25,10 @@ namespace Frontoffice
                        "~/Scripts/Chat.js"
                        ));
 
+            bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(
+                       "~/Scripts/Subasta.js"
+                       ));
+
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 

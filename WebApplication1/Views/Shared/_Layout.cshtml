@@ -21,11 +21,9 @@
     @Scripts.Render("~/bundles/bootstrap")
 
 
-    @if (Context.User != null && Context.User.Identity.IsAuthenticated) { 
-        @Scripts.Render("~/bundles/jqueryui-chat")
-        @Scripts.Render("~/bundles/signalR")
-        <script src="/signalr/hubs"></script>
-    }
+    @Scripts.Render("~/bundles/jqueryui-chat")
+    @Scripts.Render("~/bundles/signalR")
+    <script src="/signalr/hubs"></script>
 
     @Styles.Render("~/Content/personalizacion/EstiloUno/css")
 
@@ -62,10 +60,8 @@
         @Scripts.Render("~/bundles/Chat")
     }
 
-
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="Scripts/jquery-1.11.2.min.js"><\/script>')</script> -->
-    @Scripts.Render("~/bundles/jquery")
     @RenderSection("scripts", required: false) 
 </body>
 </html>

@@ -47,6 +47,7 @@
                     </a>
                 </div>
             </div>
+            <button id="bidButton" data-id="@idProd" onclick="onNewBidClick(@idProd)">BID!</button> <p id="bidValue-@idProd">0</p>
             <p>
                 @dp.descripcion
             </p>
@@ -58,6 +59,30 @@
 <script>
     $('.carousel').carousel({
        'interval': 6000
+    });
+</script>
+
+<script type="text/javascript">
+    $(function () {
+
+        // Proxy creado a partir de signalr/hubs
+        var proxy = $.connection.subastaHub;
+        // Server callback methods
+        proxy.client.newBidPosted = function (productId, newBid) {
+            $('#bidValue-' + productId).text(newBid);
+        };
+
+        // Start the connection
+        $.connection.hub.start();
+
+        // Client methods
+        onNewBidClick = function (id) {
+            var productId = id,
+              currentBid = parseInt($('#bidValue-' + productId).text(), 10),
+              bidToPost = currentBid + 1;
+            //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
+            proxy.server.placeNewBid(productId, bidToPost);
+        };
     });
 </script>
 

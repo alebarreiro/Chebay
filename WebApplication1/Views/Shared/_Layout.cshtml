@@ -3,6 +3,7 @@
 <!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
 <!--[if IE 8]>         <html class="no-js lt-ie9" lang=""> <![endif]-->
 <!--[if gt IE 8]><!-->
+
 <html class="no-js" lang="">
 <!--<![endif]-->
 <head>
@@ -13,10 +14,18 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script src="Scripts/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/bootstrap")
+
+
+    @if (Context.User != null && Context.User.Identity.IsAuthenticated) { 
+        @Scripts.Render("~/bundles/jqueryui-chat")
+        @Scripts.Render("~/bundles/signalR")
+        <script src="/signalr/hubs"></script>
+    }
 
     @if(ViewBag.personalizacion == 1)
     {
@@ -55,9 +64,14 @@
         </footer>
     </div> <!-- #footer-container-->
 
-    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
+    @if (Context.User != null && Context.User.Identity.IsAuthenticated) { 
+        @Scripts.Render("~/bundles/Chat")
+    }
+
+
+    @*<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="Scripts/jquery-1.11.2.min.js"><\/script>')</script>
     @Scripts.Render("~/bundles/jquery")
-    @RenderSection("scripts", required: false)
+    @RenderSection("scripts", required: false)*@
 </body>
 </html>

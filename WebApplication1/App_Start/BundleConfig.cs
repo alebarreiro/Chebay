@@ -9,7 +9,21 @@ namespace Frontoffice
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-{version}.js"
+                        ));
+
+            bundles.Add(new ScriptBundle("~/bundles/jqueryui-chat").Include(
+                       "~/Scripts/jquery-ui.js",
+                       "~/Scripts/jquery.ui.chatbox.js"
+                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/signalR").Include(
+                       "~/Scripts/jquery.signalR-2.1.2.js"
+                       ));
+
+            bundles.Add(new ScriptBundle("~/bundles/Chat").Include(
+                       "~/Scripts/Chat.js"
+                       ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -28,7 +42,10 @@ namespace Frontoffice
                       "~/Content/sections/main/main.css",
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",
-                      "~/Content/partials/product_item.css"));
+                      "~/Content/partials/product_item.css",
+                      "~/Content/jquery-ui.css",
+                      "~/Content/jquery.ui.chatbox.css"
+                      ));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
                 "~/Content/personalizacion/EstiloUno/orangeStyle.css"

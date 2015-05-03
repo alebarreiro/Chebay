@@ -5,7 +5,7 @@
     bottom:0;
     padding: 2px;
     background:  #CCCCCC;
-    border-color: #357ebd;
+    border-color: #e44d26;
     width: 256px;
 }
 
@@ -14,8 +14,8 @@
     padding-left: 5px;
     height: 20px;
     cursor: pointer;
-    background-color: #428bca;
-    border-color: #357ebd;
+    background-color: #e44d26;
+    border-color: #e44d26;
     font: bold 15px sans;
     color:white;
 
@@ -31,7 +31,7 @@
     margin: 0px;
     border: 0px;
     width: 256px;
-    border-color: #357ebd;
+    border-color: #e44d26;
 
 }
 
@@ -42,7 +42,7 @@
     overflow-y: auto;
     overflow-x: hidden;
     background: #FFFFFF;
-    border-color: #357ebd;
+    border-color: #e44d26;
 
 }
 
@@ -51,13 +51,13 @@
     padding: 3px;
     border-top: 1px solid grey;
     overflow: hidden;
-    border-color: #357ebd;
+    border-color: #e44d26;
 
 }
 
 .ui-chatbox-input-box {
     margin: 5px;
-    border: 2px solid lightgrey;/* #6699FF */
+    border: 2px solid lightsalmon;/* #6699FF */
     padding: 2px;
     height: 50px;
     background: white;
@@ -69,7 +69,7 @@
 }
 
 .ui-chatbox-input-focus {
-    border-color: #6699FF;
+    border-color: #e44d26;
 }
 
 .ui-chatbox-msg {

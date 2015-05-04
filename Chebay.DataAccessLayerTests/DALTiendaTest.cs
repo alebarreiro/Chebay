@@ -97,7 +97,7 @@ namespace Chebay.DataAccessLayerTests
             //t.administradores = new HashSet<Administrador>();
             //t.administradores.Add(a);
             Debug.WriteLine("A");
-            it.AgregarTienda(t,a.AdministradorID);
+            it.AgregarTienda(t, a.AdministradorID);
             Debug.WriteLine("B");
             Tienda ret = it.ObtenerTienda("TestURL");
             Assert.IsNotNull(ret);
@@ -153,7 +153,7 @@ namespace Chebay.DataAccessLayerTests
             Assert.IsNotNull(nuevaT);
             Assert.AreEqual(nuevaT.TiendaID, "TestURL");
             Assert.AreEqual(nuevaT.nombre, "NombreTestNuevo");
-            Assert.AreEqual(nuevaT.descripcion, "DescTestNueva");   
+            Assert.AreEqual(nuevaT.descripcion, "DescTestNueva");
         }
 
         [TestMethod]
@@ -169,8 +169,32 @@ namespace Chebay.DataAccessLayerTests
             it.ActualizarTienda(t);
         }
 
+            [TestMethod]
+            public void AgregarCategoriaCompuesta()
+            {
+                using (var schema = ChebayDBContext.CreateTenant("TestURL"))
+                {
+                    IDALTienda it = new DALTiendaEF();
+
+                    CategoriaCompuesta father = (CategoriaCompuesta)it.ObtenerCategoria("TestURL",1);
+                    System.Console.WriteLine(father.CategoriaID + father.Nombre);
+
+                    Categoria c = new CategoriaCompuesta { Nombre = "CatCompuestaPrueba", padre = father };
+
+                    it.AgregarCategoria(c, "TestURL");
+
+                    CategoriaCompuesta cc = (CategoriaCompuesta)it.ObtenerCategoria("TestURL", 2);
+                    Assert.AreEqual(cc.CategoriaID, 2);
+                    Assert.AreEqual(cc.Nombre, "CatCompuestaPrueba");
+                    Assert.AreEqual(c.padre.CategoriaID, 1);
+                }
+            }
+            
+            
+        /*
+
         [TestMethod]
-        public void AgregarCategoria()
+        public void AgregarCategorias()
         {
             IDALTienda it = new DALTiendaEF();
             List<Categoria> lc = new List<Categoria>();
@@ -267,11 +291,10 @@ namespace Chebay.DataAccessLayerTests
                 lAtributos.Add(a);
             }
             it.AgregarAtributos(lAtributos, "TestURL");
-
+    
+        
         }
-
-         
-
-
+    }
+         */
     }
 }

@@ -23,7 +23,7 @@ namespace DataAccessLayer
                 //ChebayDBPublic.ProvidePublicSchema();
                 //ChebayDBContext.ProvisionTenant("PhoneBay");
 
-                using (var schema = ChebayDBContext.CreateTenant("PhoneBay"))
+         /*       using (var schema = ChebayDBContext.CreateTenant("PhoneBay"))
                 {
                     //var query = from cat in schema.categorias
                     //            where cat.CategoriaID ==1
@@ -42,7 +42,20 @@ namespace DataAccessLayer
                         System.Console.WriteLine(hijos.CategoriaID+hijos.Nombre);
                     }
                     Console.Read();
+            */
 
+                using (var schema = ChebayDBContext.CreateTenant("TestURL"))
+                {
+                    var query = from cat in schema.categorias
+                                where cat.CategoriaID ==1
+                                select cat;
+                    CategoriaCompuesta father =  (CategoriaCompuesta)query.FirstOrDefault();
+                    System.Console.WriteLine(father.CategoriaID+father.Nombre);
+                    Categoria c = new CategoriaCompuesta { Nombre="testing3", padre=father};
+                    System.Console.WriteLine(c.CategoriaID + c.Nombre);
+                    schema.categorias.Add(c);
+                    schema.SaveChanges();
+                }
                     Console.Read();
 
                     //schema.seed();
@@ -77,4 +90,3 @@ namespace DataAccessLayer
             
         }
     }
-}

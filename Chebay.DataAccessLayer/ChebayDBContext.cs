@@ -50,7 +50,7 @@ namespace DataAccessLayer
             Database.SetInitializer<ChebayDBContext>(null);
         }
 
-        private static ConcurrentDictionary<string, DbCompiledModel> modelCache = new ConcurrentDictionary<string, DbCompiledModel>();
+        public static ConcurrentDictionary<string, DbCompiledModel> modelCache = new ConcurrentDictionary<string, DbCompiledModel>();
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
@@ -126,9 +126,8 @@ namespace DataAccessLayer
                     else
                     {
                         var createScript = ((IObjectContextAdapter)ctx).ObjectContext.CreateDatabaseScript();
-                        Debug.WriteLine("11");
                         ctx.Database.ExecuteSqlCommand(createScript);
-                     }
+                    }
                 }
             }
             catch (Exception)
@@ -236,7 +235,7 @@ namespace DataAccessLayer
         }
 
 
-        private static ConcurrentDictionary<string, DbCompiledModel> modelCache = new ConcurrentDictionary<string, DbCompiledModel>();
+        public static ConcurrentDictionary<string, DbCompiledModel> modelCache = new ConcurrentDictionary<string, DbCompiledModel>();
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {

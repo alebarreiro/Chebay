@@ -271,5 +271,13 @@ namespace Chebay.DataAccessLayerTests
             lAtributos.Add(a);
             it.AgregarAtributos(lAtributos, "TestURL");
         }
+
+        [TestMethod]
+        public void ObtenerAtributos()
+        {
+            IDALTienda it = new DALTiendaEF();
+            List<Atributo> la = it.ObtenerAtributos(3, "TestURL");
+            Assert.AreEqual(4, la.Count);
+        }
     }
 }

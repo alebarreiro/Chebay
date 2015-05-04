@@ -508,7 +508,20 @@ namespace DataAccessLayer
             {
                 try
                 {
-                    return null;
+                    List<Atributo> ret = new List<Atributo>();
+                    var qCat = from cat in context.categorias
+                               where cat.CategoriaID == idCategoria
+                               select cat;
+                    Categoria c = qCat.FirstOrDefault();
+                    while (c != null)
+                    {
+                        foreach (Atributo a in c.atributos)
+                        {
+                            ret.Add(a);
+                        }
+                        c = c.padre;
+                    }
+                    return ret;
                 }
                 catch (Exception e)
                 {

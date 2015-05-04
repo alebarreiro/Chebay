@@ -17,7 +17,7 @@ namespace Shared.Entities
         public string Nombre { get; set; }
         //public long PadreID { get; set; }
    
-        public ICollection<Atributo> atributos { get; set; }
+        public virtual ICollection<Atributo> atributos { get; set; }
 
         //puede ser null
         public virtual CategoriaCompuesta padre { get; set; }

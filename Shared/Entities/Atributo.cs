@@ -21,6 +21,6 @@ namespace Shared.Entities
         public string valor { get; set; }
 
         [ForeignKey("CategoriaID")]
-        public virtual Categoria categorias { get; set; }
+        public virtual Categoria categoria { get; set; }
     }
 }

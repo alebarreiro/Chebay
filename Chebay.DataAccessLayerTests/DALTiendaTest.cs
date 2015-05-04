@@ -238,32 +238,6 @@ namespace Chebay.DataAccessLayerTests
             }
         }
         
-        /*
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void AgregarCategoria_ConPadreNULL()
-        {
-            IDALTienda it = new DALTiendaEF();
-            CategoriaCompuesta cc = new CategoriaCompuesta();
-            cc.Nombre = "CatPrueba";
-            List<Categoria> lc = new List<Categoria>();
-            lc.Add(cc);
-            it.AgregarCategorias(lc, "TestURL");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void AgregarCategoria_TiendaInexistente()
-        {
-            IDALTienda it = new DALTiendaEF();
-            CategoriaCompuesta cc = new CategoriaCompuesta();
-            cc.Nombre = "CatPrueba";
-            CategoriaCompuesta padre = (CategoriaCompuesta)it.ObtenerCategoria("TestURL", 1);
-            cc.padre = padre;
-            List<Categoria> lc = new List<Categoria>();
-            it.AgregarCategorias(lc, "TestURLxxxxx");
-        }
-        */
         [TestMethod]
         public void ListarCategorias()
         {
@@ -271,25 +245,31 @@ namespace Chebay.DataAccessLayerTests
             List<Categoria> lc = it.ListarCategorias("TestURL");
             Assert.AreEqual(21, lc.Count);
         }
-        /*
+
+        [TestMethod]
+        public void AgregarAtributo()
+        {
+            IDALTienda it = new DALTiendaEF();
+            List<Atributo> lAtributos = new List<Atributo>();
+            Categoria c = it.ObtenerCategoria("TestURL", 3);
+            Debug.WriteLine(c.CategoriaID);
+            Atributo a = new Atributo { categoria = c, etiqueta = "pulgadas" , valor = "23" };
+            it.AgregarAtributo(a, "TestURL");
+        }
+
         [TestMethod]
         public void AgregarAtributos()
         {
             IDALTienda it = new DALTiendaEF();
             List<Atributo> lAtributos = new List<Atributo>();
-            for (int i = 1; i < 10; i++ )
-            {
-                Atributo a = new Atributo();
-                a.CategoriaID = 3;
-                a.etiqueta = "Pantalla";
-                a.valor = (i*100).ToString();
-                lAtributos.Add(a);
-            }
+            Categoria c = it.ObtenerCategoria("TestURL",2);
+            Atributo a = new Atributo { categoria = c, etiqueta = "Conectividad", valor = "LTE" };
+            lAtributos.Add(a);
+            a = new Atributo { categoria = c, etiqueta = "Conectividad", valor = "3G" };
+            lAtributos.Add(a);
+            a = new Atributo { categoria = c, etiqueta = "Conectividad", valor = "GSM" };
+            lAtributos.Add(a);
             it.AgregarAtributos(lAtributos, "TestURL");
-    
-        
         }
-    }
-         */
     }
 }

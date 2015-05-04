@@ -302,10 +302,8 @@ namespace DataAccessLayer
                     var query = from cat in context.categorias
                                 where cat.CategoriaID == c.padre.CategoriaID
                                 select cat;
-                    System.Console.WriteLine(c.padre.CategoriaID + c.padre.Nombre);
                     CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
                     c.padre = father;
-                    System.Console.WriteLine(c.padre.CategoriaID + c.padre.Nombre);
                     context.categorias.Add(c);
                     context.SaveChanges();
                 }
@@ -333,33 +331,6 @@ namespace DataAccessLayer
                         ret.Add(c);
                     }
                     return ret;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
-            }
-        }
-
-        public void AgregarAtributos(List<Atributo> lAtributos, string urlTienda)
-        {
-            using (var schema = ChebayDBContext.CreateTenant(urlTienda))
-            {
-                try
-                {    
-                    foreach (Atributo a in lAtributos)
-                    try
-                    {
-                            
-                        schema.atributos.Add(a);
-                        schema.SaveChanges();
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.Message);
-                        throw;
-                    }
                 }
                 catch (Exception e)
                 {
@@ -471,5 +442,81 @@ namespace DataAccessLayer
                 }
             }
         }
+
+        public void AgregarAtributo(Atributo a, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    Debug.WriteLine(a.categoria.CategoriaID);
+                    var query = from cat in context.categorias
+                                where cat.CategoriaID == a.categoria.CategoriaID
+                                select cat;
+                    Categoria father = query.FirstOrDefault();
+                    a.categoria = father;
+                    Debug.WriteLine(a.categoria.CategoriaID);
+                    context.atributos.Add(a);
+                    context.SaveChanges();
+                    
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public void AgregarAtributos(List<Atributo> lAtributos, string urlTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(urlTienda))
+            {
+                try
+                {
+                    foreach (Atributo a in lAtributos)
+                        try
+                        {
+
+                            Debug.WriteLine(a.categoria.CategoriaID);
+                            var query = from cat in context.categorias
+                                        where cat.CategoriaID == a.categoria.CategoriaID
+                                        select cat;
+                            Categoria father = query.FirstOrDefault();
+                            a.categoria = father;
+                            Debug.WriteLine(a.categoria.CategoriaID);
+                            context.atributos.Add(a);
+                            context.SaveChanges();
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                            throw;
+                        }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public List<Atributo> ObtenerAtributos(long idCategoria, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    return null;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
     }
 }

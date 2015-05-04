@@ -28,24 +28,16 @@ namespace DataAccessLayer
         List<Categoria> ListarCategorias(string idTienda);
         Categoria ObtenerCategoria(string idTienda, long idCategoria);
 
-
-        //CU: 1.1 INICIAR SESIÓN BACK OFFICE
+        //--ATRIBUTOS--
+        void AgregarAtributos(List<Atributo> lAtributos, string urlTienda);
+        void AgregarAtributo(Atributo a, string urlTienda);
+        List<Atributo> ObtenerAtributos(long idCategoria, string idTienda);
+        
         bool AutenticarAdministrador(string idAdministrador, string passwd);
-        //Devuelve true si es el password correcto para el usuario.
         
         void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva);
-        //Devuelve true si passwdVieja es la password del idAdministrador y pudo cambiarla por passwdNueva.
-
+        
         void AgregarAdminTienda(string idAdministrador, string idTienda);
-        //Agrega a idAdministrador a idTienda.
-
-        //CU: 1.4 INGRESAR TIPO DE ATRIBUTO Y 1.5 ALTA ATRIBUTO
-        void AgregarAtributos(List<Atributo> lAtributos, string urlTienda);
-        //FALTA IMPLEMENTAR.
-
         
-        
-        
-
     }
 }

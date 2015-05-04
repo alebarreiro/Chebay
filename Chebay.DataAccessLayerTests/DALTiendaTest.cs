@@ -186,7 +186,7 @@ namespace Chebay.DataAccessLayerTests
                     CategoriaCompuesta cc = (CategoriaCompuesta)it.ObtenerCategoria("TestURL", 2);
                     Assert.AreEqual(cc.CategoriaID, 2);
                     Assert.AreEqual(cc.Nombre, "CatCompuestaPrueba");
-                    Assert.AreEqual(c.padre.CategoriaID, 1);
+                    Assert.AreEqual(cc.padre.CategoriaID, 1);
                 }
             }
             

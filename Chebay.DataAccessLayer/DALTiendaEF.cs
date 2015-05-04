@@ -270,24 +270,24 @@ namespace DataAccessLayer
                 try
                 {
                     foreach (Categoria dc in lCategorias) try
-                        {
-                            var query = from cat in context.categorias
-                                        where cat.CategoriaID == dc.padre.CategoriaID
-                                        select cat;
-                            CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
-                            dc.padre = father;
-                            context.categorias.Add(dc);
-                            context.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine(e.Message);
-                            throw;
-                        }
+                    {
+                        var query = from cat in context.categorias
+                                    where cat.CategoriaID == dc.padre.CategoriaID
+                                    select cat;
+                        CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
+                        dc.padre = father;
+                        context.categorias.Add(dc);
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.WriteLine(e.Message);
+                        throw;
+                    }
+                    context.SaveChanges();
                 }
                 catch (Exception e)
                 {
-                    Debug.WriteLine(e.Message);
+                    Debug.WriteLine(e.Source + e.Message);
                     throw;
                 }
             }
@@ -302,8 +302,10 @@ namespace DataAccessLayer
                     var query = from cat in context.categorias
                                 where cat.CategoriaID == c.padre.CategoriaID
                                 select cat;
+                    System.Console.WriteLine(c.padre.CategoriaID + c.padre.Nombre);
                     CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
                     c.padre = father;
+                    System.Console.WriteLine(c.padre.CategoriaID + c.padre.Nombre);
                     context.categorias.Add(c);
                     context.SaveChanges();
                 }

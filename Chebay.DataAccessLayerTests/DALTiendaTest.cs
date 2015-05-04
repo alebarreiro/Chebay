@@ -170,6 +170,14 @@ namespace Chebay.DataAccessLayerTests
         }
 
         [TestMethod]
+        public void ListarCategorias_Inicial()
+        {
+            IDALTienda it = new DALTiendaEF();
+            List<Categoria> lc = it.ListarCategorias("TestURL");
+            Assert.AreEqual(1, lc.Count);
+        }
+
+        [TestMethod]
         public void AgregarCategoriaCompuesta()
         {
             using (var schema = ChebayDBContext.CreateTenant("TestURL"))

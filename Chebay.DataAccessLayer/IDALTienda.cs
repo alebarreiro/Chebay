@@ -23,7 +23,7 @@ namespace DataAccessLayer
         Tienda ObtenerTienda(string idTienda);
         
         //--CATEGORIAS--
-        void AgregarCategorias(List<Categoria> lCategorias, string urlTienda); //idPadre no puede ser null.
+        void AgregarCategorias(List<Categoria> lCategorias, string urlTienda);
         void AgregarCategoria(Categoria c, string urltienda);
         List<Categoria> ListarCategorias(string idTienda);
         Categoria ObtenerCategoria(string idTienda, long idCategoria);

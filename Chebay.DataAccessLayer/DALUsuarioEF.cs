@@ -12,9 +12,9 @@ namespace DataAccessLayer
 {
     public class DALUsuarioEF : IDALUsuario
     {
-        public void AgregarUsuario(Usuario u)
+        public void AgregarUsuario(Usuario u, string idTienda)
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
             {
                 try
                 {
@@ -23,7 +23,8 @@ namespace DataAccessLayer
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
+                    throw;
                 }
             }
         }

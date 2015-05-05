@@ -24,7 +24,7 @@ namespace WebApplication1.Hubs
                 UsuarioID = userId
             };
             controladorSubasta.OfertarProducto(o, "TestURL");
-            Clients.All.newBidPosted(productId, newBid);
+            Clients.All.newBidPosted(productId, newBid, userId);
         }
 
     }

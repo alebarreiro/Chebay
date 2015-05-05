@@ -10,6 +10,8 @@ using Microsoft.Web.WebPages.OAuth;
 using WebMatrix.WebData;
 using Chebay.Backoffice.Filters;
 using Chebay.Backoffice.Models;
+using DataAccessLayer;
+using Shared.Entities;
 
 namespace Chebay.Backoffice.Controllers
 {
@@ -37,6 +39,10 @@ namespace Chebay.Backoffice.Controllers
         {
             if (ModelState.IsValid && WebSecurity.Login(model.UserName, model.Password, persistCookie: model.RememberMe))
             {
+                IDALTienda idal = new DALTiendaEF();
+                if(idal.AutenticarAdministrador(model.UserName, model.Password)){
+                    Session["admin"] = idal.ObtenerAdministrador(model.UserName);
+                }
                 return RedirectToLocal(returnUrl);
             }
 
@@ -80,12 +86,21 @@ namespace Chebay.Backoffice.Controllers
                 try
                 {
                     WebSecurity.CreateUserAndAccount(model.UserName, model.Password);
+                    IDALTienda idal = new DALTiendaEF();
+                    Administrador admin = new Administrador();
+                    admin.password = model.Password;
+                    admin.AdministradorID = model.UserName;
+                    idal.AgregarAdministrador(admin);
                     WebSecurity.Login(model.UserName, model.Password);
                     return RedirectToAction("Index", "Home");
                 }
                 catch (MembershipCreateUserException e)
                 {
                     ModelState.AddModelError("", ErrorCodeToString(e.StatusCode));
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.StackTrace);
                 }
             }
 

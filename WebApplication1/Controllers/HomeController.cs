@@ -11,11 +11,10 @@ namespace Frontoffice.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index(string urlTienda)
         {
             IDALSubasta controladorSubasta = new DALSubastaEF();
-            //List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados("Tienda1");
-            List<DataProducto> prods = null;
+            List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
             if (prods == null)
             {
                 prods = new List<DataProducto>();

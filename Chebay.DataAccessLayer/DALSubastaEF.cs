@@ -64,12 +64,14 @@ namespace DataAccessLayer
                         List<DataProducto> ret = new List<DataProducto>();
                         foreach (Producto p in qProductos)
                         {
-                            DataProducto dp = new DataProducto();
-                            dp.descripcion = p.descripcion;
-                            dp.fecha_cierre = p.fecha_cierre;
-                            dp.nombre = p.nombre;
-                            dp.precio_base_subasta = p.precio_base_subasta;
-                            dp.precio_compra = p.precio_compra;
+                            DataProducto dp = new DataProducto { 
+                                descripcion = p.descripcion,
+                                fecha_cierre = p.fecha_cierre,
+                                nombre = p.nombre, 
+                                precio_base_subasta = p.precio_base_subasta,
+                                precio_actual = p.precio_base_subasta, 
+                                precio_compra = p.precio_compra, 
+                                ProductoID = p.ProductoID };
                             ret.Add(dp);
                         }
                         return ret;

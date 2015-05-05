@@ -54,7 +54,7 @@ namespace Chebay.Backoffice.Controllers
             string pagina = "";
             string line = "";
             System.IO.StreamReader file =
-                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/DatosGeneralesTienda.cshtml");
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/DatosGenerales.cshtml");
             while ((line = file.ReadLine()) != null)
             {
                 pagina += line;
@@ -200,6 +200,7 @@ namespace Chebay.Backoffice.Controllers
                 if (Session["tienda"] == null)
                 {
                     string idAdmin = (string)Session["admin"];
+                    idAdmin = "mathi";
                     Tienda t = new Tienda();
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;

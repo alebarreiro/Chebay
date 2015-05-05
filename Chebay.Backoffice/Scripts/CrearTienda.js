@@ -15,8 +15,6 @@ function cargando() {
     paginaAntesLoading = $("#container").html();
 
     var loading = "<img src=\"Images/cargando.gif\" class=\"cargando\">";
-
-    $("#container").html("<h2>Cargando ...</h2>" + loading);
 }
 
 function finCargando() {

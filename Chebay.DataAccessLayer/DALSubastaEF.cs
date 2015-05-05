@@ -69,9 +69,11 @@ namespace DataAccessLayer
                                 fecha_cierre = p.fecha_cierre,
                                 nombre = p.nombre, 
                                 precio_base_subasta = p.precio_base_subasta,
-                                precio_actual = p.precio_base_subasta, 
+                                precio_actual = ObtenerMayorOferta(p.ProductoID,urlTienda).monto, 
                                 precio_compra = p.precio_compra, 
-                                ProductoID = p.ProductoID };
+                                ProductoID = p.ProductoID,
+                                idOfertante = ObtenerMayorOferta(p.ProductoID, urlTienda).UsuarioID
+                            };
                             ret.Add(dp);
                         }
                         return ret;
@@ -263,9 +265,59 @@ namespace DataAccessLayer
             }
         }
 
-        public void OfertarProducto(string idOfertante, long idProducto, double monto)
+        public void OfertarProducto(Oferta o, string idTienda)
         {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    context.ofertas.Add(o);
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
 
+            }
+        }
+
+        public List<DataProducto> ObtenerProductosPorTerminar(string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    return null;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public Oferta ObtenerMayorOferta(long idProducto, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var qOfertas = from o in context.ofertas
+                                   where o.ProductoID == idProducto
+                                   orderby o.monto descending
+                                   select o;
+                    return qOfertas.FirstOrDefault();
+
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
         }
     }
 }

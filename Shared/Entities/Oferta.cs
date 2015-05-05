@@ -22,7 +22,7 @@ namespace Shared.Entities
 
         [ForeignKey("ProductoID")]
         public virtual Producto producto { get; set; }
-        [ForeignKey("UsuarioID"), Required]
+        [ForeignKey("UsuarioID")]
         public virtual Usuario usuario { get; set; }
     }
 }

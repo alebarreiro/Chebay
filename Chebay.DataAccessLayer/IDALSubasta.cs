@@ -16,7 +16,9 @@ namespace DataAccessLayer
         Producto ObtenerProducto(long idProducto, string idTienda);
         List<DataProducto> ObtenerProductosPersonalizados(string urlTienda); //Devuelve los últimos 10 productos publicados para el index.
 
-        void OfertarProducto(string idOfertante, long idProducto, double monto);
+        void OfertarProducto(Oferta o, string idTienda);
+
+        List<DataProducto> ObtenerProductosPorTerminar(string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.
 
         //void AgregarImagenProducto(Imagen img, Producto p);
         /*

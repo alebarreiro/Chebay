@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using DataAccessLayer;
 using Shared.Entities;
+using Shared.DataTypes;
+using System.Diagnostics;
 
 namespace Chebay.DataAccessLayerTests
 {
@@ -24,6 +26,8 @@ namespace Chebay.DataAccessLayerTests
         {
             IDALUsuario iu = new DALUsuarioEF();
             Usuario u = new Usuario { UsuarioID = "userPrueba" };
+            iu.AgregarUsuario(u, "TestURL");
+            u = new Usuario { UsuarioID = "otroUserPrueba" };
             iu.AgregarUsuario(u, "TestURL");
         }
 
@@ -67,6 +71,41 @@ namespace Chebay.DataAccessLayerTests
             idal.AgregarComentario(c, "TestURL");
         }
 
+        [TestMethod]
+        public void OfertarProducto()
+        {
+            Oferta o = new Oferta
+            {
+                esFinal = false,
+                monto = 120,
+                ProductoID = 1,
+                UsuarioID = "userPrueba"
+            };
+            idal.OfertarProducto(o, "TestURL");
+            o = new Oferta
+            {
+                esFinal = false,
+                monto = 160,
+                ProductoID = 1,
+                UsuarioID = "otroUserPrueba"
+            };
+            idal.OfertarProducto(o, "TestURL");
+            o = new Oferta
+            {
+                esFinal = false,
+                monto = 130,
+                ProductoID = 1,
+                UsuarioID = "userPrueba"
+            };
+            idal.OfertarProducto(o, "TestURL");
+
+            List<DataProducto> ldp = idal.ObtenerProductosPersonalizados("TestURL");
+            foreach (DataProducto dp in ldp)
+            {
+                Assert.AreEqual(160,dp.precio_actual);
+                Assert.AreEqual("otroUserPrueba", dp.idOfertante);
+            }
+        }
 
     }
 }

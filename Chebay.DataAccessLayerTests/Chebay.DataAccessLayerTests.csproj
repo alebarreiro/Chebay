@@ -62,7 +62,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DALSubastaTests.cs" />
-    <Compile Include="DALTiendaTest.cs" />
+    <Compile Include="ALTiendaTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

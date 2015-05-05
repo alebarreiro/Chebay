@@ -9,7 +9,7 @@ using System.Collections.Generic;
 namespace Chebay.DataAccessLayerTests
 {
     [TestClass]
-    public class DALTiendaTest
+    public class ALTiendaTest
     {
         [TestMethod]
         public void Test0Inicial()

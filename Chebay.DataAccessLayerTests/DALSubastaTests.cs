@@ -46,6 +46,30 @@ namespace Chebay.DataAccessLayerTests
             };
             idal.AgregarProducto(p, "TestURL");
 
+            p = new Producto
+            {
+                nombre = "Laptop",
+                UsuarioID = "userPrueba",
+                descripcion = "Es una Toshiba",
+                precio_base_subasta = 1000,
+                precio_compra = 3000,
+                fecha_cierre = new DateTime(2016, 3, 27),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Televisión",
+                UsuarioID = "userPrueba",
+                descripcion = "Es una Samsung",
+                precio_base_subasta = 750,
+                precio_compra = 3000,
+                fecha_cierre = new DateTime(2016, 9, 7),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
             Producto ret = idal.ObtenerProducto(1, "TestURL");
             Assert.AreEqual("Celular", p.nombre);
             Assert.AreEqual("userPrueba", p.UsuarioID);

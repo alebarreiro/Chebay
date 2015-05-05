@@ -15,6 +15,8 @@ function cargando() {
     paginaAntesLoading = $("#container").html();
 
     var loading = "<img src=\"Images/cargando.gif\" class=\"cargando\">";
+
+    $("#container").html(loading);
 }
 
 function finCargando() {
@@ -142,12 +144,13 @@ function borrarCategoria(idCategoria, nombre) {
 
 
 
-function agregarCategoria() {
+function agregarCategoria(tipoCategoria) {
     var nombre = $("#nombreCategoria").val();
 
     var categoriaNueva = {
         nombre: nombre,
-        padre : padreAgregarCategoria
+        padre: padreAgregarCategoria,
+        tipoCategoria : tipoCategoria
     }
 
     $.ajax({

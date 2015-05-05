@@ -1,16 +1,30 @@
 ﻿<br /><br />
 <h2>Crear Categorías :</h2>
 <br /><br />
-<div class="input-group">
-    <span class="input-group-addon">Nombre :</span>
-    <input type="text" id="nombreCategoria" class="form-control" placeholder="Nombre de la Categoría">
-</div>
-<br /><br />
-<button class="btn btn-success" onclick="agregarCategoria()">Agregar Categoría</button>
-<br /><br />
+
 <div id="divCategorias" class="categorias">
     
 </div>
 
-<br /><br />
-<button class="btn btn-success" onclick="finalizarCrecionCategorias()">Guardar Categorías</button>
+<div id="modalAgregarCategoria" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Agregar Categoría</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">Nombre :</span>
+                    <input type="text" id="nombreCategoria" class="form-control" placeholder="Nombre de la Categoría">
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="agregarCategoria('compuesta')">Agregar Categoría Compuesta</button>
+                <button type="button" class="btn btn-success" onclick="agregarCategoria('simple')">Agregar Categoría Simple</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

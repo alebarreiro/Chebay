@@ -20,6 +20,7 @@ namespace Chebay.Backoffice.Controllers
     {
         public string nombre { get; set; }
         public long padre { get; set; }
+        public string tipoCategoria { get; set; }
     }
 
     public class TiendaController : Controller
@@ -116,7 +117,22 @@ namespace Chebay.Backoffice.Controllers
         {
             try
             {
-                
+                if (datos.tipoCategoria.Equals("compuesta"))
+                {
+                    Categoria catCompuesta = new CategoriaCompuesta();
+                    IDALTienda idal = new DALTiendaEF();
+                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
+                    catCompuesta.Nombre = datos.nombre;
+                    idal.AgregarCategoria(catCompuesta, "Tienda Ejemplo");
+                }
+                else if (datos.tipoCategoria.Equals("simple"))
+                {
+                    Categoria catSimple = new CategoriaSimple();
+                    IDALTienda idal = new DALTiendaEF();
+                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
+                    catSimple.Nombre = datos.nombre;
+                    idal.AgregarCategoria(catSimple, "Tienda Ejemplo");
+                }
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -155,23 +171,6 @@ namespace Chebay.Backoffice.Controllers
             return Content(pagina);
         }
 
-        // GET: /Tienda/CrearPersonalizacion
-        [HttpGet]
-        public ActionResult VisualizarCategorias()
-        {
-            //devolver un JSON para manipular en el javacript de CrearTienda para armar el arbol
-            
-            string pagina = "";
-            string line = "";
-            System.IO.StreamReader file =
-                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/CrearTiposAtributo.cshtml");
-            while ((line = file.ReadLine()) != null)
-            {
-                pagina += line;
-            }
-            file.Close();
-            return Content(pagina);
-        }
 
         // GET: /Tienda/CrearPersonalizacion
         [HttpGet]
@@ -200,7 +199,7 @@ namespace Chebay.Backoffice.Controllers
                 if (Session["tienda"] == null)
                 {
                     string idAdmin = (string)Session["admin"];
-                    idAdmin = "mathi";
+                    idAdmin = null;
                     Tienda t = new Tienda();
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
@@ -210,6 +209,7 @@ namespace Chebay.Backoffice.Controllers
                 else
                 {
                     string idAdmin = (string)Session["admin"];
+                    idAdmin = null;
                     Tienda t = new Tienda();
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;

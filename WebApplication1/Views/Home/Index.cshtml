@@ -46,6 +46,9 @@
                     <div class="offer-section-price" id="bidValue-@dp.ProductoID"> @dp.precio_actual </div>
                     <button class="offer-section-button" onclick="incrementOffer(@dp.ProductoID)"> + </button>
                 </div>
+                <div class="product-user-winner">
+                    Ganador: @dp.idOfertante
+                </div>
             </div>
         </div>
     }
@@ -74,7 +77,7 @@
             var productId = id,
               bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
             //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
-            proxy.server.placeNewBid(productId, bidToPost);
+            proxy.server.placeNewBid(productId, bidToPost, false, "userPrueba");
         };
 
         incrementOffer = function(id) {

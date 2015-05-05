@@ -114,3 +114,13 @@
     color: white;
     width: 100%
 }
+
+.product-user-winner{
+    text-align: center;
+    font-size: 17px;
+    height: 25px;
+    background: #e44d26;
+    color: white;
+    width: 100%;
+    margin-top: 49px;
+}

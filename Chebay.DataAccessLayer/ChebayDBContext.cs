@@ -107,6 +107,7 @@ namespace DataAccessLayer
 
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
+            Debug.WriteLine("schemaName " + schemaName);
             var compiledModel = modelCache.GetOrAdd(schemaName, compModel);
             ChebayDBContext ret = new ChebayDBContext(compiledModel);
             return ret;

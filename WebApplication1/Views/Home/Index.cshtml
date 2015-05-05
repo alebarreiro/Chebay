@@ -8,7 +8,6 @@
 <div class="row">
     @foreach (var dp in productos)
     {
-        {idProd++;}
         <div class="product-item">
             <div class="product-item-header">@dp.nombre</div>
             @{
@@ -17,7 +16,7 @@
                 var terceraImagen = primeraImagen;
             }
             <div class="c-wrapper">
-                <div id="myCarousel-@idProd" class="carousel slide">
+                <div id="myCarousel-@dp.ProductoID" class="carousel slide">
                     <!-- SE ARMA EL VISOR -->
                     <div class="carousel-inner">
                         <div class="item active">
@@ -40,11 +39,13 @@
                     </a>
                 </div>
             </div>
-            <button id="bidButton" data-id="@idProd" onclick="onNewBidClick(@idProd)">BID!</button> <p id="bidValue-@idProd">0</p>
-            <p>
-                @dp.descripcion
-            </p>
-
+            <div class="product-item-footer">
+                <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)">BID NOW!</button>
+                <div class="offer-section">
+                    <div class="offer-section-price" id="bidValue-@dp.ProductoID"> @dp.precio_actual </div>
+                    <button class="offer-section-button" onclick="incrementOffer(@dp.ProductoID)"> + </button>
+                </div>
+            </div>
         </div>
     }
 </div>
@@ -57,7 +58,6 @@
 
 <script type="text/javascript">
     $(function () {
-
         // Proxy creado a partir de signalr/hubs
         var proxy = $.connection.subastaHub;
         // Server callback methods
@@ -71,11 +71,14 @@
         // Client methods
         onNewBidClick = function (id) {
             var productId = id,
-              currentBid = parseInt($('#bidValue-' + productId).text(), 10),
-              bidToPost = currentBid + 1;
+              bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
             //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
             proxy.server.placeNewBid(productId, bidToPost);
         };
+
+        incrementOffer = function(id) {
+            $('#bidValue-' + id).text( parseInt($('#bidValue-' + id).text(), 10) + 1);
+        }
     });
 </script>
 

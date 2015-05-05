@@ -37,8 +37,8 @@ namespace Chebay.DataAccessLayerTests
             Debug.WriteLine("\n1. AgregarAdministrador");
             Debug.WriteLine("1.1. Crea un Administrador nuevo TestAdmin con pass: pass123.");
             Administrador a = new Administrador();
-            a.AdministradorID = "TestAdmin";
-            a.password = "pass123";
+            a.AdministradorID = "mathi";
+            a.password = "123";
             a.tiendas = new HashSet<Tienda>();
             it.AgregarAdministrador(a);
         }
@@ -167,6 +167,14 @@ namespace Chebay.DataAccessLayerTests
             t.nombre = "NombreTest";
             t.descripcion = "DescTest";
             it.ActualizarTienda(t);
+        }
+
+        [TestMethod]
+        public void ListarCategorias_Inicial()
+        {
+            IDALTienda it = new DALTiendaEF();
+            List<Categoria> lc = it.ListarCategorias("TestURL");
+            Assert.AreEqual(1, lc.Count);
         }
 
         [TestMethod]

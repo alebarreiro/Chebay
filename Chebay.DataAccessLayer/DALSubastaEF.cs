@@ -7,345 +7,47 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.Data.Entity.Validation;
 
 namespace DataAccessLayer
 {
     public class DALSubastaEF : IDALSubasta
     {
-        public void AgregarProducto(string idUsuario, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria)
+        public void AgregarProducto(Producto p, string idTienda)
         {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
             {
                 try
                 {
-                    /* var usr = from u in context.usuarios
-                               where u.UsuarioID == idUsuario
-                               select u;
-                     var cat = from c in context.categorias
-                               where c.CategoriaID == idCategoria
-                               select c;
-                     if (usr == null || cat == null)
-                         throw new Exception("No existe el usuario o la categoría.");
-                     else
-                     {
-                         Producto p = new Producto();
-                         p.UsuarioID = idUsuario;
-                         p.CategoriaID = idCategoria;
-                         p.nombre = nomProducto;
-                         p.descripcion = descProducto;
-                         p.precio_base_subasta = precioBase;
-                         p.precio_compra = precioCompra;
-                         p.fecha_cierre = fechaCierre;
-                         Usuario user = usr.FirstOrDefault();
-                         p.usuario = user;
-                         CategoriaSimple c = (CategoriaSimple)cat.FirstOrDefault();
-                         p.categoria = c;
-                         c.productos.Add(p);
-                         user.publicados.Add(p);
-                         context.productos.Add(p);
-                         context.SaveChanges();
-                     }*/
+                    context.productos.Add(p);
+                    context.SaveChanges();
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
+                    Debug.WriteLine(e.Message);
+                    throw;
                 }
             }
         }
 
-        public void ModificarProducto(long idProducto, string nomProducto, string descProducto, int precioBase, int precioCompra, DateTime fechaCierre, string idCategoria)
+
+        public Producto ObtenerProducto(long idProducto, string idTienda)
         {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    /*var prd = from p in context.productos
-                              where p.ProductoID == idProducto
-                              select p;
-                    var catNueva = from c in context.categorias
-                              where c.CategoriaID == idCategoria
-                              select c;
-                    if (catNueva == null)
-                        throw new Exception("No existe el usuario o la categoría.");
-                    else
-                    {
-                        Producto p = prd.FirstOrDefault();
-                        
-                        p.nombre = nomProducto;
-                        p.descripcion = descProducto;
-                        p.precio_base_subasta = precioBase;
-                        p.precio_compra = precioCompra;
-                        p.fecha_cierre = fechaCierre;
-
-                        CategoriaSimple cNueva = (CategoriaSimple)catNueva.FirstOrDefault();
-                        if (p.CategoriaID != cNueva.CategoriaID)
-                        {
-                            p.CategoriaID = idCategoria;
-                            p.categoria = cNueva;
-
-                        }
-                        
-                        //c.productos.Add(p);
-                        context.productos.Add(p);
-                        context.SaveChanges();
-                    }*/
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                }
-            }
-        }
-
-        //void AgregarImagenProducto(Imagen img, Producto p);
-
-        //void AgregarComentarioProducto(Comentario, Producto p);
-
-        public Producto ObtenerProducto(long idProducto, string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
             {
                 try
                 {
                     var prod = from p in context.productos
                                where p.ProductoID == idProducto
-                               select p;
-                    var usr = from u in context.usuarios
-                              where u.UsuarioID == idUsuario
-                              select u;
-
-                    if (prod.Count() > 0 && usr.Count() > 0)
-                    {
-                        Producto pr = prod.FirstOrDefault();
-                        Usuario user = usr.FirstOrDefault();
-                        //Visita v = new Visita();
-                        //v.ProductoID = idProducto;
-                        //v.producto = pr;
-                        //v.UsuarioID = idUsuario;
-                        //v.usuario = user;
-                        //pr.visitas.Add(v);
-                        //user.visitas.Add(v);
-                        pr.visitas.Add(user);
-                        user.visitas.Add(pr);
-                        //context.visitas.Add(v);
-                        context.SaveChanges(); 
-                        return pr;
-                    }
-                    else
-                        return null;
+                               select p;    
+                    return prod.FirstOrDefault();   
                 }
                 catch (Exception e)
                 {
-                    System.Console.WriteLine(e.Message);
-                    return null;
+                    Debug.WriteLine(e.Message);
+                    throw;
                 }
             }
-        }
-
-        public List<Producto> ObtenerProductosCategoria(string nombreCategoria)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    /*var query = from c in context.categorias
-                                where c.CategoriaID == nombreCategoria
-                                select c;
-                    if (query == null)
-                        return null;
-                    else
-                    {
-                        CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
-                        return cs.productos.ToList();
-                    }*/
-                    return null;
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-        public List<Producto> ObtenerProductosVisitados(string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
-                    {
-                        Usuario u = query.FirstOrDefault();
-                        List<Producto> ret = u.visitas.ToList();
-                        return ret;
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-
-        public List<Producto> ObtenerProductosFavoritos(string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
-                    {
-                        Usuario u = query.FirstOrDefault();
-                        return u.favoritos.ToList();
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-        public List<Producto> ObtenerProductosComprados(string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
-                    {
-                        Usuario u = query.FirstOrDefault();
-                        List<Compra> lc = (List<Compra>)u.compras;
-                        List<Producto> ret = new List<Producto>();
-                        foreach (Compra c in lc)
-                        {
-                            ret.Add(c.producto);
-                        }
-                        return ret;
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-        public List<Producto> ObtenerProductosOfertados(string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
-                    {
-                        Usuario u = query.FirstOrDefault();
-                        List<Oferta> lo = (List<Oferta>)u.ofertas;
-                        List<Producto> ret = new List<Producto>();
-                        foreach (Oferta o in lo)
-                        {
-                            ret.Add(o.producto);
-                        }
-                        return ret;
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-        public List<Producto> ObtenerProductosPublicados(string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
-                    {
-                        Usuario u = query.FirstOrDefault();
-                        return (List<Producto>)u.publicados;
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
-            }
-        }
-
-        public void AgregarComentario(string texto, long idProducto, string idUsuario)
-        {
-            using (var context = new ChebayDBContext())
-            {
-                try
-                {
-                    var prod = from p in context.productos
-                               where p.ProductoID == idProducto
-                               select p;
-                    var user = from u in context.usuarios
-                               where u.UsuarioID == idUsuario
-                               select u;
-                    if (prod != null && user != null)
-                    {
-                        Usuario u = user.FirstOrDefault();
-                        Producto p = prod.FirstOrDefault();
-                        Comentario c = new Comentario();
-                        c.fecha = (DateTime)System.DateTime.Now;
-                        c.ProductoID = idProducto;
-                        c.UsuarioID = idUsuario;
-                        c.usuario = u;
-                        c.producto = p;
-                        c.texto = texto;
-                        context.comentarios.Add(c);
-                        u.comentarios.Add(c);
-                        p.comentarios.Add(c);
-                        context.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                }
-            }
-        }
-
-        public void OfertarProducto(string idOfertante, long idProducto, double monto)
-        {
-
         }
 
         public List<DataProducto> ObtenerProductosPersonalizados(string urlTienda)
@@ -378,10 +80,190 @@ namespace DataAccessLayer
                 catch (Exception e)
                 {
                     Debug.WriteLine(e.Message);
-                    return null;
+                    throw;
                 }
             }
         }
 
+        public List<Producto> ObtenerProductosCategoria(long idCategoria, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var query = from c in context.categorias
+                                where c.CategoriaID == idCategoria
+                                select c;
+                    CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
+                    return cs.productos.ToList();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public List<Producto> ObtenerProductosVisitados(string idUsuario, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var query = from u in context.usuarios
+                                where u.UsuarioID == idUsuario
+                                select u;
+                    if (query == null)
+                        return null;
+                    else
+                    {
+                        Usuario u = query.FirstOrDefault();
+                        List<Producto> ret = u.visitas.ToList();
+                        return ret;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+
+        public List<Producto> ObtenerProductosFavoritos(string idUsuario, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var query = from u in context.usuarios
+                                where u.UsuarioID == idUsuario
+                                select u;
+                    if (query == null)
+                        return null;
+                    else
+                    {
+                        Usuario u = query.FirstOrDefault();
+                        return u.favoritos.ToList();
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public List<Producto> ObtenerProductosComprados(string idUsuario, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var query = from u in context.usuarios
+                                where u.UsuarioID == idUsuario
+                                select u;
+                    if (query == null)
+                        return null;
+                    else
+                    {
+                        Usuario u = query.FirstOrDefault();
+                        List<Compra> lc = (List<Compra>)u.compras;
+                        List<Producto> ret = new List<Producto>();
+                        foreach (Compra c in lc)
+                        {
+                            ret.Add(c.producto);
+                        }
+                        return ret;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public List<Producto> ObtenerProductosOfertados(string idUsuario, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var query = from u in context.usuarios
+                                where u.UsuarioID == idUsuario
+                                select u;
+                    if (query == null)
+                        return null;
+                    else
+                    {
+                        Usuario u = query.FirstOrDefault();
+                        List<Oferta> lo = (List<Oferta>)u.ofertas;
+                        List<Producto> ret = new List<Producto>();
+                        foreach (Oferta o in lo)
+                        {
+                            ret.Add(o.producto);
+                        }
+                        return ret;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public List<Producto> ObtenerProductosPublicados(string idUsuario, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    var query = from u in context.usuarios
+                                where u.UsuarioID == idUsuario
+                                select u;
+                    if (query == null)
+                        return null;
+                    else
+                    {
+                        Usuario u = query.FirstOrDefault();
+                        return (List<Producto>)u.publicados;
+                    }
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public void AgregarComentario(Comentario c, string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                try
+                {
+                    context.comentarios.Add(c);
+                    context.SaveChanges();
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                    throw;
+                }
+            }
+        }
+
+        public void OfertarProducto(string idOfertante, long idProducto, double monto)
+        {
+
+        }
     }
 }

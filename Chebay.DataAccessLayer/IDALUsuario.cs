@@ -10,7 +10,7 @@ namespace DataAccessLayer
 {
     public interface IDALUsuario
     {
-        void AgregarUsuario(Usuario u);
+        void AgregarUsuario(Usuario u, string idTienda);
         void ActualizarUsuario(Usuario u);
         Usuario ObtenerUsuario(string id);
         List<Usuario> ObtenerTodosUsuarios();

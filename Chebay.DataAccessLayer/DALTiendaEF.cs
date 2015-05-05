@@ -109,6 +109,8 @@ namespace DataAccessLayer
             {
                 try
                 {
+               /*     if (idAdmin == "" || idAdmin == null)
+                        throw new Exception("El administrador no puede ser vacío.");
                     var query = from t in context.tiendas
                                 where t.TiendaID == tienda.TiendaID
                                 select t;
@@ -126,14 +128,12 @@ namespace DataAccessLayer
                             if (tienda.administradores == null)
                                 tienda.administradores = new HashSet<Administrador>();
                             Administrador admin = ad.FirstOrDefault();
-                            //tienda.administradores.Add(admin);
+                            tienda.administradores.Add(admin);
                             if (admin.tiendas == null)
                                 admin.tiendas = new HashSet<Tienda>();
-                            admin.tiendas.Add(tienda);
+                            admin.tiendas.Add(tienda);*/
                             context.tiendas.Add(tienda);
-                            Debug.WriteLine("1");
                             ChebayDBContext.ProvisionTenant(tienda.TiendaID);
-                            Debug.WriteLine("2");
                             context.SaveChanges();
                             Debug.WriteLine("Tienda " + tienda.TiendaID + " creada con éxito.");
                             
@@ -146,8 +146,8 @@ namespace DataAccessLayer
                             schema.categorias.Add(raiz);
                             schema.SaveChanges();
                             Debug.WriteLine("Categoría raíz de " + tienda.TiendaID + " creada con éxito.");
-                        }
-                    }   
+                     //   }
+                    //}   
                 }
                 catch (Exception e)
                 {

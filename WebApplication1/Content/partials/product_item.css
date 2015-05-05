@@ -4,7 +4,7 @@
             box-shadow: 0 5px 10px #aaa;
 
   float: left;
-  height: 280px;
+  height: 325px;
   margin: 15px;
   position: relative;
   width: 230px;
@@ -104,4 +104,13 @@
 .bid-button{
     float: left;
     margin: 7px 5px 0px 5px;
+}
+
+.product-item-countdown{
+    text-align: center;
+    font-size: 20px;
+    height: 25px;
+    background: #e44d26;
+    color: white;
+    width: 100%
 }

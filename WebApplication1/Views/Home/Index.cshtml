@@ -40,6 +40,7 @@
                 </div>
             </div>
             <div class="product-item-footer">
+                <div class="product-item-countdown"> @dp.fecha_cierre </div>
                 <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)">BID NOW!</button>
                 <div class="offer-section">
                     <div class="offer-section-price" id="bidValue-@dp.ProductoID"> @dp.precio_actual </div>

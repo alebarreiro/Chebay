@@ -37,8 +37,8 @@ namespace Chebay.DataAccessLayerTests
             Debug.WriteLine("\n1. AgregarAdministrador");
             Debug.WriteLine("1.1. Crea un Administrador nuevo TestAdmin con pass: pass123.");
             Administrador a = new Administrador();
-            a.AdministradorID = "mathi";
-            a.password = "123";
+            a.AdministradorID = "TestAdmin";
+            a.password = "pass123";
             a.tiendas = new HashSet<Tienda>();
             it.AgregarAdministrador(a);
         }

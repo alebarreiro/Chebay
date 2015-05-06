@@ -9,8 +9,29 @@ using System.Collections.Generic;
 namespace Chebay.DataAccessLayerTests
 {
     [TestClass]
-    public class ALTiendaTest
+    public class DALTiendaTests
     {
+
+        public DALTiendaTests()
+        {
+            
+        }
+
+        [TestMethod]
+        public void SuperTest()
+        {
+            Test0Inicial();
+            AgregarAdministrador();
+            AgregarTienda();
+            AgregarCategoriaCompuesta();
+            AgregarCategoriaSimple();
+            AgregarCategorias();
+            ListarCategorias();
+            AgregarAtributo();
+            AgregarAtributos();
+            ObtenerAtributos();
+        }
+
         [TestMethod]
         public void Test0Inicial()
         {
@@ -20,9 +41,20 @@ namespace Chebay.DataAccessLayerTests
                 IDALTienda it = new DALTiendaEF();
                 Debug.WriteLine("INICIO");
                 Debug.WriteLine("0.1. Elimino TestAdmin.");
+                try
+                {
                 it.EliminarAdministrador("TestAdmin");
+                }
+                catch (Exception e)
+                { }
                 Debug.WriteLine("\n0.2. Elimino www.TestURL.com.");
-                it.EliminarTienda("TestURL");
+                try 
+                { 
+                        it.EliminarTienda("TestURL");
+                }
+                catch (Exception e)
+                { }
+
                 Debug.WriteLine("\n0.3. Chequear que no existe TestAdmin.");
                 Assert.AreEqual(it.ObtenerAdministrador("TestAdmin"), null);
                 Debug.WriteLine("\n0.4. Chequear que no existe www.TestURL.com.");

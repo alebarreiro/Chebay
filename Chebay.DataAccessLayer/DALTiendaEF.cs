@@ -14,9 +14,9 @@ namespace DataAccessLayer
     {
         public void AgregarAdministrador(Administrador admin)
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from adm in context.administradores
                                 where adm.AdministradorID == admin.AdministradorID
@@ -28,24 +28,22 @@ namespace DataAccessLayer
                         Debug.WriteLine("Administrador " + admin.AdministradorID + " creado correctamente");
                     }
                     else
-                    {
                         throw new Exception("Ya existe un administrador " + admin.AdministradorID);
-                    }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public bool AutenticarAdministrador(string idAdministrador, string passwd)
         //Devuelve true si es el password correcto para el usuario.
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from admin in context.administradores
                                 where admin.AdministradorID == idAdministrador
@@ -67,20 +65,20 @@ namespace DataAccessLayer
 
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva)
         //Devuelve true si passwdVieja es la password del idAdministrador y pudo cambiarla por passwdNueva.
         {
-            using (var context = new ChebayDBContext())
+            try
             {
-                try
+                using (var context = new ChebayDBContext())
                 {
                     /*var query = from admin in context.administradores
                                 where admin.AdministradorID == idAdministrador
@@ -95,20 +93,22 @@ namespace DataAccessLayer
                     else
                         return false;*/
                 }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public void AgregarTienda(Tienda tienda, string idAdmin)
         //Completa el nombre, descripción, una URL (TiendaID).
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
+                
                /*     if (idAdmin == "" || idAdmin == null)
                         throw new Exception("El administrador no puede ser vacío.");
                     var query = from t in context.tiendas
@@ -149,101 +149,63 @@ namespace DataAccessLayer
                      //   }
                     //}   
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                    //Dropear las tablas creadas.
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+                //Dropear las tablas creadas.
             }
         }
 
         public void ActualizarTienda(Tienda tienda)
-        //Cambiar nombre o descripción de t.
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                chequearTienda(tienda.TiendaID);
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
+                
                     var qTienda = from t in context.tiendas
                                   where t.TiendaID == tienda.TiendaID
                                   select t;
-                    if (qTienda.Count() > 0)
-                    {
-                        Tienda tnd = qTienda.FirstOrDefault();
-                        tnd.descripcion = tienda.descripcion;
-                        tnd.nombre = tienda.nombre;
-                        context.SaveChanges();
-                        Debug.WriteLine("Tienda " + tienda.TiendaID + " actualizada con éxito.");
-                    }
-                    else
-                        throw new Exception("No existe una tienda con URL " + tienda.TiendaID);
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
+                    Tienda tnd = qTienda.FirstOrDefault();
+                    tnd.descripcion = tienda.descripcion;
+                    tnd.nombre = tienda.nombre;
+                    context.SaveChanges();
+                    Debug.WriteLine("Tienda " + tienda.TiendaID + " actualizada con éxito.");
                 }
             }
-        }
-
-        public void CambiarURLTienda(string idTienda, string nuevaURL)
-        //Cambia la URL de idTienda por nuevaURL.
-        {
-            using (var context = new ChebayDBContext())
+            catch (Exception e)
             {
-                try
-                {
-                    var query = from t in context.tiendas
-                                where t.TiendaID == idTienda
-                                select t;
-                    var nueva = from n in context.tiendas
-                                where n.TiendaID == nuevaURL
-                                select n;
-
-                    if (query != null && nueva == null)
-                    {
-                        Tienda tnd = query.FirstOrDefault();
-                        tnd.TiendaID = nuevaURL;
-                        context.SaveChanges();
-                    }
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                }
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Tienda> ObtenerTodasTiendas()
         {
-            using (var context = new ChebayDBContext())
+            try
             {
-                try
-                {
-                    return null;
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public Tienda ObtenerTiendasAdministrador(string idAdministrador)
         {
-            using (var context = new ChebayDBContext())
+            try
             {
-                try
-                {
-                    return null;
-                }
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
+                return null;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
@@ -263,11 +225,12 @@ namespace DataAccessLayer
             }
         }
 
-        public void AgregarCategorias(List<Categoria> lCategorias, string urlTienda)
+        public void AgregarCategorias(List<Categoria> lCategorias, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(urlTienda))
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     foreach (Categoria dc in lCategorias) try
                     {
@@ -285,19 +248,20 @@ namespace DataAccessLayer
                     }
                     context.SaveChanges();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Source + e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Source + e.Message);
+                throw;
             }
         }
 
-        public void AgregarCategoria(Categoria c, string urlTienda)
+        public void AgregarCategoria(Categoria c, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(urlTienda))
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var query = from cat in context.categorias
                                 where cat.CategoriaID == c.padre.CategoriaID
@@ -307,20 +271,21 @@ namespace DataAccessLayer
                     context.categorias.Add(c);
                     context.SaveChanges();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
 
         public List<Categoria> ListarCategorias(string idTienda)
         {
-            using (var schema = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var schema = ChebayDBContext.CreateTenant(idTienda))
                 {
                     List<Categoria> ret = new List<Categoria>();
                     var qCat = from c in schema.categorias
@@ -332,11 +297,11 @@ namespace DataAccessLayer
                     }
                     return ret;
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
@@ -347,9 +312,9 @@ namespace DataAccessLayer
 
         public void EliminarAdministrador(string idAdministrador)
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from adm in context.administradores
                                 where adm.AdministradorID == idAdministrador
@@ -357,37 +322,38 @@ namespace DataAccessLayer
                     context.administradores.Remove(query.FirstOrDefault());
                     context.SaveChanges();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
             }
         }
 
         public Administrador ObtenerAdministrador(string idAdministrador)
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from adm in context.administradores
                                 where adm.AdministradorID == idAdministrador
                                 select adm;
                     return query.FirstOrDefault();    
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public void EliminarTienda(string idTienda)
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                //chequearTienda(idTienda);
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from t in context.tiendas
                                 where t.TiendaID == idTienda
@@ -396,117 +362,113 @@ namespace DataAccessLayer
                     context.tiendas.Remove(tnd);
                     context.SaveChanges();
                     Debug.WriteLine("La tienda " + idTienda + " ha sido eliminada.");
-                    }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public Tienda ObtenerTienda(string idTienda)
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
             {
-                try
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
+                
                     var query = from t in context.tiendas
                                 where t.TiendaID == idTienda
                                 select t;
-                    return query.FirstOrDefault();
+                    if (query.Count() > 0)
+                        return query.FirstOrDefault();
+                    else
+                        return null;
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    return null;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public Categoria ObtenerCategoria(string idTienda, long idCategoria)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            chequearTienda(idTienda);
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var query = from c in context.categorias
                                     where c.CategoriaID == idCategoria
                                     select c;
                     return query.FirstOrDefault();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public void AgregarAtributo(Atributo a, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    Debug.WriteLine(a.categoria.CategoriaID);
                     var query = from cat in context.categorias
                                 where cat.CategoriaID == a.categoria.CategoriaID
                                 select cat;
                     Categoria father = query.FirstOrDefault();
                     a.categoria = father;
-                    Debug.WriteLine(a.categoria.CategoriaID);
                     context.atributos.Add(a);
                     context.SaveChanges();
-                    
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
-        public void AgregarAtributos(List<Atributo> lAtributos, string urlTienda)
+        public void AgregarAtributos(List<Atributo> lAtributos, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(urlTienda))
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     foreach (Atributo a in lAtributos)
-                        try
-                        {
-
-                            Debug.WriteLine(a.categoria.CategoriaID);
-                            var query = from cat in context.categorias
-                                        where cat.CategoriaID == a.categoria.CategoriaID
-                                        select cat;
-                            Categoria father = query.FirstOrDefault();
-                            a.categoria = father;
-                            Debug.WriteLine(a.categoria.CategoriaID);
-                            context.atributos.Add(a);
-                            context.SaveChanges();
-                        }
-                        catch (Exception e)
-                        {
-                            Debug.WriteLine(e.Message);
-                            throw;
-                        }
+                    {
+                        var query = from cat in context.categorias
+                                    where cat.CategoriaID == a.categoria.CategoriaID
+                                    select cat;
+                        Categoria father = query.FirstOrDefault();
+                        a.categoria = father;
+                        context.atributos.Add(a);
+                        context.SaveChanges();
+                    }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Atributo> ObtenerAtributos(long idCategoria, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     List<Atributo> ret = new List<Atributo>();
                     var qCat = from cat in context.categorias
@@ -523,11 +485,31 @@ namespace DataAccessLayer
                     }
                     return ret;
                 }
-                catch (Exception e)
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        void chequearTienda(string idTienda)
+        {
+            try
+            {
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
-                    Debug.WriteLine(e.Message);
-                    throw;
+                    var qTienda = from t in context.tiendas
+                                  where t.TiendaID == idTienda
+                                  select t;
+                    if (qTienda.Count() == 0)
+                        throw new Exception("No existe la tienda" + idTienda);
                 }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 

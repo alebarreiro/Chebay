@@ -47,6 +47,7 @@ function finalizarDatosGenerales(){
         url: '/Tienda/GuardarDatosGenerales',
         type: 'POST',
         dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
         data : JSON.stringify(datosGenerales),
         success: function (data, textStatus, jqxhr) {
             finCargando();
@@ -107,6 +108,7 @@ function finalizarCrearTienda() {
             url: '/Tienda/FinalizarCreacionTienda',
             type: 'POST',
             dataType: "json",
+            contentType: 'application/json; charset=UTF-8',
             data: JSON.stringify(datosGenerales),
             success: function (data, textStatus, jqxhr) {
                 $('#container').html(data);
@@ -157,6 +159,7 @@ function agregarCategoria(tipoCategoria) {
         url: '/Tienda/AgregarCategoria',
         type: 'POST',
         dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(categoriaNueva),
         success: function (data, textStatus, jqxhr) {
             finCargando();
@@ -236,7 +239,6 @@ function crearCategorias() {
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#divCategorias').html(data);
-                $(".tree").treegrid();
             }
         });
     }

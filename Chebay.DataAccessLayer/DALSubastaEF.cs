@@ -61,6 +61,7 @@ namespace DataAccessLayer
                 {
                     chequearTienda(idTienda);
                     var qProductos = from p in context.productos
+                                     orderby p.fecha_cierre descending
                                      select p;
                     if (qProductos.Count() > 0)
                     {

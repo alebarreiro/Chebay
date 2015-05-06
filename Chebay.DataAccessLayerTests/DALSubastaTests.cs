@@ -77,7 +77,7 @@ namespace Chebay.DataAccessLayerTests
             };
             idal.AgregarProducto(p, "TestURL");
 
-            Producto p = new Producto
+            p = new Producto
             {
                 nombre = "Caballo",
                 UsuarioID = "userPrueba",

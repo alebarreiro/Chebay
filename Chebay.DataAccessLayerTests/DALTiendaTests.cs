@@ -39,26 +39,18 @@ namespace Chebay.DataAccessLayerTests
             using (var schema = ChebayDBPublic.CreatePublic())
             {
                 IDALTienda it = new DALTiendaEF();
-                Debug.WriteLine("INICIO");
+                /*Debug.WriteLine("INICIO");
                 Debug.WriteLine("0.1. Elimino TestAdmin.");
-                try
-                {
                 it.EliminarAdministrador("TestAdmin");
-                }
-                catch (Exception e)
-                { }
                 Debug.WriteLine("\n0.2. Elimino www.TestURL.com.");
-                try 
-                { 
-                        it.EliminarTienda("TestURL");
-                }
-                catch (Exception e)
-                { }
+                */
+                it.EliminarTienda("TiendaError");
+                /*
 
                 Debug.WriteLine("\n0.3. Chequear que no existe TestAdmin.");
                 Assert.AreEqual(it.ObtenerAdministrador("TestAdmin"), null);
                 Debug.WriteLine("\n0.4. Chequear que no existe www.TestURL.com.");
-                Assert.AreEqual(it.ObtenerTienda("TestURL"), null);
+                Assert.AreEqual(it.ObtenerTienda("TestURL"), null);*/
             }
         }
 

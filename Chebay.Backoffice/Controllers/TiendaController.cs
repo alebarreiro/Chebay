@@ -121,17 +121,17 @@ namespace Chebay.Backoffice.Controllers
                 {
                     Categoria catCompuesta = new CategoriaCompuesta();
                     IDALTienda idal = new DALTiendaEF();
-                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
+                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria("/TiendaEjemplo", datos.padre);
                     catCompuesta.Nombre = datos.nombre;
-                    idal.AgregarCategoria(catCompuesta, "Tienda Ejemplo");
+                    idal.AgregarCategoria(catCompuesta, "/TiendaEjemplo");
                 }
                 else if (datos.tipoCategoria.Equals("simple"))
                 {
                     Categoria catSimple = new CategoriaSimple();
                     IDALTienda idal = new DALTiendaEF();
-                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
+                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria("/TiendaEjemplo", datos.padre);
                     catSimple.Nombre = datos.nombre;
-                    idal.AgregarCategoria(catSimple, "Tienda Ejemplo");
+                    idal.AgregarCategoria(catSimple, "/TiendaEjemplo");
                 }
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -148,7 +148,8 @@ namespace Chebay.Backoffice.Controllers
         public ActionResult ObtenerCategorias()
         {
             string tablaCategorias = "";
-            List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
+            //List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
+            List<Categoria> categorias = idalTienda.ListarCategorias("/TiendaEjemplo");
             tablaCategorias += "<ul>";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
             tablaCategorias += "</ul>";
@@ -201,6 +202,8 @@ namespace Chebay.Backoffice.Controllers
                     string idAdmin = (string)Session["admin"];
                     idAdmin = null;
                     Tienda t = new Tienda();
+                    //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
+                    t.TiendaID = datosGenerales.titulo;
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
                     idalTienda.AgregarTienda(t, idAdmin);
@@ -211,6 +214,9 @@ namespace Chebay.Backoffice.Controllers
                     string idAdmin = (string)Session["admin"];
                     idAdmin = null;
                     Tienda t = new Tienda();
+                    //sacarle los espacios al string de abajo
+                    //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
+                    t.TiendaID = datosGenerales.titulo;
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
                     idalTienda.ActualizarTienda(t);

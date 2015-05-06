@@ -62,7 +62,8 @@
   </Choose>
   <ItemGroup>
     <Compile Include="DALSubastaTests.cs" />
-    <Compile Include="ALTiendaTest.cs" />
+    <Compile Include="DALTiendaTests.cs" />
+    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

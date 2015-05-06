@@ -40,7 +40,7 @@
                 </div>
             </div>
             <div class="product-item-footer">
-                <div class="product-item-countdown"> @dp.fecha_cierre </div>
+                <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre </div>
                 <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)">BID NOW!</button>
                 <div class="offer-section">
                     <div class="offer-section-price" id="bidValue-@dp.ProductoID"> @dp.precio_actual </div>
@@ -84,6 +84,49 @@
         incrementOffer = function(id) {
             $('#bidValue-' + id).text( parseInt($('#bidValue-' + id).text(), 10) + 1);
         }
+
+        //Para el manejo de los timers
+        $(document).ready(function(){
+            var auctions = $([]);
+            $('.product-item-countdown').each(function(){
+                var _this = $(this);
+                console.log(_this);
+                var auction = {
+                    auctionId : _this.data('id'),
+                    endTime   : moment(_this.text()),
+                    timeDiv   : _this
+                };
+                auctions.push(auction);
+            });
+
+            auctions.each(function(){
+                console.log(this);
+                var that = this;
+                var finishTime   = that.endTime,
+                    currentTime  = moment(),
+                    duration     = moment.duration(finishTime - currentTime, 'milliseconds'),
+                    interval     = 1000;
+                if (duration._milliseconds <= 0) {
+                    that.timeDiv.text("EXPIRED!")
+                } else {
+                  that.currentInterval = setInterval(function(){
+                      duration = moment.duration(finishTime - moment(), 'milliseconds');
+                        if (duration._milliseconds <= 0) {
+                            console.log(duration);
+                            that.timeDiv.text("EXPIRED!");
+                            clearInterval(that.currentInterval);
+                        } else {
+                            var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),
+                                minutes = duration.minutes() < 10 ? '0' + duration.minutes() : duration.minutes(),
+                                seconds = duration.seconds() < 10 ? '0' + duration.seconds() : duration.seconds(),
+                                days = duration.days() > 0 ? duration.days() +"d" : "",
+                                months = duration.months() > 0 ? duration.months() +"m" : "";
+                            that.timeDiv.text(months + " " + days + " " + hours + ":" + minutes + ":" + seconds)
+                        }
+                    }, interval);
+                }
+            });
+        });
     });
 </script>
 

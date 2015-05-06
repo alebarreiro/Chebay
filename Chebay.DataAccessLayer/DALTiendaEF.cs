@@ -16,6 +16,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (admin == null)
+                    throw new Exception("Debe pasar un administrador.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from adm in context.administradores
@@ -43,6 +45,10 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idAdministrador == null)
+                    throw new Exception("Debe pasar el identificador de un administrador.");
+                if (passwd == null)
+                    throw new Exception("Debe pasar una contraseña.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from admin in context.administradores
@@ -62,7 +68,6 @@ namespace DataAccessLayer
                         }
                         else
                             throw new Exception("La contraseña no es correcta.");
-
                     }
                 }
             }
@@ -106,6 +111,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (tienda == null)
+                    throw new Exception("Debe pasar una tienda.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                 
@@ -229,6 +236,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (lCategorias == null)
+                    throw new Exception("Debe pasar una lista de categorías.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -260,6 +269,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (c == null)
+                    throw new Exception("Debe pasar una categoría.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -314,6 +325,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idAdministrador == null)
+                    throw new Exception("Debe pasar el identificador de un administrador.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from adm in context.administradores
@@ -333,6 +346,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idAdministrador == null)
+                    throw new Exception("Debe pasar el identificador de un administrador.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from adm in context.administradores
@@ -352,7 +367,7 @@ namespace DataAccessLayer
         {
             try
             {
-                //chequearTienda(idTienda);
+                chequearTienda(idTienda);
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from t in context.tiendas
@@ -375,16 +390,14 @@ namespace DataAccessLayer
         {
             try
             {
+                chequearTienda(idTienda);
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                 
                     var query = from t in context.tiendas
                                 where t.TiendaID == idTienda
                                 select t;
-                    if (query.Count() > 0)
-                        return query.FirstOrDefault();
-                    else
-                        return null;
+                    return query.FirstOrDefault();
                 }
             }
             catch (Exception e)
@@ -396,6 +409,8 @@ namespace DataAccessLayer
 
         public Categoria ObtenerCategoria(string idTienda, long idCategoria)
         {
+            if (idCategoria == null)
+                throw new Exception("Tiene que pasar el identificador de una categoría.");
             chequearTienda(idTienda);
             try
             {
@@ -418,6 +433,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (a == null)
+                        throw new Exception("Tiene que pasar un atributo.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -441,6 +458,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (lAtributos == null)
+                    throw new Exception("Tiene que pasar una lista de atributos.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -467,6 +486,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idCategoria == null)
+                    throw new Exception("Tiene que pasar una categoría.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -497,6 +518,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idTienda == null)
+                    throw new Exception("Debe pasar una tienda.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var qTienda = from t in context.tiendas

@@ -17,9 +17,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (p == null)
+                    throw new Exception("Debe pasar un producto.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     context.productos.Add(p);
                     context.SaveChanges();
                 }
@@ -36,9 +38,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idProducto == null)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var prod = from p in context.productos
                                where p.ProductoID == idProducto
                                select p;    
@@ -57,9 +61,9 @@ namespace DataAccessLayer
         {
             try
             {
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var qProductos = from p in context.productos
                                      orderby p.fecha_cierre ascending
                                      select p;
@@ -103,9 +107,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idCategoria == null)
+                    throw new Exception("Debe pasar el identificador de una categoría.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var query = from c in context.categorias
                                 where c.CategoriaID == idCategoria
                                 select c;
@@ -124,9 +130,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -152,9 +160,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -178,9 +188,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -210,9 +222,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -242,9 +256,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -268,9 +284,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (c == null)
+                    throw new Exception("Debe pasar un comentario.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    //chequearTienda(idTienda);
                     context.comentarios.Add(c);
                     context.SaveChanges();
                 }
@@ -286,9 +304,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (o == null)
+                    throw new Exception("Debe pasar una oferta.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     context.ofertas.Add(o);
                     context.SaveChanges();
                 }
@@ -304,9 +324,9 @@ namespace DataAccessLayer
         {
             try
             {
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     return null;
                 }
             }
@@ -321,9 +341,11 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idProducto == null)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    chequearTienda(idTienda);
                     var qOfertas = from o in context.ofertas
                                    where o.ProductoID == idProducto
                                    orderby o.monto descending
@@ -343,6 +365,8 @@ namespace DataAccessLayer
         {
             try
             {
+                if (idTienda == null)
+                    throw new Exception("Debe pasar una tienda.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var qTienda = from t in context.tiendas

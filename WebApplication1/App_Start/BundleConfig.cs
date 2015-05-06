@@ -25,6 +25,11 @@ namespace Frontoffice
                        "~/Scripts/Chat.js"
                        ));
 
+            bundles.Add(new ScriptBundle("~/bundles/customScripts").Include(
+                        "~/Scripts/moment.js",
+                        "~/Scripts/moment.with-locales.js"
+                        ));
+
             bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(
                        "~/Scripts/Subasta.js"
                        ));

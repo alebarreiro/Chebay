@@ -121,17 +121,17 @@ namespace Chebay.Backoffice.Controllers
                 {
                     Categoria catCompuesta = new CategoriaCompuesta();
                     IDALTienda idal = new DALTiendaEF();
-                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria("/TiendaEjemplo", datos.padre);
+                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
                     catCompuesta.Nombre = datos.nombre;
-                    idal.AgregarCategoria(catCompuesta, "/TiendaEjemplo");
+                    idal.AgregarCategoria(catCompuesta, "Tienda Ejemplo");
                 }
                 else if (datos.tipoCategoria.Equals("simple"))
                 {
                     Categoria catSimple = new CategoriaSimple();
                     IDALTienda idal = new DALTiendaEF();
-                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria("/TiendaEjemplo", datos.padre);
+                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
                     catSimple.Nombre = datos.nombre;
-                    idal.AgregarCategoria(catSimple, "/TiendaEjemplo");
+                    idal.AgregarCategoria(catSimple, "Tienda Ejemplo");
                 }
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -149,7 +149,7 @@ namespace Chebay.Backoffice.Controllers
         {
             string tablaCategorias = "";
             //List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
-            List<Categoria> categorias = idalTienda.ListarCategorias("/TiendaEjemplo");
+            List<Categoria> categorias = idalTienda.ListarCategorias("Tienda Ejemplo");
             tablaCategorias += "<ul>";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
             tablaCategorias += "</ul>";

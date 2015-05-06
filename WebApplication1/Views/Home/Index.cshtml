@@ -90,27 +90,25 @@
             var auctions = $([]);
             $('.product-item-countdown').each(function(){
                 var _this = $(this);
-                console.log(_this);
                 var auction = {
                     auctionId : _this.data('id'),
-                    endTime   : moment(_this.text()),
+                    endTime   : moment(_this.text(), "DD-MM-YYYY H:mm:ss"),
                     timeDiv   : _this
                 };
                 auctions.push(auction);
             });
 
             auctions.each(function(){
-                console.log(this);
                 var that = this;
                 var finishTime   = that.endTime,
-                    currentTime  = moment(),
-                    duration     = moment.duration(finishTime - currentTime, 'milliseconds'),
+                    duration     = moment.duration(finishTime.diff(moment())),
                     interval     = 1000;
+                console.log("Al producto " + this.auctionId + " le faltan: "); console.log(duration);
                 if (duration._milliseconds <= 0) {
                     that.timeDiv.text("EXPIRED!")
                 } else {
                   that.currentInterval = setInterval(function(){
-                      duration = moment.duration(finishTime - moment(), 'milliseconds');
+                      duration = moment.duration(finishTime.diff(moment()));
                         if (duration._milliseconds <= 0) {
                             console.log(duration);
                             that.timeDiv.text("EXPIRED!");

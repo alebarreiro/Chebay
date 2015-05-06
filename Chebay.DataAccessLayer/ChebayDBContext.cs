@@ -28,6 +28,7 @@ namespace DataAccessLayer
         public ChebayDBContext()//(string connection): base(connection)
         {
             Database.SetInitializer<ChebayDBContext>(null);
+            this.Configuration.LazyLoadingEnabled = false;
             string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
             base.Database.Connection.ConnectionString = con;
         }
@@ -48,6 +49,7 @@ namespace DataAccessLayer
             : base(con, model)
         {
             Database.SetInitializer<ChebayDBContext>(null);
+            this.Configuration.LazyLoadingEnabled = false;
         }
 
         public static ConcurrentDictionary<string, DbCompiledModel> modelCache = new ConcurrentDictionary<string, DbCompiledModel>();

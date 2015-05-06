@@ -92,20 +92,26 @@ namespace Chebay.Backoffice.Controllers
             string resultado = "";
             resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
-            if (categoria.hijas.Count() > 0)
+            if (categoria.hijas != null)
             {
-                resultado += "<ul>";
-                foreach(Categoria hija in categoria.hijas){
-                    if (hija.GetType() == typeof(CategoriaCompuesta))
+                if (categoria.hijas.Count() > 0)
+                {
+                    resultado += "<ul>";
+                    foreach (Categoria hija in categoria.hijas)
                     {
-                        resultado += RecursionCategorias((CategoriaCompuesta) hija);
+                        if (hija.GetType() == typeof(CategoriaCompuesta))
+                        {
+                            resultado += RecursionCategorias((CategoriaCompuesta)hija);
+                        }
+                        else
+                        {
+                            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                        }
                     }
-                    else
-                    {
-                        resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
-                    }
+                    resultado += "</ul>";
                 }
-                resultado += "</ul>";
+                
+                
             }
             resultado += "</li>";
             return resultado;

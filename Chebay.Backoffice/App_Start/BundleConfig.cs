@@ -36,6 +36,7 @@ namespace Chebay.Backoffice
                         "~/Content/bootstrap-theme.css",
                         "~/Content/bootstrap.css",
                         "~/Content/Estilos.css",
+                        "~/Content/CreativeButtons/component.css",
                         "~/Content/bootstrap.min.css",
                         "~/Content/animate.css"
                 ));

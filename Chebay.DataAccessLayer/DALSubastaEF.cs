@@ -15,48 +15,51 @@ namespace DataAccessLayer
     {
         public void AgregarProducto(Producto p, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     context.productos.Add(p);
                     context.SaveChanges();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
 
         public Producto ObtenerProducto(long idProducto, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var prod = from p in context.productos
                                where p.ProductoID == idProducto
                                select p;    
                     return prod.FirstOrDefault();   
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
-        public List<DataProducto> ObtenerProductosPersonalizados(string urlTienda)
+        public List<DataProducto> ObtenerProductosPersonalizados(string idTienda)
         //Devuelve los últimos 10 productos publicados para el index.
         {
-            using (var context = ChebayDBContext.CreateTenant(urlTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var qProductos = from p in context.productos
                                      select p;
                     if (qProductos.Count() > 0)
@@ -74,7 +77,7 @@ namespace DataAccessLayer
                                 ProductoID = p.ProductoID,
                                 idOfertante = null
                             };
-                            Oferta of = ObtenerMayorOferta(p.ProductoID,urlTienda);
+                            Oferta of = ObtenerMayorOferta(p.ProductoID,idTienda);
                             if (of != null)
                             {
                                 dp.precio_actual = of.monto;
@@ -87,40 +90,42 @@ namespace DataAccessLayer
                     else
                         throw new Exception("No hay productos.");
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Producto> ObtenerProductosCategoria(long idCategoria, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var query = from c in context.categorias
                                 where c.CategoriaID == idCategoria
                                 select c;
                     CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
                     return cs.productos.ToList();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Producto> ObtenerProductosVisitados(string idUsuario, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -133,21 +138,22 @@ namespace DataAccessLayer
                         return ret;
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
 
         public List<Producto> ObtenerProductosFavoritos(string idUsuario, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -159,20 +165,21 @@ namespace DataAccessLayer
                         return u.favoritos.ToList();
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Producto> ObtenerProductosComprados(string idUsuario, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -190,20 +197,21 @@ namespace DataAccessLayer
                         return ret;
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Producto> ObtenerProductosOfertados(string idUsuario, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -221,20 +229,21 @@ namespace DataAccessLayer
                         return ret;
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<Producto> ObtenerProductosPublicados(string idUsuario, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var query = from u in context.usuarios
                                 where u.UsuarioID == idUsuario
                                 select u;
@@ -246,84 +255,109 @@ namespace DataAccessLayer
                         return (List<Producto>)u.publicados;
                     }
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public void AgregarComentario(Comentario c, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    //chequearTienda(idTienda);
                     context.comentarios.Add(c);
                     context.SaveChanges();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public void OfertarProducto(Oferta o, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     context.ofertas.Add(o);
                     context.SaveChanges();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
-
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public List<DataProducto> ObtenerProductosPorTerminar(string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     return null;
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
         public Oferta ObtenerMayorOferta(long idProducto, string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    chequearTienda(idTienda);
                     var qOfertas = from o in context.ofertas
                                    where o.ProductoID == idProducto
                                    orderby o.monto descending
                                    select o;
                     return qOfertas.FirstOrDefault();
-
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
                 }
             }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+
         }
+        
+        void chequearTienda(string idTienda)
+        {
+            try
+            {
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    var qTienda = from t in context.tiendas
+                                  where t.TiendaID == idTienda
+                                  select t;
+                    if (qTienda.Count() == 0)
+                        throw new Exception("No existe la tienda " + idTienda);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+                    
+
     }
 }

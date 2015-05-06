@@ -14,12 +14,19 @@ namespace Chebay.DataAccessLayerTests
     {
         public DALSubastaTests()
         {
-            //
-            // TODO: Agregar aquí la lógica del constructor
-            //
+
         }
 
         private IDALSubasta idal = new DALSubastaEF();
+
+        [TestMethod]
+        public void SuperTestSubasta()
+        {
+            TestInicialSubasta();
+            AgregarProducto();
+            AgregarComentario();
+            OfertarProducto();
+        }
 
         [TestMethod]
         public void TestInicialSubasta()
@@ -70,14 +77,98 @@ namespace Chebay.DataAccessLayerTests
             };
             idal.AgregarProducto(p, "TestURL");
 
-            Producto ret = idal.ObtenerProducto(1, "TestURL");
+            Producto p = new Producto
+            {
+                nombre = "Caballo",
+                UsuarioID = "userPrueba",
+                descripcion = "Es una yegua",
+                precio_base_subasta = 1000,
+                precio_compra = 20000,
+                fecha_cierre = new DateTime(2015, 5, 10),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Perro",
+                UsuarioID = "userPrueba",
+                descripcion = "Es una cocker",
+                precio_base_subasta = 30,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 6),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Iguana",
+                UsuarioID = "userPrueba",
+                descripcion = "Es una iguana",
+                precio_base_subasta = 500,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 12),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Gato",
+                UsuarioID = "userPrueba",
+                descripcion = "Es una siames",
+                precio_base_subasta = 70,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 14),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Ratón",
+                UsuarioID = "userPrueba",
+                descripcion = "Es un ratón",
+                precio_base_subasta = 10,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 6),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Vaca",
+                UsuarioID = "userPrueba",
+                descripcion = "Es un hereford",
+                precio_base_subasta = 1200,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 16),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+
+            p = new Producto
+            {
+                nombre = "Toro",
+                UsuarioID = "userPrueba",
+                descripcion = "Es un toro",
+                precio_base_subasta = 140,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 16),
+                CategoriaID = 3
+            };
+            idal.AgregarProducto(p, "TestURL");
+ 
+            /*Producto ret = idal.ObtenerProducto(1, "TestURL");
             Assert.AreEqual("Celular", p.nombre);
             Assert.AreEqual("userPrueba", p.UsuarioID);
             Assert.AreEqual("Es un celular", p.descripcion);
             Assert.AreEqual(100, p.precio_base_subasta);
             Assert.AreEqual(2000, p.precio_compra);
             Assert.AreEqual(new DateTime(1993, 3, 27), p.fecha_cierre);
-            Assert.AreEqual(3, p.CategoriaID);
+            Assert.AreEqual(3, p.CategoriaID);*/
         }
 
         [TestMethod]
@@ -89,7 +180,7 @@ namespace Chebay.DataAccessLayerTests
                 texto = "comentario",
                 fecha = DateTime.Today,
                 ProductoID = 1,
-                UsuarioID = "userPrueba",
+                UsuarioID = "otroUserPrueba",
             };
 
             idal.AgregarComentario(c, "TestURL");

@@ -486,8 +486,6 @@ namespace DataAccessLayer
         {
             try
             {
-                if (idCategoria == null)
-                    throw new Exception("Tiene que pasar una categoría.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {

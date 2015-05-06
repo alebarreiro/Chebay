@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccessLayer;
 using Shared.Entities;
+using System.Diagnostics;
 
 namespace Chebay.Backoffice.Controllers
 {
@@ -99,7 +100,7 @@ namespace Chebay.Backoffice.Controllers
                     resultado += "<ul>";
                     foreach (Categoria hija in categoria.hijas)
                     {
-                        if (hija.GetType() == typeof(CategoriaCompuesta))
+                        if (hija is CategoriaCompuesta)
                         {
                             resultado += RecursionCategorias((CategoriaCompuesta)hija);
                         }

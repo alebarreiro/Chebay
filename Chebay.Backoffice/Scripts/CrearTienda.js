@@ -3,7 +3,7 @@ var categoriasCreadas = false;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 idCategorias = idTiposAtributo = 1;
 
-var paginaAntesLoading, padreAgregarCategoria;
+var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingAgregarCategoria;
 
 function modalAgregarCategoria(padre) {
     padreAgregarCategoria = padre;
@@ -20,6 +20,18 @@ function cargando() {
 
 function finCargando() {
     $("#container").html(paginaAntesLoading);
+}
+
+function cargandoAgregarCategoria() {
+    paginaAntesLoadingAgregarCategoria = $("#divCategorias").html();
+
+    var loading = "<img src=\"Images/cargando.gif\" class=\"cargando\">";
+
+    $("#divCategorias").html(loading);
+}
+
+function finCargandoAgregarCategoria() {
+    $("#divCategorias").html(paginaAntesLoadingAgregarCategoria);
 }
 
 function finalizarCreacionCategorias() {
@@ -154,6 +166,10 @@ function agregarCategoria(tipoCategoria) {
         tipoCategoria : tipoCategoria
     }
 
+    $("#modalAgregarCategoria").modal('hide');
+
+    cargandoAgregarCategoria();
+
     $.ajax({
         url: '/Tienda/AgregarCategoria',
         type: 'POST',
@@ -161,7 +177,6 @@ function agregarCategoria(tipoCategoria) {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(categoriaNueva),
         success: function (data, textStatus, jqxhr) {
-            finCargando();
             $.notify({
                 // options
                 message: 'Se ha agregado la categoría correctamente.'
@@ -171,7 +186,6 @@ function agregarCategoria(tipoCategoria) {
             });
         },
         error: function (data, textStatus, jqxhr) {
-            finCargando();
             $.notify({
                 // options
                 message: 'Error al agregar la categoría.'
@@ -187,6 +201,7 @@ function agregarCategoria(tipoCategoria) {
         url: '/Tienda/ObtenerCategorias',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
+            finCargandoAgregarCategoria();
             $('#divCategorias').html(data);
         }
     });

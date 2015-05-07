@@ -155,10 +155,6 @@ function agregarCategoria(tipoCategoria) {
         tipoCategoria : tipoCategoria
     }
 
-    cargando();
-
-    $("#modalAgregarCategoria").modal({show : false});
-
     $.ajax({
         url: '/Tienda/AgregarCategoria',
         type: 'POST',

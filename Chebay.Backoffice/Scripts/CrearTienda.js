@@ -160,7 +160,7 @@ function agregarCategoria(tipoCategoria) {
             $('#divCategorias').html(data);
         }
     });
-    }, 5000);
+    }, 8000);
     
 
 }

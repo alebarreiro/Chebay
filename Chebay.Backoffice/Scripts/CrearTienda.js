@@ -10,7 +10,6 @@ function modalAgregarCategoria(padre) {
     $("#modalAgregarCategoria").modal();
 }
 
-
 function cargando() {
     paginaAntesLoading = $("#container").html();
 

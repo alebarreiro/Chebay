@@ -262,8 +262,6 @@
     <None Include="Scripts\jquery.validate-vsdoc.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.js" />
     <Content Include="Scripts\jquery-ui-1.11.4.min.js" />
-    <Content Include="Scripts\jquery.treegrid.bootstrap3.js" />
-    <Content Include="Scripts\jquery.treegrid.min.js" />
     <Content Include="Scripts\jquery.treeview.async.js" />
     <Content Include="Scripts\jquery.treeview.edit.js" />
     <Content Include="Scripts\jquery.treeview.js" />

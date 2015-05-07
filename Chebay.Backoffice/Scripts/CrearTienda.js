@@ -3,13 +3,12 @@ var categoriasCreadas = false;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 idCategorias = idTiposAtributo = 1;
 
-var paginaAntesLoading, padreAgregarCategoria;
+var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingAgregarCategoria;
 
 function modalAgregarCategoria(padre) {
     padreAgregarCategoria = padre;
     $("#modalAgregarCategoria").modal();
 }
-
 
 function cargando() {
     paginaAntesLoading = $("#container").html();
@@ -21,6 +20,18 @@ function cargando() {
 
 function finCargando() {
     $("#container").html(paginaAntesLoading);
+}
+
+function cargandoAgregarCategoria() {
+    paginaAntesLoadingAgregarCategoria = $("#divCategorias").html();
+
+    var loading = "<img src=\"Images/cargando.gif\" class=\"cargando\">";
+
+    $("#divCategorias").html(loading);
+}
+
+function finCargandoAgregarCategoria() {
+    $("#divCategorias").html(paginaAntesLoadingAgregarCategoria);
 }
 
 function finalizarCreacionCategorias() {
@@ -53,7 +64,7 @@ function finalizarDatosGenerales(){
             finCargando();
             $.notify({
                 // options
-                message: 'Se han guardado los datos generales correctamente.'
+                message: '<strong>Se han guardado los datos generales correctamente.</strong>'
             }, {
                 // settings
                 type: 'success'
@@ -63,7 +74,7 @@ function finalizarDatosGenerales(){
             finCargando();
             $.notify({
                 // options
-                message: 'Error al guardar los datos generales.'
+                message: '<strong>Error al guardar los datos generales.</strong>'
             }, {
                 // settings
                 type: 'danger'
@@ -75,52 +86,6 @@ function finalizarDatosGenerales(){
     hayDatosGenerales = true;
     tiendaCreada = true;
 }
-
-function finalizarCrearTienda() {
-    var mensaje = "";
-    if (!hayAtributos) {
-        mensaje += "Falta crear los Tipos de Atributo de cada Categoria\n";
-    }
-
-    if (!hayCategorias) {
-        mensaje += "Falta crear las categorias\n";
-    }
-
-    if (!hayDatosGenerales) {
-        mensaje += "Falta agregar los Datos Generales\n";
-    }
-
-    if (!hayPersonalizacion) {
-        mensaje += "Falta crear la Personalización\n";
-    }
-
-    if (mensaje.length > 0) {
-        $.notify({
-            // options
-            message: mensaje
-        }, {
-            // settings
-            type: 'danger'
-        });
-    }
-    else {
-        $.ajax({
-            url: '/Tienda/FinalizarCreacionTienda',
-            type: 'POST',
-            dataType: "json",
-            contentType: 'application/json; charset=UTF-8',
-            data: JSON.stringify(datosGenerales),
-            success: function (data, textStatus, jqxhr) {
-                $('#container').html(data);
-            },
-            error: function (data, textStatus, jqxhr) {
-                $('#container').html(data);
-            }
-        });
-    }
-    
-}
-
 
 function borrarTipoAtributo(idTipoAtributo , atributo) {
     var atributos = $("#divTiposAtributo").html();
@@ -155,6 +120,10 @@ function agregarCategoria(tipoCategoria) {
         tipoCategoria : tipoCategoria
     }
 
+    $("#modalAgregarCategoria").modal('hide');
+
+    cargandoAgregarCategoria();
+
     $.ajax({
         url: '/Tienda/AgregarCategoria',
         type: 'POST',
@@ -162,20 +131,18 @@ function agregarCategoria(tipoCategoria) {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(categoriaNueva),
         success: function (data, textStatus, jqxhr) {
-            finCargando();
             $.notify({
                 // options
-                message: 'Se ha agregado la categoría correctamente.'
+                message: '<strong>Se ha agregado la categoría correctamente.</strong>'
             }, {
                 // settings
                 type: 'success'
             });
         },
         error: function (data, textStatus, jqxhr) {
-            finCargando();
             $.notify({
                 // options
-                message: 'Error al agregar la categoría.'
+                message: '<strong>Error al agregar la categoría.</strong>'
             }, {
                 // settings
                 type: 'danger'
@@ -184,13 +151,17 @@ function agregarCategoria(tipoCategoria) {
     });
 
     //refresca las categorias
-    $.ajax({
+    setTimeout(function(){
+        $.ajax({
         url: '/Tienda/ObtenerCategorias',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
+            finCargandoAgregarCategoria();
             $('#divCategorias').html(data);
         }
     });
+    }, 8000);
+    
 
 }
 
@@ -215,22 +186,34 @@ function datosGenerales() {
     });
 }
 
+function notificarCategoriaSimple() {
+    $.notify({
+        // options
+        message: '<strong>No se puede agregar categorías a una categoría simple.</strong>'
+    }, {
+        // settings
+        type: 'danger'
+    });
+}
+
 function crearCategorias() {
     if (!tiendaCreada) {
         $.notify({
             // options
-            message: 'Debes ingresar los Datos Generales para pasar a crear categorías.'
+            message: '<strong>Debes ingresar los Datos Generales para pasar a crear categorías.</strong>'
         }, {
             // settings
             type: 'danger'
         });
     }
     else {
+        
         $.ajax({
             url: '/Tienda/CrearCategorias',
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#contenidoCrearTienda').html(data);
+                cargandoAgregarCategoria();
             }
         });
 
@@ -238,6 +221,7 @@ function crearCategorias() {
             url: '/Tienda/ObtenerCategorias',
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
+                finCargandoAgregarCategoria();
                 $('#divCategorias').html(data);
             }
         });
@@ -250,7 +234,7 @@ function crearTiposAtributo() {
     if (!tiendaCreada || !categoriasCreadas) {
         $.notify({
             // options
-            message: 'Debes ingresar las categorías de la tienda para pasar a crear tipos de atributo.'
+            message: '<strong>Debes ingresar las categorías de la tienda para pasar a crear tipos de atributo.</strong>'
         }, {
             // settings
             type: 'danger'
@@ -272,7 +256,7 @@ function crearPersonalizacion() {
     if (!tiendaCreada) {
         $.notify({
             // options
-            message: 'Debes ingresar los datos generales de la tienda para poder personalizarla.'
+            message: '<strong>Debes ingresar los datos generales de la tienda para poder personalizarla.</strong>'
         }, {
             // settings
             type: 'danger'

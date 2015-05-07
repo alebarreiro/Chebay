@@ -106,7 +106,7 @@ namespace Chebay.Backoffice.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" onclick=\"notificarCategoriaSimple()\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";
@@ -157,9 +157,9 @@ namespace Chebay.Backoffice.Controllers
             string tablaCategorias = "";
             //List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
             List<Categoria> categorias = idalTienda.ListarCategorias("Tienda Ejemplo");
-            tablaCategorias += "<ul>";
+            tablaCategorias += "<div style=\"background-color : white;\"><ul>";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
-            tablaCategorias += "</ul>";
+            tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);
         }
 

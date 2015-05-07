@@ -13,8 +13,8 @@ namespace DataAccessLayer
     {
         //--ADMINISTRADOR--
         void AgregarAdministrador(Administrador a);
-        void EliminarAdministrador(string idAdministrador);
-        Administrador ObtenerAdministrador(string idAdministrador);
+        void EliminarAdministrador(string idAdmin);
+        Administrador ObtenerAdministrador(string idAdmin);
 
         //--TIENDAS--
         void AgregarTienda(Tienda t, string idAdmin);
@@ -23,16 +23,24 @@ namespace DataAccessLayer
         Tienda ObtenerTienda(string idTienda);
         
         //--CATEGORIAS--
-        void AgregarCategorias(List<Categoria> lCategorias, string urlTienda);
-        void AgregarCategoria(Categoria c, string urltienda);
+        void AgregarCategorias(List<Categoria> lCategorias, string idTienda);
+        void AgregarCategoria(Categoria c, string idTienda);
         List<Categoria> ListarCategorias(string idTienda);
         Categoria ObtenerCategoria(string idTienda, long idCategoria);
+        void EliminarCategoria(long idCategoria, string idTienda);
+        void ModificarCategoria(Categoria c, string idTienda);
 
         //--ATRIBUTOS--
-        void AgregarAtributos(List<Atributo> lAtributos, string urlTienda);
-        void AgregarAtributo(Atributo a, string urlTienda);
+        void AgregarAtributos(List<Atributo> lAtributos, string idTienda);
+        void AgregarAtributo(Atributo a, string idTienda);
         List<Atributo> ObtenerAtributos(long idCategoria, string idTienda);
+        Atributo ObtenerAtributo(long idAtributo, string idTienda);
+        void EliminarAtributo(long idAtributo, string idTienda);
+        void ModificarAtributo(Atributo a, string idTienda);
         
+        //--PERSONALIZACIÓN DE LA TIENDA--
+        void PersonalizarTienda(string color, string idTienda);
+
         bool AutenticarAdministrador(string idAdministrador, string passwd);
         
         void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva);

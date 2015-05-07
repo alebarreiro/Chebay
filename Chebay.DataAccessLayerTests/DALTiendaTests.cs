@@ -33,6 +33,13 @@ namespace Chebay.DataAccessLayerTests
         }
 
         [TestMethod]
+        public void PersonalizarTienda()
+        {
+            IDALTienda it = new DALTiendaEF();
+            it.PersonalizarTienda("63589F", "TestURL");
+        }
+
+        [TestMethod]
         public void Test0Inicial()
         {
             ChebayDBPublic cdbp = new ChebayDBPublic();

@@ -43,7 +43,7 @@ namespace DataAccessLayer
                     }
                     Console.Read();
             */
-
+            /*
                 using (var schema = ChebayDBContext.CreateTenant("TestURL"))
                 {
                     var query = from cat in schema.categorias
@@ -56,6 +56,7 @@ namespace DataAccessLayer
                     schema.categorias.Add(c);
                     schema.SaveChanges();
                 }
+             */
                     Console.Read();
 
                     //schema.seed();

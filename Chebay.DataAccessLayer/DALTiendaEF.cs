@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.SqlClient;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -525,6 +526,164 @@ namespace DataAccessLayer
                                   select t;
                     if (qTienda.Count() == 0)
                         throw new Exception("No existe la tienda" + idTienda);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+
+        public void EliminarCategoria(long idCategoria, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCategoria = from c in context.categorias
+                                     where c.CategoriaID == idCategoria
+                                     select c;
+                    context.categorias.Remove(qCategoria.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public void ModificarCategoria(Categoria c, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCategoria = from cat in context.categorias
+                                     where cat.CategoriaID == c.CategoriaID
+                                     select cat;
+                    Categoria ca = qCategoria.FirstOrDefault();
+                    ca.Nombre = c.Nombre;
+                    ca.padre = c.padre;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public Atributo ObtenerAtributo(long idAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from a in context.atributos
+                                    where a.AtributoID == idAtributo
+                                    select a;
+                    return qAtributo.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public void EliminarAtributo(long idAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from a in context.atributos
+                                    where a.AtributoID == idAtributo
+                                    select a;
+                    context.atributos.Remove(qAtributo.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public void ModificarAtributo(Atributo a, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from atr in context.atributos
+                                    where atr.AtributoID == a.AtributoID
+                                    select atr;
+                    Atributo at = qAtributo.FirstOrDefault();
+                    at.etiqueta = a.etiqueta;
+                    at.valor = a.valor;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public void PersonalizarTienda(string color, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+
+                    Debug.WriteLine(Directory.GetCurrentDirectory());
+                    
+                    int counter = 0;
+                    string line;
+                    List<string> temp = new List<string>();
+
+                    // Read the file and display it line by line.
+                    System.IO.StreamReader fileInput = new System.IO.StreamReader(@"C:\Users\Alejandro\Source\Repos\Chebay\WebApplication1\Content\personalizacion\EstiloUno\orangeStyle.css");
+
+                    while ((line = fileInput.ReadLine()) != null)
+                    {
+                        temp.Add(line);
+                    }
+                    fileInput.Close();
+
+
+                    System.IO.StreamWriter fileOutput = new System.IO.StreamWriter(@"C:\Users\Alejandro\Source\Repos\Chebay\WebApplication1\Content\personalizacion\EstiloUno\orangeStyle.css");
+                    {
+                        foreach (string linea in temp)
+                        {
+                            if (linea.Contains("    border-bottom: 20px solid #e44d26;"))
+                            {
+                                fileOutput.WriteLine("    border-bottom: 20px solid #63589F;");
+                            }
+                            else
+                            {
+                                fileOutput.WriteLine(linea);
+                            }
+                        }
+                    }
+                    fileOutput.Close();
+
                 }
             }
             catch (Exception e)

@@ -12,84 +12,130 @@ namespace DataAccessLayer
 {
     public class DALUsuarioEF : IDALUsuario
     {
-        public void AgregarUsuario(Usuario u, string idTienda)
+        void chequearTienda(string idTienda)
         {
-            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            try
             {
-                try
+                if (idTienda == null)
+                    throw new Exception("Debe pasar una tienda.");
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
-                    context.usuarios.Add(u);
-                    context.SaveChanges();
+                    var qTienda = from t in context.tiendas
+                                  where t.TiendaID == idTienda
+                                  select t;
+                    if (qTienda.Count() == 0)
+                        throw new Exception("No existe la tienda" + idTienda);
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    throw;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
-        public void ActualizarUsuario(Usuario u)
+        public void AgregarUsuario(Usuario u, string idTienda)
         {
-            using (var context = new ChebayDBContext())
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                
+                    context.usuarios.Add(u);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        public void ActualizarUsuario(Usuario u, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var query = from usr in context.usuarios
                                 where usr.UsuarioID == u .UsuarioID
                                 select usr;
 
                     Usuario user = query.FirstOrDefault();
+
                     context.SaveChanges();
                 }
-
-                catch (Exception e)
-                {
-                    Debug.WriteLine("Error: "+e.Message);
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
-        public Usuario ObtenerUsuario(string idUsuario)
+        public Usuario ObtenerUsuario(string idUsuario, string idTienda)
         {
-            using (var context = new ChebayDBContext())
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var query = from usr in context.usuarios
                                 where usr.UsuarioID == idUsuario
                                 select usr;
-                    if (query.Count() > 0)
-                        return query.First();
-                    else
-                        return null;
+                    return query.First();
                 }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                    return null;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
 
-        public List<Usuario> ObtenerTodosUsuarios()
+        public List<Usuario> ObtenerTodosUsuarios(string idTienda)
         {
-            using (var context = new ChebayDBContext())
+            try
             {
-                try
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var query = from usr in context.usuarios
                                 select usr;    
                     return query.ToList();
                 }
-
-                catch (Exception e)
-                {
-                    System.Console.WriteLine(e.Message);
-                    return null;
-                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
             }
         }
+
+        public void EliminarUsuario(string idUsuario, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var query = from usr in context.usuarios
+                                where usr.UsuarioID == idUsuario
+                                select usr;
+                    context.usuarios.Remove(query.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
 
         public void AgregarVisita(string idUsuario, string idProducto)
         {

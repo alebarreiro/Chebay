@@ -64,7 +64,7 @@ function finalizarDatosGenerales(){
             finCargando();
             $.notify({
                 // options
-                message: 'Se han guardado los datos generales correctamente.'
+                message: '<strong>Se han guardado los datos generales correctamente.</strong>'
             }, {
                 // settings
                 type: 'success'
@@ -74,7 +74,7 @@ function finalizarDatosGenerales(){
             finCargando();
             $.notify({
                 // options
-                message: 'Error al guardar los datos generales.'
+                message: '<strong>Error al guardar los datos generales.</strong>'
             }, {
                 // settings
                 type: 'danger'
@@ -108,7 +108,7 @@ function finalizarCrearTienda() {
     if (mensaje.length > 0) {
         $.notify({
             // options
-            message: mensaje
+            message: '<strong>' + mensaje + '</strong>'
         }, {
             // settings
             type: 'danger'
@@ -179,7 +179,7 @@ function agregarCategoria(tipoCategoria) {
         success: function (data, textStatus, jqxhr) {
             $.notify({
                 // options
-                message: 'Se ha agregado la categoría correctamente.'
+                message: '<strong>Se ha agregado la categoría correctamente.</strong>'
             }, {
                 // settings
                 type: 'success'
@@ -188,7 +188,7 @@ function agregarCategoria(tipoCategoria) {
         error: function (data, textStatus, jqxhr) {
             $.notify({
                 // options
-                message: 'Error al agregar la categoría.'
+                message: '<strong>Error al agregar la categoría.</strong>'
             }, {
                 // settings
                 type: 'danger'
@@ -197,7 +197,8 @@ function agregarCategoria(tipoCategoria) {
     });
 
     //refresca las categorias
-    $.ajax({
+    setTimeout(function(){
+        $.ajax({
         url: '/Tienda/ObtenerCategorias',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
@@ -205,6 +206,8 @@ function agregarCategoria(tipoCategoria) {
             $('#divCategorias').html(data);
         }
     });
+    }, 5000);
+    
 
 }
 
@@ -229,6 +232,16 @@ function datosGenerales() {
     });
 }
 
+function notificarCategoriaSimple() {
+    $.notify({
+        // options
+        message: '<strong>No se puede agregar categorías a una categoría simple.</strong>'
+    }, {
+        // settings
+        type: 'danger'
+    });
+}
+
 function crearCategorias() {
     if (!tiendaCreada) {
         $.notify({
@@ -240,11 +253,13 @@ function crearCategorias() {
         });
     }
     else {
+        
         $.ajax({
             url: '/Tienda/CrearCategorias',
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#contenidoCrearTienda').html(data);
+                cargandoAgregarCategoria();
             }
         });
 
@@ -252,6 +267,7 @@ function crearCategorias() {
             url: '/Tienda/ObtenerCategorias',
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
+                finCargandoAgregarCategoria();
                 $('#divCategorias').html(data);
             }
         });

@@ -106,7 +106,7 @@ namespace Chebay.Backoffice.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" onclick=\"notificarCategoriaSimple()\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";

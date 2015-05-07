@@ -87,52 +87,6 @@ function finalizarDatosGenerales(){
     tiendaCreada = true;
 }
 
-function finalizarCrearTienda() {
-    var mensaje = "";
-    if (!hayAtributos) {
-        mensaje += "Falta crear los Tipos de Atributo de cada Categoria\n";
-    }
-
-    if (!hayCategorias) {
-        mensaje += "Falta crear las categorias\n";
-    }
-
-    if (!hayDatosGenerales) {
-        mensaje += "Falta agregar los Datos Generales\n";
-    }
-
-    if (!hayPersonalizacion) {
-        mensaje += "Falta crear la Personalización\n";
-    }
-
-    if (mensaje.length > 0) {
-        $.notify({
-            // options
-            message: '<strong>' + mensaje + '</strong>'
-        }, {
-            // settings
-            type: 'danger'
-        });
-    }
-    else {
-        $.ajax({
-            url: '/Tienda/FinalizarCreacionTienda',
-            type: 'POST',
-            dataType: "json",
-            contentType: 'application/json; charset=UTF-8',
-            data: JSON.stringify(datosGenerales),
-            success: function (data, textStatus, jqxhr) {
-                $('#container').html(data);
-            },
-            error: function (data, textStatus, jqxhr) {
-                $('#container').html(data);
-            }
-        });
-    }
-    
-}
-
-
 function borrarTipoAtributo(idTipoAtributo , atributo) {
     var atributos = $("#divTiposAtributo").html();
     atributos = atributos.replace("&nbsp;&nbsp;<button id=\"" + idTipoAtributo + "\" class=\"btn btn-primary\" onclick=\"borrarTipoAtributo('" + idTiposAtributo + "','" + nombre + "')\">" + atributo + "</button>", " ");
@@ -246,7 +200,7 @@ function crearCategorias() {
     if (!tiendaCreada) {
         $.notify({
             // options
-            message: 'Debes ingresar los Datos Generales para pasar a crear categorías.'
+            message: '<strong>Debes ingresar los Datos Generales para pasar a crear categorías.</strong>'
         }, {
             // settings
             type: 'danger'
@@ -280,7 +234,7 @@ function crearTiposAtributo() {
     if (!tiendaCreada || !categoriasCreadas) {
         $.notify({
             // options
-            message: 'Debes ingresar las categorías de la tienda para pasar a crear tipos de atributo.'
+            message: '<strong>Debes ingresar las categorías de la tienda para pasar a crear tipos de atributo.</strong>'
         }, {
             // settings
             type: 'danger'
@@ -302,7 +256,7 @@ function crearPersonalizacion() {
     if (!tiendaCreada) {
         $.notify({
             // options
-            message: 'Debes ingresar los datos generales de la tienda para poder personalizarla.'
+            message: '<strong>Debes ingresar los datos generales de la tienda para poder personalizarla.</strong>'
         }, {
             // settings
             type: 'danger'

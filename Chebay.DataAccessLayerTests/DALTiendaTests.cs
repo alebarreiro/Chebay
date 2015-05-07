@@ -51,9 +51,8 @@ namespace Chebay.DataAccessLayerTests
                 it.EliminarAdministrador("TestAdmin");
                 Debug.WriteLine("\n0.2. Elimino www.TestURL.com.");
                 */
-                it.EliminarTienda("TiendaError");
+                it.EliminarTienda("TiendaEjemplo");
                 /*
-
                 Debug.WriteLine("\n0.3. Chequear que no existe TestAdmin.");
                 Assert.AreEqual(it.ObtenerAdministrador("TestAdmin"), null);
                 Debug.WriteLine("\n0.4. Chequear que no existe www.TestURL.com.");

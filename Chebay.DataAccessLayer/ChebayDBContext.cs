@@ -353,8 +353,8 @@ namespace DataAccessLayer
 
         public void Seed()
         {
-            Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale" },
-                                        new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok"}
+            Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale", administradores=new List<Administrador>()},
+                                        new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok", administradores=new List<Administrador>()}
                                     };
             Administrador[] admins = { new Administrador { AdministradorID= "Admin1", password= "admin1"},
                                        new Administrador { AdministradorID= "Admin2", password= "admin2"},
@@ -364,9 +364,10 @@ namespace DataAccessLayer
                                      };
             foreach (var a in admins)
             {
-                foreach (var t in tiendasarray){
+                a.tiendas = new List<Tienda>();
+                foreach (var t in tiendasarray){               
                     a.tiendas.Add(t);
-                    t.administradores.Add(a);
+                    //t.administradores.Add(a);
                 }
             }
 

@@ -317,5 +317,30 @@ namespace Chebay.DataAccessLayerTests
             List<Atributo> la = it.ObtenerAtributos(3, "TestURL");
             Assert.AreEqual(4, la.Count);
         }
+
+        [TestMethod]
+        public void SessionAtributesTest()
+        {
+            using (var schema = ChebayDBPublic.CreatePublic())
+            {
+                IDALTienda handler = new DALTiendaEF();
+                AtributoSesion[] atr = {   
+                                                new AtributoSesion { AdministradorID="Admin1", AtributoSesionID="Cache", Datos="algo" },
+                                                new AtributoSesion { AdministradorID = "Admin1", AtributoSesionID = "Cache2", Datos = "algo2" },                  
+                                                new AtributoSesion { AdministradorID = "Admin1", AtributoSesionID = "Cache2", Datos = "distinto" }
+                                            };
+                foreach (var a in atr)
+                {
+                    handler.AgregarAtributoSesion(a);
+                }
+
+                Console.WriteLine("Atributos del usuario admin.");
+                foreach (var a in handler.ObtenerAtributosSesion("Admin1"))
+                {
+                    Console.WriteLine(a.AtributoSesionID + " " + a.Datos);
+                }
+            }
+        }
+
     }
 }

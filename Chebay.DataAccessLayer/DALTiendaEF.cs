@@ -693,5 +693,45 @@ namespace DataAccessLayer
             }
         }
 
+        public void AgregarAtributoSesion(AtributoSesion AtributoS){
+            using (var context = ChebayDBPublic.CreatePublic())
+            {
+                AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
+                if (atrs == null)
+                {
+                    context.atributossesion.Add(AtributoS);
+                }
+                else
+                { //update
+                    atrs.Datos= AtributoS.Datos;
+                }
+                context.SaveChanges();
+            }
+        }
+      
+        public void EliminarAtributoSesion(string AdminID, string AtributoID)
+        {
+            using(var context = ChebayDBPublic.CreatePublic())
+            {
+                var query = from s in context.atributossesion
+                            where s.AdministradorID.Equals(AdminID) && s.AtributoSesionID.Equals(AtributoID)
+                            select s;
+                AtributoSesion atrs = query.FirstOrDefault(null);
+                if(atrs!=null)
+                    context.atributossesion.Remove(atrs);
+            }          
+        }
+
+        public List<AtributoSesion> ObtenerAtributosSesion(string AdminID)
+        {
+            using (var context = ChebayDBPublic.CreatePublic())
+            {
+                var query = from ats in context.atributossesion
+                            where ats.AdministradorID.Equals(AdminID)
+                            select ats;
+                return query.ToList();
+            }    
+        }
+
     }
 }

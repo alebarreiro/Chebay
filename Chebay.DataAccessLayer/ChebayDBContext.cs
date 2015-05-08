@@ -44,6 +44,7 @@ namespace DataAccessLayer
         public DbSet<Comentario> comentarios { get; set; }
         public DbSet<Conversacion> conversaciones { get; set; }
         public DbSet<Mensaje> mensajes { get; set; }
+        public DbSet<TipoAtributo> tipoatributos { get; set; }
         
         private ChebayDBContext(DbCompiledModel model)
             : base(con, model)
@@ -76,6 +77,7 @@ namespace DataAccessLayer
             builder.Entity<Oferta>().ToTable("Ofertas", schemaName);
             builder.Entity<Producto>().ToTable("Productos", schemaName);
             builder.Entity<Usuario>().ToTable("Usuarios", schemaName);
+            builder.Entity<TipoAtributo>().ToTable("TiposAtributo", schemaName);
 
             //relaciones
             builder.Entity<Usuario>().HasMany<Producto>(s => s.visitas)
@@ -99,12 +101,43 @@ namespace DataAccessLayer
             builder.Entity<Producto>().HasMany<Oferta>(p => p.ofertas);
             builder.Entity<Producto>().HasMany<Comentario>(p => p.comentarios);
             builder.Entity<Producto>().HasMany<Compra>(p=> p.compras);
+            builder.Entity<Producto>().HasMany<Atributo>(s => s.atributos)
+                .WithMany(s => s.productos)
+                .Map(ps =>
+                {
+                    ps.MapLeftKey("ProductoID");
+                    ps.MapRightKey("AtributoID");
+                    ps.ToTable("ProductoAtributo", schemaName);
+                });
 
+            builder.Entity<Producto>().HasMany<CategoriaSimple>(s => s.categorias)
+                .WithMany(s => s.productos)
+                .Map(ps =>
+                {
+                    ps.MapLeftKey("ProductoID");
+                    ps.MapRightKey("CategoriaID");
+                    ps.ToTable("ProductoCategoria", schemaName);
+                });
 
             builder.Entity<Usuario>().HasMany<Oferta>(p => p.ofertas);
             builder.Entity<Usuario>().HasMany<Comentario>(p => p.comentarios);
             builder.Entity<Usuario>().HasMany<Compra>(p => p.compras);
             builder.Entity<Usuario>().HasMany<Producto>(p => p.publicados);
+
+            builder.Entity<Categoria>().HasMany<Atributo>(s => s.atributos);
+
+            builder.Entity<Categoria>().HasMany<TipoAtributo>(s => s.tipoatributos)
+                .WithMany(s => s.categorias)
+                .Map(ps =>
+                {
+                    ps.MapLeftKey("CategoriaID");
+                    ps.MapRightKey("TipoAtributoID");
+                    ps.ToTable("CategoriaTipoAtributo", schemaName);
+                });
+
+
+
+            builder.Entity<TipoAtributo>().HasMany<Atributo>(p => p.atributos);
 
 
             var model = builder.Build(connection);
@@ -165,10 +198,28 @@ namespace DataAccessLayer
             }
             SaveChanges();
 
+            TipoAtributo[] tatrs = { 
+                                     new TipoAtributo{TipoAtributoID="CamaraRes", tipodato=TipoDato.INTEGER},
+                                     new TipoAtributo{TipoAtributoID="Pantalla", tipodato=TipoDato.INTEGER},
+                                     new TipoAtributo{TipoAtributoID="FechaRelease", tipodato=TipoDato.STRING},
+                                     new TipoAtributo{TipoAtributoID="Storage", tipodato=TipoDato.INTEGER}
+                                   };
+
+            foreach (var a in tatrs)
+            {
+                a.categorias = new List<Categoria>();
+                a.categorias.Add(categorias.Find(2)); //agrego a categoria samsung
+                tipoatributos.Add(a);
+            }
+
+            SaveChanges();
+
             //Samsung sample
-            Atributo[] atrs = { new Atributo{ CategoriaID = 2, etiqueta="Modelo", valor="X82" },
-                                new Atributo{ CategoriaID = 2, etiqueta="Screen Size", valor="5"},
-                                new Atributo{ CategoriaID = 2, etiqueta= "Camera resolution", valor="13"}
+            Atributo[] atrs = { new Atributo{ CategoriaID = 2, etiqueta="CamaraRes", valor="X82", TipoAtributoID="CamaraRes" },
+                                new Atributo{ CategoriaID = 2, etiqueta="Screen Size", valor="5", TipoAtributoID="Pantalla" },
+                                new Atributo{ CategoriaID = 2, etiqueta="InternaMemory", valor="16", TipoAtributoID="Storage" },
+                                new Atributo{ CategoriaID = 3, etiqueta= "Camera resolution", valor="13", TipoAtributoID="CamaraRes" },
+                                new Atributo{ CategoriaID = 3, etiqueta="InternaMemory", valor="64", TipoAtributoID="Storage" }                           
                               };
 
             foreach (var a in atrs)
@@ -177,12 +228,14 @@ namespace DataAccessLayer
             }
             SaveChanges();
 
-            Producto[] products = { new Producto{UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now },
-                                    new Producto{UsuarioID="Newton", nombre="Samsung S5", descripcion="bestia", CategoriaID=1, fecha_cierre= DateTime.Now }
+            Producto[] products = { new Producto{UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", fecha_cierre= DateTime.Now },
+                                    new Producto{UsuarioID="Newton", nombre="Samsung S5", descripcion="bestia", fecha_cierre= DateTime.Now }
                                   };
 
             foreach (var p in products)
             {
+                p.categorias = new List<CategoriaSimple>();
+                p.categorias.Add((CategoriaSimple)categorias.Find(2)); //samsung
                 productos.Add(p);
             }
 
@@ -197,7 +250,7 @@ namespace DataAccessLayer
             System.Console.WriteLine("Lista de Productos");
             foreach (var p in productos)
             {
-                System.Console.WriteLine(p.ProductoID + " " + p.CategoriaID + " " + p.nombre + "" + p.descripcion + " " + p.UsuarioID );
+                System.Console.WriteLine(p.ProductoID + " "  + " " + p.nombre + "" + p.descripcion + " " + p.UsuarioID );
             }
 
             System.Console.WriteLine("Lista de Categorias");
@@ -228,6 +281,7 @@ namespace DataAccessLayer
 
         public DbSet<Administrador> administradores { get; set; }
         public DbSet<Tienda> tiendas { get; set; }
+        public DbSet<AtributoSesion> atributossesion { get; set; }
 
 
         private ChebayDBPublic(DbCompiledModel model)
@@ -252,6 +306,8 @@ namespace DataAccessLayer
             var builder = new DbModelBuilder();
             builder.Entity<Administrador>().ToTable("Administradores", schema);
             builder.Entity<Tienda>().ToTable("Tiendas", schema);
+            builder.Entity<AtributoSesion>().ToTable("AtributoSesion", schema);
+
 
             builder.Entity<Tienda>().HasMany<Administrador>(s => s.administradores)
                 .WithMany(s => s.tiendas)
@@ -262,6 +318,7 @@ namespace DataAccessLayer
                     ps.ToTable("AdminTienda", schema);
                 });
 
+            builder.Entity<Administrador>().HasMany<AtributoSesion>(p => p.atributosSesion);
 
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
@@ -323,6 +380,15 @@ namespace DataAccessLayer
                 tiendas.Add(t);
             }
 
+            SaveChanges();
+
+            AtributoSesion[] atrs = { new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="Algo", Datos="unvalordealgo"},
+                                    new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
+                                    };
+            foreach (var a in atrs)
+            {
+                atributossesion.Add(a);
+            }
             SaveChanges();
         }
     }

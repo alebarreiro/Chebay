@@ -21,7 +21,17 @@ namespace DataAccessLayer
           //      ChebayDBContext.ProvisionTenant("Tienda1");
           //      ChebayDBContext.ProvisionTenant("Tienda2");
                 //ChebayDBPublic.ProvidePublicSchema();
-                //ChebayDBContext.ProvisionTenant("PhoneBay");
+                ChebayDBContext.ProvisionTenant("PhoneBayMOD3");
+
+                //using (var schema = ChebayDBPublic.CreatePublic())
+                //{
+                //    schema.Seed();
+                //}
+
+                using (var schema = ChebayDBContext.CreateTenant("PhoneBayMOD3"))
+                {
+                    schema.seed();
+                }
 
          /*       using (var schema = ChebayDBContext.CreateTenant("PhoneBay"))
                 {

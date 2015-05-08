@@ -45,6 +45,7 @@
     <Compile Include="DataTypes\DataProducto.cs" />
     <Compile Include="Entities\Administrador.cs" />
     <Compile Include="Entities\Atributo.cs" />
+    <Compile Include="Entities\AtributoSesion.cs" />
     <Compile Include="Entities\Calificacion.cs" />
     <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\CategoriaCompuesta.cs" />
@@ -56,6 +57,7 @@
     <Compile Include="Entities\Oferta.cs" />
     <Compile Include="Entities\Producto.cs" />
     <Compile Include="Entities\Tienda.cs" />
+    <Compile Include="Entities\TipoAtributo.cs" />
     <Compile Include="Entities\Usuario.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -19,6 +19,7 @@ namespace Shared.Entities
    
         public virtual ICollection<Atributo> atributos { get; set; }
 
+        public virtual ICollection<TipoAtributo> tipoatributos { get; set; }
         //puede ser null
         public virtual CategoriaCompuesta padre { get; set; }
     }

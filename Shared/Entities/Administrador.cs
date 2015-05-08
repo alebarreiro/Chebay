@@ -15,6 +15,9 @@ namespace Shared.Entities
         public string AdministradorID { get; set; }
         [Required]
         public string password { get; set; }
+        
         public virtual ICollection<Tienda> tiendas { get; set; }
+        public virtual ICollection<AtributoSesion> atributosSesion { get; set; }
+
     }
 }

@@ -24,7 +24,7 @@ namespace Shared.Entities
         [Required]
         public DateTime fecha_cierre { get; set; }
 
-        public long CategoriaID { get; set; }
+        //public long CategoriaID { get; set; }
 
         [ForeignKey("UsuarioID")]
         public virtual Usuario usuario { get; set; }
@@ -34,8 +34,12 @@ namespace Shared.Entities
         public virtual ICollection<Compra> compras { get; set; } //tiene una única compra.
         public virtual ICollection<Comentario> comentarios { get; set; } //nuevo
 
+        public virtual ICollection<Atributo> atributos { get; set; }
+
         //se deducen los atributos
-        [ForeignKey("CategoriaID")]
-        public virtual CategoriaSimple categoria { get; set; }
+        //[ForeignKey("CategoriaID")]
+        //un producto puede tener varias categorias
+        //public virtual CategoriaSimple categoria { get; set; }
+        public virtual ICollection<CategoriaSimple> categorias { get; set; }
     }
 }

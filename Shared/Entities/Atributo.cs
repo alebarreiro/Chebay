@@ -15,6 +15,7 @@ namespace Shared.Entities
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long AtributoID { get; set; }
         public long CategoriaID { get; set; }
+        public string TipoAtributoID { get; set; }
         [Required]
         public string etiqueta { get; set; }
         [Required]
@@ -22,5 +23,9 @@ namespace Shared.Entities
 
         [ForeignKey("CategoriaID")]
         public virtual Categoria categoria { get; set; }
+        [ForeignKey("TipoAtributoID")]
+        public virtual TipoAtributo tipoatributo { get; set; }
+
+        public virtual ICollection<Producto> productos { get; set; }
     }
 }

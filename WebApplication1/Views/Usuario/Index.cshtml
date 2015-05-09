@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "Menu de usuario";
+    var usuario = ViewBag.usuario;
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<div>
+    <h4>Account settings</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        @usuario.UsuarioID
+    </dl>
+</div>

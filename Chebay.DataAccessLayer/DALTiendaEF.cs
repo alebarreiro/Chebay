@@ -732,7 +732,7 @@ namespace DataAccessLayer
             }    
         }
 
-        void AgregarTipoAtributo(TipoAtributo ta, string idTienda)
+        public void AgregarTipoAtributo(TipoAtributo ta, string idTienda)
         {
             try
             {
@@ -754,7 +754,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<TipoAtributo> ObtenerTipoAtributos(string idTienda)
+        public List<TipoAtributo> ObtenerTipoAtributos(string idTienda)
         {
             try
             {
@@ -778,7 +778,7 @@ namespace DataAccessLayer
             }
         }
 
-        TipoAtributo ObtenerTipoAtributo(string idTipoAtribuo, string idTienda)
+        public TipoAtributo ObtenerTipoAtributo(string idTipoAtribuo, string idTienda)
         {
             try
             {
@@ -798,7 +798,7 @@ namespace DataAccessLayer
             }
         }
 
-        void EliminarTipoAtributo(string idTipoAtributo, string idTienda)
+        public void EliminarTipoAtributo(string idTipoAtributo, string idTienda)
         {
             try
             {

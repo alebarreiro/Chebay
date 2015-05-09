@@ -9,6 +9,9 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Frontoffice.Models;
+using DataAccessLayer;
+using Shared.Entities;
+using System.Diagnostics;
 
 namespace Frontoffice.Controllers
 {
@@ -333,6 +336,29 @@ namespace Frontoffice.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
+                    IDALUsuario dalU = new DALUsuarioEF();
+                    Usuario userChebay;
+                    try {
+                        userChebay = dalU.ObtenerUsuario(loginInfo.Email, Session["Tienda_Nombre"].ToString());
+                        Session["Usuario"] = userChebay;
+                    } catch (Exception e) {
+                        userChebay = new Usuario { UsuarioID = loginInfo.Email, token = loginInfo.Login.ProviderKey };
+                        try
+                        {
+                            Debug.WriteLine(e.Message);
+                            dalU.AgregarUsuario(userChebay, Session["Tienda_Nombre"].ToString());
+                            Session["Usuario"] = userChebay;
+                        }
+                        catch (Exception e2)
+                        {
+                            Debug.WriteLine(e2.Message);
+                        }
+                    }
+                    if (userChebay != null)
+                    {
+
+                    }
+
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
                     return View("Lockout");
@@ -374,6 +400,9 @@ namespace Frontoffice.Controllers
                     result = await UserManager.AddLoginAsync(user.Id, info.Login);
                     if (result.Succeeded)
                     {
+                        IDALUsuario dalU = new DALUsuarioEF();
+                        Usuario userNuevo = new Usuario {UsuarioID = model.Email, token = info.Login.ProviderKey};
+                        dalU.AgregarUsuario(userNuevo, Session["Tienda_Nombre"].ToString());
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);
                     }

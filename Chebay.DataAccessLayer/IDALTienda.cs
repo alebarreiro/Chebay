@@ -32,7 +32,7 @@ namespace DataAccessLayer
 
         //--TIPO ATRIBUTO--
         void AgregarTipoAtributo(TipoAtributo ta, string idTienda);
-        //void EliminarTipoAtributo(TipoAtributo ta, string idTienda);
+        void EliminarTipoAtributo(string idTipoAtributo, string idTienda);
 
         //--ATRIBUTOS--
         void AgregarAtributos(List<Atributo> lAtributos, string idTienda);
@@ -56,8 +56,5 @@ namespace DataAccessLayer
         void AgregarAtributoSesion(AtributoSesion AtributoS);
         void EliminarAtributoSesion(string AdminID, string AtributoID);
         List<AtributoSesion> ObtenerAtributosSesion(string AdminID);
-
-        void EliminarTipoAtributo(string idTipoAtributo, string idTienda);
-
     }
 }

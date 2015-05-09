@@ -3,11 +3,16 @@ var categoriasCreadas = false;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 idCategorias = idTiposAtributo = 1;
 
-var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingAgregarCategoria;
+var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingCargarDatos, categoriaAgregarTipoAtributo;
 
 function modalAgregarCategoria(padre) {
     padreAgregarCategoria = padre;
     $("#modalAgregarCategoria").modal();
+}
+
+function modalAgregarTipoAtributo(categoria) {
+    categoriaAgregarTipoAtributo = categoria;
+    $("#modalAgregarTipoAtributo").modal();
 }
 
 function cargando() {
@@ -22,16 +27,16 @@ function finCargando() {
     $("#container").html(paginaAntesLoading);
 }
 
-function cargandoAgregarCategoria() {
-    paginaAntesLoadingAgregarCategoria = $("#divCategorias").html();
+function cargandoDatos(div) {
+    paginaAntesLoadingCargarDatos = $(div).html();
 
     var loading = "<img src=\"Images/cargando.gif\" class=\"cargando\">";
 
-    $("#divCategorias").html(loading);
+    $(div).html(loading);
 }
 
-function finCargandoAgregarCategoria() {
-    $("#divCategorias").html(paginaAntesLoadingAgregarCategoria);
+function finCargandoAgregarCategoria(div) {
+    $(div).html(paginaAntesLoadingCargarDatos);
 }
 
 function finalizarCreacionCategorias() {
@@ -95,12 +100,56 @@ function borrarTipoAtributo(idTipoAtributo , atributo) {
 
 function agregarTipoAtributo() {
     var nombre = $("#nombreTipoAtributo").val();
+    var tipo = $("tipoDatosTipoAtributo").val();
 
-    var categorias = $("#divTiposAtributo").html();
+    var datosTipoAtributo = {
+        nombre: nombre,
+        tipo: tipo,
+        categoria : categoriaAgregarTipoAtributo
+    };
 
-    $("#divTiposAtributo").html(categorias + "&nbsp;&nbsp;<button id=\"" + idTiposAtributo + "\" class=\"btn btn-primary\" onclick=\"borrarTipoAtributo('" + idTiposAtributo + "','" + nombre + "')\">" + nombre + "</button>");
+    $("#modalAgregarTipoAtributo").modal('hide');
 
-    idTiposAtributo++;
+    cargandoDatos("#divTiposAtributo");
+
+    $.ajax({
+        url: '/Tienda/AgregarTipoAtributo',
+        type: 'POST',
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(datosTipoAtributo),
+        success: function (data, textStatus, jqxhr) {
+            $.notify({
+                // options
+                message: '<strong>Se ha agregado el tipo de atributo correctamente.</strong>'
+            }, {
+                // settings
+                type: 'success'
+            });
+        },
+        error: function (data, textStatus, jqxhr) {
+            $.notify({
+                // options
+                message: '<strong>Error al agregar el tipo de atributo.</strong>'
+            }, {
+                // settings
+                type: 'danger'
+            });
+        }
+    });
+
+    //refresca las categorias
+    setTimeout(function () {
+        $.ajax({
+            url: '/Tienda/ObtenerCategoriasTipoAtributo',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divTiposAtributo");
+                $("#divTiposAtributo").html();
+            }
+        });
+    }, 8000);
+
 }
 
 function borrarCategoria(idCategoria, nombre) {
@@ -122,7 +171,7 @@ function agregarCategoria(tipoCategoria) {
 
     $("#modalAgregarCategoria").modal('hide');
 
-    cargandoAgregarCategoria();
+    cargandoDatos("#divCategorias");
 
     $.ajax({
         url: '/Tienda/AgregarCategoria',
@@ -156,7 +205,7 @@ function agregarCategoria(tipoCategoria) {
         url: '/Tienda/ObtenerCategorias',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
-            finCargandoAgregarCategoria();
+            finCargandoDatos("#divCategorias");
             $('#divCategorias').html(data);
         }
     });

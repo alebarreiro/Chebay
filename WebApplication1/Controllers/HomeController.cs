@@ -14,7 +14,10 @@ namespace Frontoffice.Controllers
         public ActionResult Index(string urlTienda)
         {
             IDALSubasta controladorSubasta = new DALSubastaEF();
+            IDALTienda controladorTienda = new DALTiendaEF();
             List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
+            Tienda t = controladorTienda.ObtenerTienda(urlTienda);
+            List<Categoria> categorias = controladorTienda.ListarCategorias(urlTienda);
             //List<DataProducto> prods = null;
             if (prods == null)
             {

@@ -683,7 +683,6 @@ namespace DataAccessLayer
                         }
                     }
                     fileOutput.Close();
-
                 }
             }
             catch (Exception e)
@@ -731,6 +730,93 @@ namespace DataAccessLayer
                             select ats;
                 return query.ToList();
             }    
+        }
+
+        void AgregarTipoAtributo(TipoAtributo ta, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    TipoAtributo tipoA = context.tipoatributos.Find(ta.TipoAtributoID);
+                    if (tipoA != null)
+                        context.tipoatributos.Add(ta);
+                    else //update
+                        tipoA.tipodato = ta.tipodato;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        List<TipoAtributo> ObtenerTipoAtributos(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qTipoA = from t in context.tipoatributos
+                                 select t;
+                    List<TipoAtributo> ret = new List<TipoAtributo>();
+                    foreach (TipoAtributo ta in qTipoA.ToList())
+                    {
+                        ret.Add(ta);
+                    }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        TipoAtributo ObtenerTipoAtributo(string idTipoAtribuo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qTipoA = from t in context.tipoatributos
+                                 where t.TipoAtributoID == idTipoAtribuo
+                                 select t;
+                    return qTipoA.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
+        }
+
+        void EliminarTipoAtributo(string idTipoAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qTipoA = from t in context.tipoatributos
+                                 where t.TipoAtributoID == idTipoAtributo
+                                 select t;
+                    context.tipoatributos.Remove(qTipoA.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw;
+            }
         }
 
     }

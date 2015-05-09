@@ -30,6 +30,10 @@ namespace DataAccessLayer
         void EliminarCategoria(long idCategoria, string idTienda);
         void ModificarCategoria(Categoria c, string idTienda);
 
+        //--TIPO ATRIBUTO--
+        void AgregarTipoAtributo(TipoAtributo ta, string idTienda);
+        void EliminarTipoAtributo(TipoAtributo ta, string idTienda);
+
         //--ATRIBUTOS--
         void AgregarAtributos(List<Atributo> lAtributos, string idTienda);
         void AgregarAtributo(Atributo a, string idTienda);

@@ -30,7 +30,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -49,7 +49,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -72,7 +72,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -92,7 +92,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -111,7 +111,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -132,7 +132,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 

@@ -29,7 +29,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -38,8 +38,6 @@ namespace DataAccessLayer
         {
             try
             {
-                if (idProducto == null)
-                    throw new Exception("Debe pasar el identificador de un producto.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -52,7 +50,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -99,7 +97,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -122,7 +120,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -151,7 +149,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -180,7 +178,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -214,7 +212,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -248,7 +246,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -276,7 +274,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -296,7 +294,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -316,7 +314,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -333,7 +331,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -356,7 +354,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
 
         }
@@ -379,7 +377,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
                     

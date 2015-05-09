@@ -37,7 +37,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -75,7 +75,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -103,7 +103,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -116,52 +116,32 @@ namespace DataAccessLayer
                     throw new Exception("Debe pasar una tienda.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
-                
-               /*     if (idAdmin == "" || idAdmin == null)
-                        throw new Exception("El administrador no puede ser vacío.");
-                    var query = from t in context.tiendas
-                                where t.TiendaID == tienda.TiendaID
-                                select t;
-                    if (query.Count() > 0)
-                        throw new Exception("Ya existe una tienda con url " + tienda.TiendaID);
-                    else
-                    {
-                        var ad = from a in context.administradores
-                                 where a.AdministradorID == idAdmin
-                                 select a;
-                        if (ad.Count() == 0)
-                            throw new Exception("No existe el administrador " + idAdmin);
-                        else
-                        {
-                            if (tienda.administradores == null)
-                                tienda.administradores = new HashSet<Administrador>();
-                            Administrador admin = ad.FirstOrDefault();
-                            tienda.administradores.Add(admin);
-                            if (admin.tiendas == null)
-                                admin.tiendas = new HashSet<Tienda>();
-                            admin.tiendas.Add(tienda);*/
-                            context.tiendas.Add(tienda);
-                            ChebayDBContext.ProvisionTenant(tienda.TiendaID);
-                            context.SaveChanges();
-                            Debug.WriteLine("Tienda " + tienda.TiendaID + " creada con éxito.");
-                            
-                            //Crea la Categoria Raiz.
-                            var schema = ChebayDBContext.CreateTenant(tienda.TiendaID);
-                            CategoriaCompuesta raiz = new CategoriaCompuesta();
-                            raiz.Nombre = "/";
-                            raiz.hijas = new List<Categoria>();
-                            raiz.atributos = new List<Atributo>();
-                            schema.categorias.Add(raiz);
-                            schema.SaveChanges();
-                            Debug.WriteLine("Categoría raíz de " + tienda.TiendaID + " creada con éxito.");
-                     //   }
-                    //}   
+                    var qAdmin = from ad in context.administradores
+                                 where ad.AdministradorID == idAdmin
+                                 select ad;
+                    if (tienda.administradores == null)
+                        tienda.administradores = new HashSet<Administrador>();
+                    tienda.administradores.Add(qAdmin.FirstOrDefault());
+                    context.tiendas.Add(tienda);
+                    context.SaveChanges();
+                    ChebayDBContext.ProvisionTenant(tienda.TiendaID);
+                    Debug.WriteLine("Tienda " + tienda.TiendaID + " creada con éxito.");
+
+                    //Crea la Categoria Raiz.
+                    var schema = ChebayDBContext.CreateTenant(tienda.TiendaID);
+                    CategoriaCompuesta raiz = new CategoriaCompuesta();
+                    raiz.Nombre = "/";
+                    raiz.hijas = new List<Categoria>();
+                    raiz.atributos = new List<Atributo>();
+                    schema.categorias.Add(raiz);
+                    schema.SaveChanges();
+                    Debug.WriteLine("Categoría raíz de " + tienda.TiendaID + " creada con éxito.");
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
                 //Dropear las tablas creadas.
             }
         }
@@ -173,7 +153,7 @@ namespace DataAccessLayer
                 chequearTienda(tienda.TiendaID);
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
-                
+
                     var qTienda = from t in context.tiendas
                                   where t.TiendaID == tienda.TiendaID
                                   select t;
@@ -187,7 +167,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -200,7 +180,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -213,7 +193,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -243,26 +223,26 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     foreach (Categoria dc in lCategorias) try
-                    {
-                        var query = from cat in context.categorias
-                                    where cat.CategoriaID == dc.padre.CategoriaID
-                                    select cat;
-                        CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
-                        dc.padre = father;
-                        context.categorias.Add(dc);
-                    }
-                    catch (Exception e)
-                    {
-                        Debug.WriteLine(e.Message);
-                        throw;
-                    }
+                        {
+                            var query = from cat in context.categorias
+                                        where cat.CategoriaID == dc.padre.CategoriaID
+                                        select cat;
+                            CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
+                            dc.padre = father;
+                            context.categorias.Add(dc);
+                        }
+                        catch (Exception e)
+                        {
+                            Debug.WriteLine(e.Message);
+                            throw e;
+                        }
                     context.SaveChanges();
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Source + e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -287,7 +267,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -313,7 +293,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -354,13 +334,13 @@ namespace DataAccessLayer
                     var query = from adm in context.administradores
                                 where adm.AdministradorID == idAdministrador
                                 select adm;
-                    return query.FirstOrDefault();    
+                    return query.FirstOrDefault();
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -383,7 +363,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -394,7 +374,7 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
-                
+
                     var query = from t in context.tiendas
                                 where t.TiendaID == idTienda
                                 select t;
@@ -404,7 +384,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -418,15 +398,15 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var query = from c in context.categorias
-                                    where c.CategoriaID == idCategoria
-                                    select c;
+                                where c.CategoriaID == idCategoria
+                                select c;
                     return query.FirstOrDefault();
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -435,7 +415,7 @@ namespace DataAccessLayer
             try
             {
                 if (a == null)
-                        throw new Exception("Tiene que pasar un atributo.");
+                    throw new Exception("Tiene que pasar un atributo.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -451,7 +431,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -479,7 +459,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -509,7 +489,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -531,7 +511,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -553,7 +533,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -576,7 +556,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -596,7 +576,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -617,7 +597,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -640,7 +620,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
@@ -653,7 +633,7 @@ namespace DataAccessLayer
                 {
 
                     Debug.WriteLine(Directory.GetCurrentDirectory());
-                    
+
                     int counter = 0;
                     string line;
                     List<string> temp = new List<string>();
@@ -688,11 +668,12 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
-        public void AgregarAtributoSesion(AtributoSesion AtributoS){
+        public void AgregarAtributoSesion(AtributoSesion AtributoS)
+        {
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
@@ -702,23 +683,23 @@ namespace DataAccessLayer
                 }
                 else
                 { //update
-                    atrs.Datos= AtributoS.Datos;
+                    atrs.Datos = AtributoS.Datos;
                 }
                 context.SaveChanges();
             }
         }
-      
+
         public void EliminarAtributoSesion(string AdminID, string AtributoID)
         {
-            using(var context = ChebayDBPublic.CreatePublic())
+            using (var context = ChebayDBPublic.CreatePublic())
             {
                 var query = from s in context.atributossesion
                             where s.AdministradorID.Equals(AdminID) && s.AtributoSesionID.Equals(AtributoID)
                             select s;
                 AtributoSesion atrs = query.FirstOrDefault(null);
-                if(atrs!=null)
+                if (atrs != null)
                     context.atributossesion.Remove(atrs);
-            }          
+            }
         }
 
         public List<AtributoSesion> ObtenerAtributosSesion(string AdminID)
@@ -729,10 +710,10 @@ namespace DataAccessLayer
                             where ats.AdministradorID.Equals(AdminID)
                             select ats;
                 return query.ToList();
-            }    
+            }
         }
 
-        void AgregarTipoAtributo(TipoAtributo ta, string idTienda)
+        public void AgregarTipoAtributo(TipoAtributo ta, string idTienda)
         {
             try
             {
@@ -740,65 +721,38 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     TipoAtributo tipoA = context.tipoatributos.Find(ta.TipoAtributoID);
-                    if (tipoA != null)
+                    if (tipoA == null)
+                    {
                         context.tipoatributos.Add(ta);
+                        foreach (Categoria c in ta.categorias)
+                        {
+                            if (c.tipoatributos == null)
+                                c.tipoatributos = new HashSet<TipoAtributo>();
+                            c.tipoatributos.Add(ta);
+                        }
+                    }
+
                     else //update
+                    {
                         tipoA.tipodato = ta.tipodato;
+                        foreach (Categoria c in ta.categorias)
+                        {
+                            if (c.tipoatributos == null)
+                                c.tipoatributos = new HashSet<TipoAtributo>();
+                            c.tipoatributos.Add(ta);
+                        }
+                    }
                     context.SaveChanges();
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 
-        List<TipoAtributo> ObtenerTipoAtributos(string idTienda)
-        {
-            try
-            {
-                chequearTienda(idTienda);
-                using (var context = ChebayDBContext.CreateTenant(idTienda))
-                {
-                    var qTipoA = from t in context.tipoatributos
-                                 select t;
-                    List<TipoAtributo> ret = new List<TipoAtributo>();
-                    foreach (TipoAtributo ta in qTipoA.ToList())
-                    {
-                        ret.Add(ta);
-                    }
-                    return ret;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
-        }
-
-        TipoAtributo ObtenerTipoAtributo(string idTipoAtribuo, string idTienda)
-        {
-            try
-            {
-                chequearTienda(idTienda);
-                using (var context = ChebayDBContext.CreateTenant(idTienda))
-                {
-                    var qTipoA = from t in context.tipoatributos
-                                 where t.TipoAtributoID == idTipoAtribuo
-                                 select t;
-                    return qTipoA.FirstOrDefault();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw;
-            }
-        }
-
-        void EliminarTipoAtributo(string idTipoAtributo, string idTienda)
+        public void EliminarTipoAtributo(string idTipoAtributo, string idTienda)
         {
             try
             {
@@ -815,7 +769,7 @@ namespace DataAccessLayer
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                throw;
+                throw e;
             }
         }
 

@@ -25,8 +25,14 @@
     @Scripts.Render("~/bundles/jqueryui-chat")
     @Scripts.Render("~/bundles/signalR")
     <script src="/signalr/hubs"></script>
-
-    @Styles.Render("~/Content/personalizacion/EstiloUno/css")
+    @if (Session["Tienda_Personalizacion"] == "1")
+    {
+        @Styles.Render("~/Content/personalizacion/EstiloUno/css")
+    }
+    else if (Session["Tienda_Personalizacion"] == "2")
+    {
+        @Styles.Render("~/Content/personalizacion/EstiloDos/css")
+    }
 
 </head>
 <body>

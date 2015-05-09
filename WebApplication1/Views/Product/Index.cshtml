@@ -1,0 +1,29 @@
+﻿@{
+    ViewBag.Title = "Menu de usuario";
+    var categorias = ViewBag.categoriaRaiz;
+    var nombreTienda = @Session["Tienda_Nombre"];
+    
+}
+
+<div>
+    <h4>Crear Producto</h4>
+    <hr />
+    <dl class="dl-horizontal">
+    </dl>
+    <button onclick="crearArbol()"> CREAR ARBOL </button>
+    <div id="divCategorias">
+
+    </div>
+</div>
+
+<script type="text/javascript">
+    crearArbol = function () {
+        $.ajax({
+            url: '/' + '@nombreTienda' + '/Product/ObtenerCategorias',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#divCategorias').html(data);
+            }
+        });
+    }
+</script>

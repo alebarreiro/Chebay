@@ -15,6 +15,7 @@ namespace Frontoffice.Controllers
         {
             IDALSubasta controladorSubasta = new DALSubastaEF();
             List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
+            //List<DataProducto> prods = null;
             if (prods == null)
             {
                 prods = new List<DataProducto>();
@@ -35,7 +36,9 @@ namespace Frontoffice.Controllers
             }
             ViewBag.productos = prods;
             //Elegimos el estilo, por ahora los posibles valores son 1 o 2
-            ViewBag.personalizacion = 1;
+            Session["Tienda_Personalizacion"] = "1";
+            Session["Tienda_Nombre"] = urlTienda;
+            //ViewBag.personalizacion = 1;
             return View();
         }
 

@@ -33,3 +33,23 @@ nav a {
 .product-item-header {
     background: #e44d26;
 }
+
+.product-item-countdown {
+    background: #e44d26;
+}
+
+.product-user-winner {
+    background: #e44d26;
+}
+
+.offer-section {
+    border: 2px solid #e44d26;
+}
+
+.offer-section-price {
+    background: #f16529;
+}
+
+.offer-section-button {
+    background: #e44d26;
+}

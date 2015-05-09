@@ -262,7 +262,7 @@ function crearCategorias() {
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#contenidoCrearTienda').html(data);
-                cargandoAgregarCategoria();
+                cargandoDatos("#divCategorias");
             }
         });
 
@@ -270,7 +270,7 @@ function crearCategorias() {
             url: '/Tienda/ObtenerCategorias',
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
-                finCargandoAgregarCategoria();
+                finCargandoDatos("#divCategorias");
                 $('#divCategorias').html(data);
             }
         });
@@ -295,6 +295,15 @@ function crearTiposAtributo() {
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#contenidoCrearTienda').html(data);
+                cargandoDatos("#divAtributos");
+            }
+        });
+        $.ajax({
+            url: '/Tienda/ObtenerCategoriasTipoAtributo',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divAtributos");
+                $('#divCategorias').html(data);
             }
         });
     }

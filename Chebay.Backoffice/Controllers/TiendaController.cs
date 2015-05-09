@@ -94,7 +94,35 @@ namespace Chebay.Backoffice.Controllers
             return contenido;
         }
 
+        public string RecursionCategoriasTipoAtributo(CategoriaCompuesta categoria)
+        {
+            string resultado = "";
+            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarTipoAtributo(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
+            //debo crear un arreglo JSON con las categorias
+            if (categoria.hijas != null)
+            {
+                if (categoria.hijas.Count() > 0)
+                {
+                    resultado += "<ul>";
+                    foreach (Categoria hija in categoria.hijas)
+                    {
+                        if (hija is CategoriaCompuesta)
+                        {
+                            resultado += RecursionCategorias((CategoriaCompuesta)hija);
+                        }
+                        else
+                        {
+                            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarTipoAtributo(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                        }
+                    }
+                    resultado += "</ul>";
+                }
 
+
+            }
+            resultado += "</li>";
+            return resultado;
+        }
 
         public string RecursionCategorias(CategoriaCompuesta categoria)
         {
@@ -132,21 +160,32 @@ namespace Chebay.Backoffice.Controllers
         {
             try
             {
+                string idAdmin = User.Identity.GetUserName();
+                List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+                AtributoSesion tienda = null;
+                foreach (AtributoSesion a in atributos)
+                {
+                    if (a.AtributoSesionID.Equals("tienda"))
+                    {
+                        tienda = a;
+                        break;
+                    }
+                }
                 if (datos.tipoCategoria.Equals("compuesta"))
                 {
                     Categoria catCompuesta = new CategoriaCompuesta();
                     IDALTienda idal = new DALTiendaEF();
-                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
+                    catCompuesta.padre = (CategoriaCompuesta)idal.ObtenerCategoria(tienda.Datos, datos.padre);
                     catCompuesta.Nombre = datos.nombre;
-                    idal.AgregarCategoria(catCompuesta, "Tienda Ejemplo");
+                    idal.AgregarCategoria(catCompuesta, tienda.Datos);
                 }
                 else if (datos.tipoCategoria.Equals("simple"))
                 {
                     Categoria catSimple = new CategoriaSimple();
                     IDALTienda idal = new DALTiendaEF();
-                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria("Tienda Ejemplo", datos.padre);
+                    catSimple.padre = (CategoriaCompuesta)idal.ObtenerCategoria(tienda.Datos, datos.padre);
                     catSimple.Nombre = datos.nombre;
-                    idal.AgregarCategoria(catSimple, "Tienda Ejemplo");
+                    idal.AgregarCategoria(catSimple, tienda.Datos);
                 }
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -187,7 +226,22 @@ namespace Chebay.Backoffice.Controllers
                         ta.tipodato = TipoDato.BINARY;
                         break;
                 }
-                idalTienda.AgregarTipoAtributo(ta, "Tienda Ejemplo");
+                string idAdmin = User.Identity.GetUserName();
+                List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+                AtributoSesion tienda = null;
+                foreach (AtributoSesion a in atributos)
+                {
+                    if (a.AtributoSesionID.Equals("tienda"))
+                    {
+                        tienda = a;
+                        break;
+                    }
+                }
+                List<Categoria> categorias = new List<Categoria>();
+                Categoria cat = idalTienda.ObtenerCategoria(tienda.Datos, datos.categoria);
+                categorias.Add(cat);
+                ta.categorias = categorias;
+                idalTienda.AgregarTipoAtributo(ta, tienda.Datos);
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -204,7 +258,18 @@ namespace Chebay.Backoffice.Controllers
         {
             string tablaCategorias = "";
             //List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
-            List<Categoria> categorias = idalTienda.ListarCategorias("Tienda Ejemplo");
+            string idAdmin = User.Identity.GetUserName();
+            List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+            AtributoSesion tienda = null;
+            foreach (AtributoSesion a in atributos)
+            {
+                if (a.AtributoSesionID.Equals("tienda"))
+                {
+                    tienda = a;
+                    break;
+                }
+            }
+            List<Categoria> categorias = idalTienda.ListarCategorias(tienda.Datos);
             tablaCategorias += "<div class=\"well\"><ul>";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
             tablaCategorias += "</ul></div>";
@@ -217,9 +282,20 @@ namespace Chebay.Backoffice.Controllers
         {
             string tablaCategorias = "";
             //List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
-            List<Categoria> categorias = idalTienda.ListarCategorias("Tienda Ejemplo");
+            string idAdmin = User.Identity.GetUserName();
+            List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+            AtributoSesion tienda = null;
+            foreach (AtributoSesion a in atributos)
+            {
+                if (a.AtributoSesionID.Equals("tienda"))
+                {
+                    tienda = a;
+                    break;
+                }
+            }
+            List<Categoria> categorias = idalTienda.ListarCategorias(tienda.Datos);
             tablaCategorias += "<div class=\"well\"><ul>";
-            tablaCategorias += RecursionCategorias((CategoriaCompuesta)categorias.ElementAt(0));
+            tablaCategorias += RecursionCategoriasTipoAtributo((CategoriaCompuesta)categorias.ElementAt(0));
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);
         }
@@ -267,9 +343,7 @@ namespace Chebay.Backoffice.Controllers
             {
                 //que se hace con el admin??
 
-                User.Identity.GetUserName();
-                string idAdmin = (string)Session["admin"];
-                idAdmin = null;
+                string idAdmin = User.Identity.GetUserName();
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
                 foreach(AtributoSesion a in atributos){
@@ -287,12 +361,12 @@ namespace Chebay.Backoffice.Controllers
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
                     idalTienda.AgregarTienda(t, idAdmin);
+                    atr.AtributoSesionID = "tienda";
                     atr.Datos = t.TiendaID;
                     idalTienda.AgregarAtributoSesion(atr);
                 }
                 else
                 {
-                    idAdmin = null;
                     Tienda t = new Tienda();
                     //sacarle los espacios al string de abajo
                     //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
@@ -301,6 +375,7 @@ namespace Chebay.Backoffice.Controllers
                     t.nombre = datosGenerales.titulo;
                     idalTienda.ActualizarTienda(t);
                     AtributoSesion atr = new AtributoSesion();
+                    atr.AtributoSesionID = "tienda";
                     atr.Datos = t.TiendaID;
                     idalTienda.AgregarAtributoSesion(atr);
                 }

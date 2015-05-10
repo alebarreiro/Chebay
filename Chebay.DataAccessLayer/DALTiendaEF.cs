@@ -124,6 +124,7 @@ namespace DataAccessLayer
                     tienda.administradores.Add(qAdmin.FirstOrDefault());
                     context.tiendas.Add(tienda);
                     context.SaveChanges();
+                    Debug.WriteLine("Creando schema...");
                     ChebayDBContext.ProvisionTenant(tienda.TiendaID);
                     Debug.WriteLine("Tienda " + tienda.TiendaID + " creada con éxito.");
 
@@ -724,23 +725,23 @@ namespace DataAccessLayer
                     if (tipoA == null)
                     {
                         context.tipoatributos.Add(ta);
-                        foreach (Categoria c in ta.categorias)
+                        /*foreach (Categoria c in ta.categorias)
                         {
                             if (c.tipoatributos == null)
                                 c.tipoatributos = new HashSet<TipoAtributo>();
                             c.tipoatributos.Add(ta);
-                        }
+                        }*/
                     }
 
                     else //update
                     {
                         tipoA.tipodato = ta.tipodato;
-                        foreach (Categoria c in ta.categorias)
+                        /*foreach (Categoria c in ta.categorias)
                         {
                             if (c.tipoatributos == null)
                                 c.tipoatributos = new HashSet<TipoAtributo>();
                             c.tipoatributos.Add(ta);
-                        }
+                        }*/
                     }
                     context.SaveChanges();
                 }

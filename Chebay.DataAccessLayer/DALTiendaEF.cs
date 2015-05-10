@@ -714,7 +714,7 @@ namespace DataAccessLayer
             }
         }
 
-        public void AgregarTipoAtributo(TipoAtributo ta, string idTienda)
+        public void AgregarTipoAtributo(TipoAtributo ta, long idCategoria, string idTienda)
         {
             try
             {
@@ -724,6 +724,12 @@ namespace DataAccessLayer
                     TipoAtributo tipoA = context.tipoatributos.Find(ta.TipoAtributoID);
                     if (tipoA == null)
                     {
+                        var qCat = from c in context.categorias
+                                   where c.CategoriaID == idCategoria
+                                   select c;
+                        if (ta.categorias == null)
+                            ta.categorias = new HashSet<Categoria>();
+                        ta.categorias.Add(qCat.FirstOrDefault());
                         context.tipoatributos.Add(ta);
                         /*foreach (Categoria c in ta.categorias)
                         {

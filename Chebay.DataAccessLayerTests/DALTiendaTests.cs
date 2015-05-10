@@ -289,22 +289,18 @@ namespace Chebay.DataAccessLayerTests
         {
             IDALTienda it = new DALTiendaEF();
 
-            Categoria c = it.ObtenerCategoria(urlTest, 3);
-
             TipoAtributo ta = new TipoAtributo
             {
                 TipoAtributoID = "Tamaño pantalla",
                 tipodato = TipoDato.STRING
             };
-            ta.categorias = new HashSet<Categoria>();
-            ta.categorias.Add(c);
-            it.AgregarTipoAtributo(ta, urlTest);
-            c = it.ObtenerCategoria(urlTest, 3);
+            it.AgregarTipoAtributo(ta, 3, urlTest);
+            /*Categoria c = it.ObtenerCategoria(urlTest, 3);
             foreach (TipoAtributo tipoA in c.tipoatributos)
             {
                 Assert.AreEqual("Tamaño panatalla", tipoA.TipoAtributoID);
                 Assert.AreEqual(TipoDato.STRING, tipoA.tipodato);
-            }
+            }*/
         }
     }
 }

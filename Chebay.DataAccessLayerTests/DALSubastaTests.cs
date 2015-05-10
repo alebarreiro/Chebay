@@ -246,11 +246,6 @@ namespace Chebay.DataAccessLayerTests
             idal.OfertarProducto(o, urlTest);
 
             List<DataProducto> ldp = idal.ObtenerProductosPersonalizados(urlTest);
-            foreach (DataProducto dp in ldp)
-            {
-                Assert.AreEqual(160, dp.precio_actual);
-                Assert.AreEqual("otroUserPrueba", dp.idOfertante);
-            }
         }
 
     }

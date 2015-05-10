@@ -10,9 +10,26 @@
     <hr />
     <dl class="dl-horizontal">
     </dl>
-    <button onclick="crearArbol()"> CREAR ARBOL </button>
-    <div id="divCategorias">
+    
+    <div id="divFormulario">
+      @using (Html.BeginForm())
+      {
+        @Html.ValidationSummary()
 
+        <div class="form-group">
+            <label for="titulo">Titulo: </label>
+            <input type="text" class="form-control" id="titlo" placeholder="Ingresar titulo">
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripcion: </label>
+            <textarea type="text" class="form-control" id="descripcion" placeholder="Ingresar descripcion"></textarea>
+        </div>
+        <button class="btn btn-default" onclick="productoValidar1()">Submit</button>
+      }
+
+    </div>
+
+    <div id="divCategorias" style="display: none;">
     </div>
 </div>
 
@@ -26,4 +43,21 @@
             }
         });
     }
+
+    productoValidar1 = function () {
+        var titulo = $('#titulo').val(),
+            descripcion = $('#descripcion').val();
+        console.log(titulo + " "  + descripcion);
+
+        $(".divFormulario").hide();
+        $.ajax({
+            url: '/' + '@nombreTienda' + '/Product/ObtenerCategorias',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#divCategorias').html(data);
+                $('#divCategorias').show();
+            }
+        });
+    }
+
 </script>

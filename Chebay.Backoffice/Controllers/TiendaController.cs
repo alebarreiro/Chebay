@@ -160,7 +160,7 @@ namespace Chebay.Backoffice.Controllers
         {
             try
             {
-                string idAdmin = User.Identity.GetUserName();
+                string idAdmin = "Admin1";//User.Identity.GetUserName();
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
                 foreach (AtributoSesion a in atributos)

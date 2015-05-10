@@ -55,8 +55,8 @@ namespace Frontoffice
             //   consumerSecret: "");
 
             app.UseFacebookAuthentication(
-               appId: "934307863287869",
-               appSecret: "b1c707f2a41b570dd32f6a010dd2efe8");
+               appId: "1833452286880381",//"934307863287869",
+               appSecret:"bd7e0a85749cf23c1780c5b8cc691593" );//"b1c707f2a41b570dd32f6a010dd2efe8");
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

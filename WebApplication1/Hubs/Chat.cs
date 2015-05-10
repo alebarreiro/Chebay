@@ -4,6 +4,8 @@ using System.Linq;
 using System.Web;
 using Microsoft.AspNet.SignalR;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace WebApplication1.Hubs
 {
@@ -21,12 +23,9 @@ namespace WebApplication1.Hubs
             await Groups.Add(Context.ConnectionId, group);
         }
 
-        public void sendGroup(string group, string mensaje)
+        public void sendGroup(string group, string user, string mensaje)
         {
-            string name = "Default";
-            if(Context.User != null)
-                name = Context.User.Identity.Name;
-            Clients.Group(group).receiveGroup(name + ": " + mensaje);
+            Clients.Group(group).receiveGroup(user + ": " + mensaje);
         }
 
     }

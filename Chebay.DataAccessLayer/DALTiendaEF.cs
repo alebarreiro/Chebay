@@ -501,6 +501,7 @@ namespace DataAccessLayer
                     throw new Exception("Debe pasar una tienda.");
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
+                    
                     var qTienda = from t in context.tiendas
                                   where t.TiendaID.Equals(idTienda)
                                   select t;

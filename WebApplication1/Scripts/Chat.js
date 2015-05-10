@@ -12,7 +12,7 @@
             title: "chat",
             messageSent: function (id, user, msg) {
                 //myWS.send(msg);
-                groupChat.server.sendGroup("tenant1", msg);
+                groupChat.server.sendGroup("tenant1", usuario, msg);
             }
         });
         //minimizo

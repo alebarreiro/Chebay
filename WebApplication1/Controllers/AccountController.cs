@@ -326,6 +326,7 @@ namespace Frontoffice.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");

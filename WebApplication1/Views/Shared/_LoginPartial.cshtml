@@ -1,9 +1,11 @@
 ﻿@using Microsoft.AspNet.Identity
-@if (Session["Usuario"] != null)
+@if (User.Identity.IsAuthenticated)//(Session["Usuario"] != null)
 {
     using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
     {
     @Html.AntiForgeryToken()
+    
+    <script> var usuario = "@Context.User.Identity.Name"</script>
 
     <ul class="nav navbar-nav navbar-right">
         <li>

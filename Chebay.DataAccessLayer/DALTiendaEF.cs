@@ -503,7 +503,7 @@ namespace DataAccessLayer
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var qTienda = from t in context.tiendas
-                                  where t.TiendaID == idTienda
+                                  where t.TiendaID.Equals(idTienda)
                                   select t;
                     if (qTienda.Count() == 0)
                         throw new Exception("No existe la tienda" + idTienda);

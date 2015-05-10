@@ -258,7 +258,7 @@ namespace Chebay.Backoffice.Controllers
         {
             string tablaCategorias = "";
             //List<Categoria> categorias = idalTienda.ListarCategorias((string) Session["tienda"]);
-            string idAdmin = User.Identity.GetUserName();
+            string idAdmin = "Admin1";//User.Identity.GetUserName();
             List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
             AtributoSesion tienda = null;
             foreach (AtributoSesion a in atributos)
@@ -342,8 +342,8 @@ namespace Chebay.Backoffice.Controllers
             try
             {
                 //que se hace con el admin??
-
-                string idAdmin = User.Identity.GetUserName();
+                Debug.WriteLine("TiendaController::GuardarDatosGenerales");
+                string idAdmin = "Admin1";//User.Identity.GetUserName();
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
                 foreach(AtributoSesion a in atributos){
@@ -352,7 +352,8 @@ namespace Chebay.Backoffice.Controllers
                         break;
                     }
                 }
-                if (tienda.Datos == null)
+                Debug.WriteLine("LUEGO FOR");
+                if (tienda == null)
                 {
                     AtributoSesion atr = new AtributoSesion();
                     Tienda t = new Tienda();
@@ -360,10 +361,14 @@ namespace Chebay.Backoffice.Controllers
                     t.TiendaID = datosGenerales.titulo;
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
+                    Debug.WriteLine("MUEREAQUI!!");
                     idalTienda.AgregarTienda(t, idAdmin);
                     atr.AtributoSesionID = "tienda";
                     atr.Datos = t.TiendaID;
+                    atr.AdministradorID = idAdmin;
                     idalTienda.AgregarAtributoSesion(atr);
+                    Debug.WriteLine("OKKK2");
+
                 }
                 else
                 {
@@ -373,11 +378,14 @@ namespace Chebay.Backoffice.Controllers
                     t.TiendaID = datosGenerales.titulo;
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
+                    Debug.WriteLine("TiendaController::antesActualizar");
                     idalTienda.ActualizarTienda(t);
                     AtributoSesion atr = new AtributoSesion();
                     atr.AtributoSesionID = "tienda";
                     atr.Datos = t.TiendaID;
+                    atr.AdministradorID = idAdmin;
                     idalTienda.AgregarAtributoSesion(atr);
+                    Debug.WriteLine("OKKK");
                 }
                 
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };

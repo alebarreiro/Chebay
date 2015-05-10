@@ -14,6 +14,7 @@ namespace WebApplication1.Controllers
         IDALTienda cT = new DALTiendaEF();
 
         // GET: Product
+        [Authorize]
         public ActionResult Index()
         {
             return View();
@@ -51,6 +52,7 @@ namespace WebApplication1.Controllers
 
         //GET: /Product/ObtenerCategorias
         [HttpGet]
+        [Authorize]
         public ActionResult ObtenerCategorias()
         {
             string tablaCategorias = "";

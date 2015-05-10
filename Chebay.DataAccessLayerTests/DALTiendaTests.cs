@@ -33,7 +33,6 @@ namespace Chebay.DataAccessLayerTests
             ListarCategorias();
             AgregarTipoAtributo();
             ListarTipoAtributo();
-            ListarTipoAtributoCategoria();
         }
 
         [TestMethod]
@@ -216,6 +215,13 @@ namespace Chebay.DataAccessLayerTests
         }
 
         [TestMethod]
+        public void ListarCategoriasHijas()
+        {
+            CategoriaCompuesta c = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 2);
+            Assert.AreEqual(1, c.hijas.Count);
+        }
+
+        [TestMethod]
         public void AgregarAtributo()
         {
             List<Atributo> lAtributos = new List<Atributo>();
@@ -293,13 +299,6 @@ namespace Chebay.DataAccessLayerTests
         {
             List<TipoAtributo> test = it.ListarTipoAtributo(urlTest);
             Assert.AreEqual(2, test.Count);
-        }
-
-        [TestMethod]
-        public void ListarTipoAtributoCategoria()
-        {
-            List<TipoAtributo> test = it.ListarTipoAtributo(3, urlTest);
-            Assert.AreEqual(1, test.Count);
         }
     }
 }

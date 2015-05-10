@@ -1,0 +1,33 @@
+﻿<div class="btn-group">
+    <button type="button" class="btn btn-primary" onclick="datosGenerales()">Datos Generales&nbsp;&nbsp;<span class="badge pull-right">1</span></button>
+    <button type="button" class="btn btn-success" onclick="crearCategorias()">Categorías&nbsp;&nbsp;<span class="badge pull-right">2</span></button>
+    <button type="button" class="btn btn-warning" onclick="crearTiposAtributo()">Tipos de Atributo&nbsp;&nbsp;<span class="badge pull-right">3</span></button>
+    <button type="button" class="btn btn-danger" onclick="crearPersonalizacion()">Personalización&nbsp;&nbsp;<span class="badge pull-right">4</span></button>
+</div>
+
+<div id="contenidoCrearTienda" class="contenidoCrearTienda">
+    <div class="alert alert-info">
+        Para la creación de la nueva tienda navegue por los botones superiores y en cada uno siga los pasos indicados.
+    </div>
+</div>
+
+<div id="modalAgregarCategoria" class="modal fade">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Agregar Categoría</h4>
+            </div>
+            <div class="modal-body">
+                <div class="input-group">
+                    <span class="input-group-addon">Nombre :</span>
+                    <input type="text" id="nombreCategoria" class="form-control" placeholder="Nombre de la Categoría">
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="agregarCategoria()">Agregar Categoría</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

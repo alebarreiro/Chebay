@@ -1,0 +1,46 @@
+﻿<br /><br />
+<h2>Crear Tipos de Atributo :</h2>
+<br /><br />
+<div class="alert alert-info">
+    Para agregar un tipo de atributo haga click sobre la categoría deseada para ingresar los 
+    datos del tipo de atributo a agregar en la ventana emergente.
+</div>
+<br /><br />
+
+<div id="divTiposAtributo" class="categorias">
+
+</div>
+
+<div id="modalAgregarTipoAtributo" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Agregar Tipo de Atributo</h4>
+            </div>
+            <div class="modal-body">
+
+                <div class="input-group">
+                    <span class="input-group-addon">Nombre :</span>
+                    <input type="text" id="nombreTipoAtributo" class="form-control" placeholder="Nombre de la Categoría">
+                </div>
+
+                <br /><br />
+
+                <select class="form-control" id="tipoDatosTipoAtributo">
+                    <option value="INTEGER">INTEGER</option>
+                    <option value="DATE">DATE</option>
+                    <option value="BOOL">BOOL</option>
+                    <option value="STRING">STRING</option>
+                    <option value="FLOAT">FLOAT</option>
+                    <option value="BINARY">BINARY</option>
+                </select>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="agregarTipoAtributo()">Agregar Tipo de Atributo</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>

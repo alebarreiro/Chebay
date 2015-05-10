@@ -354,7 +354,9 @@ namespace DataAccessLayer
         public void Seed()
         {
             Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale", administradores=new List<Administrador>()},
-                                        new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok", administradores=new List<Administrador>()}
+                                        new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok", administradores=new List<Administrador>()},
+                                        new Tienda{ TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>()}
+
                                     };
             Administrador[] admins = { new Administrador { AdministradorID= "Admin1", password= "admin1"},
                                        new Administrador { AdministradorID= "Admin2", password= "admin2"},

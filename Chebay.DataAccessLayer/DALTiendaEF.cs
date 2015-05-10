@@ -44,6 +44,7 @@ namespace DataAccessLayer
         public bool AutenticarAdministrador(string idAdministrador, string passwd)
         //Devuelve true si es el password correcto para el usuario.
         {
+            Debug.WriteLine("IDADMIN:" + idAdministrador);
             try
             {
                 if (idAdministrador == null)
@@ -53,7 +54,7 @@ namespace DataAccessLayer
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var query = from admin in context.administradores
-                                where admin.AdministradorID == idAdministrador
+                                where admin.AdministradorID.Equals(idAdministrador)
                                 select admin;
                     if (query.Count() == 0)
                     {
@@ -62,7 +63,7 @@ namespace DataAccessLayer
                     else
                     {
                         Administrador adm = query.FirstOrDefault();
-                        if (adm != null && adm.password == passwd)
+                        if (adm != null && adm.password.Equals(passwd))
                         {
                             Debug.WriteLine(idAdministrador + " ha sido correctamente autenticado.");
                             return true;
@@ -678,16 +679,26 @@ namespace DataAccessLayer
         {
             using (var context = ChebayDBPublic.CreatePublic())
             {
-                AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
-                if (atrs == null)
+                //AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
+                var query = from a in context.atributossesion
+                            where a.AtributoSesionID.Equals(AtributoS.AtributoSesionID) && a.AdministradorID.Equals(AtributoS.AdministradorID)
+                            select a;
+
+                Debug.WriteLine(AtributoS.AdministradorID + AtributoS.AtributoSesionID);
+
+                if (query.Count() == 0)
                 {
+                    Debug.WriteLine("Agregando atributo...");
                     context.atributossesion.Add(AtributoS);
+                    context.SaveChanges();
                 }
                 else
                 { //update
-                    atrs.Datos = AtributoS.Datos;
+                    Debug.WriteLine("Update atributo...");
+                    query.First().Datos = AtributoS.Datos;
+                    context.SaveChanges();
                 }
-                context.SaveChanges();
+                
             }
         }
 

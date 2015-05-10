@@ -1,0 +1,56 @@
+﻿.menu {
+    position: absolute;
+    margin-right: 2%;
+    margin-bottom: 40%;
+    margin-left: 0%;
+    margin-top: 2%;
+    width: 200px;
+}
+
+.contenido{
+    height: 800px;
+    width: 750px;
+}
+
+.contenidoCrearTienda{
+    height: 600px;
+    width: 550px;
+}
+
+.categorias{
+    height: 400px;
+    width: 450px;
+}
+
+.contenidoPrincipal{
+    
+}
+
+.cargando{
+    position:relative;
+    margin-left: 40%;
+    margin-right : 50%;
+    margin-bottom: 20%;
+    margin-top : 20%;
+}
+
+.treegrid-indent {
+width: 16px;
+height: 16px;
+display: inline-block;
+position: relative;
+}
+.treegrid-expander {
+width: 16px;
+height: 16px;
+display: inline-block;
+position: relative;
+}
+.treegrid-expanded .treegrid-expander {
+background-image: url(../img/collapse.png);
+cursor: pointer;
+}
+.treegrid-collapsed .treegrid-expander {
+background-image: url(../img/expand.png);
+cursor: pointer;
+}

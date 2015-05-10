@@ -16,14 +16,20 @@ namespace DataAccessLayer
         static void Main(string[] args)
         {
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
-            AtributoSesion a = new AtributoSesion { AdministradorID="Admin1", AtributoSesionID="sadasds", Datos="esta"};
-            IDALTienda dal = new DALTiendaEF();
-            dal.AgregarAtributoSesion(a);
-            List<AtributoSesion> list = dal.ObtenerAtributosSesion("Admin1");
-            foreach (var l in list)
-            {
-                Console.WriteLine(l.AtributoSesionID);
-            }
+            ChebayDBPublic.ProvidePublicSchema();
+
+            using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    context.Seed();
+                }
+            //AtributoSesion a = new AtributoSesion { AdministradorID="admin2@chebay.com", AtributoSesionID="sesion", Datos="esta"};
+            //IDALTienda dal = new DALTiendaEF();
+            //dal.AgregarAtributoSesion(a);
+            //List<AtributoSesion> list = dal.ObtenerAtributosSesion("Admin1");
+            //foreach (var l in list)
+            //{
+            //    Console.WriteLine(l.AtributoSesionID);
+            //}
             Console.Read();
 
             //Ejemplo para crear schema

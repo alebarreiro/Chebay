@@ -32,6 +32,8 @@ namespace DataAccessLayer
 
         //--TIPO ATRIBUTO--
         void AgregarTipoAtributo(TipoAtributo ta, long idCategoria, string idTienda);
+        List<TipoAtributo> ListarTipoAtributo(string idTienda);
+        List<TipoAtributo> ListarTipoAtributo(long idCategoria, string idTienda);
         void EliminarTipoAtributo(string idTipoAtributo, string idTienda);
 
         //--ATRIBUTOS--

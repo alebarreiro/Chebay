@@ -350,16 +350,24 @@ namespace DataAccessLayer
         {
             try
             {
-                chequearTienda(idTienda);
+                
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
-                    var query = from t in context.tiendas
-                                where t.TiendaID == idTienda
-                                select t;
-                    Tienda tnd = query.FirstOrDefault();
-                    context.tiendas.Remove(tnd);
-                    context.SaveChanges();
-                    Debug.WriteLine("La tienda " + idTienda + " ha sido eliminada.");
+                    var qTienda = from t in context.tiendas
+                                  where t.TiendaID.Equals(idTienda)
+                                  select t;
+                    if (qTienda.Count() != 0)
+                    {
+                        var query = from t in context.tiendas
+                                    where t.TiendaID == idTienda
+                                    select t;
+                        Tienda tnd = query.FirstOrDefault();
+                        context.tiendas.Remove(tnd);
+                        context.SaveChanges();
+                        Debug.WriteLine("La tienda " + idTienda + " ha sido eliminada.");
+                    }
+                    else
+                        Debug.WriteLine("La tienda " + idTienda + " no existe.");
                 }
             }
             catch (Exception e)
@@ -742,13 +750,11 @@ namespace DataAccessLayer
                         if (ta.categorias == null)
                             ta.categorias = new HashSet<Categoria>();
                         ta.categorias.Add(qCat.FirstOrDefault());
+                        Categoria cat = qCat.FirstOrDefault();
+                        //if (cat.tipoatributos == null)
+                          //  cat.tipoatributos = new HashSet<TipoAtributo>();
+                        //cat.tipoatributos(ta);
                         context.tipoatributos.Add(ta);
-                        /*foreach (Categoria c in ta.categorias)
-                        {
-                            if (c.tipoatributos == null)
-                                c.tipoatributos = new HashSet<TipoAtributo>();
-                            c.tipoatributos.Add(ta);
-                        }*/
                     }
 
                     else //update
@@ -783,6 +789,47 @@ namespace DataAccessLayer
                                  select t;
                     context.tipoatributos.Remove(qTipoA.FirstOrDefault());
                     context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<TipoAtributo> ListarTipoAtributo(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qTipoA = from t in context.tipoatributos
+                                 select t;
+                    return qTipoA.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<TipoAtributo> ListarTipoAtributo(long idCategoria, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCat = from c in context.categorias
+                               where c.CategoriaID == idCategoria
+                               select c;
+                    Categoria cat = qCat.FirstOrDefault();
+                    List<TipoAtributo> ret = (List<TipoAtributo>)cat.tipoatributos;
+                    return ret;
                 }
             }
             catch (Exception e)

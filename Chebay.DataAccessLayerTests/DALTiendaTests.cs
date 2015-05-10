@@ -19,6 +19,7 @@ namespace Chebay.DataAccessLayerTests
 
         private static string urlTest = "uruFutbol";
         private static string adminTest = "adminUruFutbol";
+        private static IDALTienda it = new DALTiendaEF();
 
         [TestMethod]
         public void SuperTest()
@@ -31,12 +32,13 @@ namespace Chebay.DataAccessLayerTests
             AgregarCategorias();
             ListarCategorias();
             AgregarTipoAtributo();
+            ListarTipoAtributo();
+            ListarTipoAtributoCategoria();
         }
 
         [TestMethod]
         public void PersonalizarTienda()
         {
-            IDALTienda it = new DALTiendaEF();
             it.PersonalizarTienda("63589F", urlTest);
         }
 
@@ -46,7 +48,6 @@ namespace Chebay.DataAccessLayerTests
             ChebayDBPublic cdbp = new ChebayDBPublic();
             using (var schema = ChebayDBPublic.CreatePublic())
             {
-                IDALTienda it = new DALTiendaEF();
                 Debug.WriteLine("INICIO");
                 Debug.WriteLine("0.1. Elimino TestAdmin.");
                 it.EliminarAdministrador(adminTest);
@@ -63,7 +64,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarAdministrador()
         {
-            IDALTienda it = new DALTiendaEF();
             Debug.WriteLine("\n1. AgregarAdministrador");
             Debug.WriteLine("1.1. Crea un Administrador nuevo TestAdmin con pass: pass123.");
             Administrador a = new Administrador();
@@ -76,7 +76,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AutenticarAdministrador()
         {
-            IDALTienda it = new DALTiendaEF();
             Debug.WriteLine("\n2. AutenticarAdministrador");
             Debug.WriteLine("2.1. Autentica TestAdmin con pass123.");
             Assert.AreEqual(it.AutenticarAdministrador(adminTest, "pass123"), true);
@@ -85,7 +84,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarTienda()
         {
-            IDALTienda it = new DALTiendaEF();
             Debug.WriteLine("\n3. AgregarTienda");
             Debug.WriteLine("3.1. Crea tienda");
 
@@ -107,7 +105,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void ActualizarTienda()
         {
-            IDALTienda it = new DALTiendaEF();
             Debug.WriteLine("\n4. Actualizar Tienda");
             Debug.WriteLine("4.1. Actualizar TestURL.");
             Tienda t = new Tienda();
@@ -126,7 +123,6 @@ namespace Chebay.DataAccessLayerTests
         [ExpectedException(typeof(Exception))]
         public void ActualizarTienda_Inexistente()
         {
-            IDALTienda it = new DALTiendaEF();
             Debug.WriteLine("\n4.2. Actualizar tienda inexistente.");
             Tienda t = new Tienda();
             t.TiendaID = "TestURL123";
@@ -138,7 +134,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void ListarCategorias_Inicial()
         {
-            IDALTienda it = new DALTiendaEF();
             List<Categoria> lc = it.ListarCategorias(urlTest);
             Assert.AreEqual(1, lc.Count);
         }
@@ -148,8 +143,6 @@ namespace Chebay.DataAccessLayerTests
         {
             using (var schema = ChebayDBContext.CreateTenant(urlTest))
             {
-                IDALTienda it = new DALTiendaEF();
-
                 CategoriaCompuesta father = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 1);
                 System.Console.WriteLine(father.CategoriaID + father.Nombre);
 
@@ -175,8 +168,6 @@ namespace Chebay.DataAccessLayerTests
         {
             using (var schema = ChebayDBContext.CreateTenant(urlTest))
             {
-                IDALTienda it = new DALTiendaEF();
-
                 CategoriaCompuesta father = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 2);
                 System.Console.WriteLine(father.CategoriaID + father.Nombre);
 
@@ -194,7 +185,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarCategorias()
         {
-            IDALTienda it = new DALTiendaEF();
             List<Categoria> lc = new List<Categoria>();
             CategoriaCompuesta father = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 1);
             for (int i = 1; i < 10; i++)
@@ -221,7 +211,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void ListarCategorias()
         {
-            IDALTienda it = new DALTiendaEF();
             List<Categoria> lc = it.ListarCategorias(urlTest);
             Assert.AreEqual(21, lc.Count);
         }
@@ -229,7 +218,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarAtributo()
         {
-            IDALTienda it = new DALTiendaEF();
             List<Atributo> lAtributos = new List<Atributo>();
             Categoria c = it.ObtenerCategoria(urlTest, 3);
             Debug.WriteLine(c.CategoriaID);
@@ -240,7 +228,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarAtributos()
         {
-            IDALTienda it = new DALTiendaEF();
             List<Atributo> lAtributos = new List<Atributo>();
             Categoria c = it.ObtenerCategoria(urlTest, 2);
             Atributo a = new Atributo { categoria = c, etiqueta = "Conectividad", valor = "LTE" };
@@ -255,7 +242,6 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void ObtenerAtributos()
         {
-            IDALTienda it = new DALTiendaEF();
             List<Atributo> la = it.ObtenerAtributos(3, urlTest);
             Assert.AreEqual(4, la.Count);
         }
@@ -287,20 +273,33 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarTipoAtributo()
         {
-            IDALTienda it = new DALTiendaEF();
-
             TipoAtributo ta = new TipoAtributo
             {
                 TipoAtributoID = "Tamaño pantalla",
                 tipodato = TipoDato.STRING
             };
             it.AgregarTipoAtributo(ta, 3, urlTest);
-            /*Categoria c = it.ObtenerCategoria(urlTest, 3);
-            foreach (TipoAtributo tipoA in c.tipoatributos)
+
+            ta = new TipoAtributo
             {
-                Assert.AreEqual("Tamaño panatalla", tipoA.TipoAtributoID);
-                Assert.AreEqual(TipoDato.STRING, tipoA.tipodato);
-            }*/
+                TipoAtributoID = "Otro TipoAtributo",
+                tipodato = TipoDato.STRING
+            };
+            it.AgregarTipoAtributo(ta, 2, urlTest);
+        }
+
+        [TestMethod]
+        public void ListarTipoAtributo()
+        {
+            List<TipoAtributo> test = it.ListarTipoAtributo(urlTest);
+            Assert.AreEqual(2, test.Count);
+        }
+
+        [TestMethod]
+        public void ListarTipoAtributoCategoria()
+        {
+            List<TipoAtributo> test = it.ListarTipoAtributo(3, urlTest);
+            Assert.AreEqual(1, test.Count);
         }
     }
 }

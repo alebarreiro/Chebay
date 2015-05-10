@@ -20,7 +20,7 @@ namespace DataAccessLayer
 
             using (var context = ChebayDBPublic.CreatePublic())
                 {
-                    context.Seed();
+                    //context.Seed();
                 }
             //AtributoSesion a = new AtributoSesion { AdministradorID="admin2@chebay.com", AtributoSesionID="sesion", Datos="esta"};
             //IDALTienda dal = new DALTiendaEF();

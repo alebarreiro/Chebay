@@ -11,6 +11,11 @@ using Microsoft.AspNet.Identity;
 namespace Chebay.BackofficeIdentity.Controllers
 {
 
+    public class DatosObtenerTiposAtributo
+    {
+        public long idCategoria { get; set; }
+    }
+
     public class DatosGeneralesTienda
     {
         public string titulo { get; set; }
@@ -97,7 +102,7 @@ namespace Chebay.BackofficeIdentity.Controllers
         public string RecursionCategoriasTipoAtributo(CategoriaCompuesta categoria)
         {
             string resultado = "";
-            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarTipoAtributo(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
+            resultado += "<li><button class=\"btn btn-link\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + categoria.CategoriaID + ",'" + categoria.Nombre + "')\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -112,7 +117,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarTipoAtributo(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + hija.CategoriaID + ",'" + hija.Nombre +"')\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";
@@ -197,6 +202,16 @@ namespace Chebay.BackofficeIdentity.Controllers
             }
         }
 
+        //GET: /Tienda/ObtenerTiposAtributo
+        [HttpGet]
+        public ActionResult ObtenerTiposAtributo(DatosObtenerTiposAtributo datos)
+        {
+            string contenido = "";
+
+            return Content(contenido);
+        }
+
+
         //GET: /Tienda/AgregarCategoria
         [HttpPost]
         public ActionResult AgregarTipoAtributo(DatosTipoAtributoNuevo datos)
@@ -271,7 +286,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                 }
             }
             List<Categoria> categorias = idalTienda.ListarCategorias(tienda.Datos);
-            tablaCategorias += "<div class=\"well\"><ul>";
+            tablaCategorias += "<div class=\"well\" style=\"background-color : whitesmoke\"><ul>";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);
@@ -295,7 +310,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                 }
             }
             List<Categoria> categorias = idalTienda.ListarCategorias(tienda.Datos);
-            tablaCategorias += "<div class=\"well\"><ul>";
+            tablaCategorias += "<div class=\"well\" style=\"background-color : whitesmoke\"><ul>";
             tablaCategorias += RecursionCategoriasTipoAtributo((CategoriaCompuesta)categorias.ElementAt(0));
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);

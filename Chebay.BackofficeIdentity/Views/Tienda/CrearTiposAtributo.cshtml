@@ -16,7 +16,25 @@
         <div class="modal-content">
             <div class="modal-header">
                 <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                <h4 class="modal-title">Agregar Tipo de Atributo</h4>
+                <h4 class="modal-title" id="tituloAgregarTipoAtributo"></h4>
+            </div>
+            <div class="modal-body" id="bodyVerTiposAtributo">
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" onclick="agregarTipoAtributo()">Agregar Tipo de Atributo</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalVerTiposAtributo" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="tituloVerTiposAtributo"></h4>
             </div>
             <div class="modal-body">
 
@@ -38,7 +56,6 @@
 
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-primary" onclick="agregarTipoAtributo()">Agregar Tipo de Atributo</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

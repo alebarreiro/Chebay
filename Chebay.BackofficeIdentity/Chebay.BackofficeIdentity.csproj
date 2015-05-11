@@ -303,6 +303,7 @@
     <Content Include="Views\Tienda\DatosGenerales.cshtml" />
     <Content Include="Views\Usuarios\Registro.cshtml" />
     <Content Include="Scripts\jquery-2.1.3.min.map" />
+    <Content Include="Views\Tienda\CrearPersonalizacion.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

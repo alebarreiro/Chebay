@@ -282,7 +282,7 @@ namespace DataAccessLayer
         public DbSet<Administrador> administradores { get; set; }
         public DbSet<Tienda> tiendas { get; set; }
         public DbSet<AtributoSesion> atributossesion { get; set; }
-
+        public DbSet<Personalizacion> personalizaciones { get; set; }
 
         private ChebayDBPublic(DbCompiledModel model)
             : base(con, model)
@@ -307,6 +307,7 @@ namespace DataAccessLayer
             builder.Entity<Administrador>().ToTable("Administradores", schema);
             builder.Entity<Tienda>().ToTable("Tiendas", schema);
             builder.Entity<AtributoSesion>().ToTable("AtributoSesion", schema);
+            builder.Entity<Personalizacion>().ToTable("Personalizaciones", schema);
 
 
             builder.Entity<Tienda>().HasMany<Administrador>(s => s.administradores)
@@ -319,7 +320,7 @@ namespace DataAccessLayer
                 });
 
             builder.Entity<Administrador>().HasMany<AtributoSesion>(p => p.atributosSesion);
-
+            
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schema, compModel);
@@ -355,7 +356,8 @@ namespace DataAccessLayer
         {
             Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale", administradores=new List<Administrador>()},
                                         new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok", administradores=new List<Administrador>()},
-                                        new Tienda{ TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>()}
+                                        new Tienda{ TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>()},
+                                        new Tienda{ TiendaID="uruFutbol", nombre= "Fobal-CAP", descripcion= "Fobal uruguayo", administradores=new List<Administrador>()}
 
                                     };
             Administrador[] admins = { new Administrador { AdministradorID= "Admin1", password= "admin1"},
@@ -393,6 +395,17 @@ namespace DataAccessLayer
                 atributossesion.Add(a);
             }
             SaveChanges();
+
+            Personalizacion[] pers = {  
+                                        new Personalizacion{PersonalizacionID="uruFutbol", datos="Blue"},
+                                        new Personalizacion{PersonalizacionID="TestURL", datos="Black"}                             
+                                     };
+            foreach (var p in pers)
+            {
+                personalizaciones.Add(p);
+            }
+            SaveChanges();
+
         }
     }
 }

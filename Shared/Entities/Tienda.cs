@@ -18,5 +18,6 @@ namespace Shared.Entities
         public string descripcion { get; set; }
 
         public virtual ICollection<Administrador> administradores { get; set; }
+        public virtual Personalizacion personalizacion { get; set; }
     }
 }

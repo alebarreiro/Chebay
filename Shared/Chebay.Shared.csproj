@@ -32,9 +32,13 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="EntityFramework">
+      <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Data.Entity" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,6 +59,7 @@
     <Compile Include="Entities\Conversacion.cs" />
     <Compile Include="Entities\Mensaje.cs" />
     <Compile Include="Entities\Oferta.cs" />
+    <Compile Include="Entities\Personalizacion.cs" />
     <Compile Include="Entities\Producto.cs" />
     <Compile Include="Entities\Tienda.cs" />
     <Compile Include="Entities\TipoAtributo.cs" />
@@ -64,6 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="enum\" />

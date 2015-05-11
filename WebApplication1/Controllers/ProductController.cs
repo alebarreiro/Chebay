@@ -2,9 +2,11 @@
 using Shared.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
 
 namespace WebApplication1.Controllers
 {
@@ -12,18 +14,34 @@ namespace WebApplication1.Controllers
     {
 
         IDALTienda cT = new DALTiendaEF();
+        IDALSubasta cS = new DALSubastaEF();
+
+        public class DatosCrearProducto
+        {
+            public string Titulo { get; set; }
+            public string Descripcion { get; set; }
+            public int PrecioBase { get; set; }
+            public int PrecioComprarYa { get; set; }
+            public DateTime FechaCierre { get; set; }
+            public long CatID { get; set; }
+        }
 
         // GET: Product
         [Authorize]
         public ActionResult Index()
         {
-            return View();
+           return View();
+        }
+
+        public ActionResult DatosProducto()
+        {
+            return PartialView("_DatosProductoPartial");
         }
 
         public string RecursionCategorias(CategoriaCompuesta categoria)
         {
             string resultado = "";
-            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
+            resultado += "<li><button class=\"btn btn-link\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -38,7 +56,7 @@ namespace WebApplication1.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" onclick=\"notificarCategoriaSimple()\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" data-id=\"" + hija.CategoriaID + "\"  onclick=\"seleccionarCategoriaSimple("+hija.CategoriaID+")\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";
@@ -55,6 +73,11 @@ namespace WebApplication1.Controllers
         [Authorize]
         public ActionResult ObtenerCategorias()
         {
+            return PartialView("_DatosCategoriaPartial");
+        }
+
+        public ContentResult MostrarCategorias()
+        {
             string tablaCategorias = "";
             List<Categoria> categorias = cT.ListarCategorias(Session["Tienda_Nombre"].ToString());
             tablaCategorias += "<div style=\"background-color : white;\"><ul>";
@@ -62,6 +85,8 @@ namespace WebApplication1.Controllers
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);
         }
+
+
 
         // GET: Product/Details/5
         public ActionResult Details(int id)
@@ -77,17 +102,34 @@ namespace WebApplication1.Controllers
 
         // POST: Product/Create
         [HttpPost]
-        public ActionResult Create(FormCollection collection)
+        public JsonResult Create(DatosCrearProducto producto)
         {
             try
             {
-                // TODO: Add insert logic here
+                Producto p = new Producto
+                {
+                    nombre = producto.Titulo,
+                    UsuarioID = User.Identity.GetUserName(),
+                    descripcion = producto.Descripcion,
+                    precio_base_subasta = producto.PrecioBase,
+                    precio_compra = producto.PrecioComprarYa,
+                    fecha_cierre = producto.FechaCierre
+                };
 
-                return RedirectToAction("Index");
+
+                CategoriaSimple cs = (CategoriaSimple)cT.ObtenerCategoria(Session["Tienda_Nombre"].ToString(), producto.CatID);
+                if (p.categorias == null)
+                    p.categorias = new HashSet<CategoriaSimple>();
+                p.categorias.Add(cs);
+                cS.AgregarProducto(p, Session["Tienda_Nombre"].ToString());
+                Debug.WriteLine(producto.Titulo);
+                var result = new { Success = "True", Message = producto };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
-            catch
+            catch (Exception e)
             {
-                return View();
+                var result = new { Success = "False", Message = "No se pudo crear el producto :("};
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
 

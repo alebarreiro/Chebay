@@ -1,7 +1,7 @@
-﻿@{
+﻿@using Microsoft.AspNet.Identity
+@{
     ViewBag.Title = "Home Page";
     var productos = ViewBag.productos;
-    var idProd = 0;
 }
 
 
@@ -41,7 +41,13 @@
             </div>
             <div class="product-item-footer">
                 <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre </div>
-                <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)">BID NOW!</button>
+                @if (User.Identity.IsAuthenticated) { 
+                    <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)"> OFERTAR! </button>
+                }
+                else
+                {
+                    <button class="btn btn-success bid-button disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
+                }
                 <div class="offer-section">
                     <div class="offer-section-price" id="bidValue-@dp.ProductoID"> @dp.precio_actual </div>
                     <button class="offer-section-button" onclick="incrementOffer(@dp.ProductoID)"> + </button>
@@ -73,12 +79,15 @@
         // Start the connection
         $.connection.hub.start();
 
+        //current user
+        var usuario = "@Context.User.Identity.Name"
+        console.log(usuario);
         // Client methods
         onNewBidClick = function (id) {
             var productId = id,
               bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
             //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
-            proxy.server.placeNewBid(productId, bidToPost, false, "otroUserPrueba");
+            proxy.server.placeNewBid(productId, bidToPost, false, usuario);
         };
 
         incrementOffer = function(id) {

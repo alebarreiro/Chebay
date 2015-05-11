@@ -1,0 +1,34 @@
+﻿@{
+    var nombreTienda = @Session["Tienda_Nombre"];
+}
+
+<div>
+    <div id="divCategorias">
+        <h1>PASO 2: SELECCIONAR CATEGORÍA</h1>
+        <div id="categorias">
+        </div>
+
+        <div id="categoriaSeleccionada">
+            
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function() {
+        $('#categorias').load('/' + '@nombreTienda' + '/Product/MostrarCategorias')
+    })
+
+    seleccionarCategoriaSimple = function (catID) {
+        $("#categoriaSeleccionada").html("Categoria seleccionada: #" + catID);
+        var datosProducto = JSON.parse(localStorage.getItem("DatosProducto"));
+        if (datosProducto) {
+            datosProducto.CatID = catID;
+            localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
+        } else {
+            datosProducto = {};
+            datosProducto.CatID = catID;
+            localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
+        }
+    }
+</script>

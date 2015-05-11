@@ -1,15 +1,20 @@
-﻿using Shared.Entities;
+﻿using DataAccessLayer;
+using Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace WebApplication1.Controllers
 {
     public class UsuarioController : Controller
     {
         private Shared.Entities.Usuario _usuarioLoggeado;
+
+        IDALUsuario uC = new DALUsuarioEF();
 
         public UsuarioController()
         {
@@ -28,10 +33,30 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Usuario
-        public ActionResult Index()
+        [Authorize]
+        public ActionResult Index(String tienda)
         {
-            Usuario u = (Usuario)Session["Usuario"];
-            ViewBag.usuario = u;
+            Debug.WriteLine(tienda);
+            if (Session["Usuario"] != null)
+            {
+                Usuario u = (Usuario)Session["Usuario"];
+                ViewBag.usuario = u;
+            }
+            else
+            {
+                String userName = User.Identity.GetUserName();
+                try
+                {
+                    Usuario u = uC.ObtenerUsuario(userName, Session["Tienda_Nombre"].ToString());
+                    Session["Usuario"] = u;
+                    ViewBag.usuario = u;
+                }
+                catch (Exception e)
+                {
+                    Debug.WriteLine(e.Message);
+                }
+            }
+            
             return View();
         }
 

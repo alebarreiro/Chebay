@@ -53,7 +53,8 @@ namespace Frontoffice
                       "~/Content/normalize.min.css",
                       "~/Content/partials/product_item.css",
                       "~/Content/jquery-ui.css",
-                      "~/Content/jquery.ui.chatbox.css"
+                      "~/Content/jquery.ui.chatbox.css",
+                      "~/Content/animate.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(

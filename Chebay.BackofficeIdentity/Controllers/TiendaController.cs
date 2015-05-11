@@ -207,7 +207,7 @@ namespace Chebay.BackofficeIdentity.Controllers
         public ActionResult ObtenerTiposAtributo(DatosObtenerTiposAtributo datos)
         {
             string contenido = "";
-
+            
             return Content(contenido);
         }
 

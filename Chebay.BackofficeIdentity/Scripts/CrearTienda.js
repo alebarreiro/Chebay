@@ -9,6 +9,43 @@ function modalAgregarCategoria(padre) {
     $("#modalAgregarCategoria").modal();
 }
 
+function personalizar() {
+    var color = $("#colorTienda").val();
+    var datos = {
+        color : color
+    }
+
+    cargandoDatos("#divPersonalizacion");
+
+    $.ajax({
+        url: '/Tienda/Personalizar',
+        type: 'GET',
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(datos),
+        success: function (data, textStatus, jqxhr) {
+            finCargandoDatos("#divPersonalizacion");
+            $.notify({
+                // options
+                message: '<strong>Se ha personalizado la Tienda correctamente.</strong>'
+            }, {
+                // settings
+                type: 'success'
+            });
+        },
+        error: function (data, textStatus, jqxhr) {
+            finCargandoDatos("#divPersonalizacion");
+            $.notify({
+                // options
+                message: '<strong>Error al personalizar la Tienda.</strong>'
+            }, {
+                // settings
+                type: 'danger'
+            });
+        }
+    });
+}
+
 function verTiposAtributo(categoria, nombre) {
     $("#" + categoria).popover('hide');
 

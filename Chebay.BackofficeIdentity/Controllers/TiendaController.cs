@@ -363,7 +363,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
                 foreach(AtributoSesion a in atributos){
-                    if(a.TiendaID.Equals(datosGenerales.titulo) && a.AtributoSesionID.Equals("tienda")){
+                    if(a.AtributoSesionID.Equals("tienda")){
                         tienda = a;
                         break;
                     }
@@ -381,7 +381,6 @@ namespace Chebay.BackofficeIdentity.Controllers
                     t.nombre = datosGenerales.titulo;
 
                     atr.AtributoSesionID = "tienda";
-                    atr.TiendaID = datosGenerales.titulo;
                     atr.Datos = t.TiendaID;
                     atr.AdministradorID = idAdmin;
 
@@ -405,7 +404,6 @@ namespace Chebay.BackofficeIdentity.Controllers
                     atr.AtributoSesionID = "tienda";
                     atr.Datos = t.TiendaID;
                     atr.AdministradorID = idAdmin;
-                    atr.TiendaID = datosGenerales.titulo;
 
                     Debug.WriteLine("TiendaController::GuardarDatosgenerales::actualizaratributo");
                     idalTienda.AgregarAtributoSesion(atr);

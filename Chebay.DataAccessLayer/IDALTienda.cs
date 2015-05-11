@@ -56,7 +56,7 @@ namespace DataAccessLayer
 
         //--ATRIBUTOS DE SESION ADMINISTRADOR--
         void AgregarAtributoSesion(AtributoSesion AtributoS);
-        void EliminarAtributoSesion(string AdminID, string AtributoID, string tienda);
+        void EliminarAtributoSesion(string AdminID, string AtributoID);
         List<AtributoSesion> ObtenerAtributosSesion(string AdminID);
     }
 }

@@ -389,8 +389,8 @@ namespace DataAccessLayer
             SaveChanges();
 
             AtributoSesion[] atrs = { 
-                                        new AtributoSesion{AdministradorID="Admin1", TiendaID="TestURL", AtributoSesionID="Algo", Datos="unvalordealgo"},
-                                        new AtributoSesion{AdministradorID="Admin1", TiendaID="TestURL", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
+                                        new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="Algo", Datos="unvalordealgo"},
+                                        new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
                                     };
             foreach (var a in atrs)
             {

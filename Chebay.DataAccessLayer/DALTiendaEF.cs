@@ -690,7 +690,7 @@ namespace DataAccessLayer
                 //AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
                 var query = from a in context.administradores.Find(AtributoS.AdministradorID).atributosSesion
                             where a.AtributoSesionID.Equals(AtributoS.AtributoSesionID) 
-                            && a.TiendaID.Equals(AtributoS.TiendaID)
+                            
                             select a;
                 
                 Debug.WriteLine(AtributoS.AdministradorID + AtributoS.AtributoSesionID);
@@ -711,12 +711,13 @@ namespace DataAccessLayer
             }
         }
 
-        public void EliminarAtributoSesion(string AdminID, string AtributoID, string tienda)
+        public void EliminarAtributoSesion(string AdminID, string AtributoID)
         {
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 var query = from s in context.atributossesion
-                            where s.AdministradorID.Equals(AdminID) && s.AtributoSesionID.Equals(AtributoID) && s.TiendaID.Equals(tienda)
+                            where s.AdministradorID.Equals(AdminID) 
+                            && s.AtributoSesionID.Equals(AtributoID)
                             select s;
                 AtributoSesion atrs = query.FirstOrDefault(null);
                 if (atrs != null)

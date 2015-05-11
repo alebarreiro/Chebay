@@ -348,7 +348,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
                 foreach(AtributoSesion a in atributos){
-                    if(a.AtributoSesionID.Equals("tienda")){
+                    if(a.TiendaID.Equals(datosGenerales.titulo) && a.AtributoSesionID.Equals("tienda")){
                         tienda = a;
                         break;
                     }
@@ -364,31 +364,35 @@ namespace Chebay.BackofficeIdentity.Controllers
                     t.TiendaID = datosGenerales.titulo;
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
+
                     atr.AtributoSesionID = "tienda";
-                    Debug.WriteLine("ADMIN::" + idAdmin);
+                    atr.TiendaID = datosGenerales.titulo;
                     atr.Datos = t.TiendaID;
                     atr.AdministradorID = idAdmin;
+
                     idalTienda.AgregarAtributoSesion(atr);
 
-                    Debug.WriteLine("MUEREAQUI!!");
                     idalTienda.AgregarTienda(t, idAdmin);
-                    Debug.WriteLine("OKKK2");
-
                 }
                 else
                 {
+                    //es una tienda ya creada
                     Tienda t = new Tienda();
                     //sacarle los espacios al string de abajo
                     //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
                     t.TiendaID = datosGenerales.titulo;
                     t.descripcion = datosGenerales.descripcion;
                     t.nombre = datosGenerales.titulo;
-                    Debug.WriteLine("TiendaController::antesActualizar");
+
                     idalTienda.ActualizarTienda(t);
+
                     AtributoSesion atr = new AtributoSesion();
                     atr.AtributoSesionID = "tienda";
                     atr.Datos = t.TiendaID;
                     atr.AdministradorID = idAdmin;
+                    atr.TiendaID = datosGenerales.titulo;
+
+                    Debug.WriteLine("TiendaController::GuardarDatosgenerales::actualizaratributo");
                     idalTienda.AgregarAtributoSesion(atr);
                     Debug.WriteLine("OKKK");
                 }

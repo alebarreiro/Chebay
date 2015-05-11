@@ -363,8 +363,9 @@ namespace DataAccessLayer
             Administrador[] admins = { new Administrador { AdministradorID= "Admin1", password= "admin1"},
                                        new Administrador { AdministradorID= "Admin2", password= "admin2"},
                                        new Administrador { AdministradorID= "Admin3", password= "admin3"},
-                                       new Administrador { AdministradorID= "Admin4", password= "admin4"}
-                                     
+                                       new Administrador { AdministradorID= "Admin4", password= "admin4"},
+                                       new Administrador { AdministradorID= "test@chebay.com", password= "#!Chebay1"}
+
                                      };
             foreach (var a in admins)
             {
@@ -387,8 +388,9 @@ namespace DataAccessLayer
 
             SaveChanges();
 
-            AtributoSesion[] atrs = { new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="Algo", Datos="unvalordealgo"},
-                                    new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
+            AtributoSesion[] atrs = { 
+                                        new AtributoSesion{AdministradorID="Admin1", TiendaID="TestURL", AtributoSesionID="Algo", Datos="unvalordealgo"},
+                                        new AtributoSesion{AdministradorID="Admin1", TiendaID="TestURL", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
                                     };
             foreach (var a in atrs)
             {

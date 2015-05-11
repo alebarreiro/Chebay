@@ -16,22 +16,21 @@ namespace DataAccessLayer
         static void Main(string[] args)
         {
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
-            ChebayDBPublic.ProvidePublicSchema();
+            //ChebayDBPublic.ProvidePublicSchema();
 
-            using (var context = ChebayDBPublic.CreatePublic())
-                {
-                    //context.Seed();
-                }
-            //AtributoSesion a = new AtributoSesion { AdministradorID="admin2@chebay.com", AtributoSesionID="sesion", Datos="esta"};
-            //IDALTienda dal = new DALTiendaEF();
-            //dal.AgregarAtributoSesion(a);
-            //List<AtributoSesion> list = dal.ObtenerAtributosSesion("Admin1");
-            //foreach (var l in list)
-            //{
-            //    Console.WriteLine(l.AtributoSesionID);
-            //}
+            //using (var context = ChebayDBPublic.CreatePublic())
+            //    {
+            //       context.Seed();
+            //    }
+            AtributoSesion a = new AtributoSesion { AdministradorID="test@chebay.com", TiendaID="TestURL", AtributoSesionID="sesion", Datos="esta nueva"};
+            IDALTienda dal = new DALTiendaEF();
+            dal.AgregarAtributoSesion(a);
+            List<AtributoSesion> list = dal.ObtenerAtributosSesion("test@chebay.com");
+            foreach (var l in list)
+            {
+                Console.WriteLine(l.AtributoSesionID+" "+l.AdministradorID+ " "+ l.Datos);
+            }
             Console.Read();
-
             //Ejemplo para crear schema
             //ChebayDBContext.ProvisionTenant("Tienda1");
             //ChebayDBPublic.ProvidePublicSchema();

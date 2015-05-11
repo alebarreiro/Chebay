@@ -1,7 +1,6 @@
 ﻿var hayAtributos, hayCategorias, hayDatosGenerales, hayPersonalizacion, idCategorias, idTiposAtributo, tiendaCreada;
 var categoriasCreadas = false;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
-idCategorias = idTiposAtributo = 1;
 
 var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingCargarDatos, categoriaAgregarTipoAtributo;
 
@@ -35,7 +34,7 @@ function cargandoDatos(div) {
     $(div).html(loading);
 }
 
-function finCargandoAgregarCategoria(div) {
+function finCargandoDatos(div) {
     $(div).html(paginaAntesLoadingCargarDatos);
 }
 
@@ -47,14 +46,14 @@ function finalizarCreacionCategorias() {
 
 }
 
-function finalizarDatosGenerales(){
+function finalizarDatosGenerales() {
     //enviar al TiendaController los datos generales, y setear hayDatosGenerales en true
     var titulo = $("#tituloTienda").val();
     var descripcion = $("#descripcionTienda").val();
 
     var datosGenerales = {
         titulo: titulo,
-        descripcion : descripcion
+        descripcion: descripcion
     }
 
     cargando();
@@ -64,7 +63,7 @@ function finalizarDatosGenerales(){
         type: 'POST',
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',
-        data : JSON.stringify(datosGenerales),
+        data: JSON.stringify(datosGenerales),
         success: function (data, textStatus, jqxhr) {
             finCargando();
             $.notify({
@@ -92,7 +91,7 @@ function finalizarDatosGenerales(){
     tiendaCreada = true;
 }
 
-function borrarTipoAtributo(idTipoAtributo , atributo) {
+function borrarTipoAtributo(idTipoAtributo, atributo) {
     var atributos = $("#divTiposAtributo").html();
     atributos = atributos.replace("&nbsp;&nbsp;<button id=\"" + idTipoAtributo + "\" class=\"btn btn-primary\" onclick=\"borrarTipoAtributo('" + idTiposAtributo + "','" + nombre + "')\">" + atributo + "</button>", " ");
     $("#divTiposAtributo").html(atributos);
@@ -105,7 +104,7 @@ function agregarTipoAtributo() {
     var datosTipoAtributo = {
         nombre: nombre,
         tipo: tipo,
-        categoria : categoriaAgregarTipoAtributo
+        categoria: categoriaAgregarTipoAtributo
     };
 
     $("#modalAgregarTipoAtributo").modal('hide');
@@ -166,7 +165,7 @@ function agregarCategoria(tipoCategoria) {
     var categoriaNueva = {
         nombre: nombre,
         padre: padreAgregarCategoria,
-        tipoCategoria : tipoCategoria
+        tipoCategoria: tipoCategoria
     }
 
     $("#modalAgregarCategoria").modal('hide');
@@ -200,17 +199,17 @@ function agregarCategoria(tipoCategoria) {
     });
 
     //refresca las categorias
-    setTimeout(function(){
+    setTimeout(function () {
         $.ajax({
-        url: '/Tienda/ObtenerCategorias',
-        type: 'GET',
-        success: function (data, textStatus, jqxhr) {
-            finCargandoDatos("#divCategorias");
-            $('#divCategorias').html(data);
-        }
-    });
+            url: '/Tienda/ObtenerCategorias',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divCategorias");
+                $('#divCategorias').html(data);
+            }
+        });
     }, 8000);
-    
+
 
 }
 
@@ -256,7 +255,7 @@ function crearCategorias() {
         });
     }
     else {
-        
+
         $.ajax({
             url: '/Tienda/CrearCategorias',
             type: 'GET',
@@ -275,7 +274,7 @@ function crearCategorias() {
             }
         });
     }
-    
+
 }
 
 
@@ -307,7 +306,7 @@ function crearTiposAtributo() {
             }
         });
     }
-    
+
 }
 
 function crearPersonalizacion() {
@@ -329,5 +328,5 @@ function crearPersonalizacion() {
             }
         });
     }
-    
+
 }

@@ -842,5 +842,19 @@ namespace DataAccessLayer
             }
         }
 
+        public bool ExisteTienda(string idTienda)
+        {
+            using (var c = ChebayDBPublic.CreatePublic())
+            {
+                Tienda t = c.tiendas.Find(idTienda);
+                if (t == null)
+                    return false;
+            }
+            return true;
+        }
+
+
+
+
     }
 }

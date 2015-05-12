@@ -50,6 +50,15 @@ namespace Chebay.BackofficeIdentity.Controllers
         //En cada uno de los metodos de abajo, hay que generar la vista como un string, para eso es necesario 
         //crear paginas y copiar su contenido, para una correcta generacion del codigo html
 
+        //GET : /Tienda/VerTiendas
+        [HttpGet]
+        public ActionResult VerTiendas()
+        {
+            string pagina = "";
+
+            return Content(pagina);
+        }
+
         // GET: /Tienda/CrearTienda
         [HttpGet]
         public ActionResult CrearTienda()
@@ -107,7 +116,7 @@ namespace Chebay.BackofficeIdentity.Controllers
         public string RecursionCategoriasTipoAtributo(CategoriaCompuesta categoria)
         {
             string resultado = "";
-            resultado += "<li><button class=\"btn btn-link\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + categoria.CategoriaID + ",'" + categoria.Nombre + "')\">" + categoria.Nombre + "</button>";
+            resultado += "<li><button class=\"btn btn-link\" data-toggle=\"popover\" data-original-title=\"Agregar Tipo de Atributo\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + categoria.CategoriaID + ",'" + categoria.Nombre + "')\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -122,7 +131,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + hija.CategoriaID + ",'" + hija.Nombre +"')\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" data-toggle=\"popover\" data-original-title=\"Agregar Tipo de Atributo\" id=\"" + hija.CategoriaID + "\" onclick=\"mostrarPopover(" + hija.CategoriaID + ",'" + hija.Nombre +"')\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";

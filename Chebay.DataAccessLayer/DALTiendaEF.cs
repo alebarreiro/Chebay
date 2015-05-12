@@ -231,6 +231,7 @@ namespace DataAccessLayer
                                         select cat;
                             CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
                             dc.padre = father;
+                            dc.tipoatributos = new List<TipoAtributo>();
                             context.categorias.Add(dc);
                         }
                         catch (Exception e)
@@ -262,6 +263,7 @@ namespace DataAccessLayer
                                 select cat;
                     CategoriaCompuesta father = (CategoriaCompuesta)query.FirstOrDefault();
                     c.padre = father;
+                    c.tipoatributos = new List<TipoAtributo>();
                     context.categorias.Add(c);
                     context.SaveChanges();
                 }
@@ -806,7 +808,11 @@ namespace DataAccessLayer
                 {
                     var qTipoA = from t in context.tipoatributos
                                  select t;
-                    return qTipoA.ToList();
+                    List<TipoAtributo> ret = qTipoA.ToList();
+                    if (ret == null)
+                        return new List<TipoAtributo>();
+                    else
+                        return qTipoA.ToList();
                 }
             }
             catch (Exception e)
@@ -828,7 +834,10 @@ namespace DataAccessLayer
                                select c;
                     Categoria cat = qCat.FirstOrDefault();
                     List<TipoAtributo> ret = (List<TipoAtributo>)cat.tipoatributos;
-                    return ret;
+                    if (ret == null)
+                        return new List<TipoAtributo>();
+                    else
+                        return ret;
                 }
             }
             catch (Exception e)

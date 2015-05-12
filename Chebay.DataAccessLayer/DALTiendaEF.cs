@@ -640,40 +640,36 @@ namespace DataAccessLayer
             try
             {
                 chequearTienda(idTienda);
-                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                using (var context = ChebayDBPublic.CreatePublic())
                 {
+                    Personalizacion p = new Personalizacion { datos = color, PersonalizacionID=idTienda };
+                    var qTienda = from tnd in context.tiendas
+                                  where tnd.TiendaID == idTienda
+                                  select tnd;
+                    Tienda t = qTienda.FirstOrDefault();
+                    t.personalizacion = p;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
 
-                    Debug.WriteLine(Directory.GetCurrentDirectory());
-
-                    int counter = 0;
-                    string line;
-                    List<string> temp = new List<string>();
-
-                    // Read the file and display it line by line.
-                    System.IO.StreamReader fileInput = new System.IO.StreamReader(@"C:\Users\Alejandro\Source\Repos\Chebay\WebApplication1\Content\personalizacion\EstiloUno\orangeStyle.css");
-
-                    while ((line = fileInput.ReadLine()) != null)
-                    {
-                        temp.Add(line);
-                    }
-                    fileInput.Close();
-
-
-                    System.IO.StreamWriter fileOutput = new System.IO.StreamWriter(@"C:\Users\Alejandro\Source\Repos\Chebay\WebApplication1\Content\personalizacion\EstiloUno\orangeStyle.css");
-                    {
-                        foreach (string linea in temp)
-                        {
-                            if (linea.Contains("    border-bottom: 20px solid #e44d26;"))
-                            {
-                                fileOutput.WriteLine("    border-bottom: 20px solid #63589F;");
-                            }
-                            else
-                            {
-                                fileOutput.WriteLine(linea);
-                            }
-                        }
-                    }
-                    fileOutput.Close();
+        Personalizacion ObtenerPersonalizacionTienda(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    var qTienda = from tnd in context.tiendas
+                                  where tnd.TiendaID == idTienda
+                                  select tnd;
+                    Tienda t = qTienda.FirstOrDefault();
+                    return t.personalizacion;
                 }
             }
             catch (Exception e)

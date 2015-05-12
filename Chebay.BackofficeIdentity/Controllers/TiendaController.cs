@@ -11,6 +11,11 @@ using Microsoft.AspNet.Identity;
 namespace Chebay.BackofficeIdentity.Controllers
 {
 
+    public class DatosPersonalizacion
+    {
+        public int color { get; set; }
+    }
+
     public class DatosObtenerTiposAtributo
     {
         public long idCategoria { get; set; }
@@ -200,6 +205,23 @@ namespace Chebay.BackofficeIdentity.Controllers
                 var result = new { Success = "False", Message = "Error al guardar los datos generales" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
+        }
+
+        //GET: /Tienda/Personalizar
+        [HttpPost]
+        public ActionResult Personalizar(DatosPersonalizacion datos)
+        {
+            try
+            {
+                var result = new { Success = "True", Message = "Se ha personalizado la Tienda correctamente" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = "Error al personalizar la Tienda" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         //GET: /Tienda/ObtenerTiposAtributo

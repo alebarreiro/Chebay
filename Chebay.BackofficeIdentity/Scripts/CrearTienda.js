@@ -3,7 +3,7 @@ var categoriasCreadas = false;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 
 var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingCargarDatos, categoriaAgregarTipoAtributo;
-
+$('[data-toggle="popover"]').popover();
 function modalAgregarCategoria(padre) {
     padreAgregarCategoria = padre;
     $("#modalAgregarCategoria").modal();
@@ -210,7 +210,7 @@ function agregarTipoAtributo() {
                 $("#divTiposAtributo").html();
             }
         });
-    }, 8000);
+    }, 4000);
 
     $("#nombreTipoAtributo").val('');
 
@@ -273,7 +273,7 @@ function agregarCategoria(tipoCategoria) {
                 $('#divCategorias').html(data);
             }
         });
-    }, 8000);
+    }, 4000);
 
     $("#nombreCategoria").val('');
     categoriasCreadas = true;
@@ -283,6 +283,16 @@ function agregarCategoria(tipoCategoria) {
 function DirigirCrearTienda() {
     $.ajax({
         url: '/Tienda/CrearTienda',
+        type: 'GET',
+        success: function (data, textStatus, jqxhr) {
+            $('#container').html(data);
+        }
+    });
+}
+
+function DirigirVerTiendas() {
+    $.ajax({
+        url: '/Tienda/VerTiendas',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
             $('#container').html(data);
@@ -377,21 +387,19 @@ function crearTiposAtributo() {
 }
 
 function mostrarPopover(categoria, nombre) {
-    var html = '<div class="popover" role="tooltip">"'
-        + '<div class="arrow"></div><h3 class="popover-title">Seleccione la Acción a Realizar</h3>'
-        + '<div class="popover-content">'
-        + '<button class=\"btn btn-primary\" onclick=\"verTiposAtributo(' + categoria + ',' + nombre +')\">Ver Tipos de Atributo</button>'
-        + '<button class=\"btn btn-success\" onclick=\"modalAgregarTipoAtributo(' + categoria + ',\'' + nombre + '\')\">Agregar Tipo de Atributo</button>'
-        + '</div></div>';
+    var html = '<button class=\"btn btn-primary\" onclick=\"verTiposAtributo(' + categoria + ',\'' + nombre + '\')\">Ver Tipos de Atributo</button>'
+        + '<button class=\"btn btn-success\" onclick=\"modalAgregarTipoAtributo(' + categoria + ',\'' + nombre + '\')\">Agregar Tipo de Atributo</button>';
 
     var options = {
         animation: true,
         html: true,
-        template: html,
+        content: html,
         placement : 'right'
     }
     $("#" + categoria).popover(options);
     $("#" + categoria).popover('show');
+    $("#" + categoria)
+
 }
 
 function crearPersonalizacion() {

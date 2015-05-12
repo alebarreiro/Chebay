@@ -50,18 +50,18 @@
     
        <div id="body">
         <section class="main-content clear-fix">
-            @*@if(Session["loggeado"])
-            {*@
+            @if(User.Identity.IsAuthenticated)
+            {
                 <div class="menu">
                     <div class="list-group">
                         <a href="#" class="list-group-item active" onclick="DirigirCrearTienda()">
                             Crear Tienda
                         </a>
-                        @*<a href="#" class="list-group-item">Modificar Tienda</a>
-                        <a href="#" class="list-group-item">Configuracion</a>*@
+                        <a href="#" class="list-group-item" onclick="DirigirVerTiendas()">Ver Tiendas</a>
+                        @*<a href="#" class="list-group-item">Configuracion</a>*@
                     </div>
                 </div>
-            @*}*@
+            }
             @RenderBody()
         </section>
     </div>

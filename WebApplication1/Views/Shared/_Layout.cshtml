@@ -42,7 +42,17 @@
     <!--  Header  -->
     <div class="header-container">
         <header class="wrapper clearfix">
-            <h1 class="title">@ViewBag.Message</h1>
+            @{ 
+                string title;
+                if (Session["Tienda_Nombre"] != null) {
+                    title = Session["Tienda_Nombre"].ToString();
+                }
+                else
+                {
+                    title = "Inicio";
+                }
+            }
+            <h1 class="title">@Html.ActionLink(title, "Index", "Home")</h1>
             <section id="login">
                 @Html.Partial("_LoginPartial")
             </section>

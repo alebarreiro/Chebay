@@ -27,7 +27,8 @@ namespace Frontoffice
 
             bundles.Add(new ScriptBundle("~/bundles/customScripts").Include(
                         "~/Scripts/moment.js",
-                        "~/Scripts/moment.with-locales.js"
+                        "~/Scripts/moment.with-locales.js",
+                        "~/Scripts/sweet-alert.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(
@@ -54,7 +55,9 @@ namespace Frontoffice
                       "~/Content/partials/product_item.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.ui.chatbox.css",
-                      "~/Content/animate.css"
+                      "~/Content/animate.css",
+                      "~/Content/font-awesome.min.css",
+                      "~/Content/sweet-alert.css"
                       ));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
@@ -64,9 +67,6 @@ namespace Frontoffice
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
                 "~/Content/personalizacion/EstiloDos/violetStyle.css"
             ));
-
-
- 
         }
     }
 }

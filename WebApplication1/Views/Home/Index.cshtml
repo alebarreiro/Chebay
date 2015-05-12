@@ -41,7 +41,8 @@
             </div>
             <div class="product-item-footer">
                 <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre </div>
-                @if (User.Identity.IsAuthenticated) { 
+                @if (User.Identity.IsAuthenticated) 
+                { 
                     <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)"> OFERTAR! </button>
                 }
                 else

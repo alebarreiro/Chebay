@@ -11,37 +11,34 @@ namespace Frontoffice.Controllers
 {
     public class HomeController : Controller
     {
+        IDALSubasta controladorSubasta = new DALSubastaEF();
+        IDALTienda controladorTienda = new DALTiendaEF();
+
         public ActionResult Index(string urlTienda)
         {
-            IDALSubasta controladorSubasta = new DALSubastaEF();
-            IDALTienda controladorTienda = new DALTiendaEF();
-            List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
-            Tienda t = controladorTienda.ObtenerTienda(urlTienda);
-            List<Categoria> categorias = controladorTienda.ListarCategorias(urlTienda);
-            //List<DataProducto> prods = null;
-            if (prods == null)
+            try
             {
-                prods = new List<DataProducto>();
-                DataProducto p1 = new DataProducto();
-                p1.nombre = "prueba 1";
-                p1.descripcion = "descripcion del producto";
-                DataProducto p2 = new DataProducto();
-                p2.nombre = "prueba ";
-                p2.descripcion = "descripcion del producto";
-                prods.Add(p1);
-                prods.Add(p2);
-                prods.Add(p1);
-                prods.Add(p2);
-                prods.Add(p1);
-                prods.Add(p2);
-                prods.Add(p1);
-                prods.Add(p2);
+                List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
+                Tienda t = controladorTienda.ObtenerTienda(urlTienda);
+                //List<Categoria> categorias = controladorTienda.ListarCategorias(urlTienda);
+                ViewBag.productos = prods;
+                //Elegimos el estilo, por ahora los posibles valores son 1 o 2
+                Personalizacion p = controladorTienda.ObtenerPersonalizacionTienda(urlTienda);
+                if (p.datos == "1" || p.datos == "2")
+                {
+                    Session["Tienda_Personalizacion"] = p.datos;
+                }
+                else
+                {
+                    Session["Tienda_Personalizacion"] = "1";
+                }
+                Session["Tienda_Nombre"] = urlTienda;
+                ViewBag.Message = urlTienda;
             }
-            ViewBag.productos = prods;
-            //Elegimos el estilo, por ahora los posibles valores son 1 o 2
-            Session["Tienda_Personalizacion"] = "1";
-            Session["Tienda_Nombre"] = urlTienda;
-            //ViewBag.personalizacion = 1;
+            catch (Exception e)
+            {
+                
+            }
             return View();
         }
 

@@ -53,6 +53,8 @@ function verTiposAtributo(categoria, nombre) {
         idCategoria: categoria
     };
 
+    cargandoDatos("#divTiposAtributo");
+
     $.ajax({
         url: '/Tienda/ObtenerTiposAtributo',
         type: 'GET',
@@ -60,6 +62,7 @@ function verTiposAtributo(categoria, nombre) {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqxhr) {
+            finCargandoDatos("#divTiposAtributo");
             $("#bodyVerTiposAtributo").html(data);
         }
     });
@@ -209,6 +212,8 @@ function agregarTipoAtributo() {
         });
     }, 8000);
 
+    $("#nombreTipoAtributo").val('');
+
 }
 
 function borrarCategoria(idCategoria, nombre) {
@@ -270,6 +275,7 @@ function agregarCategoria(tipoCategoria) {
         });
     }, 8000);
 
+    $("#nombreCategoria").val('');
     categoriasCreadas = true;
 
 }
@@ -355,15 +361,15 @@ function crearTiposAtributo() {
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
                 $('#contenidoCrearTienda').html(data);
-                cargandoDatos("#divAtributos");
+                cargandoDatos("#divTiposAtributo");
             }
         });
         $.ajax({
             url: '/Tienda/ObtenerCategoriasTipoAtributo',
             type: 'GET',
             success: function (data, textStatus, jqxhr) {
-                finCargandoDatos("#divAtributos");
-                $('#divCategorias').html(data);
+                finCargandoDatos("#divTiposAtributo");
+                $('#divTiposAtributo').html(data);
             }
         });
     }

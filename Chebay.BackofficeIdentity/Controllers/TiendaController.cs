@@ -13,7 +13,7 @@ namespace Chebay.BackofficeIdentity.Controllers
 
     public class DatosPersonalizacion
     {
-        public int color { get; set; }
+        public string color { get; set; }
     }
 
     public class DatosObtenerTiposAtributo
@@ -118,7 +118,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                     {
                         if (hija is CategoriaCompuesta)
                         {
-                            resultado += RecursionCategorias((CategoriaCompuesta)hija);
+                            resultado += RecursionCategoriasTipoAtributo((CategoriaCompuesta)hija);
                         }
                         else
                         {
@@ -213,6 +213,19 @@ namespace Chebay.BackofficeIdentity.Controllers
         {
             try
             {
+                string idAdmin = User.Identity.Name;
+                Debug.WriteLine("Obtenercategorias::" + idAdmin);
+                List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+                AtributoSesion tienda = null;
+                foreach (AtributoSesion a in atributos)
+                {
+                    if (a.AtributoSesionID.Equals("tienda"))
+                    {
+                        tienda = a;
+                        break;
+                    }
+                }
+                idalTienda.PersonalizarTienda(datos.color, tienda.Datos);
                 var result = new { Success = "True", Message = "Se ha personalizado la Tienda correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -229,7 +242,49 @@ namespace Chebay.BackofficeIdentity.Controllers
         public ActionResult ObtenerTiposAtributo(DatosObtenerTiposAtributo datos)
         {
             string contenido = "";
-            
+            string idAdmin = User.Identity.GetUserName();
+            List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+            AtributoSesion tienda = null;
+            foreach (AtributoSesion a in atributos)
+            {
+                if (a.AtributoSesionID.Equals("tienda"))
+                {
+                    tienda = a;
+                    break;
+                }
+            }
+            List<TipoAtributo> tipos = idalTienda.ListarTipoAtributo(datos.idCategoria, tienda.Datos);
+            int cantTipos = 0;
+            foreach (TipoAtributo tipo in tipos)
+            {
+                switch (tipo.tipodato)
+                {
+                    case TipoDato.INTEGER:
+                        contenido += "<label class=\"label label-primary\">" + tipo.TipoAtributoID + " : " + tipo.tipodato +"</label>";
+                        break;
+                    case TipoDato.DATE:
+                        contenido += "<label class=\"label label-danger\">" + tipo.TipoAtributoID + " : " + tipo.tipodato + "</label>";
+                        break;
+                    case TipoDato.STRING:
+                        contenido += "<label class=\"label label-warning\">" + tipo.TipoAtributoID + " : " + tipo.tipodato + "</label>";
+                        break;
+                    case TipoDato.FLOAT:
+                        contenido += "<label class=\"label label-info\">" + tipo.TipoAtributoID + " : " + tipo.tipodato + "</label>";
+                        break;
+                    case TipoDato.BOOL:
+                        contenido += "<label class=\"label label-success\">" + tipo.TipoAtributoID + " : " + tipo.tipodato + "</label>";
+                        break;
+                    case TipoDato.BINARY:
+                        contenido += "<label class=\"label label-default\">" + tipo.TipoAtributoID + " : " + tipo.tipodato + "</label>";
+                        break;
+                }
+                if (cantTipos == 4)
+                {
+                    //salto de linea y reinicio contador de tipos de atributo a mostrar en el modal
+                    contenido += "<br />";
+                    cantTipos = 0;
+                }
+            }
             return Content(contenido);
         }
 

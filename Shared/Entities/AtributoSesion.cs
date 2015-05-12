@@ -10,12 +10,9 @@ namespace Shared.Entities
 {
     [Table("AtributosSesiones")]
     public class AtributoSesion
-    {   
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long ID { get; set; }
-
-        public string AtributoSesionID { get; set; }
+    {
         public string AdministradorID { get; set; }
+        public string AtributoSesionID { get; set; }
         //max 2**31 char
         public string Datos { get; set; }
 

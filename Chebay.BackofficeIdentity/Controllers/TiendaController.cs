@@ -375,61 +375,35 @@ namespace Chebay.BackofficeIdentity.Controllers
         [HttpPost]
         public ActionResult GuardarDatosGenerales(DatosGeneralesTienda datosGenerales)
         {
-            //la url se generaria en logica
-
             try
             {
-                //que se hace con el admin??
-                Debug.WriteLine("TiendaController::GuardarDatosGenerales::"+User.Identity.Name);
                 string idAdmin = User.Identity.Name;
-                List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
-                AtributoSesion tienda = null;
-                foreach(AtributoSesion a in atributos){
-                    if(a.AtributoSesionID.Equals("tienda")){
-                        tienda = a;
-                        break;
-                    }
-                }
+                Tienda t = new Tienda();
+                //sacarle los espacios al string de abajo
+                //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
+                t.TiendaID = datosGenerales.titulo;
+                t.descripcion = datosGenerales.descripcion;
+                t.nombre = datosGenerales.titulo;
 
-                //esto no esta bien: es preferible buscar las tiendas del usuario antes de preguntar por la sesion.
-                Debug.WriteLine("LUEGO FOR");
-                if (tienda == null)
+                if (idalTienda.ExisteTienda(datosGenerales.titulo))
                 {
-                    AtributoSesion atr = new AtributoSesion();
-                    Tienda t = new Tienda();
-                    //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
-                    t.TiendaID = datosGenerales.titulo;
-                    t.descripcion = datosGenerales.descripcion;
-                    t.nombre = datosGenerales.titulo;
-                    atr.AtributoSesionID = "tienda";
-                    Debug.WriteLine("ADMIN::" + idAdmin);
-                    atr.Datos = t.TiendaID;
-                    atr.AdministradorID = idAdmin;
-                    idalTienda.AgregarAtributoSesion(atr);
-
-                    Debug.WriteLine("MUEREAQUI!!");
-                    idalTienda.AgregarTienda(t, idAdmin);
-                    Debug.WriteLine("OKKK2");
-
+                    //actualizo
+                    idalTienda.ActualizarTienda(t);
                 }
                 else
                 {
-                    Tienda t = new Tienda();
-                    //sacarle los espacios al string de abajo
-                    //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
-                    t.TiendaID = datosGenerales.titulo;
-                    t.descripcion = datosGenerales.descripcion;
-                    t.nombre = datosGenerales.titulo;
-                    Debug.WriteLine("TiendaController::antesActualizar");
-                    idalTienda.ActualizarTienda(t);
-                    AtributoSesion atr = new AtributoSesion();
-                    atr.AtributoSesionID = "tienda";
-                    atr.Datos = t.TiendaID;
-                    atr.AdministradorID = idAdmin;
-                    idalTienda.AgregarAtributoSesion(atr);
-                    Debug.WriteLine("OKKK");
+                    //agrego tienda
+                    idalTienda.AgregarTienda(t, idAdmin);
                 }
-                
+                //cambio atributo sesion para categorias
+                AtributoSesion atr = new AtributoSesion();
+                atr.AtributoSesionID = "tienda";
+                atr.Datos = t.TiendaID;
+                atr.AdministradorID = idAdmin;
+
+                Debug.WriteLine("TiendaController::GuardarDatosgenerales::GuardarAtributo");
+                idalTienda.AgregarAtributoSesion(atr);
+                    
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

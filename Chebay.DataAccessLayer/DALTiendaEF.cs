@@ -688,10 +688,11 @@ namespace DataAccessLayer
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 //AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
-                var query = from a in context.atributossesion
-                            where a.AtributoSesionID.Equals(AtributoS.AtributoSesionID) && a.AdministradorID.Equals(AtributoS.AdministradorID)
+                var query = from a in context.administradores.Find(AtributoS.AdministradorID).atributosSesion
+                            where a.AtributoSesionID.Equals(AtributoS.AtributoSesionID) 
+                            
                             select a;
-
+                
                 Debug.WriteLine(AtributoS.AdministradorID + AtributoS.AtributoSesionID);
 
                 if (query.Count() == 0)
@@ -715,7 +716,8 @@ namespace DataAccessLayer
             using (var context = ChebayDBPublic.CreatePublic())
             {
                 var query = from s in context.atributossesion
-                            where s.AdministradorID.Equals(AdminID) && s.AtributoSesionID.Equals(AtributoID)
+                            where s.AdministradorID.Equals(AdminID) 
+                            && s.AtributoSesionID.Equals(AtributoID)
                             select s;
                 AtributoSesion atrs = query.FirstOrDefault(null);
                 if (atrs != null)
@@ -727,10 +729,11 @@ namespace DataAccessLayer
         {
             using (var context = ChebayDBPublic.CreatePublic())
             {
-                var query = from ats in context.atributossesion
-                            where ats.AdministradorID.Equals(AdminID)
-                            select ats;
-                return query.ToList();
+                //var query = from ats in context.atributossesion
+                //            where ats.AdministradorID.Equals(AdminID)
+                //            select ats;
+                //return query.ToList();
+                return context.administradores.Find(AdminID).atributosSesion.ToList();
             }
         }
 
@@ -838,6 +841,20 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+
+        public bool ExisteTienda(string idTienda)
+        {
+            using (var c = ChebayDBPublic.CreatePublic())
+            {
+                Tienda t = c.tiendas.Find(idTienda);
+                if (t == null)
+                    return false;
+            }
+            return true;
+        }
+
+
+
 
     }
 }

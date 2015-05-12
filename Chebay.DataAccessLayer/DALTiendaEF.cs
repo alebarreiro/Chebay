@@ -658,7 +658,7 @@ namespace DataAccessLayer
             }
         }
 
-        Personalizacion ObtenerPersonalizacionTienda(string idTienda)
+        public Personalizacion ObtenerPersonalizacionTienda(string idTienda)
         {
             try
             {

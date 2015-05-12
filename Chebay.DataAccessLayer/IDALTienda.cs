@@ -21,6 +21,7 @@ namespace DataAccessLayer
         void ActualizarTienda(Tienda t); //NO ACTUALIZAR LA URL.
         void EliminarTienda(string idTienda);
         Tienda ObtenerTienda(string idTienda);
+        List<Tienda> ListarTiendas();
         bool ExisteTienda(string idTienda);
         
         //--CATEGORIAS--

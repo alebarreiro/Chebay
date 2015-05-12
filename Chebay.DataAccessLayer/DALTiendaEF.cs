@@ -858,8 +858,14 @@ namespace DataAccessLayer
             return true;
         }
 
-
-
-
+        public List<Tienda> ListarTiendas()
+        {
+            using (var context = ChebayDBPublic.CreatePublic())
+            {
+                var qTiendas = from tnd in context.tiendas
+                               select tnd;
+                return qTiendas.ToList();
+            }
+        }
     }
 }

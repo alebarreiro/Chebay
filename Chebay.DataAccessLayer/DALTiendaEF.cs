@@ -858,9 +858,10 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var qTA = from t in context.tipoatributos
-                              select t;
-                    List<TipoAtributo> ret = qTA.ToList();
+                    var qCat = from cat in context.categorias.Include("tipoatributos")
+                               where cat.CategoriaID == idCategoria
+                               select cat;
+                    List<TipoAtributo> ret = qCat.FirstOrDefault().tipoatributos.ToList();
                     return ret;
                 }
             }
@@ -870,31 +871,6 @@ namespace DataAccessLayer
                 throw e;
             }
         }
-            /*try
-            {
-                chequearTienda(idTienda);
-                using (var context = ChebayDBContext.CreateTenant(idTienda))
-                {
-                    var qCat = from c in context.categorias
-                               where c.CategoriaID == idCategoria
-                               select c;
-                    Categoria cat = qCat.FirstOrDefault();
-                    if (cat == null)
-                        Debug.WriteLine("ES NULLL" + idCategoria);
-                    Debug.WriteLine("o no ES NULLL" + idCategoria);
-                    List<TipoAtributo> ret = (List<TipoAtributo>)cat.tipoatributos;
-                    if (ret == null)
-                        return new List<TipoAtributo>();
-                    else
-                        return ret;
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw e;
-            }
-        }*/
 
         public bool ExisteTienda(string idTienda)
         {

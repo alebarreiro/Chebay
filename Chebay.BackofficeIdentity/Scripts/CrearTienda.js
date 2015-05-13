@@ -300,6 +300,22 @@ function DirigirVerTiendas() {
     });
 }
 
+function seleccionarTienda(tienda) {
+    var datos = {
+        tienda: tienda
+    };
+
+    $.ajax({
+        url: '/Tienda/VerTiendas',
+        type: 'POST',
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: JSON.stringify(datos),
+        success: function (data, textStatus, jqxhr) {
+            $('#container').html(data);
+        }
+    });
+}
 
 function datosGenerales() {
     $.ajax({
@@ -354,6 +370,26 @@ function crearCategorias() {
 
 }
 
+function crearCategoriasVerTienda() {
+        $.ajax({
+            url: '/Tienda/CrearCategorias',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#contenidoCrearTienda').html(data);
+                cargandoDatos("#divCategorias");
+            }
+        });
+
+        $.ajax({
+            url: '/Tienda/ObtenerCategorias',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divCategorias");
+                $('#divCategorias').html(data);
+            }
+        });
+
+}
 
 function crearTiposAtributo() {
     if (!tiendaCreada) {
@@ -386,6 +422,26 @@ function crearTiposAtributo() {
 
 }
 
+function crearTiposAtributoVerTienda() {
+        $.ajax({
+            url: '/Tienda/CrearTiposAtributo',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#contenidoCrearTienda').html(data);
+                cargandoDatos("#divTiposAtributo");
+            }
+        });
+        $.ajax({
+            url: '/Tienda/ObtenerCategoriasTipoAtributo',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divTiposAtributo");
+                $('#divTiposAtributo').html(data);
+            }
+        });
+
+}
+
 function mostrarPopover(categoria, nombre) {
     var html = '<button class=\"btn btn-primary\" onclick=\"verTiposAtributo(' + categoria + ',\'' + nombre + '\')\">Ver Tipos de Atributo</button>'
         + '<button class=\"btn btn-success\" onclick=\"modalAgregarTipoAtributo(' + categoria + ',\'' + nombre + '\')\">Agregar Tipo de Atributo</button>';
@@ -398,7 +454,6 @@ function mostrarPopover(categoria, nombre) {
     }
     $("#" + categoria).popover(options);
     $("#" + categoria).popover('show');
-    $("#" + categoria)
 
 }
 
@@ -421,5 +476,16 @@ function crearPersonalizacion() {
             }
         });
     }
+
+}
+
+function crearPersonalizacionVerTienda() {
+        $.ajax({
+            url: '/Tienda/CrearPersonalizacion',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#contenidoCrearTienda').html(data);
+            }
+        });
 
 }

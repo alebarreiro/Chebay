@@ -12,7 +12,7 @@
             title: "chat",
             messageSent: function (id, user, msg) {
                 //myWS.send(msg);
-                groupChat.server.sendGroup("tenant1", usuario, msg);
+                groupChat.server.sendGroup(tenanttienda, usuario, msg);
             }
         });
         //minimizo
@@ -28,7 +28,7 @@
     // Start the connection.
     $.connection.hub.start().done(function () {
         //register on group
-        groupChat.server.joinGroup("tenant1");
+        groupChat.server.joinGroup(tenanttienda);
     });
 
 });

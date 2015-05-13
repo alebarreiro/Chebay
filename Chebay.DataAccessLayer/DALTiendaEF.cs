@@ -869,8 +869,8 @@ namespace DataAccessLayer
             {
                 Debug.WriteLine(e.Message);
                 throw e;
-            }*/
-        }
+            }
+        }*/
 
         public bool ExisteTienda(string idTienda)
         {

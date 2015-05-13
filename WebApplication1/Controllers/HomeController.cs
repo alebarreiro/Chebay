@@ -24,7 +24,7 @@ namespace Frontoffice.Controllers
                 ViewBag.productos = prods;
                 //Elegimos el estilo, por ahora los posibles valores son 1 o 2
                 Personalizacion p = controladorTienda.ObtenerPersonalizacionTienda(urlTienda);
-                if (p.datos == "1" || p.datos == "2")
+                if (p != null && (p.datos == "1" || p.datos == "2"))
                 {
                     Session["Tienda_Personalizacion"] = p.datos;
                 }

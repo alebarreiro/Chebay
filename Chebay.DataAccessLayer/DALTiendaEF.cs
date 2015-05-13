@@ -123,6 +123,12 @@ namespace DataAccessLayer
                     if (tienda.administradores == null)
                         tienda.administradores = new HashSet<Administrador>();
                     tienda.administradores.Add(qAdmin.FirstOrDefault());
+                    Personalizacion p = new Personalizacion
+                    {
+                        PersonalizacionID = tienda.TiendaID,
+                        datos = "1"
+                    };
+                    context.personalizaciones.Add(p);
                     context.tiendas.Add(tienda);
                     context.SaveChanges();
                     Debug.WriteLine("Creando schema...");
@@ -645,11 +651,12 @@ namespace DataAccessLayer
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     Personalizacion p = new Personalizacion { datos = color, PersonalizacionID=idTienda };
-                    var qTienda = from tnd in context.tiendas
+                    /*var qTienda = from tnd in context.tiendas
                                   where tnd.TiendaID == idTienda
                                   select tnd;
                     Tienda t = qTienda.FirstOrDefault();
-                    t.personalizacion = p;
+                    t.personalizacion = p;*/
+                    context.personalizaciones.Add(p);
                     context.SaveChanges();
                 }
             }

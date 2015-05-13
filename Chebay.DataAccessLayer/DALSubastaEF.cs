@@ -65,9 +65,9 @@ namespace DataAccessLayer
                     var qProductos = from p in context.productos
                                      orderby p.fecha_cierre ascending
                                      select p;
+                    List<DataProducto> ret = new List<DataProducto>();
                     if (qProductos.Count() > 0)
                     {
-                        List<DataProducto> ret = new List<DataProducto>();
                         foreach (Producto p in qProductos)
                         {
                             DataProducto dp = new DataProducto { 
@@ -88,10 +88,8 @@ namespace DataAccessLayer
                             }
                             ret.Add(dp);
                         }
-                        return ret;
                     }
-                    else
-                        throw new Exception("No hay productos.");
+                    return ret;
                 }
             }
             catch (Exception e)

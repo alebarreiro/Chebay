@@ -86,6 +86,8 @@ namespace DataAccessLayer
                     var query = from usr in context.usuarios
                                 where usr.UsuarioID == idUsuario
                                 select usr;
+                    if (query.Count() == 0)
+                        throw new Exception();
                     return query.First();
                 }
             }

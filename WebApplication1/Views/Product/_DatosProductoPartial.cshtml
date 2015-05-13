@@ -1,0 +1,58 @@
+﻿@{
+    var nombreTienda = @Session["Tienda_Nombre"];
+}
+
+
+<div id="divFormulario">
+    <h1>PASO 1: DATOS DEL PRODUCTO</h1>
+        <div class="form-group">
+            <label for="titulo">Titulo: </label>
+            <input type="text" class="form-control" id="titulo" placeholder="Ingresar titulo">
+        </div>
+        <div class="form-group">
+            <label for="descripcion">Descripcion: </label>
+            <textarea type="text" class="form-control" id="descripcion" placeholder="Ingresar descripcion"></textarea>
+        </div>
+        <div class="form-group">
+            <label for="precioInicial">Precio base subasta: </label>
+            <input type="text" class="form-control" id="precioInicial" placeholder="Ingresar precio base subasta">
+        </div>
+        <div class="form-group">
+            <label for="precioComprarYa">Precio comprar ya: </label>
+            <input type="text" class="form-control" id="precioComprarYa" placeholder="Ingresar precio comprar ya">
+        </div>
+        <div class="form-group">
+            <label for="fechaCierre">Fecha cierre: </label>
+            <input type="date" class="form-control" id="fechaCierre">
+        </div>
+        <div class="form-group">
+            <label for="horaCierre">Hora cierre: </label>
+            <input type="time" class="form-control" id="horaCierre">
+        </div>
+
+        <button class="btn btn-default" onclick="productoValidar1()">Confirmar datos</button>
+</div>
+
+
+
+<script type="text/javascript">
+    productoValidar1 = function () {
+        var titulo = $('#titulo').val(),
+            descripcion = $('#descripcion').val(),
+            precioBase = $('#precioInicial').val(),
+            precioComprarYa = $('#precioComprarYa').val(),
+            fechaCierre = $('#fechaCierre').val(),
+            horaCierre = $('#horaCierre').val(),
+
+        datosProducto = {
+            'titulo': titulo,
+            'descripcion': descripcion,
+            'precioBase': precioBase,
+            'precioComprarYa': precioComprarYa,
+            'fechaCierre': fechaCierre + " " + horaCierre,
+        }
+        console.log(datosProducto);
+        localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
+        console.log(titulo + " " + descripcion);
+    }
+</script>

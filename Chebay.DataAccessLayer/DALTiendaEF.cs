@@ -650,14 +650,31 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
-                    Personalizacion p = new Personalizacion { datos = color, PersonalizacionID=idTienda };
-                    /*var qTienda = from tnd in context.tiendas
-                                  where tnd.TiendaID == idTienda
-                                  select tnd;
-                    Tienda t = qTienda.FirstOrDefault();
-                    t.personalizacion = p;*/
-                    context.personalizaciones.Add(p);
-                    context.SaveChanges();
+                    var qPers = from per in context.personalizaciones
+                                where per.PersonalizacionID == idTienda
+                                select per;
+                    if (qPers.Count() == 0) //Si no existe personalización.
+                    {
+                        Personalizacion p = new Personalizacion
+                        {
+                            datos = color,
+                            PersonalizacionID = idTienda
+                        };
+                        /*var qTienda = from tnd in context.tiendas
+                                      where tnd.TiendaID == idTienda
+                                      select tnd;
+                        Tienda t = qTienda.FirstOrDefault();
+                        t.personalizacion = p;*/
+                        context.personalizaciones.Add(p);
+                        context.SaveChanges();
+                    }
+                    else //Si existe y hay que actualizarla.
+                    {
+                        Personalizacion p = qPers.FirstOrDefault();
+                        p.datos = color;
+                        context.SaveChanges();
+                    }
+                    
                 }
             }
             catch (Exception e)

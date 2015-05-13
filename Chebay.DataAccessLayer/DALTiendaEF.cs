@@ -742,24 +742,31 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    TipoAtributo tipoA = context.tipoatributos.Find(ta.TipoAtributoID);
+                    var qTA = from tipoAtr in context.tipoatributos
+                              where tipoAtr.TipoAtributoID == ta.TipoAtributoID
+                              select tipoAtr;
+                    TipoAtributo tipoA = qTA.FirstOrDefault();
                     if (tipoA == null)
                     {
+                        Debug.WriteLine("IF");
                         var qCat = from c in context.categorias
                                    where c.CategoriaID == idCategoria
                                    select c;
+                        Categoria cat = qCat.FirstOrDefault();
+                        Debug.WriteLine("CAT ID " + cat.CategoriaID);
                         if (ta.categorias == null)
                             ta.categorias = new HashSet<Categoria>();
-                        ta.categorias.Add(qCat.FirstOrDefault());
-                        Categoria cat = qCat.FirstOrDefault();
-                        //if (cat.tipoatributos == null)
-                          //  cat.tipoatributos = new HashSet<TipoAtributo>();
-                        //cat.tipoatributos(ta);
+                        ta.categorias.Add(cat);
+                        
+                        if (cat.tipoatributos == null)
+                            cat.tipoatributos = new HashSet<TipoAtributo>();
+                        cat.tipoatributos.Add(ta);
                         context.tipoatributos.Add(ta);
                     }
 
                     else //update
                     {
+                        Debug.WriteLine("else");
                         tipoA.tipodato = ta.tipodato;
                         /*foreach (Categoria c in ta.categorias)
                         {
@@ -833,6 +840,9 @@ namespace DataAccessLayer
                                where c.CategoriaID == idCategoria
                                select c;
                     Categoria cat = qCat.FirstOrDefault();
+                    if (cat == null)
+                        Debug.WriteLine("ES NULLL" + idCategoria);
+                    Debug.WriteLine("o no ES NULLL" + idCategoria);
                     List<TipoAtributo> ret = (List<TipoAtributo>)cat.tipoatributos;
                     if (ret == null)
                         return new List<TipoAtributo>();

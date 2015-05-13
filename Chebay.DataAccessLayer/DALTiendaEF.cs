@@ -868,13 +868,35 @@ namespace DataAccessLayer
             return true;
         }
 
-        public List<Tienda> ListarTiendas()
+        public List<Tienda> ListarTiendas(string idAdmin)
         {
-            using (var context = ChebayDBPublic.CreatePublic())
+            try
+            { 
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    var qAdmin = from adm in context.administradores
+                                 where adm.AdministradorID == idAdmin
+                                 select adm;
+                    Administrador a = qAdmin.FirstOrDefault();
+                    
+                    var qTiendas = from tnd in context.tiendas
+                                   select tnd;
+                    Debug.WriteLine("TIENDAS: " + qTiendas.Count());
+                    List<Tienda> aux = qTiendas.ToList();
+                    List<Tienda> ret = new List<Tienda>();
+                    foreach (Tienda t in aux)
+                    {
+                        if (t.administradores.Contains(a))
+                            ret.Add(t);
+                    }
+                    Debug.WriteLine("retTIENDAS: " + ret.Count());
+                    return ret;
+                }
+            }
+            catch (Exception e)
             {
-                var qTiendas = from tnd in context.tiendas
-                               select tnd;
-                return qTiendas.ToList();
+                Debug.WriteLine(e.Message);
+                throw e;
             }
         }
     }

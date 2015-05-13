@@ -5,7 +5,10 @@
     {
     @Html.AntiForgeryToken()
     
-    <script> var usuario = "@Context.User.Identity.Name"</script>
+    <script>
+        var usuario = "@Context.User.Identity.Name";
+        var tenanttienda = "@Session["Tienda_Nombre"]";
+    </script>
 
     <ul class="nav navbar-nav navbar-right">
         <li>

@@ -54,20 +54,20 @@ function verTiposAtributo(categoria, nombre) {
     };
 
     cargandoDatos("#divTiposAtributo");
-
     $.ajax({
         url: '/Tienda/ObtenerTiposAtributo',
-        type: 'GET',
+        type: 'POST',
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqxhr) {
             finCargandoDatos("#divTiposAtributo");
             $("#bodyVerTiposAtributo").html(data);
+            $("#tituloVerTiposAtributo").val('Ver Tipos de Atributo de la Categoría : ' + nombre);
+            $("#modalVerTiposAtributo").modal('show');
         }
     });
-    $("#tituloVerTiposAtributo").val('Ver Tipos de Atributo de la Categoría : ' + nombre);
-    $("#modalVerTiposAtributo").modal('show');
+    
 }
 
 function modalAgregarTipoAtributo(categoria, nombre) {
@@ -308,7 +308,7 @@ function seleccionarTienda(tienda) {
     };
 
     $.ajax({
-        url: '/Tienda/VerTiendas',
+        url: '/Tienda/VerTienda',
         type: 'POST',
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',

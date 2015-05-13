@@ -106,6 +106,7 @@ namespace Chebay.BackofficeIdentity.Controllers
             file.Close();
             AtributoSesion atr = new AtributoSesion();
             atr.Datos = datos.idTienda;
+            atr.AdministradorID = User.Identity.Name;
             atr.AtributoSesionID = "tienda";
             idalTienda.AgregarAtributoSesion(atr);
             return Content(pagina);
@@ -298,14 +299,15 @@ namespace Chebay.BackofficeIdentity.Controllers
             
         }
 
-        //GET: /Tienda/ObtenerTiposAtributo
-        [HttpGet]
+        //POST: /Tienda/ObtenerTiposAtributo
+        [HttpPost]
         public ActionResult ObtenerTiposAtributo(DatosObtenerTiposAtributo datos)
         {
             string contenido = "";
             string idAdmin = User.Identity.GetUserName();
             List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
             AtributoSesion tienda = null;
+            Debug.WriteLine("ObtenerTiposAtributo::idCategoria = " + datos.idCategoria);
             foreach (AtributoSesion a in atributos)
             {
                 if (a.AtributoSesionID.Equals("tienda"))
@@ -339,6 +341,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         contenido += "<label class=\"label label-default\">" + tipo.TipoAtributoID + " : " + tipo.tipodato + "</label>";
                         break;
                 }
+                cantTipos++;
                 if (cantTipos == 4)
                 {
                     //salto de linea y reinicio contador de tipos de atributo a mostrar en el modal
@@ -346,6 +349,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                     cantTipos = 0;
                 }
             }
+            Debug.WriteLine("ObtenerTiposAtributo::contenido = " + contenido);
             return Content(contenido);
         }
 

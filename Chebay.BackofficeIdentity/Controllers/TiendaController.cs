@@ -11,6 +11,11 @@ using Microsoft.AspNet.Identity;
 namespace Chebay.BackofficeIdentity.Controllers
 {
 
+    public class DatosVerTienda
+    {
+        public string idTienda { get; set; }
+    }
+
     public class DatosPersonalizacion
     {
         public string color { get; set; }
@@ -55,7 +60,67 @@ namespace Chebay.BackofficeIdentity.Controllers
         public ActionResult VerTiendas()
         {
             string pagina = "";
+            pagina += "<h2>Tiendas del Administrador :</h2><br><br>";
+            pagina += "<table class=\"table table-hover\">";
+            pagina += "<thead>";
+            pagina += "<tr>";
+            pagina += "<th>";
+            pagina += "Nombre";
+            pagina += "</th>";
+            pagina += "<th>";
+            pagina += "Clickea el botón de la Tienda que quieres ver :";
+            pagina += "</th>";
+            pagina += "</tr>";
+            pagina += "</thead>";
+            pagina += "<tbody>";
+            List<Tienda> tiendas = idalTienda.ListarTiendas();
+            bool encontre = false;
+            foreach (Tienda t in tiendas)
+            {
+                foreach (Administrador a in t.administradores)
+                {
+                    if (a.AdministradorID.Equals(User.Identity.Name))
+                    {
+                        encontre = true;
+                        break;
+                    }
+                }
+                if (encontre)
+                {
+                    pagina += "<tr>";
+                    pagina += "<td>";
+                    pagina += t.nombre;
+                    pagina += "</td>";
+                    pagina += "<td>";
+                    pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda : " + t.nombre + "</button>";
+                    pagina += "</td>";
+                    pagina += "</tr>";
+                    encontre = false;
+                }
+            }
+            pagina += "</tbody>";
+            pagina += "</table>";
+            Debug.WriteLine("/Tienda/VerTiendas::contenido de pagina = " + pagina);
+            return Content(pagina);
+        }
 
+        //POST: /Tienda/VerTienda
+        [HttpPost]
+        public ActionResult VerTienda(DatosVerTienda datos)
+        {
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/VerTienda.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
+            AtributoSesion atr = new AtributoSesion();
+            atr.Datos = datos.idTienda;
+            atr.AtributoSesionID = "tienda";
+            idalTienda.AgregarAtributoSesion(atr);
             return Content(pagina);
         }
 

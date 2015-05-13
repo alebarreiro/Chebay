@@ -87,7 +87,7 @@ namespace DataAccessLayer
                                 where usr.UsuarioID == idUsuario
                                 select usr;
                     if (query.Count() == 0)
-                        throw new Exception();
+                        throw new Exception("No existe el usuario.");
                     return query.First();
                 }
             }

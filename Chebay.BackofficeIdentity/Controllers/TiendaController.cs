@@ -406,7 +406,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                 List<Categoria> categorias = new List<Categoria>();
                 Categoria cat = idalTienda.ObtenerCategoria(tienda.Datos, datos.categoria);
                 categorias.Add(cat);
-                ta.categorias = categorias;
+                //ta.categorias = categorias;
                 idalTienda.AgregarTipoAtributo(ta, datos.categoria, tienda.Datos);
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);

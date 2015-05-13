@@ -170,6 +170,8 @@ function agregarTipoAtributo() {
         categoria: categoriaAgregarTipoAtributo
     };
 
+    alert(categoriaAgregarTipoAtributo);
+
     $("#modalAgregarTipoAtributo").modal('hide');
 
     cargandoDatos("#divTiposAtributo");

@@ -73,20 +73,9 @@ namespace Chebay.BackofficeIdentity.Controllers
             pagina += "</tr>";
             pagina += "</thead>";
             pagina += "<tbody>";
-            List<Tienda> tiendas = idalTienda.ListarTiendas();
-            bool encontre = false;
+            List<Tienda> tiendas = idalTienda.ListarTiendas(User.Identity.Name);
             foreach (Tienda t in tiendas)
             {
-                foreach (Administrador a in t.administradores)
-                {
-                    if (a.AdministradorID.Equals(User.Identity.Name))
-                    {
-                        encontre = true;
-                        break;
-                    }
-                }
-                if (encontre)
-                {
                     pagina += "<tr>";
                     pagina += "<td>";
                     pagina += t.nombre;
@@ -95,8 +84,6 @@ namespace Chebay.BackofficeIdentity.Controllers
                     pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda : " + t.nombre + "</button>";
                     pagina += "</td>";
                     pagina += "</tr>";
-                    encontre = false;
-                }
             }
             pagina += "</tbody>";
             pagina += "</table>";

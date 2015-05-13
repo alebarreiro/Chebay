@@ -276,7 +276,7 @@ namespace Chebay.BackofficeIdentity.Controllers
             try
             {
                 string idAdmin = User.Identity.Name;
-                Debug.WriteLine("Obtenercategorias::" + idAdmin);
+                Debug.WriteLine("Personalizar::" + idAdmin);
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
                 foreach (AtributoSesion a in atributos)
@@ -287,6 +287,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         break;
                     }
                 }
+                Debug.WriteLine("Personalizar::valor del color = " + datos.color);
                 idalTienda.PersonalizarTienda(datos.color, tienda.Datos);
                 var result = new { Success = "True", Message = "Se ha personalizado la Tienda correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -509,8 +510,8 @@ namespace Chebay.BackofficeIdentity.Controllers
                 string idAdmin = User.Identity.Name;
                 Tienda t = new Tienda();
                 //sacarle los espacios al string de abajo
-                //t.TiendaID = ("/" + datosGenerales.titulo).Replace(" ", "");
-                t.TiendaID = datosGenerales.titulo;
+                t.TiendaID = (datosGenerales.titulo).Replace(" ", "");
+                //t.TiendaID = datosGenerales.titulo;
                 t.descripcion = datosGenerales.descripcion;
                 t.nombre = datosGenerales.titulo;
 

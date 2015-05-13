@@ -14,12 +14,11 @@ function personalizar() {
     var datos = {
         color : color
     }
-
     cargandoDatos("#divPersonalizacion");
 
     $.ajax({
         url: '/Tienda/Personalizar',
-        type: 'GET',
+        type: 'POST',
         dataType: "json",
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
@@ -61,7 +60,6 @@ function verTiposAtributo(categoria, nombre) {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqxhr) {
-            alert(data["Message"]);
             finCargandoDatos("#divTiposAtributo");
             $("#bodyVerTiposAtributo").html(data["Message"]);
             $("#tituloVerTiposAtributo").html('Ver Tipos de Atributo de la Categoría : ' + nombre);
@@ -170,8 +168,6 @@ function agregarTipoAtributo() {
         tipo: tipo,
         categoria: categoriaAgregarTipoAtributo
     };
-
-    alert(tipo);
 
     $("#modalAgregarTipoAtributo").modal('hide');
 

@@ -43,7 +43,7 @@ namespace Chebay.BackofficeIdentity.Controllers
     public class DatosTipoAtributoNuevo
     {
         public string nombre { get; set; }
-        public string tipoDatos { get; set; }
+        public string tipo { get; set; }
         public long categoria { get; set; }
     }
 
@@ -318,8 +318,10 @@ namespace Chebay.BackofficeIdentity.Controllers
             }
             List<TipoAtributo> tipos = idalTienda.ListarTipoAtributo(datos.idCategoria, tienda.Datos);
             int cantTipos = 0;
+            Debug.WriteLine("ObtenerTiposAtributo::cantidad de tipos de atributo de la categoria = " + tipos.Count);
             foreach (TipoAtributo tipo in tipos)
             {
+                Debug.WriteLine("ObtenerTiposAtributo::tipo de datos del tipo de atributo " + tipo.TipoAtributoID + " = " + tipo.tipodato);
                 switch (tipo.tipodato)
                 {
                     case TipoDato.INTEGER:
@@ -342,15 +344,21 @@ namespace Chebay.BackofficeIdentity.Controllers
                         break;
                 }
                 cantTipos++;
-                if (cantTipos == 4)
+                if (cantTipos == 5)
                 {
                     //salto de linea y reinicio contador de tipos de atributo a mostrar en el modal
-                    contenido += "<br />";
+                    contenido += "<br /><br />";
                     cantTipos = 0;
+                }
+                else
+                {
+                    contenido += "&nbsp;&nbsp;&nbsp";
                 }
             }
             Debug.WriteLine("ObtenerTiposAtributo::contenido = " + contenido);
-            return Content(contenido);
+            var result = new { Success = "True", Message = contenido };
+            return Json(result, JsonRequestBehavior.AllowGet);
+            //return Content(contenido);
         }
 
 
@@ -362,7 +370,8 @@ namespace Chebay.BackofficeIdentity.Controllers
             {
                 TipoAtributo ta = new TipoAtributo();
                 ta.TipoAtributoID = datos.nombre;
-                switch (datos.tipoDatos)
+                Debug.WriteLine("AgregarTipoAtributo::tipo de datos del tipo de atributo a agregar = " + datos.tipo);
+                switch (datos.tipo)
                 {
                     case "INTEGER":
                         ta.tipodato = TipoDato.INTEGER;

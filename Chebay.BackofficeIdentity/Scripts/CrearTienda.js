@@ -61,9 +61,10 @@ function verTiposAtributo(categoria, nombre) {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqxhr) {
+            alert(data["Message"]);
             finCargandoDatos("#divTiposAtributo");
-            $("#bodyVerTiposAtributo").html(data);
-            $("#tituloVerTiposAtributo").val('Ver Tipos de Atributo de la Categoría : ' + nombre);
+            $("#bodyVerTiposAtributo").html(data["Message"]);
+            $("#tituloVerTiposAtributo").html('Ver Tipos de Atributo de la Categoría : ' + nombre);
             $("#modalVerTiposAtributo").modal('show');
         }
     });
@@ -162,7 +163,7 @@ function borrarTipoAtributo(idTipoAtributo, atributo) {
 
 function agregarTipoAtributo() {
     var nombre = $("#nombreTipoAtributo").val();
-    var tipo = $("tipoDatosTipoAtributo").val();
+    var tipo = $("#tipoDatosTipoAtributo").val();
 
     var datosTipoAtributo = {
         nombre: nombre,
@@ -170,7 +171,7 @@ function agregarTipoAtributo() {
         categoria: categoriaAgregarTipoAtributo
     };
 
-    alert(categoriaAgregarTipoAtributo);
+    alert(tipo);
 
     $("#modalAgregarTipoAtributo").modal('hide');
 

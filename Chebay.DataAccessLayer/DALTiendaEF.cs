@@ -748,12 +748,10 @@ namespace DataAccessLayer
                     TipoAtributo tipoA = qTA.FirstOrDefault();
                     if (tipoA == null)
                     {
-                        Debug.WriteLine("IF");
                         var qCat = from c in context.categorias
                                    where c.CategoriaID == idCategoria
                                    select c;
                         Categoria cat = qCat.FirstOrDefault();
-                        Debug.WriteLine("CAT ID " + cat.CategoriaID);
                         if (ta.categorias == null)
                             ta.categorias = new HashSet<Categoria>();
                         ta.categorias.Add(cat);
@@ -836,6 +834,23 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    var qTA = from t in context.tipoatributos
+                              select t;
+                    List<TipoAtributo> ret = qTA.ToList();
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+            /*try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
                     var qCat = from c in context.categorias
                                where c.CategoriaID == idCategoria
                                select c;
@@ -854,7 +869,7 @@ namespace DataAccessLayer
             {
                 Debug.WriteLine(e.Message);
                 throw e;
-            }
+            }*/
         }
 
         public bool ExisteTienda(string idTienda)
@@ -881,7 +896,6 @@ namespace DataAccessLayer
                     
                     var qTiendas = from tnd in context.tiendas
                                    select tnd;
-                    Debug.WriteLine("TIENDAS: " + qTiendas.Count());
                     List<Tienda> aux = qTiendas.ToList();
                     List<Tienda> ret = new List<Tienda>();
                     foreach (Tienda t in aux)
@@ -889,7 +903,6 @@ namespace DataAccessLayer
                         if (t.administradores.Contains(a))
                             ret.Add(t);
                     }
-                    Debug.WriteLine("retTIENDAS: " + ret.Count());
                     return ret;
                 }
             }

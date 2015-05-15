@@ -22,8 +22,14 @@ namespace DataAccessLayer
         Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario);
 
         void OfertarProducto(Oferta o, string idTienda);
-        
-        
+
+        //--ATRIBUTOS--
+        void AgregarAtributos(List<Atributo> lAtributos, string idTienda);
+        void AgregarAtributo(Atributo a, string idTienda);
+        List<Atributo> ObtenerAtributos(long idCategoria, string idTienda);
+        Atributo ObtenerAtributo(long idAtributo, string idTienda);
+        void EliminarAtributo(long idAtributo, string idTienda);
+        void ModificarAtributo(Atributo a, string idTienda);
 
         //--COMENTARIO--
         void AgregarComentario(Comentario c, string idTienda);

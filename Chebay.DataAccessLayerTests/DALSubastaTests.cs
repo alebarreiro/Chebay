@@ -253,7 +253,7 @@ namespace Chebay.DataAccessLayerTests
         {
             //CASO DE USO: VER INFO PRODUCTO FULL
             //--OPERACIÓN
-            Producto p = idal.ObtenerInfoProducto(1, urlTest);
+            Producto p = idal.ObtenerInfoProducto(1, urlTest, "otroUserPrueba");
 
             //--CHEQUEOS
             Debug.WriteLine("--INFO PRODUCTO--");

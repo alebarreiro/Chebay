@@ -103,7 +103,7 @@ namespace DataAccessLayer
         {
             try
             {
-                if (idCategoria == null)
+                if (idCategoria == 0)
                     throw new Exception("Debe pasar el identificador de una categoría.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
@@ -316,14 +316,44 @@ namespace DataAccessLayer
             }
         }
 
-        public List<DataProducto> ObtenerProductosPorTerminar(string idTienda)
+        public List<DataProducto> ObtenerProductosPorTerminar(int cantProductos, string idTienda)
         {
             try
             {
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    return null;
+                    var qProd = from p in context.productos
+                                orderby p.fecha_cierre
+                                where p.fecha_cierre > DateTime.Today
+                                select p;
+                    List<DataProducto> ret = new List<DataProducto>();
+                    List<Producto> aux = qProd.ToList();
+                    int cantActual = 0;
+                    foreach (Producto p in aux)
+                    {
+                        cantActual++;
+                        DataProducto dp = new DataProducto 
+                        {
+                            nombre=p.nombre,
+                            descripcion=p.descripcion,
+                            precio_actual=p.precio_base_subasta,
+                            precio_base_subasta=p.precio_base_subasta,
+                            precio_compra=p.precio_compra,
+                            ProductoID=p.ProductoID,
+                            fecha_cierre=p.fecha_cierre
+                        };
+                        Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                        if (of != null)
+                        {
+                            dp.precio_actual = of.monto;
+                            dp.idOfertante = of.UsuarioID;
+                        }
+                        ret.Add(dp);
+                        if (cantActual == cantProductos)
+                            break;
+                    }
+                    return ret;
                 }
             }
             catch (Exception e)

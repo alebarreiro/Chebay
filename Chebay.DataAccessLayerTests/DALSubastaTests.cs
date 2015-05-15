@@ -27,7 +27,9 @@ namespace Chebay.DataAccessLayerTests
             /*AgregarProducto();
             AgregarComentario();
             OfertarProducto();*/
-            ObtenerInfoProducto();
+            //ObtenerInfoProducto();
+            //ObtenerProductosCategoria();
+            ObtenerProductosPorTerminar();
         }
 
         [TestMethod]
@@ -326,5 +328,25 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
+        [TestMethod]
+        public void ObtenerProductosCategoria()
+        {
+            List<Producto> prods = idal.ObtenerProductosCategoria(1, urlTest);
+            foreach (Producto p in prods)
+            {
+                Debug.WriteLine(p.nombre);
+            }
+        }
+         
+       
+        [TestMethod]
+        public void ObtenerProductosPorTerminar()
+        {
+            List<DataProducto> prods = idal.ObtenerProductosPorTerminar(2,urlTest);
+            foreach (DataProducto p in prods)
+            {
+                Debug.WriteLine(p.nombre);
+            }
+        }
     }
 }

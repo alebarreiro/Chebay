@@ -29,7 +29,10 @@ namespace Chebay.DataAccessLayerTests
             OfertarProducto();*/
             //ObtenerInfoProducto();
             //ObtenerProductosCategoria();
-            ObtenerProductosPorTerminar();
+            //ObtenerProductosPorTerminar();
+            //AgregarFavorito();
+            EliminarFavorito();
+
         }
 
         [TestMethod]
@@ -348,5 +351,18 @@ namespace Chebay.DataAccessLayerTests
                 Debug.WriteLine(p.nombre);
             }
         }
+
+        [TestMethod]
+        public void AgregarFavorito()
+        {
+            idal.AgregarFavorito(1, "userPrueba", urlTest);
+        }
+
+        [TestMethod]
+        public void EliminarFavorito()
+        {
+            idal.EliminarFavorito(1, "userPrueba", urlTest);
+        }
+        
     }
 }

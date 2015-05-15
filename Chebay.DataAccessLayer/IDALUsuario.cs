@@ -20,6 +20,9 @@ namespace DataAccessLayer
         void AgregarVisita(string idUsuario, string idProducto);
         void AgregarFavorito(string idUsuario);
 
+        //--CALIFICACIONES
+        //void AgregarCalificacion(Calificacion c, string idTienda);
+        //double ObtenerCalificacionUsuario(string idUsuario, string idTienda);
 
 
         

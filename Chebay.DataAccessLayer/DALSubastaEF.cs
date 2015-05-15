@@ -612,5 +612,69 @@ namespace DataAccessLayer
             }
         }
 
+        public void AgregarFavorito(long idProducto, string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qUsuario = from usr in context.usuarios.Include("favoritos")
+                                   where usr.UsuarioID == idUsuario
+                                   select usr;
+                    Usuario u = qUsuario.FirstOrDefault();
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == idProducto
+                                    select prd;
+                    Producto p = qProducto.FirstOrDefault();
+                    if (u.favoritos == null)
+                        u.favoritos = new HashSet<Producto>();
+                    u.favoritos.Add(p);
+                    if (p.favoritos == null)
+                        p.favoritos = new HashSet<Usuario>();
+                    p.favoritos.Add(u);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarFavorito(long idProducto, string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qUsuario = from usr in context.usuarios.Include("favoritos")
+                                   where usr.UsuarioID == idUsuario
+                                   select usr;
+                    Usuario u = qUsuario.FirstOrDefault();
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == idProducto
+                                    select prd;
+                    Producto p = qProducto.FirstOrDefault();
+                    u.favoritos.Remove(p);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
     }
 }

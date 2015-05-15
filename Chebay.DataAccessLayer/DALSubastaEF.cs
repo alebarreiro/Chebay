@@ -399,13 +399,19 @@ namespace DataAccessLayer
                     ret.usuario = qUserProducto.FirstOrDefault();
 
                     //AGREGAR VISITA DE PRODUCTO
-                    var qUserVisita = from usr in context.usuarios
-                                      where usr.UsuarioID == ret.UsuarioID
-                                      select usr;
-                    if (ret.visitas == null)
-                        ret.visitas = new HashSet<Usuario>();
-                    ret.visitas.Add(qUserVisita.FirstOrDefault());
-                    context.SaveChanges();
+                    if (idUsuario != null)
+                    { 
+                        var qUserVisita = from usr in context.usuarios
+                                          where usr.UsuarioID == ret.UsuarioID
+                                          select usr;
+                        if (qUserVisita.Count() > 0)
+                        {
+                            if (ret.visitas == null)
+                                ret.visitas = new HashSet<Usuario>();
+                            ret.visitas.Add(qUserVisita.FirstOrDefault());
+                            context.SaveChanges();
+                        }
+                    }
 
                     //CALCULAR PROMEDIO DE CALIFICACIONES DE UN USUARIO.
                    /* var qCalificaciones = from cal in context.calificaciones

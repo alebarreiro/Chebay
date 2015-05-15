@@ -24,9 +24,10 @@ namespace Chebay.DataAccessLayerTests
         public void SuperTestSubasta()
         {
             // TestInicialSubasta();
-            AgregarProducto();
+            /*AgregarProducto();
             AgregarComentario();
-            OfertarProducto();
+            OfertarProducto();*/
+            ObtenerInfoProducto();
         }
 
         [TestMethod]
@@ -244,8 +245,85 @@ namespace Chebay.DataAccessLayerTests
                 UsuarioID = "userPrueba"
             };
             idal.OfertarProducto(o, urlTest);
-
             List<DataProducto> ldp = idal.ObtenerProductosPersonalizados(urlTest);
+        }
+
+        [TestMethod]
+        public void ObtenerInfoProducto()
+        {
+            //CASO DE USO: VER INFO PRODUCTO FULL
+            //--OPERACIÓN
+            Producto p = idal.ObtenerInfoProducto(1, urlTest);
+
+            //--CHEQUEOS
+            Debug.WriteLine("--INFO PRODUCTO--");
+            Debug.WriteLine("p.ProductoID: " + p.ProductoID);
+            Assert.AreEqual(1, p.ProductoID);
+            Debug.WriteLine("p.nombre: " + p.nombre);
+            Assert.AreEqual("Celular", p.nombre);
+            Debug.WriteLine("p.descripcion: " + p.descripcion);
+            Assert.AreEqual("Es un celular", p.descripcion);
+            Debug.WriteLine("p.UsuarioID: " + p.UsuarioID);
+            Assert.AreEqual("userPrueba", p.UsuarioID);
+            Debug.WriteLine("p.precio_base_subasta: " + p.precio_base_subasta);
+            Assert.AreEqual(100, p.precio_base_subasta);
+            Debug.WriteLine("p.precio_compra: " + p.precio_compra);
+            Assert.AreEqual(2000, p.precio_compra);
+            Debug.WriteLine("p.fecha_cierre: " + p.fecha_cierre);
+            //Assert.AreEqual("1993-03-27 00:00:00.000", p.fecha_cierre);
+
+            //--COMENTARIOS
+            Debug.WriteLine("\n--COMENTARIOS--");
+            foreach (Comentario com in p.comentarios)
+            {
+                Debug.WriteLine("com.ComentarioID: " + com.ComentarioID);
+                Assert.AreEqual(1,com.ComentarioID);
+                Debug.WriteLine("com.texto: " + com.texto);
+                Assert.AreEqual("comentario",com.texto);
+                Debug.WriteLine("com.ProductoID: " + com.ProductoID);
+                Assert.AreEqual(1,com.ProductoID);
+                Debug.WriteLine("com.UsuarioID: " + com.UsuarioID);
+                Assert.AreEqual("otroUserPrueba",com.UsuarioID);
+            }
+
+            //--OFERTAS
+            Debug.WriteLine("\n--OFERTAS--");
+            foreach (Oferta of in p.ofertas)
+            {
+                Debug.WriteLine("of.OfertaID: " + of.OfertaID);
+                Debug.WriteLine("of.ProductoID: " + of.ProductoID);
+                Assert.AreEqual(1, of.ProductoID);
+                Debug.WriteLine("of.UsuarioID: " + of.UsuarioID);
+                Debug.WriteLine("of.monto: " + of.monto);
+                Debug.WriteLine("");
+            }
+
+            //--CATEGORIAS
+            Debug.WriteLine("--CATEGORIAS--");
+            foreach (Categoria c in p.categorias)
+            {
+                Debug.WriteLine("c.CategoriaID: " + c.CategoriaID);
+                Debug.WriteLine("c.Nombre: " + c.Nombre);
+                Debug.WriteLine("c.Tipo: " + c.GetType().ToString());
+                Debug.WriteLine("");
+            }
+
+            //--USUARIO
+            Debug.WriteLine("--USUARIO--");
+            Debug.WriteLine("c.CategoriaID: " + p.usuario.UsuarioID);
+            Assert.AreEqual("userPrueba", p.usuario.UsuarioID);
+
+            //--CATEGORIAS
+            Debug.WriteLine("\n--ATRIBUTOS--");
+            foreach (Atributo atr in p.atributos)
+            {
+                Debug.WriteLine("atr.AtributoID: " + atr.AtributoID);
+                Debug.WriteLine("atr.CategoriaID: " + atr.CategoriaID);
+                Debug.WriteLine("atr.TipoAtributoID: " + atr.TipoAtributoID);
+                Debug.WriteLine("atr.valor: " + atr.valor);
+                Debug.WriteLine("atr.etiqueta: " + atr.etiqueta);
+            }
+
         }
 
     }

@@ -354,7 +354,6 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
-
         }
         
         void chequearTienda(string idTienda)
@@ -378,7 +377,50 @@ namespace DataAccessLayer
                 throw e;
             }
         }
-                    
+
+        public Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario)
+        {
+        //COMENTARIOS, OFERTAS, CATEGORIAS, ATRIBUTOS
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qProducto = from prod in context.productos.Include("comentarios").Include("ofertas").Include("categorias").Include("atributos")
+                                    where prod.ProductoID == idProducto
+                                    select prod;
+                    Producto ret = qProducto.FirstOrDefault();
+
+                    var qUsuario = from usr in context.usuarios
+                                   where usr.UsuarioID == ret.UsuarioID
+                                   select usr;
+                    ret.usuario = qUsuario.FirstOrDefault();
+
+                    //
+
+                    //CALCULAR PROMEDIO DE CALIFICACIONES DE UN USUARIO.
+                   /* var qCalificaciones = from cal in context.calificaciones
+                                          where cal.UsuarioCalificado == ret.UsuarioID
+                                          select cal;
+                    List<Calificacion> lCalificaciones = qCalificaciones.ToList();
+                    double promedio = 0;
+                    foreach (Calificacion c in lCalificaciones)
+                    {
+                        promedio += c.puntaje;
+                    }
+                    promedio = promedio / lCalificaciones.Count;
+                    */
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
 
     }
 }

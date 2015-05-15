@@ -15,10 +15,15 @@ namespace DataAccessLayer
         void AgregarProducto(Producto p, string idTienda);
         Producto ObtenerProducto(long idProducto, string idTienda);
         List<DataProducto> ObtenerProductosPersonalizados(string urlTienda); //Devuelve los últimos 10 productos publicados para el index.
+        List<DataProducto> ObtenerProductosPorTerminar(string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.
+        Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario);
 
         void OfertarProducto(Oferta o, string idTienda);
+        
+        
+
+        //--COMENTARIO--
         void AgregarComentario(Comentario c, string idTienda);
-        List<DataProducto> ObtenerProductosPorTerminar(string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.
 
         //void AgregarImagenProducto(Imagen img, Producto p);
         /*

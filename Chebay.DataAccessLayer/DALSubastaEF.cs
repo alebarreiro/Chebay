@@ -491,6 +491,7 @@ namespace DataAccessLayer
 
         public void AgregarAtributo(Atributo a, string idTienda)
         {
+            /*
             try
             {
                 if (a == null)
@@ -512,10 +513,12 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
+             */
         }
 
         public void AgregarAtributos(List<Atributo> lAtributos, string idTienda)
         {
+         /*   
             try
             {
                 if (lAtributos == null)
@@ -540,10 +543,13 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
+           */  
         }
 
         public List<Atributo> ObtenerAtributos(long idCategoria, string idTienda)
         {
+            return new List<Atributo>();
+            /*
             try
             {
                 chequearTienda(idTienda);
@@ -570,6 +576,7 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
+             */
         }
 
         public Atributo ObtenerAtributo(long idAtributo, string idTienda)
@@ -749,6 +756,7 @@ namespace DataAccessLayer
 
         public void EliminarCompra(long idCompra, string idTienda)
         {
+            //idCompra esta asociada directamente uno a uno con la id del producto
             try
             {
                 if (idCompra == 0)
@@ -757,7 +765,7 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var qCompra = from cmp in context.compras
-                                  where cmp.CompraID == idCompra
+                                  where cmp.ProductoID == idCompra //solved
                                   select cmp;
                     context.compras.Remove(qCompra.FirstOrDefault());
                     context.SaveChanges();
@@ -772,6 +780,7 @@ namespace DataAccessLayer
 
         public Compra ObtenerCompra(long idCompra, string idTienda)
         {
+            //uno a uno con producto, obtener compra se relaciona con la id del mismo.
             try
             {
                 if (idCompra == 0)
@@ -780,7 +789,7 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     var qCompra = from cmp in context.compras
-                                  where cmp.CompraID == idCompra
+                                  where cmp.ProductoID == idCompra //solved
                                   select cmp;
                     return qCompra.FirstOrDefault();
                 }

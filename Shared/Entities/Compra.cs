@@ -11,15 +11,16 @@ namespace Shared.Entities
     [Table("Compras")]
     public class Compra
     {
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public long CompraID { get; set; }
+        //[DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        //public long CompraID { get; set; }
         [Required]
         public int monto { get; set; }
+        public DateTime fecha_compra { get; set; }
 
+        [Key, ForeignKey("producto")]
         public long ProductoID { get; set; }
         public string UsuarioID { get; set; }
 
-        [ForeignKey("ProductoID")]
         public virtual Producto producto { get; set; }
         [ForeignKey("UsuarioID"), Required]
         public virtual Usuario usuario { get; set; }

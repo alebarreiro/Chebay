@@ -140,7 +140,7 @@ namespace DataAccessLayer
                     CategoriaCompuesta raiz = new CategoriaCompuesta();
                     raiz.Nombre = "/";
                     raiz.hijas = new List<Categoria>();
-                    raiz.atributos = new List<Atributo>();
+                    //raiz.atributos = new List<Atributo>(); 
                     schema.categorias.Add(raiz);
                     schema.SaveChanges();
                     Debug.WriteLine("Categoría raíz de " + tienda.TiendaID + " creada con éxito.");

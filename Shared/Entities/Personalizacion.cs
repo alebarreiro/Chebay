@@ -14,7 +14,7 @@ namespace Shared.Entities
         [Key, ForeignKey("tienda")]
         public string PersonalizacionID { get; set; }
         public string datos { get; set; }
-
+        public byte[] algoritmo { get; set; }
         public virtual Tienda tienda { get; set; }
     }
 }

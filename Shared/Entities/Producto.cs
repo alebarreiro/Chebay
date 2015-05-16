@@ -24,22 +24,24 @@ namespace Shared.Entities
         [Required]
         public DateTime fecha_cierre { get; set; }
 
-        //public long CategoriaID { get; set; }
+        public double latitud { get; set; }
+        public double longitud { get; set; }
+
+        public long CategoriaID { get; set; }
 
         [ForeignKey("UsuarioID")]
         public virtual Usuario usuario { get; set; }
+        [ForeignKey("CategoriaID")]
+        public virtual CategoriaSimple categoria { get; set; }
+        
+        public virtual Compra compra { get; set; } //tiene una única compra.
+
         public virtual ICollection<Usuario> visitas { get; set; }
         public virtual ICollection<Usuario> favoritos { get; set; }
         public virtual ICollection<Oferta> ofertas { get; set; }
-        public virtual ICollection<Compra> compras { get; set; } //tiene una única compra.
         public virtual ICollection<Comentario> comentarios { get; set; } //nuevo
-
         public virtual ICollection<Atributo> atributos { get; set; }
-
-        //se deducen los atributos
-        //[ForeignKey("CategoriaID")]
-        //un producto puede tener varias categorias
-        //public virtual CategoriaSimple categoria { get; set; }
-        public virtual ICollection<CategoriaSimple> categorias { get; set; }
+        public virtual ICollection<ImagenProducto> imagenes { get; set; }
+        
     }
 }

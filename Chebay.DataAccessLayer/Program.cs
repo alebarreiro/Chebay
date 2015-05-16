@@ -17,7 +17,11 @@ namespace DataAccessLayer
         {
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
             //ChebayDBPublic.ProvidePublicSchema();
-
+            ChebayDBContext.ProvisionTenant("DB4.2");
+            using (var context = ChebayDBContext.CreateTenant("DB4.2"))
+            {
+                //context.seed();
+            }
             //using (var context = ChebayDBPublic.CreatePublic())
             //    {
             //       context.Seed();

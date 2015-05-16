@@ -230,18 +230,20 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var qCalif = from clf in context.calificaciones
-                                 where clf.UsuarioCalificado == idUsuario
-                                 select clf;
-                    List<Calificacion> CalificacionesUsuario = qCalif.ToList();
+                    //var qCalif = from clf in context.calificaciones
+                    //             where clf.UsuarioCalificado == idUsuario
+                    //             select clf;
+                    Usuario u = context.usuarios.Find(idUsuario);
+
+                    //List<Calificacion> CalificacionesUsuario = qCalif.ToList();
                     double ret = 0;
-                    foreach (Calificacion c in CalificacionesUsuario)
+                    foreach (Calificacion c in u.calificacionesrecibidas)
                     {
                         ret += c.puntaje;
                     }
-                    if (CalificacionesUsuario.Count > 0)
+                    if (u.calificacionesrecibidas.Count > 0)
                     {
-                        ret = ret / CalificacionesUsuario.Count;
+                        ret = ret / u.calificacionesrecibidas.Count;
                     }
                     return ret;
                 }

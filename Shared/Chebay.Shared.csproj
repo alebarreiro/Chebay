@@ -54,9 +54,11 @@
     <Compile Include="Entities\Categoria.cs" />
     <Compile Include="Entities\CategoriaCompuesta.cs" />
     <Compile Include="Entities\CategoriaSimple.cs" />
+    <Compile Include="Entities\ImagenProducto.cs" />
     <Compile Include="Entities\Comentario.cs" />
     <Compile Include="Entities\Compra.cs" />
     <Compile Include="Entities\Conversacion.cs" />
+    <Compile Include="Entities\ImagenUsuario.cs" />
     <Compile Include="Entities\Mensaje.cs" />
     <Compile Include="Entities\Oferta.cs" />
     <Compile Include="Entities\Personalizacion.cs" />

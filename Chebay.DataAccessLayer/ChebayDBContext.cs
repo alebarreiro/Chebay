@@ -45,7 +45,9 @@ namespace DataAccessLayer
         public DbSet<Conversacion> conversaciones { get; set; }
         public DbSet<Mensaje> mensajes { get; set; }
         public DbSet<TipoAtributo> tipoatributos { get; set; }
-        
+        public DbSet<ImagenProducto> imagenesproducto { get; set; }
+        public DbSet<ImagenUsuario> imagenesusuario { get; set; }
+
         private ChebayDBContext(DbCompiledModel model)
             : base(con, model)
         {
@@ -78,6 +80,8 @@ namespace DataAccessLayer
             builder.Entity<Producto>().ToTable("Productos", schemaName);
             builder.Entity<Usuario>().ToTable("Usuarios", schemaName);
             builder.Entity<TipoAtributo>().ToTable("TiposAtributo", schemaName);
+            builder.Entity<ImagenProducto>().ToTable("ImagenesProducto", schemaName);
+            builder.Entity<ImagenUsuario>().ToTable("ImagenUsuario", schemaName);
 
             //relaciones
             builder.Entity<Usuario>().HasMany<Producto>(s => s.visitas)
@@ -100,7 +104,7 @@ namespace DataAccessLayer
 
             builder.Entity<Producto>().HasMany<Oferta>(p => p.ofertas);
             builder.Entity<Producto>().HasMany<Comentario>(p => p.comentarios);
-            builder.Entity<Producto>().HasMany<Compra>(p=> p.compras);
+            //builder.Entity<Producto>().HasMany<Compra>(p=> p.compras);
             builder.Entity<Producto>().HasMany<Atributo>(s => s.atributos)
                 .WithMany(s => s.productos)
                 .Map(ps =>
@@ -110,21 +114,15 @@ namespace DataAccessLayer
                     ps.ToTable("ProductoAtributo", schemaName);
                 });
 
-            builder.Entity<Producto>().HasMany<CategoriaSimple>(s => s.categorias)
-                .WithMany(s => s.productos)
-                .Map(ps =>
-                {
-                    ps.MapLeftKey("ProductoID");
-                    ps.MapRightKey("CategoriaID");
-                    ps.ToTable("ProductoCategoria", schemaName);
-                });
+            builder.Entity<CategoriaSimple>().HasMany<Producto>(s => s.productos);
 
             builder.Entity<Usuario>().HasMany<Oferta>(p => p.ofertas);
             builder.Entity<Usuario>().HasMany<Comentario>(p => p.comentarios);
             builder.Entity<Usuario>().HasMany<Compra>(p => p.compras);
             builder.Entity<Usuario>().HasMany<Producto>(p => p.publicados);
-
-            builder.Entity<Categoria>().HasMany<Atributo>(s => s.atributos);
+            builder.Entity<Usuario>().HasMany<Calificacion>(c => c.calificaciones);
+            builder.Entity<Usuario>().HasMany<Calificacion>(c => c.calificacionesrecibidas);
+            //builder.Entity<Categoria>().HasMany<Atributo>(s => s.atributos);
 
             builder.Entity<Categoria>().HasMany<TipoAtributo>(s => s.tipoatributos)
                 .WithMany(s => s.categorias)
@@ -215,11 +213,12 @@ namespace DataAccessLayer
             SaveChanges();
 
             //Samsung sample
-            Atributo[] atrs = { new Atributo{ CategoriaID = 2, etiqueta="CamaraRes", valor="X82", TipoAtributoID="CamaraRes" },
-                                new Atributo{ CategoriaID = 2, etiqueta="Screen Size", valor="5", TipoAtributoID="Pantalla" },
-                                new Atributo{ CategoriaID = 2, etiqueta="InternaMemory", valor="16", TipoAtributoID="Storage" },
-                                new Atributo{ CategoriaID = 3, etiqueta= "Camera resolution", valor="13", TipoAtributoID="CamaraRes" },
-                                new Atributo{ CategoriaID = 3, etiqueta="InternaMemory", valor="64", TipoAtributoID="Storage" }                           
+            Atributo[] atrs = { 
+                                new Atributo{ etiqueta="CamaraRes", valor="X82", TipoAtributoID="CamaraRes" },
+                                new Atributo{ etiqueta="Screen Size", valor="5", TipoAtributoID="Pantalla" },
+                                new Atributo{ etiqueta="InternaMemory", valor="16", TipoAtributoID="Storage" },
+                                new Atributo{ etiqueta= "Camera resolution", valor="13", TipoAtributoID="CamaraRes" },
+                                new Atributo{ etiqueta="InternaMemory", valor="64", TipoAtributoID="Storage" }                           
                               };
 
             foreach (var a in atrs)
@@ -228,15 +227,17 @@ namespace DataAccessLayer
             }
             SaveChanges();
 
-            Producto[] products = { new Producto{UsuarioID="Dexter", nombre="Samsung S6", descripcion="bestia", fecha_cierre= DateTime.Now },
-                                    new Producto{UsuarioID="Newton", nombre="Samsung S5", descripcion="bestia", fecha_cierre= DateTime.Now }
+            Producto[] products = { 
+                                    new Producto{ UsuarioID="Dexter", CategoriaID=2, nombre="Samsung S6", descripcion="bestia", fecha_cierre= DateTime.Now },
+                                    new Producto{ UsuarioID="Newton", CategoriaID=2, nombre="Samsung S5", descripcion="bestia", fecha_cierre= DateTime.Now }
                                   };
-
             foreach (var p in products)
             {
-                p.categorias = new List<CategoriaSimple>();
-                p.categorias.Add((CategoriaSimple)categorias.Find(2)); //samsung
-                productos.Add(p);
+                p.atributos = new List<Atributo>();
+                var atrib = from a in atributos
+                            where a.AtributoID == 1
+                            select a;
+                p.atributos.Add(atrib.First());
             }
 
             SaveChanges();
@@ -261,7 +262,7 @@ namespace DataAccessLayer
             System.Console.WriteLine("Lista de Atributos");
             foreach (var a in atributos)
             {
-                System.Console.WriteLine(a.AtributoID + " " + a.CategoriaID+ " " + a.etiqueta + " " + a.valor);
+                System.Console.WriteLine(a.AtributoID + " " + a.etiqueta + " " + a.valor);
             }
         }
     }

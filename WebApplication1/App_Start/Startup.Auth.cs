@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.Google;
 using Owin;
 using Frontoffice.Models;
+using Microsoft.Owin.Security.Facebook;
 
 namespace Frontoffice
 {
@@ -54,9 +55,19 @@ namespace Frontoffice
             //   consumerKey: "",
             //   consumerSecret: "");
 
-            app.UseFacebookAuthentication(
-               appId: "934307863287869",//"1833452286880381",//
-               appSecret: "b1c707f2a41b570dd32f6a010dd2efe8");//"bd7e0a85749cf23c1780c5b8cc691593" );//
+
+            var x = new FacebookAuthenticationOptions();
+            x.Scope.Add("email");
+            x.AppId = "943741452344510";
+            x.AppSecret = "c28a04ba9e2f30a8f0513014afa1b917";
+
+            app.UseFacebookAuthentication(x);
+
+
+ //           app.UseFacebookAuthentication(
+  //             appId: "943741452344510",//"934307863287869",//"1833452286880381",//
+   //            appSecret: "c28a04ba9e2f30a8f0513014afa1b917"//"azure: b1c707f2a41b570dd32f6a010dd2efe8" Leo:"bd7e0a85749cf23c1780c5b8cc691593"
+    //        );
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

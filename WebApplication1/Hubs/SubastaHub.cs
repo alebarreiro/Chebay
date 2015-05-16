@@ -13,7 +13,7 @@ namespace WebApplication1.Hubs
     public class SubastaHub : Hub
     {
 
-        public void PlaceNewBid(int productId, int newBid, bool _esFinal, string userId)
+        public void PlaceNewBid(int productId, int newBid, bool _esFinal, string userId, string tienda)
         {
             IDALSubasta controladorSubasta = new DALSubastaEF();
 
@@ -23,7 +23,8 @@ namespace WebApplication1.Hubs
                 ProductoID = productId,
                 UsuarioID = userId
             };
-            controladorSubasta.OfertarProducto(o, "TestURL");
+
+            controladorSubasta.OfertarProducto(o, tienda);
             Clients.All.newBidPosted(productId, newBid, userId);
         }
 

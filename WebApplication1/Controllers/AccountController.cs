@@ -326,7 +326,7 @@ namespace Frontoffice.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-            
+                            
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -334,6 +334,7 @@ namespace Frontoffice.Controllers
 
             // Sign in the user with this external login provider if the user already has a login
             var result = await SignInManager.ExternalSignInAsync(loginInfo, isPersistent: false);
+            
             switch (result)
             {
                 case SignInStatus.Success:
@@ -353,6 +354,8 @@ namespace Frontoffice.Controllers
                         catch (Exception e2)
                         {
                             Debug.WriteLine(e2.Message);
+                            ViewBag.ErrorMessage = e2.Message;
+                            return View("Error");
                         }
                     }
                     if (userChebay != null)
@@ -423,6 +426,11 @@ namespace Frontoffice.Controllers
         {
             AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
+        }
+
+        public void cerrarSesion()
+        {
+            AuthenticationManager.SignOut();
         }
 
         //

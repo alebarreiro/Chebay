@@ -1,12 +1,14 @@
 ﻿@using Frontoffice.Models
 @model LoginViewModel
 @{
-    ViewBag.Title = "Log in";
+    ViewBag.Title = "Bienvenido!";
 }
 
 <h2>@ViewBag.Title.</h2>
 <div class="row">
     <div class="col-md-8">
+
+        <!-- DESHABILITAMOS EL LOGIN MEDIANTE FORMULARIO
         <section id="loginForm">
             @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
             {
@@ -49,13 +51,14 @@
                         @Html.ActionLink("Forgot your password?", "ForgotPassword")
                     </p>*@
             }
-        </section>
+        </section-->
     </div>
-    <div class="col-md-4">
-        <section id="socialLoginForm">
-            @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
-        </section>
-    </div>
+            
+    <!-- EXTERNAL LOGIN -->
+    <section id="socialLoginForm">
+        @Html.Partial("_ExternalLoginsListPartial", new ExternalLoginListViewModel { ReturnUrl = ViewBag.ReturnUrl })
+    </section>
+
 </div>
 
 @section Scripts {

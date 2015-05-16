@@ -56,7 +56,7 @@ namespace Frontoffice
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.ui.chatbox.css",
                       "~/Content/animate.css",
-                      "~/Content/font-awesome.min.css",
+                      "~/Content/font-awesome.css",
                       "~/Content/sweet-alert.css"
                       ));
 

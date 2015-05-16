@@ -82,13 +82,14 @@
 
         //current user
         var usuario = "@Context.User.Identity.Name"
+        var tienda = "@Session["Tienda_Nombre"].ToString()"
         console.log(usuario);
         // Client methods
         onNewBidClick = function (id) {
             var productId = id,
               bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
             //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
-            proxy.server.placeNewBid(productId, bidToPost, false, usuario);
+            proxy.server.placeNewBid(productId, bidToPost, false, usuario, tienda);
         };
 
         incrementOffer = function(id) {

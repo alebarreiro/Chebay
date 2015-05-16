@@ -10,19 +10,21 @@ namespace DataAccessLayer
 {
     public interface IDALUsuario
     {
+        //--USUARIOS--
         void AgregarUsuario(Usuario u, string idTienda);
         void ActualizarUsuario(Usuario u, string idTienda);
         Usuario ObtenerUsuario(string idUsuario, string idTienda);
         List<Usuario> ObtenerTodosUsuarios(string idTienda);
         void EliminarUsuario(string idUsuario, string idTienda);
 
-        //Falta completar
-        void AgregarVisita(string idUsuario, string idProducto);
-        void AgregarFavorito(string idUsuario);
+        //--CALIFICACIONES--
+        void AgregarCalificacion(Calificacion c, string idTienda);
+        Calificacion ObtenerCalificacion(long idCalificacion, string idTienda);
+        List<Calificacion> ObtenerCalificaciones(string idTienda);
+        void EliminarCalificacion(long idCalificacion, string idTienda);
 
-        //--CALIFICACIONES
-        //void AgregarCalificacion(Calificacion c, string idTienda);
-        //double ObtenerCalificacionUsuario(string idUsuario, string idTienda);
+        double ObtenerCalificacionUsuario(string idUsuario, string idTienda);
+
 
 
         

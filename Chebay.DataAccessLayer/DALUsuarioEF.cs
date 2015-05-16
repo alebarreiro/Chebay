@@ -34,6 +34,7 @@ namespace DataAccessLayer
             }
         }
 
+        //--USUARIOS--
         public void AgregarUsuario(Usuario u, string idTienda)
         {
             try
@@ -138,15 +139,118 @@ namespace DataAccessLayer
             }
         }
 
-
-        public void AgregarVisita(string idUsuario, string idProducto)
+        //--CALIFICACIONES--
+        public void AgregarCalificacion(Calificacion c, string idTienda)
         {
-
+            try
+            {
+                if (c == null)
+                    throw new Exception("Debe pasar una calificación.");
+                if (c.puntaje < 1 || c.puntaje > 5)
+                    throw new Exception("El puntaje debe ser entre 1 y 5.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    context.calificaciones.Add(c);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
         }
 
-        public void AgregarFavorito(string idUsuario)
+        public Calificacion ObtenerCalificacion(long idCalificacion, string idTienda)
         {
-           
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCalif = from clf in context.calificaciones
+                                 where clf.ID == idCalificacion
+                                 select clf;
+                    return qCalif.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<Calificacion> ObtenerCalificaciones(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCalif = from clf in context.calificaciones
+                                 select clf;
+                    return qCalif.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarCalificacion(long idCalificacion, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCalif = from clf in context.calificaciones
+                                 where clf.ID == idCalificacion
+                                 select clf;
+                    Calificacion c = qCalif.FirstOrDefault();
+                    context.calificaciones.Remove(c);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public double ObtenerCalificacionUsuario(string idUsuario, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCalif = from clf in context.calificaciones
+                                 where clf.UsuarioCalificado == idUsuario
+                                 select clf;
+                    List<Calificacion> CalificacionesUsuario = qCalif.ToList();
+                    double ret = 0;
+                    foreach (Calificacion c in CalificacionesUsuario)
+                    {
+                        ret += c.puntaje;
+                    }
+                    if (CalificacionesUsuario.Count > 0)
+                    {
+                        ret = ret / CalificacionesUsuario.Count;
+                    }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
         }
     }
 } 

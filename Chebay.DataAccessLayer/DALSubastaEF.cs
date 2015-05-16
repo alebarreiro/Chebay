@@ -108,7 +108,7 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from c in context.categorias
+                    var query = from  c in context.categorias
                                 where c.CategoriaID == idCategoria
                                 select c;
                     CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
@@ -286,6 +286,30 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     context.comentarios.Add(c);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarComentario(long idComentario, string idTienda)
+        {
+            try
+            {
+                if (idComentario == 0)
+                    throw new Exception("Debe pasar el identificador de un comentario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qComentario = from com in context.comentarios
+                                      where com.ComentarioID == idComentario
+                                      select com;
+                    Comentario c = qComentario.FirstOrDefault();
+                    context.comentarios.Remove(c);
                     context.SaveChanges();
                 }
             }
@@ -668,6 +692,116 @@ namespace DataAccessLayer
                     Producto p = qProducto.FirstOrDefault();
                     u.favoritos.Remove(p);
                     context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<DataProducto> ObtenerProductosBuscados(string searchTerm, string idTienda)
+        {
+            try
+            {
+                if (searchTerm == null)
+                    throw new Exception("Debe pasar el algo para buscar.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    return null;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        //--COMPRAR--
+        public void AgregarCompra(Compra c, string idTienda)
+        {
+            try
+            {
+                if (c == null)
+                    throw new Exception("Debe pasar una Compra.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    //Para que no se puedan hacer más ofertas sobre el producto.
+                    /*var qProducto = from prd in context.productos
+                                    where prd.ProductoID == c.ProductoID
+                                    select prd;
+                    Producto p = qProducto.FirstOrDefault();
+                    p.fecha_cierre = DateTime.Now;*/
+                    context.compras.Add(c);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarCompra(long idCompra, string idTienda)
+        {
+            try
+            {
+                if (idCompra == 0)
+                    throw new Exception("Debe pasar el identificador de una compra.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCompra = from cmp in context.compras
+                                  where cmp.CompraID == idCompra
+                                  select cmp;
+                    context.compras.Remove(qCompra.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public Compra ObtenerCompra(long idCompra, string idTienda)
+        {
+            try
+            {
+                if (idCompra == 0)
+                    throw new Exception("Debe pasar el identificador de una compra.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCompra = from cmp in context.compras
+                                  where cmp.CompraID == idCompra
+                                  select cmp;
+                    return qCompra.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<Compra> ObtenerCompras(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCompra = from cmp in context.compras
+                                  select cmp;
+                    return qCompra.ToList();
                 }
             }
             catch (Exception e)

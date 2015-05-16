@@ -724,7 +724,37 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    return null;
+                    var qProductos = from prd in context.productos
+                                     select prd;
+                    List<Producto> lp = qProductos.ToList();
+                    List<DataProducto> ret = new List<DataProducto>();
+                    foreach (Producto p in lp)
+                    {
+                        if (p.nombre.Contains(searchTerm) ||
+                            p.descripcion.Contains(searchTerm) ||
+                            p.UsuarioID.Contains(searchTerm))
+                        {
+                            DataProducto dp = new DataProducto
+                            {
+                                descripcion = p.descripcion,
+                                fecha_cierre = p.fecha_cierre,
+                                nombre = p.nombre,
+                                precio_base_subasta = p.precio_base_subasta,
+                                precio_actual = p.precio_base_subasta,
+                                precio_compra = p.precio_compra,
+                                ProductoID = p.ProductoID,
+                                idOfertante = null
+                            };
+                            Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                            if (of != null)
+                            {
+                                dp.precio_actual = of.monto;
+                                dp.idOfertante = of.UsuarioID;
+                            }
+                            ret.Add(dp);
+                        }
+                    }
+                    return ret;
                 }
             }
             catch (Exception e)

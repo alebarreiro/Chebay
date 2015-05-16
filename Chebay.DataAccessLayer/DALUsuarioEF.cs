@@ -256,6 +256,12 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+
+        public double CalcBalance(string idUsuario, string idTienda)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 } 
         

@@ -220,7 +220,7 @@ namespace Chebay.DataAccessLayerTests
             CategoriaCompuesta c = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 2);
             Assert.AreEqual(1, c.hijas.Count);
         }
-
+/*
         [TestMethod]
         public void AgregarAtributo()
         {
@@ -251,7 +251,7 @@ namespace Chebay.DataAccessLayerTests
             List<Atributo> la = it.ObtenerAtributos(3, urlTest);
             Assert.AreEqual(4, la.Count);
         }
-
+        */
         [TestMethod]
         public void SessionAtributesTest()
         {

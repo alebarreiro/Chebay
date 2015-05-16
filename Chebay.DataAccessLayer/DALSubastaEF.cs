@@ -103,7 +103,7 @@ namespace DataAccessLayer
         {
             try
             {
-                if (idCategoria == null)
+                if (idCategoria == 0)
                     throw new Exception("Debe pasar el identificador de una categoría.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
@@ -316,14 +316,44 @@ namespace DataAccessLayer
             }
         }
 
-        public List<DataProducto> ObtenerProductosPorTerminar(string idTienda)
+        public List<DataProducto> ObtenerProductosPorTerminar(int cantProductos, string idTienda)
         {
             try
             {
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    return null;
+                    var qProd = from p in context.productos
+                                orderby p.fecha_cierre
+                                where p.fecha_cierre > DateTime.Today
+                                select p;
+                    List<DataProducto> ret = new List<DataProducto>();
+                    List<Producto> aux = qProd.ToList();
+                    int cantActual = 0;
+                    foreach (Producto p in aux)
+                    {
+                        cantActual++;
+                        DataProducto dp = new DataProducto 
+                        {
+                            nombre=p.nombre,
+                            descripcion=p.descripcion,
+                            precio_actual=p.precio_base_subasta,
+                            precio_base_subasta=p.precio_base_subasta,
+                            precio_compra=p.precio_compra,
+                            ProductoID=p.ProductoID,
+                            fecha_cierre=p.fecha_cierre
+                        };
+                        Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                        if (of != null)
+                        {
+                            dp.precio_actual = of.monto;
+                            dp.idOfertante = of.UsuarioID;
+                        }
+                        ret.Add(dp);
+                        if (cantActual == cantProductos)
+                            break;
+                    }
+                    return ret;
                 }
             }
             catch (Exception e)
@@ -354,7 +384,6 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
-
         }
         
         void chequearTienda(string idTienda)
@@ -378,7 +407,274 @@ namespace DataAccessLayer
                 throw e;
             }
         }
-                    
 
+        public Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario)
+        {
+        //COMENTARIOS, OFERTAS, CATEGORIAS, ATRIBUTOS
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qProducto = from prod in context.productos.Include("comentarios").Include("ofertas").Include("categorias").Include("atributos")
+                                    where prod.ProductoID == idProducto
+                                    select prod;
+                    Producto ret = qProducto.FirstOrDefault();
+
+                    var qUserProducto = from usr in context.usuarios
+                                        where usr.UsuarioID == ret.UsuarioID
+                                        select usr;
+                    ret.usuario = qUserProducto.FirstOrDefault();
+
+                    //AGREGAR VISITA DE PRODUCTO
+                    if (idUsuario != null)
+                    { 
+                        var qUserVisita = from usr in context.usuarios
+                                          where usr.UsuarioID == ret.UsuarioID
+                                          select usr;
+                        if (qUserVisita.Count() > 0)
+                        {
+                            if (ret.visitas == null)
+                                ret.visitas = new HashSet<Usuario>();
+                            ret.visitas.Add(qUserVisita.FirstOrDefault());
+                            context.SaveChanges();
+                        }
+                    }
+
+                    //CALCULAR PROMEDIO DE CALIFICACIONES DE UN USUARIO.
+                   /* var qCalificaciones = from cal in context.calificaciones
+                                          where cal.UsuarioCalificado == ret.UsuarioID
+                                          select cal;
+                    List<Calificacion> lCalificaciones = qCalificaciones.ToList();
+                    double promedio = 0;
+                    foreach (Calificacion c in lCalificaciones)
+                    {
+                        promedio += c.puntaje;
+                    }
+                    promedio = promedio / lCalificaciones.Count;
+                    */
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void AgregarAtributo(Atributo a, string idTienda)
+        {
+            try
+            {
+                if (a == null)
+                    throw new Exception("Tiene que pasar un atributo.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var query = from cat in context.categorias
+                                where cat.CategoriaID == a.categoria.CategoriaID
+                                select cat;
+                    Categoria father = query.FirstOrDefault();
+                    a.categoria = father;
+                    context.atributos.Add(a);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void AgregarAtributos(List<Atributo> lAtributos, string idTienda)
+        {
+            try
+            {
+                if (lAtributos == null)
+                    throw new Exception("Tiene que pasar una lista de atributos.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    foreach (Atributo a in lAtributos)
+                    {
+                        var query = from cat in context.categorias
+                                    where cat.CategoriaID == a.categoria.CategoriaID
+                                    select cat;
+                        Categoria father = query.FirstOrDefault();
+                        a.categoria = father;
+                        context.atributos.Add(a);
+                        context.SaveChanges();
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<Atributo> ObtenerAtributos(long idCategoria, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    List<Atributo> ret = new List<Atributo>();
+                    var qCat = from cat in context.categorias
+                               where cat.CategoriaID == idCategoria
+                               select cat;
+                    Categoria c = qCat.FirstOrDefault();
+                    while (c != null)
+                    {
+                        foreach (Atributo a in c.atributos)
+                        {
+                            ret.Add(a);
+                        }
+                        c = c.padre;
+                    }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public Atributo ObtenerAtributo(long idAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from a in context.atributos
+                                    where a.AtributoID == idAtributo
+                                    select a;
+                    return qAtributo.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarAtributo(long idAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from a in context.atributos
+                                    where a.AtributoID == idAtributo
+                                    select a;
+                    context.atributos.Remove(qAtributo.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void ModificarAtributo(Atributo a, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from atr in context.atributos
+                                    where atr.AtributoID == a.AtributoID
+                                    select atr;
+                    Atributo at = qAtributo.FirstOrDefault();
+                    at.etiqueta = a.etiqueta;
+                    at.valor = a.valor;
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void AgregarFavorito(long idProducto, string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qUsuario = from usr in context.usuarios.Include("favoritos")
+                                   where usr.UsuarioID == idUsuario
+                                   select usr;
+                    Usuario u = qUsuario.FirstOrDefault();
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == idProducto
+                                    select prd;
+                    Producto p = qProducto.FirstOrDefault();
+                    if (u.favoritos == null)
+                        u.favoritos = new HashSet<Producto>();
+                    u.favoritos.Add(p);
+                    if (p.favoritos == null)
+                        p.favoritos = new HashSet<Usuario>();
+                    p.favoritos.Add(u);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarFavorito(long idProducto, string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qUsuario = from usr in context.usuarios.Include("favoritos")
+                                   where usr.UsuarioID == idUsuario
+                                   select usr;
+                    Usuario u = qUsuario.FirstOrDefault();
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == idProducto
+                                    select prd;
+                    Producto p = qProducto.FirstOrDefault();
+                    u.favoritos.Remove(p);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
     }
 }

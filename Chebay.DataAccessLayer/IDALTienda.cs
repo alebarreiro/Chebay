@@ -48,10 +48,12 @@ namespace DataAccessLayer
         
         void AgregarAdminTienda(string idAdministrador, string idTienda);
         
-
         //--ATRIBUTOS DE SESION ADMINISTRADOR--
         void AgregarAtributoSesion(AtributoSesion AtributoS);
         void EliminarAtributoSesion(string AdminID, string AtributoID);
         List<AtributoSesion> ObtenerAtributosSesion(string AdminID);
+
+        //--REPORTES--
+        //void ObtenerReporte();
     }
 }

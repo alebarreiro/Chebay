@@ -329,6 +329,20 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    //Chequeo que no haya Compra para el producto.
+                    var qCompra = from cmp in context.compras
+                                  where cmp.ProductoID == o.ProductoID
+                                  select cmp;
+                    if (qCompra.Count() > 0)
+                        throw new Exception("El producto " + o.ProductoID + " ya fue comprado.");
+
+                    //Chequeo que la fecha actual < fecha_cierre
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == o.ProductoID
+                                    select prd;
+                    if (DateTime.Now > qProducto.FirstOrDefault().fecha_cierre)
+                        throw new Exception("El producto " + o.ProductoID + " ya ha expirado.");
+
                     context.ofertas.Add(o);
                     context.SaveChanges();
                 }
@@ -717,7 +731,37 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    return null;
+                    var qProductos = from prd in context.productos
+                                     select prd;
+                    List<Producto> lp = qProductos.ToList();
+                    List<DataProducto> ret = new List<DataProducto>();
+                    foreach (Producto p in lp)
+                    {
+                        if (p.nombre.Contains(searchTerm) ||
+                            p.descripcion.Contains(searchTerm) ||
+                            p.UsuarioID.Contains(searchTerm))
+                        {
+                            DataProducto dp = new DataProducto
+                            {
+                                descripcion = p.descripcion,
+                                fecha_cierre = p.fecha_cierre,
+                                nombre = p.nombre,
+                                precio_base_subasta = p.precio_base_subasta,
+                                precio_actual = p.precio_base_subasta,
+                                precio_compra = p.precio_compra,
+                                ProductoID = p.ProductoID,
+                                idOfertante = null
+                            };
+                            Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                            if (of != null)
+                            {
+                                dp.precio_actual = of.monto;
+                                dp.idOfertante = of.UsuarioID;
+                            }
+                            ret.Add(dp);
+                        }
+                    }
+                    return ret;
                 }
             }
             catch (Exception e)
@@ -737,12 +781,20 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    //Chequea que no haya otras compras para ese producto.
+                    var qCompra = from cmp in context.compras
+                                  where cmp.ProductoID == c.ProductoID
+                                  select cmp;
+                    if (qCompra.Count() > 0)
+                        throw new Exception("El producto " + c.ProductoID + " ya fue comprado.");
+
                     //Para que no se puedan hacer más ofertas sobre el producto.
-                    /*var qProducto = from prd in context.productos
+                    var qProducto = from prd in context.productos
                                     where prd.ProductoID == c.ProductoID
                                     select prd;
                     Producto p = qProducto.FirstOrDefault();
-                    p.fecha_cierre = DateTime.Now;*/
+                    p.fecha_cierre = DateTime.Now;
+
                     context.compras.Add(c);
                     context.SaveChanges();
                 }

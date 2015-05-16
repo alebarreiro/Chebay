@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Entities;
+using Shared.DataTypes;
 
 
 namespace DataAccessLayer
@@ -23,9 +24,10 @@ namespace DataAccessLayer
         List<Calificacion> ObtenerCalificaciones(string idTienda);
         void EliminarCalificacion(long idCalificacion, string idTienda);
 
-        double ObtenerCalificacionUsuario(string idUsuario, string idTienda);
-
-
+        DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda);
+        
+        //--TRANSACCIONES--
+        double CalcBalance(string idUsuario, string idTienda);
 
         
                 

@@ -7,6 +7,7 @@ using Shared.Entities;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
+using Shared.DataTypes;
 
 namespace DataAccessLayer
 {
@@ -223,7 +224,7 @@ namespace DataAccessLayer
             }
         }
 
-        public double ObtenerCalificacionUsuario(string idUsuario, string idTienda)
+        public DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda)
         {
             try
             {
@@ -234,14 +235,17 @@ namespace DataAccessLayer
                                  where clf.UsuarioCalificado == idUsuario
                                  select clf;
                     List<Calificacion> CalificacionesUsuario = qCalif.ToList();
-                    double ret = 0;
+                    DataCalificacion ret = new DataCalificacion { promedio = 0, cantCalificaciones = 0 };
+                    double prom = 0;
                     foreach (Calificacion c in CalificacionesUsuario)
                     {
-                        ret += c.puntaje;
+                        prom += c.puntaje;
                     }
                     if (CalificacionesUsuario.Count > 0)
                     {
-                        ret = ret / CalificacionesUsuario.Count;
+                        prom = prom / CalificacionesUsuario.Count;
+                        ret.promedio = prom;
+                        ret.cantCalificaciones = CalificacionesUsuario.Count;
                     }
                     return ret;
                 }

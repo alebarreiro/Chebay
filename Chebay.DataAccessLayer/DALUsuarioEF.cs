@@ -7,6 +7,7 @@ using Shared.Entities;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
+using Shared.DataTypes;
 
 namespace DataAccessLayer
 {
@@ -223,7 +224,7 @@ namespace DataAccessLayer
             }
         }
 
-        public double ObtenerCalificacionUsuario(string idUsuario, string idTienda)
+        public DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda)
         {
             try
             {
@@ -231,19 +232,22 @@ namespace DataAccessLayer
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
                     //var qCalif = from clf in context.calificaciones
-                    //             where clf.UsuarioCalificado == idUsuario
+                    //             where clf.== idUsuario
                     //             select clf;
+                    //List<Calificacion> CalificacionesUsuario = qCalif.ToList();
+                    DataCalificacion ret = new DataCalificacion { promedio = 0, cantCalificaciones = 0 };
                     Usuario u = context.usuarios.Find(idUsuario);
 
-                    //List<Calificacion> CalificacionesUsuario = qCalif.ToList();
-                    double ret = 0;
+                    double prom = 0;
                     foreach (Calificacion c in u.calificacionesrecibidas)
                     {
-                        ret += c.puntaje;
+                        prom += c.puntaje;
                     }
                     if (u.calificacionesrecibidas.Count > 0)
                     {
-                        ret = ret / u.calificacionesrecibidas.Count;
+                        prom = prom / u.calificacionesrecibidas.Count;
+                        ret.promedio = prom;
+                        ret.cantCalificaciones = u.calificacionesrecibidas.Count;
                     }
                     return ret;
                 }
@@ -254,6 +258,13 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+
+
+        public double CalcBalance(string idUsuario, string idTienda)
+        {
+            throw new NotImplementedException();
+        }
+
     }
 } 
         

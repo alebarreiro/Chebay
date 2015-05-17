@@ -456,7 +456,7 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var qProducto = from prod in context.productos.Include("comentarios").Include("ofertas").Include("categorias").Include("atributos")
+                    var qProducto = from prod in context.productos.Include("comentarios").Include("ofertas").Include("atributos")
                                     where prod.ProductoID == idProducto
                                     select prod;
                     Producto ret = qProducto.FirstOrDefault();
@@ -480,19 +480,6 @@ namespace DataAccessLayer
                             context.SaveChanges();
                         }
                     }
-
-                    //CALCULAR PROMEDIO DE CALIFICACIONES DE UN USUARIO.
-                   /* var qCalificaciones = from cal in context.calificaciones
-                                          where cal.UsuarioCalificado == ret.UsuarioID
-                                          select cal;
-                    List<Calificacion> lCalificaciones = qCalificaciones.ToList();
-                    double promedio = 0;
-                    foreach (Calificacion c in lCalificaciones)
-                    {
-                        promedio += c.puntaje;
-                    }
-                    promedio = promedio / lCalificaciones.Count;
-                    */
                     return ret;
                 }
             }

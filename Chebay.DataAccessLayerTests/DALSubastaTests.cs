@@ -23,16 +23,15 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTestSubasta()
         {
-            // TestInicialSubasta();
-            /*AgregarProducto();
+             TestInicialSubasta();
+            AgregarProducto();
             AgregarComentario();
-            OfertarProducto();*/
-            //ObtenerInfoProducto();
+            OfertarProducto();
+            ObtenerInfoProducto();
             //ObtenerProductosCategoria();
-            //ObtenerProductosPorTerminar();
-            //AgregarFavorito();
-            EliminarFavorito();
-
+            ObtenerProductosPorTerminar();
+            AgregarFavorito();
+            //EliminarFavorito();
         }
 
         [TestMethod]
@@ -59,9 +58,7 @@ namespace Chebay.DataAccessLayerTests
             };
             IDALTienda it = new DALTiendaEF();
             CategoriaSimple cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -74,9 +71,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2016, 3, 27)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -89,9 +84,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2016, 9, 7)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -104,9 +97,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 10)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -119,9 +110,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 6)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -134,9 +123,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 12)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -149,9 +136,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 14)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -164,9 +149,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 6)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -179,9 +162,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 16)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
@@ -194,9 +175,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 5, 16)
             };
             cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            if (p.categorias == null)
-                p.categorias = new HashSet<CategoriaSimple>();
-            p.categorias.Add(cs);
+            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
             /*Producto ret = idal.ObtenerProducto(1, urlTest);
             Assert.AreEqual("Celular", p.nombre);
@@ -230,7 +209,7 @@ namespace Chebay.DataAccessLayerTests
             {
                 esFinal = false,
                 monto = 120,
-                ProductoID = 1,
+                ProductoID = 3,
                 UsuarioID = "userPrueba"
             };
             idal.OfertarProducto(o, urlTest);
@@ -238,7 +217,7 @@ namespace Chebay.DataAccessLayerTests
             {
                 esFinal = false,
                 monto = 160,
-                ProductoID = 1,
+                ProductoID = 3,
                 UsuarioID = "otroUserPrueba"
             };
             idal.OfertarProducto(o, urlTest);
@@ -246,11 +225,10 @@ namespace Chebay.DataAccessLayerTests
             {
                 esFinal = false,
                 monto = 130,
-                ProductoID = 1,
+                ProductoID = 3,
                 UsuarioID = "userPrueba"
             };
             idal.OfertarProducto(o, urlTest);
-            List<DataProducto> ldp = idal.ObtenerProductosPersonalizados(urlTest);
         }
 
         [TestMethod]
@@ -304,15 +282,12 @@ namespace Chebay.DataAccessLayerTests
             }
 
             //--CATEGORIAS
-            Debug.WriteLine("--CATEGORIAS--");
-            foreach (Categoria c in p.categorias)
-            {
-                Debug.WriteLine("c.CategoriaID: " + c.CategoriaID);
-                Debug.WriteLine("c.Nombre: " + c.Nombre);
-                Debug.WriteLine("c.Tipo: " + c.GetType().ToString());
-                Debug.WriteLine("");
-            }
-
+            Debug.WriteLine("--CATEGORIA--");
+            Debug.WriteLine("c.CategoriaID: " + p.CategoriaID);
+            Debug.WriteLine("c.Nombre: " + p.nombre);
+            Debug.WriteLine("c.Tipo: " + p.GetType().ToString());
+            Debug.WriteLine("");
+            
             //--USUARIO
             Debug.WriteLine("--USUARIO--");
             Debug.WriteLine("c.CategoriaID: " + p.usuario.UsuarioID);
@@ -323,7 +298,6 @@ namespace Chebay.DataAccessLayerTests
             foreach (Atributo atr in p.atributos)
             {
                 Debug.WriteLine("atr.AtributoID: " + atr.AtributoID);
-                Debug.WriteLine("atr.CategoriaID: " + atr.CategoriaID);
                 Debug.WriteLine("atr.TipoAtributoID: " + atr.TipoAtributoID);
                 Debug.WriteLine("atr.valor: " + atr.valor);
                 Debug.WriteLine("atr.etiqueta: " + atr.etiqueta);

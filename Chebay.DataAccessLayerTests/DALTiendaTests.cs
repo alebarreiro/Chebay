@@ -24,7 +24,7 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTest()
         {
-            Test0Inicial();
+            //Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();
             AgregarCategoriaCompuesta();
@@ -91,9 +91,8 @@ namespace Chebay.DataAccessLayerTests
             t.nombre = "NombreTest";
             t.descripcion = "DescTest";
             t.administradores = new HashSet<Administrador>();
-            
-            it.AgregarTienda(t, adminTest);
             Debug.WriteLine("B");
+            it.AgregarTienda(t, adminTest);
             Tienda ret = it.ObtenerTienda(urlTest);
             Assert.IsNotNull(ret);
             Assert.AreEqual(ret.TiendaID, urlTest);
@@ -149,7 +148,6 @@ namespace Chebay.DataAccessLayerTests
                 {
                     Nombre = "CatCompuestaPrueba",
                     padre = father,
-                    atributos = new HashSet<Atributo>(),
                     hijas = new HashSet<Categoria>(),
                     tipoatributos = new HashSet<TipoAtributo>()
                 };

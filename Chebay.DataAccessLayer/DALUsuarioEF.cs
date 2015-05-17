@@ -7,6 +7,7 @@ using Shared.Entities;
 using System.Data.Entity;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using System.Diagnostics;
+using Shared.DataTypes;
 
 namespace DataAccessLayer
 {
@@ -42,7 +43,8 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                
+                    u.fecha_ingreso = DateTime.Today;
+                    u.promedio_calificacion = 0;
                     context.usuarios.Add(u);
                     context.SaveChanges();
                 }
@@ -223,27 +225,29 @@ namespace DataAccessLayer
             }
         }
 
-        public double ObtenerCalificacionUsuario(string idUsuario, string idTienda)
+        public DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda)
         {
             try
             {
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    //var qCalif = from clf in context.calificaciones
-                    //             where clf.UsuarioCalificado == idUsuario
-                    //             select clf;
-                    Usuario u = context.usuarios.Find(idUsuario);
-
-                    //List<Calificacion> CalificacionesUsuario = qCalif.ToList();
-                    double ret = 0;
-                    foreach (Calificacion c in u.calificacionesrecibidas)
+                    var qCalif = from clf in context.usuarios.Include("calificacionesrecibidas")
+                                 where clf.UsuarioID == idUsuario
+                                 select clf;
+                    Usuario u = qCalif.FirstOrDefault();
+                    List<Calificacion> CalificacionesUsuario = u.calificacionesrecibidas.ToList();
+                    DataCalificacion ret = new DataCalificacion { promedio = 0, cantCalificaciones = 0 };
+                    double prom = 0;
+                    foreach (Calificacion c in CalificacionesUsuario)
                     {
-                        ret += c.puntaje;
+                        prom += c.puntaje;
                     }
-                    if (u.calificacionesrecibidas.Count > 0)
+                    if (CalificacionesUsuario.Count > 0)
                     {
-                        ret = ret / u.calificacionesrecibidas.Count;
+                        prom = prom / CalificacionesUsuario.Count;
+                        ret.promedio = prom;
+                        ret.cantCalificaciones = CalificacionesUsuario.Count;
                     }
                     return ret;
                 }
@@ -254,6 +258,12 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+
+        public double CalcBalance(string idUsuario, string idTienda)
+        {
+            return 0;
+        }
+
     }
 } 
         

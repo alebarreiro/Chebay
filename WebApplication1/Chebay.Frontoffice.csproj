@@ -236,6 +236,7 @@
     <Content Include="Content\personalizacion\EstiloDos\violetStyle.css" />
     <Content Include="Content\personalizacion\EstiloUno\orangeStyle.css" />
     <Content Include="Content\sections\main\main.css" />
+    <Content Include="Content\sections\producto\InfoProducto.css" />
     <Content Include="Content\sweet-alert.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -279,7 +280,9 @@
     <Content Include="Scripts\sweet-alert.js" />
     <Content Include="Scripts\sweetalert.min.js" />
     <Content Include="Scripts\_references.js" />
-    <Content Include="Web.config" />
+    <Content Include="Web.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
     </Content>
@@ -317,10 +320,11 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
-    <Content Include="Views\Product\Index.cshtml" />
+    <Content Include="Views\Product\CrearProducto.cshtml" />
     <Content Include="Views\Product\_DatosProductoPartial.cshtml" />
     <Content Include="Views\Product\_DatosCategoriaPartial.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
+    <Content Include="Views\Product\Details.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

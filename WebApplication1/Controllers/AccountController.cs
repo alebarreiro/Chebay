@@ -344,7 +344,7 @@ namespace Frontoffice.Controllers
                         userChebay = dalU.ObtenerUsuario(loginInfo.Email, Session["Tienda_Nombre"].ToString());
                         Session["Usuario"] = userChebay;
                     } catch (Exception e) {
-                        userChebay = new Usuario { UsuarioID = loginInfo.Email, token = loginInfo.Login.ProviderKey };
+                        userChebay = new Usuario { UsuarioID = loginInfo.Email };
                         try
                         {
                             Debug.WriteLine(e.Message);
@@ -405,7 +405,7 @@ namespace Frontoffice.Controllers
                     if (result.Succeeded)
                     {
                         IDALUsuario dalU = new DALUsuarioEF();
-                        Usuario userNuevo = new Usuario {UsuarioID = model.Email, token = info.Login.ProviderKey};
+                        Usuario userNuevo = new Usuario {UsuarioID = model.Email};
                         dalU.AgregarUsuario(userNuevo, Session["Tienda_Nombre"].ToString());
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);

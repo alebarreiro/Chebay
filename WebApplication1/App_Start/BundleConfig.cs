@@ -48,8 +48,9 @@ namespace Frontoffice
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
                       "~/Content/sections/main/main.css",
+                      "~/Content/sections/producto/InfoProducto.css",
+                      "~/Content/bootstrap.css",
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",
                       "~/Content/partials/product_item.css",
@@ -57,8 +58,7 @@ namespace Frontoffice
                       "~/Content/jquery.ui.chatbox.css",
                       "~/Content/animate.css",
                       "~/Content/font-awesome.css",
-                      "~/Content/sweet-alert.css"
-                      ));
+                      "~/Content/sweet-alert.css"));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
                 "~/Content/personalizacion/EstiloUno/orangeStyle.css"

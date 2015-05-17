@@ -9,7 +9,9 @@
     @foreach (var dp in productos)
     {
         <div class="product-item">
-            <div class="product-item-header">@dp.nombre</div>
+            <a href="@Url.Action("Details", "Product", new { productId = @dp.ProductoID })">
+                <div class="product-item-header">@dp.nombre</div>
+            </a>
             @{
                 var primeraImagen = "/Content/Images/wat.png";
                 var segundaImagen = "/Content/Images/wat2.jpg";

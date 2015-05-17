@@ -33,6 +33,29 @@ namespace WebApplication1.Controllers
            return View();
         }
 
+        // GET: Product/Details/5
+        public ActionResult Details(long productId)
+        {
+            String tienda = Session["Tienda_Nombre"].ToString();
+            String userId;
+            if (User.Identity.IsAuthenticated){
+                userId = User.Identity.GetUserName();
+            }else{
+                userId = null;
+            }
+            Producto infoFullP = cS.ObtenerInfoProducto(productId, tienda, userId);
+            ViewBag.InfoProducto = infoFullP;
+            return View();
+        }
+
+
+        // GET: Product/CrearProducto
+        [Authorize]
+        public ActionResult CrearProducto()
+        {
+            return View();
+        }
+
         public ActionResult DatosProducto()
         {
             return PartialView("_DatosProductoPartial");
@@ -88,17 +111,12 @@ namespace WebApplication1.Controllers
 
 
 
-        // GET: Product/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
 
         // GET: Product/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+       // public ActionResult Create()
+       // {
+       //     return View();
+       // }
 
         // POST: Product/Create
         [HttpPost]
@@ -118,9 +136,7 @@ namespace WebApplication1.Controllers
 
 
                 CategoriaSimple cs = (CategoriaSimple)cT.ObtenerCategoria(Session["Tienda_Nombre"].ToString(), producto.CatID);
-                if (p.categorias == null)
-                    p.categorias = new HashSet<CategoriaSimple>();
-                p.categorias.Add(cs);
+                p.categoria = cs;
                 cS.AgregarProducto(p, Session["Tienda_Nombre"].ToString());
                 Debug.WriteLine(producto.Titulo);
                 var result = new { Success = "True", Message = producto };

@@ -26,6 +26,7 @@ namespace Frontoffice.Controllers
                     FormsAuthentication.SignOut();
                     Session.Abandon(); //Destruye todos los objetos de la sesion
 
+                    //Eliminar cookies (relacionados con la tienda anterior)
                     int cookieCount = Request.Cookies.Count;
                     for (var i = 0; i < cookieCount; i++)
                     {
@@ -37,18 +38,18 @@ namespace Frontoffice.Controllers
                             Response.Cookies.Add(expiredCookie); // overwrite it
                         }
                     }
-
-                    // clear cookies server side
+                    // eliminar cookies server side
                     Request.Cookies.Clear();
 
                     Response.Redirect(Request.Url.ToString(), true);
                 }
 
-                List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
+                List<DataProducto> prods = controladorSubasta.ObtenerProductosPorTerminar(8, urlTienda);
+                //List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
                 Tienda t = controladorTienda.ObtenerTienda(urlTienda);
                 //List<Categoria> categorias = controladorTienda.ListarCategorias(urlTienda);
                 ViewBag.productos = prods;
-                //Elegimos el estilo, por ahora los posibles valores son 1 o 2
+                /*Elegimos el estilo, por ahora los posibles valores son 1 o 2
                 Personalizacion p = controladorTienda.ObtenerPersonalizacionTienda(urlTienda);
                 if (p != null && (p.datos == "1" || p.datos == "2"))
                 {
@@ -57,9 +58,7 @@ namespace Frontoffice.Controllers
                 else
                 {
                     Session["Tienda_Personalizacion"] = "1";
-                }
-                
-
+                }*/
                 Session["Tienda_Nombre"] = urlTienda;
                 ViewBag.Message = urlTienda;
             }

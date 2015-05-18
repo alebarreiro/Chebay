@@ -22,6 +22,13 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    var qUser = from usr in context.usuarios
+                                where usr.UsuarioID == p.UsuarioID
+                                select usr;
+                    Usuario u = qUser.FirstOrDefault();
+                    if (u.publicados == null)
+                        u.publicados = new HashSet<Producto>();
+                    u.publicados.Add(p);
                     context.productos.Add(p);
                     context.SaveChanges();
                 }
@@ -108,7 +115,7 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from  c in context.categorias
+                    var query = from c in context.categorias.Include("productos")
                                 where c.CategoriaID == idCategoria
                                 select c;
                     CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
@@ -343,6 +350,13 @@ namespace DataAccessLayer
                     if (DateTime.Now > qProducto.FirstOrDefault().fecha_cierre)
                         throw new Exception("El producto " + o.ProductoID + " ya ha expirado.");
 
+                    //Agrego la oferta a la colección del usuario.
+                    var qUsuario = from usr in context.usuarios
+                                   where usr.UsuarioID == o.UsuarioID
+                                   select usr;
+                    qUsuario.FirstOrDefault().ofertas.Add(o);
+
+                    //Agrego la oferta a la base.
                     context.ofertas.Add(o);
                     context.SaveChanges();
                 }
@@ -472,10 +486,10 @@ namespace DataAccessLayer
                         var qUserVisita = from usr in context.usuarios.Include("visitas")
                                           where usr.UsuarioID == ret.UsuarioID
                                           select usr;
-                        if (qUserVisita.Count() > 0)
+                        if (qUserVisita.Count() > 0) //Si el usuario que visita el producto existe...
                         {
                             Usuario u = qUserVisita.FirstOrDefault();
-                            if (!u.visitas.Contains(ret))
+                            if (!u.visitas.Contains(ret)) //Si es la primera vez que visita el producto, agrega la visita.
                             {
                                 if (ret.visitas == null)
                                     ret.visitas = new HashSet<Usuario>();
@@ -854,6 +868,68 @@ namespace DataAccessLayer
                     var qCompra = from cmp in context.compras
                                   select cmp;
                     return qCompra.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        //--IMAGENES--
+        public void AgregarImagenProducto(ImagenProducto ip, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    context.imagenesproducto.Add(ip);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public ImagenProducto ObtenerImagenProducto(long idProducto, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qImg = from img in context.imagenesproducto
+                               where img.ProductoID == idProducto
+                               select img;
+                    ImagenProducto ret = qImg.FirstOrDefault();
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarImagenProducto(long idProducto, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qImg = from img in context.imagenesproducto
+                               where img.ProductoID == idProducto
+                               select img;
+                    ImagenProducto ret = qImg.FirstOrDefault();
+                    context.imagenesproducto.Remove(ret);
+                    context.SaveChanges();
                 }
             }
             catch (Exception e)

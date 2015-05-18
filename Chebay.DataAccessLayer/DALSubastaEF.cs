@@ -115,7 +115,7 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from  c in context.categorias
+                    var query = from c in context.categorias.Include("productos")
                                 where c.CategoriaID == idCategoria
                                 select c;
                     CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
@@ -878,7 +878,7 @@ namespace DataAccessLayer
         }
 
         //--IMAGENES--
-        void AgregarImagenProducto(ImagenProducto ip, string idTienda)
+        public void AgregarImagenProducto(ImagenProducto ip, string idTienda)
         {
             try
             {
@@ -896,7 +896,7 @@ namespace DataAccessLayer
             }
         }
 
-        ImagenProducto ObtenerImagenProducto(long idProducto, string idTienda)
+        public ImagenProducto ObtenerImagenProducto(long idProducto, string idTienda)
         {
             try
             {
@@ -917,7 +917,7 @@ namespace DataAccessLayer
             }
         }
 
-        void EliminarImagenProducto(long idProducto, string idTienda)
+        public void EliminarImagenProducto(long idProducto, string idTienda)
         {
             try
             {

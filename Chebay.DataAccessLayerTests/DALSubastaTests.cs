@@ -23,7 +23,7 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTestSubasta()
         {
-            //TestInicialSubasta();
+            TestInicialSubasta();
             AgregarProducto();
             AgregarComentario();
             OfertarProducto();

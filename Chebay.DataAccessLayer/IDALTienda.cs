@@ -55,6 +55,6 @@ namespace DataAccessLayer
         List<AtributoSesion> ObtenerAtributosSesion(string AdminID);
 
         //--REPORTES--
-        //void ObtenerReporte();
+        DataReporte ObtenerReporte(string idTienda);
     }
 }

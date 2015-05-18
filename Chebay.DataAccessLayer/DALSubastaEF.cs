@@ -130,11 +130,9 @@ namespace DataAccessLayer
                                 join p in context.productos on c.CategoriaID equals p.CategoriaID
                                 where c.CategoriaID == idCategoria
                                 select c;
-
-                    CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
-
-                    return cs.productos.ToList();
-                    //return null;
+                    
+                    //return cs.productos.ToList();
+                    return null;
                 }
             }
             catch (Exception e)
@@ -369,7 +367,10 @@ namespace DataAccessLayer
                     var qUsuario = from usr in context.usuarios
                                    where usr.UsuarioID == o.UsuarioID
                                    select usr;
-                    qUsuario.FirstOrDefault().ofertas.Add(o);
+                    Usuario u = qUsuario.FirstOrDefault();
+                    if (u.ofertas == null)
+                        u.ofertas = new HashSet<Oferta>();
+                    u.ofertas.Add(o);
 
                     //Agrego la oferta a la base.
                     context.ofertas.Add(o);

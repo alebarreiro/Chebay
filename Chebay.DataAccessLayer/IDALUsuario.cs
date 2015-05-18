@@ -26,7 +26,10 @@ namespace DataAccessLayer
 
         DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda);
         
-        //----
+        //--IMAGENES--
+        void AgregarImagenUsuario(ImagenUsuario iu, string idTienda);
+        ImagenUsuario ObtenerImagenUsuario(string idUsuario, string idTienda);
+        void EliminarImagenUsuario(string idUsuario, string idTienda);
 
         //--TRANSACCIONES--
         double CalcBalance(string idUsuario, string idTienda);

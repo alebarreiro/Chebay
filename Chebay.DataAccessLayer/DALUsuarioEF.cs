@@ -264,6 +264,67 @@ namespace DataAccessLayer
             return 0;
         }
 
+        //--IMAGENES--
+        public void AgregarImagenUsuario(ImagenUsuario iu, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    context.imagenesusuario.Add(iu);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public ImagenUsuario ObtenerImagenUsuario(string idUsuario, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qImg = from img in context.imagenesusuario
+                               where img.UsuarioID == idUsuario
+                               select img;
+                    ImagenUsuario ret = qImg.FirstOrDefault();
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarImagenUsuario(string idUsuario, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qImg = from img in context.imagenesusuario
+                               where img.UsuarioID == idUsuario
+                               select img;
+                    ImagenUsuario ret = qImg.FirstOrDefault();
+                    context.imagenesusuario.Remove(ret);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
     }
 } 
         

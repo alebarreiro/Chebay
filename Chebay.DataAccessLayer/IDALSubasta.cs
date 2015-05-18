@@ -48,6 +48,11 @@ namespace DataAccessLayer
         //--OFERTAR--
         void OfertarProducto(Oferta o, string idTienda);
 
+        //--IMAGENES--
+        void AgregarImagenProducto(ImagenProducto ip, string idTienda);
+        ImagenProducto ObtenerImagenProducto(long idProducto, string idTienda);
+        void EliminarImagenProducto(long idProducto, string idTienda);
+
 
         //void AgregarImagenProducto(Imagen img, Producto p);
         /*

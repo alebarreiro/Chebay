@@ -22,6 +22,13 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    var qUser = from usr in context.usuarios
+                                where usr.UsuarioID == p.UsuarioID
+                                select usr;
+                    Usuario u = qUser.FirstOrDefault();
+                    if (u.publicados == null)
+                        u.publicados = new HashSet<Producto>();
+                    u.publicados.Add(p);
                     context.productos.Add(p);
                     context.SaveChanges();
                 }
@@ -472,10 +479,10 @@ namespace DataAccessLayer
                         var qUserVisita = from usr in context.usuarios.Include("visitas")
                                           where usr.UsuarioID == ret.UsuarioID
                                           select usr;
-                        if (qUserVisita.Count() > 0)
+                        if (qUserVisita.Count() > 0) //Si el usuario que visita el producto existe...
                         {
                             Usuario u = qUserVisita.FirstOrDefault();
-                            if (!u.visitas.Contains(ret))
+                            if (!u.visitas.Contains(ret)) //Si es la primera vez que visita el producto, agrega la visita.
                             {
                                 if (ret.visitas == null)
                                     ret.visitas = new HashSet<Usuario>();

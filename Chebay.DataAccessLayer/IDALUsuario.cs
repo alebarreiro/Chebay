@@ -26,6 +26,8 @@ namespace DataAccessLayer
 
         DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda);
         
+        //----
+
         //--TRANSACCIONES--
         double CalcBalance(string idUsuario, string idTienda);
 

@@ -468,16 +468,20 @@ namespace DataAccessLayer
 
                     //AGREGAR VISITA DE PRODUCTO
                     if (idUsuario != null)
-                    { 
-                        var qUserVisita = from usr in context.usuarios
+                    {
+                        var qUserVisita = from usr in context.usuarios.Include("visitas")
                                           where usr.UsuarioID == ret.UsuarioID
                                           select usr;
                         if (qUserVisita.Count() > 0)
                         {
-                            if (ret.visitas == null)
-                                ret.visitas = new HashSet<Usuario>();
-                            ret.visitas.Add(qUserVisita.FirstOrDefault());
-                            context.SaveChanges();
+                            Usuario u = qUserVisita.FirstOrDefault();
+                            if (!u.visitas.Contains(ret))
+                            {
+                                if (ret.visitas == null)
+                                    ret.visitas = new HashSet<Usuario>();
+                                ret.visitas.Add(qUserVisita.FirstOrDefault());
+                                context.SaveChanges();
+                            }
                         }
                     }
                     return ret;

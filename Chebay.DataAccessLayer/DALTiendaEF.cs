@@ -530,7 +530,6 @@ namespace DataAccessLayer
                         p.datos = color;
                         context.SaveChanges();
                     }
-                    
                 }
             }
             catch (Exception e)

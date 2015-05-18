@@ -17,14 +17,14 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
-        private static string urlTest = "uruFutbol";
-        private static string adminTest = "adminUruFutbol";
+        private static string urlTest = "TestURL";
+        private static string adminTest = "adminTestURL";
         private static IDALTienda it = new DALTiendaEF();
 
         [TestMethod]
         public void SuperTest()
         {
-            //Test0Inicial();
+            Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();
             AgregarCategoriaCompuesta();

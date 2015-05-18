@@ -17,7 +17,7 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
-        private static string urlTest = "uruFutbol";
+        private static string urlTest = "TestURL";
         private IDALSubasta idal = new DALSubastaEF();
 
         [TestMethod]

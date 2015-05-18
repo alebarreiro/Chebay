@@ -3,12 +3,42 @@
     var nombreTienda = @Session["Tienda_Nombre"]; 
 }
 
-<div>
+<div class="infoProducto-container">
     <div class="infoProducto-top">
         <div class="infoProducto-left">
-            PARTE IZQUIERDA
+            <div class="infoProducto-imgs">
+                @{
+                    var primeraImagen = "/Content/Images/wat.png";
+                    var segundaImagen = "/Content/Images/wat2.jpg";
+                    var terceraImagen = primeraImagen;
+                }
+                <div class="c-wrapper">
+                    <div id="myCarousel-" class="carousel slide">
+                        <!-- SE ARMA EL VISOR -->
+                        <div class="carousel-inner">
+                            <div class="item active">
+                                <img src="@primeraImagen">
+                            </div>
+                            <div class="item">
+                                <img src="@segundaImagen">
+                            </div>
+                            <div class="item">
+                                <img src="http://placehold.it/700x400">
+                            </div>
+                        </div>
+
+                        <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
+                        <a class="left carousel-control" style="background-image: none"  href="#myCarousel-" data-slide="prev">
+                            <span class="icon-prev"></span>
+                        </a>
+                        <a class="right carousel-control" style="background-image: none" href="#myCarousel-" data-slide="next">
+                            <span class="icon-next"></span>
+                        </a>
+                    </div>
+                </div>
+            </div> 
         </div>
-        <div class="infoProducto-right">
+        <div class="module infoProducto-right">
             <div class="infoProducto-data">
                 <div class="infoProducto-data-content">
                     DATOS
@@ -20,15 +50,28 @@
         </div>
     </div>
     <div class="infoProducto-atributos">
-
+        ATRIBUTOS
     </div>
 
     <div class="infoProducto-comentarios">
-
+        COMENTARIOS
     </div>
-   
 </div>
 
 <script>
 
 </script>
+
+<style>
+    div.c-wrapper {
+        width: auto;
+        margin: auto;
+    }
+
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
+        width: auto;
+        height: 360px;
+        margin: auto;
+    }
+</style>

@@ -1,15 +1,26 @@
-﻿body {
+﻿
+.infoProducto-container{
+  width: 982px;
+  float: left;
+  background: #fff;
+  border-left: solid 1px #d1d1d1;
+  border-right: solid 1px #d1d1d1;
+  -webkit-box-shadow: 0 5px 10px #aaa;
+     -moz-box-shadow: 0 5px 10px #aaa;
+          box-shadow: 0 5px 10px #aaa;
+  min-height: 500px;
 }
 
-infoProducto-top{
+
+.infoProducto-top{
   float: left;
   width: 100%;
   padding: 0;
   border: 0;
   background: none transparent;
-  -webkit-box-shadow: 0 5px 10px #aaa;
-     -moz-box-shadow: 0 5px 10px #aaa;
-          box-shadow: 0 5px 10px #aaa;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  box-shadow: none;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   border-radius: 0;
@@ -17,9 +28,9 @@ infoProducto-top{
   min-height: 475px;
 }
 
-infoProducto-left{
+.infoProducto-left{
   float: left;
-  width: 370px;
+  width: 410px;
   padding: 0;
   border: 0;
   background: none transparent;
@@ -36,7 +47,11 @@ infoProducto-left{
   top: 6px;
 }
 
-infoProducto-right{
+.infoProducto-imgs{
+    margin: 20px
+}
+
+.infoProducto-right{
   width: 550px;
   float: right;
   padding: 0;
@@ -52,28 +67,51 @@ infoProducto-right{
   margin: 0;
 }
 
-infoProducto-data{
+.infoProducto-right-info{
+  width: 550px;
+  height: 473px;
+  padding: 0;
+  position: relative;
+  bottom: 0;
+  right: 0;
+  margin-bottom: 0;
+}
+
+.infoProducto-data{
   width: 250px;
   float: left;
   text-align: center;
 }
 
-infoProducto-data-content{
+.infoProducto-data-content{
   width: 230px!important;
   padding: 20px!important;
 }
 
-infoProducto-ofertas{
+.infoProducto-ofertas{
   float: right;
   width: 278px;
   border-left: 1px solid #d9d9d9;
   height: 473px;
 }
 
-infoProducto-atributos{
+.infoProducto-atributos{
 
 }
 
-infoProducto-comentarios{
+.infoProducto-comentarios{
 
+}
+
+.module{
+  /*width: 100%;*/
+  margin: 20px;
+  float: right;
+  border: solid 1px #bfbfbf;
+  -moz-border-radius: 8px;
+  -webkit-border-radius: 8px;
+  border-radius: 8px;
+  -webkit-box-shadow: 0 1px 6px 0 #d7d7d7;
+  -moz-box-shadow: 0 1px 6px 0 #d7d7d7;
+  box-shadow: 0 1px 6px 0 #d7d7d7;
 }

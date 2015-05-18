@@ -126,7 +126,8 @@ namespace DataAccessLayer
                     Personalizacion p = new Personalizacion
                     {
                         PersonalizacionID = tienda.TiendaID,
-                        datos = "1"
+                        datos = "1",
+                        algoritmo = null
                     };
                     context.personalizaciones.Add(p);
                     context.tiendas.Add(tienda);
@@ -551,6 +552,28 @@ namespace DataAccessLayer
                                   select tnd;
                     Tienda t = qTienda.FirstOrDefault();
                     return t.personalizacion;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarPersonalizacion(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    var qTienda = from tnd in context.personalizaciones
+                                  where tnd.PersonalizacionID == idTienda
+                                  select tnd;
+                    Personalizacion t = qTienda.FirstOrDefault();
+                    context.personalizaciones.Remove(t);
+                    context.SaveChanges();
                 }
             }
             catch (Exception e)

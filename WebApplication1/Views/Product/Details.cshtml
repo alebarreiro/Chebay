@@ -75,12 +75,13 @@
 
                     <hr>  
                     <button type="button" class="btn btn-success"> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
+
                     <div class="infoProducto-favorito" onclick="marcarFavorito()">
-                        <div class="infoProd-favLeft" style="float:left">
+                        <div class="infoProd-favLeft" id="favContainer" style="float:left">
                             <i class="fa fa-heart-o" id="favorito"></i>
                         </div>
                         <div class="infoProducto-favText" data-id="0" id="favoritoText">
-                            0 Favoritos
+                            <span id="favsCounter">0</span> Favoritos
                         </div>
                     </div>
                 </div>
@@ -155,29 +156,87 @@
 </div>
 
 <script>
+    var prodId = "@Producto.ProductoID"
+    var userId = "@Context.User.Identity.Name"
+    var isAuth = "@User.Identity.IsAuthenticated"
+
+    var dataProdUser = {
+        userId: userId,
+        productId: prodId
+    };
+
     $(function () {
         $('#myTab a:last').tab('show')
     })
 
+    $(document).ready(function () {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerDataFavorito", "Product")",
+            data : dataProdUser,
+            accept: 'application/json',
+            success: function (data) {
+                console.log(data);
+                if (data.esFav) {
+                    $('#favorito').removeClass().addClass('fa fa-heart');
+                } else {
+                    $('#favorito').removeClass().addClass('fa fa-heart-o');
+                }
+                $('#favsCounter').html(data.cantFavs);
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+
+    });
+
     $('#tablita').addClass('animated flash');
 
     marcarFavorito = function () {
-        var $fav = $('#favorito'),
-            $favText = $('#favoritoText');
-        if ($fav.hasClass('.fa fa-heart')) {
-            //eliminar favorito
-            $fav.removeClass('.fa fa-heart');
-            $fav.addClass('.fa fa-heart-o');
-            var data = $favText.data("id") - 1;
-            $favText.data("id", data);
-            $favText.html(data + " Favoritos");
-        } else {
-            //agregar favorito
-            $fav.removeClass('.fa fa-heart-o');
-            $fav.addClass('.fa fa-heart');
-            var data = $favText.data("id") + 1;
-            $favText.data("id", data);
-            $favText.html(data + " Favoritos");
+        if (isAuth) {
+            var $fav = $('#favorito'),
+            $favText = $('#favsCounter');
+            $('#favContainer').removeClass().addClass('pulse' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                $(this).removeClass();
+            });
+            if ($fav.hasClass('fa-heart')) {
+                //eliminar favorito
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("eliminarFavorito", "Product")",
+                    data : dataProdUser,
+                    accept: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                        $fav.removeClass('.fa fa-heart');
+                        $fav.addClass('.fa fa-heart-o');
+                        var data = parseInt($favText.text()) - 1;
+                        $favText.html(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            } else if ($fav.hasClass('fa-heart-o')) {
+                //agregar favorito
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("agregarFavorito", "Product")",
+                    data : dataProdUser,
+                    accept: 'application/json',
+                    success: function (response) {
+                        console.log(response);
+                        $fav.removeClass('.fa fa-heart-o');
+                        $fav.addClass('.fa fa-heart');
+                        var data = parseInt($favText.text()) + 1;
+                        $favText.html(data);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+            }
         }
     }
 </script>

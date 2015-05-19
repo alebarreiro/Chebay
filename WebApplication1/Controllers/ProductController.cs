@@ -149,6 +149,63 @@ namespace WebApplication1.Controllers
             }
         }
 
+        // GET Producto/obtenerDataFavorito
+        [Authorize]
+        [HttpGet]
+        public JsonResult obtenerDataFavorito(String userId, long productId)
+        {
+            String tiendaId = Session["Tienda_Nombre"].ToString();
+            try
+            {
+                int cantFavsProducto = cS.ObtenerCantFavoritos(productId, tiendaId);
+                bool esFavorito = cS.EsFavorito(productId, userId, tiendaId);
+                var result = new { cantFavs = cantFavsProducto, esFav = esFavorito, Success = "True"};
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //POST Producto/agregarFavorito
+        [Authorize]
+        [HttpPost]
+        public JsonResult agregarFavorito(String userId, long productId)
+        {
+            String tiendaId = Session["Tienda_Nombre"].ToString();
+            try
+            {
+                cS.AgregarFavorito(productId, userId, tiendaId);
+                var result = new { Success = "True" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+        //POST Producto/eliminarFavorito
+        [Authorize]
+        [HttpPost]
+        public JsonResult eliminarFavorito(String userId, long productId)
+        {
+            String tiendaId = Session["Tienda_Nombre"].ToString();
+            try
+            {
+                cS.EliminarFavorito(productId, userId, tiendaId);
+                var result = new { Success = "True" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {

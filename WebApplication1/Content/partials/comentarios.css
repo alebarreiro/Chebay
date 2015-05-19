@@ -1,0 +1,31 @@
+﻿.commentItem-Details{
+    line-height: 1.5em;
+}
+
+.commentItem-Autor{
+    font-weight: bold;
+}
+
+.commentItem-Fecha{
+    font-size: 11px;
+    color: #a2a2a2;
+    line-height: 1.5em;
+    margin-right: 9px;
+}
+
+.commentItem-Text{
+    margin-top: 6px;
+    letter-spacing: -0.15px;
+    margin-top: 3px;
+}
+
+.commentItem-Container{
+   margin: 7px 14px 7px 0px;
+}
+
+.commentBoton{
+  background-color:#77AAEF !important;
+  border-color: #77AAEF !important;
+  float: right;
+  margin: 20px 0px 20px 0px;
+}

@@ -55,6 +55,7 @@ namespace Frontoffice
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",
                       "~/Content/partials/product_item.css",
+                      "~/Content/partials/comentarios.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.ui.chatbox.css",
                       "~/Content/animate.css",

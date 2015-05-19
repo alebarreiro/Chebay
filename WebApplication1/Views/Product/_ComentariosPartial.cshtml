@@ -1,8 +1,9 @@
-﻿<section id="seccion-comentarios">
+﻿<section id="seccion-comentarios" style="height: 300px; overflow-x: hidden; overflow-y: scroll;">
 
 </section>
 <section id="seccion-menu">
-    <button onclick="agregarComentario()"> Agregar comentario </button>
+    <textarea class="form-control" rows="3" placeholder="Agrega tu comentario aquí" id="comentarioValue"></textarea>
+    <button class="btn btn-info commentBoton" onclick="agregarComentario()"> Agregar comentario </button>
 </section>
 <script id="comment-template" type="text/x-template">
     {{#comentarios}}
@@ -11,15 +12,36 @@
 </script>
 
 <script id="commentItem" type="text/x-template">
-    <div class="comentario-Autor">
-        {{usuario}}
-    </div>
-    <div class="comentario-Text">
-        {{texto}}
+   
+    <div class="commentItem-Container">
+        <div class="commentItem-Details">
+            <div class="commentItem-Autor">
+                <span>
+                    {{usuario}}
+                </span>
+            </div>
+            <div class="commentItem-Fecha">
+                <span>
+                    {{fecha}}
+                </span>
+            </div>
+        </div>
+
+        <div class="commentItem-Text">
+            <i class="fa fa-comment" style="color: #77AAEF;"></i>
+            <span style="margin-left: 5px">
+                {{texto}}
+            </span>
+        </div>
+        <hr>
     </div>
 </script>
 
 <script type="text/javascript">
+
+    var userId = "@Context.User.Identity.Name"
+    var isAuth = "@User.Identity.IsAuthenticated"
+
     $(function() {
         debugger;
         var template = $('#comment-template').html();
@@ -28,6 +50,7 @@
         var productId = $('.infoProducto-container').data("key");
         var comentario = {
             "usuario": "Un user",
+            "fecha" : moment().format("DD MMM YYYY, HH:mm"),
             "texto": "Hace click en agregar comentario"
         }
         var comentarios = [];
@@ -41,22 +64,28 @@
 
         agregarComentario = function () {
             debugger;
+            var commentText = $('#comentarioValue').val();
             comentario = {
                 "usuario": "Otro user",
-                "texto": "Otro comentario"
+                "fecha"  : moment().format("DD MMM YYYY, HH:mm"),
+                "texto"  : commentText
             };
-            console.log(templateItem);
             var templateNuevoComentario = Mustache.render(templateItem, comentario);
+
+            //Efecto para el nuevo comentario
             $(templateNuevoComentario).appendTo('#seccion-comentarios').hide().slideDown();
+            //Si esta activado el scrollbar bajamos hasta el nuevo comentario
+            $('#seccion-comentarios').animate({ scrollTop: $('#seccion-comentarios')[0].scrollHeight }, 1500);
+            $('#comentarioValue').val("");
         };
 
             //$.ajax({
              //   url: '@Url.Action("obtenerComentarios", "Producto")/' + productId,
-              //  success: function(comentario) {
-               //     var html = template(comentario);
-                //    $('#auction-details').html(html);
-               // }
-            //}); 
+        //  success: function(comentario) {
+        //     var html = template(comentario);
+        //    $('#auction-details').html(html);
+        // }
+        //});
         //});
     });
 </script>

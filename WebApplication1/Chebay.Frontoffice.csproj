@@ -232,6 +232,7 @@
     <Content Include="Content\jquery.ui.chatbox.css" />
     <Content Include="Content\normalize.css" />
     <Content Include="Content\normalize.min.css" />
+    <Content Include="Content\partials\comentarios.css" />
     <Content Include="Content\partials\product_item.css" />
     <Content Include="Content\personalizacion\EstiloDos\violetStyle.css" />
     <Content Include="Content\personalizacion\EstiloUno\orangeStyle.css" />

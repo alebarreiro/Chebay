@@ -622,13 +622,9 @@ namespace DataAccessLayer
                         Personalizacion p = new Personalizacion
                         {
                             datos = color,
-                            PersonalizacionID = idTienda
+                            PersonalizacionID = idTienda,
+                            algoritmo = null
                         };
-                        /*var qTienda = from tnd in context.tiendas
-                                      where tnd.TiendaID == idTienda
-                                      select tnd;
-                        Tienda t = qTienda.FirstOrDefault();
-                        t.personalizacion = p;*/
                         context.personalizaciones.Add(p);
                         context.SaveChanges();
                     }

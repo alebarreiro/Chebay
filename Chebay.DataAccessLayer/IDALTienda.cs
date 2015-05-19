@@ -22,6 +22,7 @@ namespace DataAccessLayer
         void EliminarTienda(string idTienda);
         Tienda ObtenerTienda(string idTienda);
         List<Tienda> ListarTiendas(string idAdmin);
+        List<Tienda> ObtenerTodasTiendas();
         bool ExisteTienda(string idTienda);
         
         //--CATEGORIAS--
@@ -45,9 +46,6 @@ namespace DataAccessLayer
 
         bool AutenticarAdministrador(string idAdministrador, string passwd);
         
-        void CambiarPassAdministrador(string idAdministrador, string passwdVieja, string passwdNueva);
-        
-        void AgregarAdminTienda(string idAdministrador, string idTienda);
         
         //--ATRIBUTOS DE SESION ADMINISTRADOR--
         void AgregarAtributoSesion(AtributoSesion AtributoS);

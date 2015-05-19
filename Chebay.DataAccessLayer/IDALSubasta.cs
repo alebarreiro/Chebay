@@ -25,7 +25,7 @@ namespace DataAccessLayer
 
         //--ATRIBUTOS--
         void AgregarAtributo(Atributo a, string idTienda);
-        List<Atributo> ObtenerAtributos(long idCategoria, string idTienda);
+        List<Atributo> ObtenerAtributos(long idProducto, string idTienda);
         Atributo ObtenerAtributo(long idAtributo, string idTienda);
         void EliminarAtributo(long idAtributo, string idTienda);
 

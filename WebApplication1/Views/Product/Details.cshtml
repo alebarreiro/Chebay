@@ -5,7 +5,7 @@
     var favoritos = Producto.favoritos;
 }
 
-<div class="infoProducto-container">
+<div class="infoProducto-container" data-key="@Producto.ProductoID">
     <div class="infoProducto-top">
         <div class="infoProducto-nombre">
             <h2>
@@ -118,17 +118,19 @@
     <div class="infoProducto-tab">
         <ul class="nav nav-tabs" role="tablist" id="myTab">
             <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Caracteristicas</a></li>
-            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comentarios</a></li>
+            <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
             <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Comparar producto</a></li>
             <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Reviews</a></li>
         </ul>
     </div>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane active infoProducto-pane" id="home"> CARACTERISTICAS </div>
-        <div role="tabpanel" class="tab-pane infoProducto-pane" id="profile"> COMENTARIOS </div>
-        <div role="tabpanel" class="tab-pane infoProducto-pane" id="messages"> COMPARAR PRODUCTOS</div>
-        <div role="tabpanel" class="tab-pane infoProducto-pane" id="settings">
+        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="home"> CARACTERISTICAS </div>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
+            @Html.Partial("_ComentariosPartial")
+        </div>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="messages"> COMPARAR PRODUCTOS</div>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="settings">
             <ul class="infoProducto-stars">
                 <li>
                     <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i>
@@ -173,7 +175,7 @@
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerDataFavorito", "Product")",
-            data : dataProdUser,
+            data: dataProdUser,
             accept: 'application/json',
             success: function (data) {
                 console.log(data);
@@ -205,7 +207,7 @@
                 $.ajax({
                     type: "POST",
                     url: "@Url.Action("eliminarFavorito", "Product")",
-                    data : dataProdUser,
+                    data: dataProdUser,
                     accept: 'application/json',
                     success: function (response) {
                         console.log(response);
@@ -239,6 +241,12 @@
             }
         }
     }
+    
+    //$('#myTab a[href="#comentarios"]').click(function (e) {
+     //   console.log("hola");
+      //  $('#comentarios').load("@Url.Action("obtenerComentarios","Product")");
+       // $(this).tab('show');
+    //}); 
 </script>
 
 <style>

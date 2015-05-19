@@ -99,6 +99,14 @@ namespace WebApplication1.Controllers
             return PartialView("_DatosCategoriaPartial");
         }
 
+        //GET: /Product/ObtenerComentarios
+        [HttpGet]
+        [Authorize]
+        public ActionResult ObtenerComentarios()
+        {
+            return PartialView("_ComentariosPartial");
+        }
+
         public ContentResult MostrarCategorias()
         {
             string tablaCategorias = "";

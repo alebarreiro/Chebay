@@ -1,0 +1,62 @@
+﻿<section id="seccion-comentarios">
+
+</section>
+<section id="seccion-menu">
+    <button onclick="agregarComentario()"> Agregar comentario </button>
+</section>
+<script id="comment-template" type="text/x-template">
+    {{#comentarios}}
+    {{>commentItem}}
+    {{/comentarios}}
+</script>
+
+<script id="commentItem" type="text/x-template">
+    <div class="comentario-Autor">
+        {{usuario}}
+    </div>
+    <div class="comentario-Text">
+        {{texto}}
+    </div>
+</script>
+
+<script type="text/javascript">
+    $(function() {
+        debugger;
+        var template = $('#comment-template').html();
+        var templateItem = $('#commentItem').html();
+        Mustache.parse(template);
+        var productId = $('.infoProducto-container').data("key");
+        var comentario = {
+            "usuario": "Un user",
+            "texto": "Hace click en agregar comentario"
+        }
+        var comentarios = [];
+        var viewObject = {
+            comentarios: comentarios
+        };
+        comentarios.push(comentario);
+        comentarios.push(comentario);
+        var rendered = Mustache.render(template, viewObject, { commentItem: templateItem });
+        $('#seccion-comentarios').html(rendered);
+
+        agregarComentario = function () {
+            debugger;
+            comentario = {
+                "usuario": "Otro user",
+                "texto": "Otro comentario"
+            };
+            console.log(templateItem);
+            var templateNuevoComentario = Mustache.render(templateItem, comentario);
+            $(templateNuevoComentario).appendTo('#seccion-comentarios').hide().slideDown();
+        };
+
+            //$.ajax({
+             //   url: '@Url.Action("obtenerComentarios", "Producto")/' + productId,
+              //  success: function(comentario) {
+               //     var html = template(comentario);
+                //    $('#auction-details').html(html);
+               // }
+            //}); 
+        //});
+    });
+</script>

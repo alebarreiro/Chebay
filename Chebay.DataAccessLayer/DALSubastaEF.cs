@@ -96,6 +96,18 @@ namespace DataAccessLayer
                                         select usr;
                     ret.usuario = qUserProducto.FirstOrDefault();
 
+                    var qImagenes = from img in context.imagenesproducto
+                                    where img.ProductoID == idProducto
+                                    select img;
+                    List<ImagenProducto> lip = qImagenes.ToList();
+                    if (ret.imagenes == null)
+                        ret.imagenes = new HashSet<ImagenProducto>();
+                    foreach (ImagenProducto ip in lip)
+                    {
+                        ret.imagenes.Add(ip);
+                    }
+
+
                     //AGREGAR VISITA DE PRODUCTO
                     if (idUsuario != null)
                     {
@@ -1042,7 +1054,6 @@ namespace DataAccessLayer
         #region atributos
         public void AgregarAtributo(Atributo a, string idTienda)
         {
-            /*
             try
             {
                 if (a == null)
@@ -1050,13 +1061,22 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from cat in context.categorias
-                                where cat.CategoriaID == a.categoria.CategoriaID
-                                select cat;
-                    Categoria father = query.FirstOrDefault();
-                    a.categoria = father;
-                    context.atributos.Add(a);
-                    context.SaveChanges();
+                    //Consulto si existe el atributo
+                    var qAtributo = from atr in context.atributos
+                                    where atr.AtributoID == a.AtributoID
+                                    select atr;
+                    if (qAtributo.Count() > 0)
+                    { //Modificar Atributo
+                        Atributo at = qAtributo.FirstOrDefault();
+                        at.etiqueta = a.etiqueta;
+                        at.valor = a.valor;
+                        context.SaveChanges();
+                    }
+                    else
+                    { //Agregar Atributo
+                        context.atributos.Add(a);
+                        context.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)
@@ -1064,62 +1084,20 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
-             */
         }
 
-        public void AgregarAtributos(List<Atributo> lAtributos, string idTienda)
+        public List<Atributo> ObtenerAtributos(long idProducto, string idTienda)
         {
-            /*   
-               try
-               {
-                   if (lAtributos == null)
-                       throw new Exception("Tiene que pasar una lista de atributos.");
-                   chequearTienda(idTienda);
-                   using (var context = ChebayDBContext.CreateTenant(idTienda))
-                   {
-                       foreach (Atributo a in lAtributos)
-                       {
-                           var query = from cat in context.categorias
-                                       where cat.CategoriaID == a.categoria.CategoriaID
-                                       select cat;
-                           Categoria father = query.FirstOrDefault();
-                           a.categoria = father;
-                           context.atributos.Add(a);
-                           context.SaveChanges();
-                       }
-                   }
-               }
-               catch (Exception e)
-               {
-                   Debug.WriteLine(e.Message);
-                   throw e;
-               }
-              */
-        }
-
-        public List<Atributo> ObtenerAtributos(long idCategoria, string idTienda)
-        {
-            return new List<Atributo>();
-            /*
             try
             {
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    List<Atributo> ret = new List<Atributo>();
-                    var qCat = from cat in context.categorias
-                               where cat.CategoriaID == idCategoria
-                               select cat;
-                    Categoria c = qCat.FirstOrDefault();
-                    while (c != null)
-                    {
-                        foreach (Atributo a in c.atributos)
-                        {
-                            ret.Add(a);
-                        }
-                        c = c.padre;
-                    }
-                    return ret;
+                    var qPrd = from prd in context.productos.Include("atributos")
+                               where prd.ProductoID == idProducto
+                               select prd;
+                    Producto p = qPrd.FirstOrDefault();
+                    return (List<Atributo>)p.atributos;
                 }
             }
             catch (Exception e)
@@ -1127,7 +1105,6 @@ namespace DataAccessLayer
                 Debug.WriteLine(e.Message);
                 throw e;
             }
-             */
         }
 
         public Atributo ObtenerAtributo(long idAtributo, string idTienda)
@@ -1161,29 +1138,6 @@ namespace DataAccessLayer
                                     where a.AtributoID == idAtributo
                                     select a;
                     context.atributos.Remove(qAtributo.FirstOrDefault());
-                    context.SaveChanges();
-                }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw e;
-            }
-        }
-
-        public void ModificarAtributo(Atributo a, string idTienda)
-        {
-            try
-            {
-                chequearTienda(idTienda);
-                using (var context = ChebayDBContext.CreateTenant(idTienda))
-                {
-                    var qAtributo = from atr in context.atributos
-                                    where atr.AtributoID == a.AtributoID
-                                    select atr;
-                    Atributo at = qAtributo.FirstOrDefault();
-                    at.etiqueta = a.etiqueta;
-                    at.valor = a.valor;
                     context.SaveChanges();
                 }
             }

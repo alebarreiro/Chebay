@@ -320,7 +320,7 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarFavorito()
         {
-            idal.AgregarFavorito(1, "userPrueba", urlTest);
+            idal.AgregarFavorito(1, "otroUserPrueba", urlTest);
         }
 
         [TestMethod]
@@ -329,11 +329,7 @@ namespace Chebay.DataAccessLayerTests
             idal.EliminarFavorito(1, "userPrueba", urlTest);
         }
 
-        [TestMethod]
-        public void ObtenerCantFavoritos()
-        {
-            idal.ObtenerCantFavoritos(1, urlTest);
-        }
+        
         
         
     }

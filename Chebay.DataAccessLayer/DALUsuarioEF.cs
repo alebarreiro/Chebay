@@ -240,11 +240,38 @@ namespace DataAccessLayer
                                  select clf;
                     Usuario u = qCalif.FirstOrDefault();
                     List<Calificacion> CalificacionesUsuario = u.calificacionesrecibidas.ToList();
-                    DataCalificacion ret = new DataCalificacion { promedio = 0, cantCalificaciones = 0 };
+                    DataCalificacion ret = new DataCalificacion 
+                    { 
+                        promedio = 0, 
+                        cantCalificaciones = 0,
+                        cant1 = 0,
+                        cant2 = 0,
+                        cant3 = 0,
+                        cant4 = 0,
+                        cant5 = 0
+                    };
                     double prom = 0;
                     foreach (Calificacion c in CalificacionesUsuario)
                     {
                         prom += c.puntaje;
+                        switch (c.puntaje)
+                        {
+                            case 1:
+                                ret.cant1++;
+                                break;
+                            case 2:
+                                ret.cant2++;
+                                break;
+                            case 3:
+                                ret.cant3++;
+                                break;
+                            case 4:
+                                ret.cant4++;
+                                break;
+                            case 5:
+                                ret.cant5++;
+                                break;
+                        }
                     }
                     if (CalificacionesUsuario.Count > 0)
                     {

@@ -97,13 +97,13 @@
 }
 
 .infoProducto-data{
-  width: 250px;
+  width: 270px;
   float: left;
   text-align: center;
 }
 
 .infoProducto-data-content{
-    padding: 20px 0px 20px 20px;
+    padding: 20px 5px 20px 5px;
 }
 
 .infoProducto-ofertas{
@@ -167,5 +167,22 @@
 
 .infoProducto-pane{
     margin: 20px;
+}
+
+.infoProducto-favorito{
+  position: absolute;
+  bottom: 0px;
+  margin: 5px 5px 5px 5px;
+  font-size: 28px;
+  cursor: pointer;
+  height: 40px;
+}
+
+.infoProducto-favText{
+  float: right;
+  margin-left: 15px;
+  font-size: 20px;
+  margin-bottom: 0px;
+  padding-top: 5px;
 }
 

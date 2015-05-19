@@ -2,6 +2,7 @@
     var Producto = ViewBag.InfoProducto;
     var nombreTienda = @Session["Tienda_Nombre"];
     int contador = 0;
+    var favoritos = Producto.favoritos;
 }
 
 <div class="infoProducto-container">
@@ -50,8 +51,8 @@
                     <div class="infoProducto-precioActual">
                        $ @Producto.precio_base_subasta <!-- Aca va a ir el precio actual (mayor oferta)-->
                     </div>
-                    <div class="product-item-countdown" data-id="@Producto.ProductoID">
-
+                    <div class="product-item-countdown" style="background: white; color:red; margin-top:20px" data-id="@Producto.ProductoID">
+                        @Producto.fecha_cierre
                     </div>     
                     <h3>
                         Oferta más alta
@@ -74,6 +75,14 @@
 
                     <hr>  
                     <button type="button" class="btn btn-success"> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
+                    <div class="infoProducto-favorito" onclick="marcarFavorito()">
+                        <div class="infoProd-favLeft" style="color: red; float:left">
+                            <i class="fa fa-heart-o" id="favorito"></i>
+                        </div>
+                        <div class="infoProducto-favText" data-id="0" id="favoritoText">
+                            0 Favoritos
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="infoProducto-ofertas">
@@ -151,6 +160,26 @@
     })
 
     $('#tablita').addClass('animated flash');
+
+    marcarFavorito = function () {
+        var $fav = $('#favorito'),
+            $favText = $('#favoritoText');
+        if ($fav.hasClass('.fa fa-heart')) {
+            //eliminar favorito
+            $fav.removeClass('.fa fa-heart');
+            $fav.addClass('.fa fa-heart-o');
+            var data = $favText.data("id") - 1;
+            $favText.data("id", data);
+            $favText.html(data + " Favoritos");
+        } else {
+            //agregar favorito
+            $fav.removeClass('.fa fa-heart-o');
+            $fav.addClass('.fa fa-heart');
+            var data = $favText.data("id") + 1;
+            $favText.data("id", data);
+            $favText.html(data + " Favoritos");
+        }
+    }
 </script>
 
 <style>
@@ -164,5 +193,10 @@
         width: auto;
         height: 360px;
         margin: auto;
+    }
+
+    .fa-star,
+    .fa-star-o{
+        color: #DAA520;
     }
 </style>

@@ -1,10 +1,16 @@
 ﻿@{
     var Producto = ViewBag.InfoProducto;
-    var nombreTienda = @Session["Tienda_Nombre"]; 
+    var nombreTienda = @Session["Tienda_Nombre"];
+    int contador = 0;
 }
 
 <div class="infoProducto-container">
     <div class="infoProducto-top">
+        <div class="infoProducto-nombre">
+            <h2>
+                @Producto.nombre
+            </h2>
+        </div>
         <div class="infoProducto-left">
             <div class="infoProducto-imgs">
                 @{
@@ -36,30 +42,115 @@
                         </a>
                     </div>
                 </div>
-            </div> 
+            </div>
         </div>
         <div class="module infoProducto-right">
             <div class="infoProducto-data">
                 <div class="infoProducto-data-content">
-                    DATOS
+                    <div class="infoProducto-precioActual">
+                       $ @Producto.precio_base_subasta <!-- Aca va a ir el precio actual (mayor oferta)-->
+                    </div>
+                    <div class="product-item-countdown" data-id="@Producto.ProductoID">
+
+                    </div>     
+                    <h3>
+                        Oferta más alta
+                    </h3>
+                    <h4>
+                        username
+                    </h4>
+                    <div class="infoProducto-nuevaOferta">
+                        <form class="form-inline">
+                            <div class="form-group">
+                                <label class="sr-only" for="exampleInputAmount">Cantidad</label>
+                                <div class="input-group" style="width: 120px">
+                                    <div class="input-group-addon">$</div>
+                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                </div>
+                            </div>
+                            <button type="submit" class="btn btn-primary">Ofertar!</button>
+                        </form>
+                    </div>
+
+                    <hr>  
+                    <button type="button" class="btn btn-success"> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
                 </div>
             </div>
             <div class="infoProducto-ofertas">
-                OFERTAS
+                <div class="infoProducto-ofertas-title">
+                    <h3>Últimas ofertas!</h3>
+                </div>
+                <div>
+                    <table class="table table-striped" id="tablita">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Usuario</th>
+                                <th>Oferta</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var dp in Producto.ofertas)
+                            {
+                                contador = contador + 1;
+                                <tr>
+                                    <th scope="row">@contador</th>
+                                    <td>@dp.UsuarioID</td>
+                                    <td>@dp.monto</td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
-    <div class="infoProducto-atributos">
-        ATRIBUTOS
+    <div class="infoProducto-tab">
+        <ul class="nav nav-tabs" role="tablist" id="myTab">
+            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Caracteristicas</a></li>
+            <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Comentarios</a></li>
+            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Comparar producto</a></li>
+            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Reviews</a></li>
+        </ul>
     </div>
 
-    <div class="infoProducto-comentarios">
-        COMENTARIOS
+    <div class="tab-content">
+        <div role="tabpanel" class="tab-pane active infoProducto-pane" id="home"> CARACTERISTICAS </div>
+        <div role="tabpanel" class="tab-pane infoProducto-pane" id="profile"> COMENTARIOS </div>
+        <div role="tabpanel" class="tab-pane infoProducto-pane" id="messages"> COMPARAR PRODUCTOS</div>
+        <div role="tabpanel" class="tab-pane infoProducto-pane" id="settings">
+            <ul class="infoProducto-stars">
+                <li>
+                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i>
+                    <span>(0)</span>
+                </li>
+                <li>
+                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i>
+                    <span>(0)</span>
+                </li>
+                <li>
+                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+                    <span>(0)</span>
+                </li>
+                <li>
+                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+                    <span>(0)</span>
+                </li>
+                <li>
+                    <i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+                    <span>(0)</span>
+                </li>
+            </ul>
+        </div>
     </div>
 </div>
 
 <script>
+    $(function () {
+        $('#myTab a:last').tab('show')
+    })
 
+    $('#tablita').addClass('animated flash');
 </script>
 
 <style>

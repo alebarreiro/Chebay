@@ -33,20 +33,29 @@ namespace DataAccessLayer
 
         //--COMENTARIO--
         void AgregarComentario(Comentario c, string idTienda);
+        Comentario ObtenerComentario(long idComentario, string idTienda);
+        List<Comentario> ObtenerComentarios(long idProducto, string idTienda);
+        List<Comentario> ObtenerComentarios(string idTienda);
         void EliminarComentario(long idComentario, string idTienda);
 
         //--FAVORITOS--
         void AgregarFavorito(long idProducto, string idUsuario, string idTienda);
+        bool EsFavorito(long idProducto, string idUsuario, string idTienda);
+        int ObtenerCantFavoritos(long idProducto, string idTienda);
         void EliminarFavorito(long idProducto, string idUsuario, string idTienda);
         
-        //--COMPRAR--
+        //--COMPRAS--
         void AgregarCompra(Compra c, string idTienda);
-        void EliminarCompra(long idCompra, string idTienda);
         Compra ObtenerCompra(long idCompra, string idTienda);
         List<Compra> ObtenerCompras(string idTienda);
+        void EliminarCompra(long idCompra, string idTienda);
 
-        //--OFERTAR--
+        //--OFERTAS--
         void OfertarProducto(Oferta o, string idTienda);
+        List<Oferta> ObtenerOfertas(int n, long idProducto, string idTienda);
+        List<Oferta> ObtenerOfertas(string idTienda);
+        Oferta ObtenerOferta(long idOferta, string idTienda);
+        void EliminarOferta(long idOferta, string idTienda);
 
         //--IMAGENES--
         void AgregarImagenProducto(ImagenProducto ip, string idTienda);

@@ -35,6 +35,7 @@ namespace DataAccessLayer
             }
         }
 
+        #region usuarios
         //--USUARIOS--
         public void AgregarUsuario(Usuario u, string idTienda)
         {
@@ -140,7 +141,9 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+        #endregion
 
+        #region calificaciones
         //--CALIFICACIONES--
         public void AgregarCalificacion(Calificacion c, string idTienda)
         {
@@ -258,12 +261,9 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+        #endregion
 
-        public double CalcBalance(string idUsuario, string idTienda)
-        {
-            return 0;
-        }
-
+        #region imagenes
         //--IMAGENES--
         public void AgregarImagenUsuario(ImagenUsuario iu, string idTienda)
         {
@@ -325,6 +325,7 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+        #endregion
     }
 } 
         

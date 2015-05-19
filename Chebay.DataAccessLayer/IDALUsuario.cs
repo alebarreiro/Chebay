@@ -23,18 +23,12 @@ namespace DataAccessLayer
         Calificacion ObtenerCalificacion(long idCalificacion, string idTienda);
         List<Calificacion> ObtenerCalificaciones(string idTienda);
         void EliminarCalificacion(long idCalificacion, string idTienda);
-
         DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda);
         
         //--IMAGENES--
         void AgregarImagenUsuario(ImagenUsuario iu, string idTienda);
         ImagenUsuario ObtenerImagenUsuario(string idUsuario, string idTienda);
         void EliminarImagenUsuario(string idUsuario, string idTienda);
-
-        //--TRANSACCIONES--
-        double CalcBalance(string idUsuario, string idTienda);
-
         
-                
     }
 }

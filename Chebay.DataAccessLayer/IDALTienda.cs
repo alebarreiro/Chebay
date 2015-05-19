@@ -41,6 +41,7 @@ namespace DataAccessLayer
         //--PERSONALIZACIÓN DE LA TIENDA--
         void PersonalizarTienda(string color, string idTienda);
         Personalizacion ObtenerPersonalizacionTienda(string idTienda);
+        void EliminarPersonalizacion(string idTienda);
 
         bool AutenticarAdministrador(string idAdministrador, string passwd);
         
@@ -54,6 +55,6 @@ namespace DataAccessLayer
         List<AtributoSesion> ObtenerAtributosSesion(string AdminID);
 
         //--REPORTES--
-        //void ObtenerReporte();
+        DataReporte ObtenerReporte(string idTienda);
     }
 }

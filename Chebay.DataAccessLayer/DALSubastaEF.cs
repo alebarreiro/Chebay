@@ -22,6 +22,7 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                    //Agrega el producto a la lista de publicados del usuario.
                     var qUser = from usr in context.usuarios
                                 where usr.UsuarioID == p.UsuarioID
                                 select usr;
@@ -29,6 +30,16 @@ namespace DataAccessLayer
                     if (u.publicados == null)
                         u.publicados = new HashSet<Producto>();
                     u.publicados.Add(p);
+                    
+                    //Agregar el producto a la lista de productos de la Categoria.
+                    var qCat = from cat in context.categorias
+                               where cat.CategoriaID == p.CategoriaID
+                               select cat;
+                    CategoriaSimple cs = (CategoriaSimple)qCat.FirstOrDefault();
+                    if (cs.productos == null)
+                        cs.productos = new HashSet<Producto>();
+                    cs.productos.Add(p);
+
                     context.productos.Add(p);
                     context.SaveChanges();
                 }
@@ -115,11 +126,13 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from c in context.categorias.Include("productos")
+                    var query = from c in context.categorias
+                                join p in context.productos on c.CategoriaID equals p.CategoriaID
                                 where c.CategoriaID == idCategoria
                                 select c;
-                    CategoriaSimple cs = (CategoriaSimple)query.FirstOrDefault();
-                    return cs.productos.ToList();
+                    
+                    //return cs.productos.ToList();
+                    return null;
                 }
             }
             catch (Exception e)
@@ -354,7 +367,10 @@ namespace DataAccessLayer
                     var qUsuario = from usr in context.usuarios
                                    where usr.UsuarioID == o.UsuarioID
                                    select usr;
-                    qUsuario.FirstOrDefault().ofertas.Add(o);
+                    Usuario u = qUsuario.FirstOrDefault();
+                    if (u.ofertas == null)
+                        u.ofertas = new HashSet<Oferta>();
+                    u.ofertas.Add(o);
 
                     //Agrego la oferta a la base.
                     context.ofertas.Add(o);

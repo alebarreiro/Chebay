@@ -17,8 +17,8 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
-        private static string urlTest = "TestURL";
-        private static string adminTest = "adminTestURL";
+        private static string urlTest = "uruFutbol";
+        private static string adminTest = "adminuruFutbol";
         private static IDALTienda it = new DALTiendaEF();
 
         [TestMethod]
@@ -50,6 +50,8 @@ namespace Chebay.DataAccessLayerTests
                 Debug.WriteLine("INICIO");
                 Debug.WriteLine("0.1. Elimino TestAdmin.");
                 it.EliminarAdministrador(adminTest);
+
+                it.EliminarPersonalizacion(urlTest);
                 Debug.WriteLine("\n0.2. Elimino TestURL.");
                 it.EliminarTienda(urlTest);
                 /*

@@ -48,6 +48,9 @@
   <ItemGroup>
     <Compile Include="DataTypes\DataCalificacion.cs" />
     <Compile Include="DataTypes\DataProducto.cs" />
+    <Compile Include="DataTypes\DataReporte.cs" />
+    <Compile Include="DataTypes\DataReporteTrans.cs" />
+    <Compile Include="DataTypes\DataReporteUsr.cs" />
     <Compile Include="Entities\Administrador.cs" />
     <Compile Include="Entities\Atributo.cs" />
     <Compile Include="Entities\AtributoSesion.cs" />

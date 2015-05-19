@@ -17,21 +17,21 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
-        private static string urlTest = "TestURL";
+        private static string urlTest = "uruFutbol";
         private IDALSubasta idal = new DALSubastaEF();
 
         [TestMethod]
         public void SuperTestSubasta()
         {
-             TestInicialSubasta();
+            TestInicialSubasta();
             AgregarProducto();
             AgregarComentario();
             OfertarProducto();
             ObtenerInfoProducto();
-            //ObtenerProductosCategoria();
+            ObtenerProductosCategoria();
             ObtenerProductosPorTerminar();
             AgregarFavorito();
-            //EliminarFavorito();
+            EliminarFavorito();
         }
 
         [TestMethod]
@@ -51,131 +51,121 @@ namespace Chebay.DataAccessLayerTests
             {
                 nombre = "Celular",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es un celular",
                 precio_base_subasta = 100,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(1993, 3, 27)
             };
             IDALTienda it = new DALTiendaEF();
-            CategoriaSimple cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Laptop",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es una Toshiba",
                 precio_base_subasta = 1000,
                 precio_compra = 3000,
                 fecha_cierre = new DateTime(2016, 3, 27)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Televisión",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es una Samsung",
                 precio_base_subasta = 750,
                 precio_compra = 3000,
                 fecha_cierre = new DateTime(2016, 9, 7)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Caballo",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es una yegua",
                 precio_base_subasta = 1000,
                 precio_compra = 20000,
                 fecha_cierre = new DateTime(2015, 5, 10)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Perro",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es una cocker",
                 precio_base_subasta = 30,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(2015, 5, 6)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Iguana",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es una iguana",
                 precio_base_subasta = 500,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(2015, 5, 12)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Gato",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es una siames",
                 precio_base_subasta = 70,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(2015, 5, 14)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Ratón",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es un ratón",
                 precio_base_subasta = 10,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(2015, 5, 6)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Vaca",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es un hereford",
                 precio_base_subasta = 1200,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(2015, 5, 16)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Toro",
                 UsuarioID = "userPrueba",
+                CategoriaID = 3,
                 descripcion = "Es un toro",
                 precio_base_subasta = 140,
                 precio_compra = 2000,
                 fecha_cierre = new DateTime(2015, 5, 16)
             };
-            cs = (CategoriaSimple)it.ObtenerCategoria(urlTest, 3);
-            p.categoria = cs;
             idal.AgregarProducto(p, urlTest);
             /*Producto ret = idal.ObtenerProducto(1, urlTest);
             Assert.AreEqual("Celular", p.nombre);

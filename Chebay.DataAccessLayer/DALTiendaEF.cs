@@ -126,7 +126,8 @@ namespace DataAccessLayer
                     Personalizacion p = new Personalizacion
                     {
                         PersonalizacionID = tienda.TiendaID,
-                        datos = "1"
+                        datos = "1",
+                        algoritmo = null
                     };
                     context.personalizaciones.Add(p);
                     context.tiendas.Add(tienda);
@@ -560,6 +561,28 @@ namespace DataAccessLayer
             }
         }
 
+        public void EliminarPersonalizacion(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    var qTienda = from tnd in context.personalizaciones
+                                  where tnd.PersonalizacionID == idTienda
+                                  select tnd;
+                    Personalizacion t = qTienda.FirstOrDefault();
+                    context.personalizaciones.Remove(t);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
         public void AgregarAtributoSesion(AtributoSesion AtributoS)
         {
             using (var context = ChebayDBPublic.CreatePublic())
@@ -758,6 +781,49 @@ namespace DataAccessLayer
                         if (t.administradores.Contains(a))
                             ret.Add(t);
                     }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public DataReporte ObtenerReporte(string idTienda)
+        {
+            try
+            {
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    DataReporte ret = new DataReporte();
+                    
+                    //REPORTE DE USUARIOS.
+                    ret.usuarios = new List<DataReporteUsr>();
+                    var qUsuarios = from usr in context.usuarios
+                                    orderby usr.fecha_ingreso
+                                    select usr;
+                    List<Usuario> lu = qUsuarios.ToList();
+                    ret.cantUsuarios = lu.Count;
+                    foreach (Usuario u in lu)
+                    {
+                        
+                    }
+
+
+                    //REPORTE DE TRANSACCIONES.
+                    ret.transacciones = new List<DataReporteTrans>();
+                    var qCompras = from cmp in context.compras
+                                   orderby cmp.fecha_compra
+                                   select cmp;
+                    List<Compra> lc = qCompras.ToList();
+                    ret.cantTransacciones = lc.Count;
+                    foreach (Compra c in lc)
+                    {
+
+                    }
+
                     return ret;
                 }
             }

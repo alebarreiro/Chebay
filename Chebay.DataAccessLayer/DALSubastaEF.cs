@@ -465,7 +465,7 @@ namespace DataAccessLayer
             }
         }
 
-        Comentario ObtenerComentario(long idComentario, string idTienda)
+        public Comentario ObtenerComentario(long idComentario, string idTienda)
         {
             try
             {
@@ -487,7 +487,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Comentario> ObtenerComentarios(long idProducto, string idTienda)
+        public List<Comentario> ObtenerComentarios(long idProducto, string idTienda)
         {
             try
             {
@@ -509,7 +509,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Comentario> ObtenerComentarios(string idTienda)
+        public List<Comentario> ObtenerComentarios(string idTienda)
         {
             try
             {
@@ -598,7 +598,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Oferta> ObtenerOfertas(int n, long idProducto, string idTienda)
+        public List<Oferta> ObtenerOfertas(int n, long idProducto, string idTienda)
         {
             try
             {
@@ -622,7 +622,7 @@ namespace DataAccessLayer
             }
         }
 
-        List<Oferta> ObtenerOfertas(string idTienda)
+        public List<Oferta> ObtenerOfertas(string idTienda)
         {
             try
             {
@@ -642,7 +642,7 @@ namespace DataAccessLayer
             }
         }
 
-        Oferta ObtenerOferta(long idOferta, string idTienda)
+        public Oferta ObtenerOferta(long idOferta, string idTienda)
         {
             try
             {
@@ -664,7 +664,7 @@ namespace DataAccessLayer
             }
         }
 
-        void EliminarOferta(long idOferta, string idTienda)
+        public void EliminarOferta(long idOferta, string idTienda)
         {
             try
             {
@@ -772,7 +772,7 @@ namespace DataAccessLayer
             }
         }
 
-        bool EsFavorito(long idProducto, string idUsuario, string idTienda)
+        public bool EsFavorito(long idProducto, string idUsuario, string idTienda)
         {
             try
             {
@@ -994,6 +994,162 @@ namespace DataAccessLayer
                                select img;
                     ImagenProducto ret = qImg.FirstOrDefault();
                     context.imagenesproducto.Remove(ret);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+        #endregion
+
+        #region atributos
+        public void AgregarAtributo(Atributo a, string idTienda)
+        {
+            /*
+            try
+            {
+                if (a == null)
+                    throw new Exception("Tiene que pasar un atributo.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var query = from cat in context.categorias
+                                where cat.CategoriaID == a.categoria.CategoriaID
+                                select cat;
+                    Categoria father = query.FirstOrDefault();
+                    a.categoria = father;
+                    context.atributos.Add(a);
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+             */
+        }
+
+        public void AgregarAtributos(List<Atributo> lAtributos, string idTienda)
+        {
+            /*   
+               try
+               {
+                   if (lAtributos == null)
+                       throw new Exception("Tiene que pasar una lista de atributos.");
+                   chequearTienda(idTienda);
+                   using (var context = ChebayDBContext.CreateTenant(idTienda))
+                   {
+                       foreach (Atributo a in lAtributos)
+                       {
+                           var query = from cat in context.categorias
+                                       where cat.CategoriaID == a.categoria.CategoriaID
+                                       select cat;
+                           Categoria father = query.FirstOrDefault();
+                           a.categoria = father;
+                           context.atributos.Add(a);
+                           context.SaveChanges();
+                       }
+                   }
+               }
+               catch (Exception e)
+               {
+                   Debug.WriteLine(e.Message);
+                   throw e;
+               }
+              */
+        }
+
+        public List<Atributo> ObtenerAtributos(long idCategoria, string idTienda)
+        {
+            return new List<Atributo>();
+            /*
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    List<Atributo> ret = new List<Atributo>();
+                    var qCat = from cat in context.categorias
+                               where cat.CategoriaID == idCategoria
+                               select cat;
+                    Categoria c = qCat.FirstOrDefault();
+                    while (c != null)
+                    {
+                        foreach (Atributo a in c.atributos)
+                        {
+                            ret.Add(a);
+                        }
+                        c = c.padre;
+                    }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+             */
+        }
+
+        public Atributo ObtenerAtributo(long idAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from a in context.atributos
+                                    where a.AtributoID == idAtributo
+                                    select a;
+                    return qAtributo.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void EliminarAtributo(long idAtributo, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from a in context.atributos
+                                    where a.AtributoID == idAtributo
+                                    select a;
+                    context.atributos.Remove(qAtributo.FirstOrDefault());
+                    context.SaveChanges();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public void ModificarAtributo(Atributo a, string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qAtributo = from atr in context.atributos
+                                    where atr.AtributoID == a.AtributoID
+                                    select atr;
+                    Atributo at = qAtributo.FirstOrDefault();
+                    at.etiqueta = a.etiqueta;
+                    at.valor = a.valor;
                     context.SaveChanges();
                 }
             }

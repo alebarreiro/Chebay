@@ -23,15 +23,16 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTestSubasta()
         {
-            TestInicialSubasta();
+            /*TestInicialSubasta();
             AgregarProducto();
             AgregarComentario();
             OfertarProducto();
             ObtenerInfoProducto();
             ObtenerProductosCategoria();
-            ObtenerProductosPorTerminar();
+            ObtenerProductosPorTerminar();*/
             AgregarFavorito();
-            EliminarFavorito();
+            ObtenerCantFavoritos();
+            //EliminarFavorito();
         }
 
         [TestMethod]
@@ -327,6 +328,13 @@ namespace Chebay.DataAccessLayerTests
         {
             idal.EliminarFavorito(1, "userPrueba", urlTest);
         }
+
+        [TestMethod]
+        public void ObtenerCantFavoritos()
+        {
+            idal.ObtenerCantFavoritos(1, urlTest);
+        }
+        
         
     }
 }

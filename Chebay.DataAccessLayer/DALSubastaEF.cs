@@ -807,6 +807,40 @@ namespace DataAccessLayer
             }
         }
 
+        public int ObtenerCantFavoritos(long idProducto, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == idProducto
+                                    select prd;
+                    Producto p = qProducto.FirstOrDefault();
+                    var qUsuario = from usr in context.usuarios.Include("favoritos")
+                                   select usr;
+                    List<Usuario> lu = qUsuario.ToList();
+                    int ret = 0;
+                    foreach (Usuario u in lu)
+                    {
+                        if (u.favoritos != null)
+                            if (u.favoritos.Contains(p))
+                                ret++;
+                    }
+                    Debug.WriteLine(ret);
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
         public void EliminarFavorito(long idProducto, string idUsuario, string idTienda)
         {
             try

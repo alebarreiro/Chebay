@@ -41,6 +41,7 @@ namespace DataAccessLayer
         //--FAVORITOS--
         void AgregarFavorito(long idProducto, string idUsuario, string idTienda);
         bool EsFavorito(long idProducto, string idUsuario, string idTienda);
+        int ObtenerCantFavoritos(long idProducto, string idTienda);
         void EliminarFavorito(long idProducto, string idUsuario, string idTienda);
         
         //--COMPRAS--

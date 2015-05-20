@@ -67,9 +67,15 @@ namespace DataAccessLayer
                     var query = from usr in context.usuarios
                                 where usr.UsuarioID == u .UsuarioID
                                 select usr;
-
                     Usuario user = query.FirstOrDefault();
-
+                    user.Apellido = u.Apellido;
+                    user.Nombre = u.Nombre;
+                    user.Ciudad = u.Ciudad;
+                    user.Pais = u.Pais;
+                    user.Direccion = u.Direccion;
+                    user.NumeroContacto = u.NumeroContacto;
+                    user.CodigoPostal = u.CodigoPostal;
+                    user.Email = u.Email;
                     context.SaveChanges();
                 }
             }

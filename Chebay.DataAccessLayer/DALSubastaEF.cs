@@ -25,24 +25,31 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
+                
                     //Agrega el producto a la lista de publicados del usuario.
                     var qUser = from usr in context.usuarios
                                 where usr.UsuarioID == p.UsuarioID
                                 select usr;
+                    if (qUser.Count() == 0)
+                        throw new Exception("No existe el usuario " + p.UsuarioID);
+
                     Usuario u = qUser.FirstOrDefault();
                     if (u.publicados == null)
                         u.publicados = new HashSet<Producto>();
                     u.publicados.Add(p);
-                    
+                
                     //Agregar el producto a la lista de productos de la Categoria.
                     var qCat = from cat in context.categorias
                                where cat.CategoriaID == p.CategoriaID
                                select cat;
+                    if (qCat.Count() == 0)
+                        throw new Exception("No existe la categoria " + p.CategoriaID);
+
                     CategoriaSimple cs = (CategoriaSimple)qCat.FirstOrDefault();
                     if (cs.productos == null)
                         cs.productos = new HashSet<Producto>();
                     cs.productos.Add(p);
-
+                
                     context.productos.Add(p);
                     context.SaveChanges();
                 }

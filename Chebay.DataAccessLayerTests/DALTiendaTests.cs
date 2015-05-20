@@ -17,8 +17,8 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
-        private static string urlTest = "uruFutbol";
-        private static string adminTest = "adminuruFutbol";
+        private static string urlTest = "MobileCenter";
+        private static string adminTest = "adminMC";
         private static IDALTienda it = new DALTiendaEF();
 
         [TestMethod]
@@ -27,12 +27,8 @@ namespace Chebay.DataAccessLayerTests
             Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();
-            AgregarCategoriaCompuesta();
-            AgregarCategoriaSimple();
-            AgregarCategorias();
-            ListarCategorias();
-            AgregarTipoAtributo();
-            ListarTipoAtributo();
+            AgregarVariasCategorias();
+            AgregarVariosTipoAtributo();
         }
 
         [TestMethod]
@@ -88,18 +84,21 @@ namespace Chebay.DataAccessLayerTests
             Debug.WriteLine("\n3. AgregarTienda");
             Debug.WriteLine("3.1. Crea tienda");
 
-            Tienda t = new Tienda();
-            t.TiendaID = urlTest;
-            t.nombre = "NombreTest";
-            t.descripcion = "DescTest";
-            t.administradores = new HashSet<Administrador>();
-            Debug.WriteLine("B");
+            Tienda t = new Tienda
+            {
+                TiendaID = urlTest,
+                nombre = urlTest,
+                descripcion = "Tienda de Celulares",
+                administradores = new HashSet<Administrador>()
+            };
+
             it.AgregarTienda(t, adminTest);
             Tienda ret = it.ObtenerTienda(urlTest);
+
             Assert.IsNotNull(ret);
             Assert.AreEqual(ret.TiendaID, urlTest);
-            Assert.AreEqual(ret.nombre, "NombreTest");
-            Assert.AreEqual(ret.descripcion, "DescTest");
+            Assert.AreEqual(ret.nombre, urlTest);
+            Assert.AreEqual(ret.descripcion, "Tienda de Celulares");
         }
 
         [TestMethod]
@@ -117,25 +116,6 @@ namespace Chebay.DataAccessLayerTests
             Assert.AreEqual(nuevaT.TiendaID, urlTest);
             Assert.AreEqual(nuevaT.nombre, "NombreTestNuevo");
             Assert.AreEqual(nuevaT.descripcion, "DescTestNueva");
-        }
-
-        [TestMethod]
-        [ExpectedException(typeof(Exception))]
-        public void ActualizarTienda_Inexistente()
-        {
-            Debug.WriteLine("\n4.2. Actualizar tienda inexistente.");
-            Tienda t = new Tienda();
-            t.TiendaID = "TestURL123";
-            t.nombre = "NombreTest";
-            t.descripcion = "DescTest";
-            it.ActualizarTienda(t);
-        }
-
-        [TestMethod]
-        public void ListarCategorias_Inicial()
-        {
-            List<Categoria> lc = it.ListarCategorias(urlTest);
-            Assert.AreEqual(1, lc.Count);
         }
 
         [TestMethod]
@@ -300,5 +280,186 @@ namespace Chebay.DataAccessLayerTests
             List<TipoAtributo> test = it.ListarTipoAtributo(urlTest);
             Assert.AreEqual(2, test.Count);
         }
+
+        [TestMethod]
+        public void AgregarVariasCategorias()
+        {
+            
+            CategoriaCompuesta father = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 1);
+            
+            //PRIMER NIVEL
+            Categoria c = new CategoriaCompuesta
+            {
+                Nombre = "Samsung",
+                padre = father,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c, urlTest);
+            CategoriaCompuesta cc = (CategoriaCompuesta)it.ObtenerCategoria(urlTest, 2);
+            Assert.AreEqual(cc.CategoriaID, 2);
+            Assert.AreEqual(cc.Nombre, "Samsung");
+
+            Categoria c2 = new CategoriaCompuesta
+            {
+                Nombre = "Windows",
+                padre = father,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c2, urlTest);
+
+            Categoria c3 = new CategoriaCompuesta
+            {
+                Nombre = "Apple",
+                padre = father,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c3, urlTest);
+
+            //SEGUNDO NIVEL
+                //WINDOWS
+            Categoria c21 = new CategoriaSimple
+            {
+                Nombre = "Lumia",
+                padre = (CategoriaCompuesta)c2,
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c21, urlTest);
+
+            Categoria c22 = new CategoriaSimple
+            {
+                Nombre = "Asha",
+                padre = (CategoriaCompuesta)c2,
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c22, urlTest);
+
+                //SAMSUNG
+            Categoria c11 = new CategoriaCompuesta
+            {
+                Nombre = "Galaxy",
+                padre = (CategoriaCompuesta)c,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c11, urlTest);
+
+            Categoria c111 = new CategoriaSimple
+            {
+                Nombre = "S",
+                padre = (CategoriaCompuesta)c11,
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c111, urlTest);
+
+            Categoria c112 = new CategoriaSimple
+            {
+                Nombre = "Note",
+                padre = (CategoriaCompuesta)c11,
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c112, urlTest);
+
+            Categoria c12 = new CategoriaSimple
+            {
+                Nombre = "Ace",
+                padre = (CategoriaCompuesta)c,
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c12, urlTest);
+
+                //APPLE
+            Categoria c31 = new CategoriaCompuesta
+            {
+                Nombre = "iPhone",
+                padre = (CategoriaCompuesta)c3,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c31, urlTest);
+
+            Categoria c311 = new CategoriaSimple
+            {
+                Nombre = "6",
+                padre = (CategoriaCompuesta)c31,
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c311, urlTest);
+
+            Categoria c312 = new CategoriaCompuesta
+            {
+                Nombre = "5",
+                padre = (CategoriaCompuesta)c31,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c312, urlTest);
+
+            Categoria c313 = new CategoriaCompuesta
+            {
+                Nombre = "4",
+                padre = (CategoriaCompuesta)c31,
+                hijas = new HashSet<Categoria>(),
+                tipoatributos = new HashSet<TipoAtributo>()
+            };
+            it.AgregarCategoria(c313, urlTest);
+        }
+
+        [TestMethod]
+        public void AgregarVariosTipoAtributo()
+        {
+            TipoAtributo ta = new TipoAtributo
+            {
+                TipoAtributoID = "Apple Pay",
+                tipodato = TipoDato.BOOL
+            };
+            it.AgregarTipoAtributo(ta, 4, urlTest);
+
+            ta = new TipoAtributo
+            {
+                TipoAtributoID = "Tamaño de la pantalla",
+                tipodato = TipoDato.FLOAT
+            };
+            it.AgregarTipoAtributo(ta, 1, urlTest);
+
+            ta = new TipoAtributo
+            {
+                TipoAtributoID = "Peso",
+                tipodato = TipoDato.INTEGER
+            };
+            it.AgregarTipoAtributo(ta, 1, urlTest);
+
+            ta = new TipoAtributo
+            {
+                TipoAtributoID = "Memoria de disco",
+                tipodato = TipoDato.INTEGER
+            };
+            it.AgregarTipoAtributo(ta, 1, urlTest);
+
+            ta = new TipoAtributo
+            {
+                TipoAtributoID = "Memoria RAM",
+                tipodato = TipoDato.INTEGER
+            };
+            it.AgregarTipoAtributo(ta, 1, urlTest);
+
+            ta = new TipoAtributo
+            {
+                TipoAtributoID = "Procesador",
+                tipodato = TipoDato.STRING
+            };
+            it.AgregarTipoAtributo(ta, 1, urlTest);
+
+            ta = new TipoAtributo
+            {
+                TipoAtributoID = "Sistema Operativo",
+                tipodato = TipoDato.INTEGER
+            };
+            it.AgregarTipoAtributo(ta, 1, urlTest);
+        }
+
+
     }
 }

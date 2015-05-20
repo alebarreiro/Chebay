@@ -16,6 +16,7 @@ namespace DataAccessLayer
         void ActualizarUsuario(Usuario u, string idTienda);
         Usuario ObtenerUsuario(string idUsuario, string idTienda);
         List<Usuario> ObtenerTodosUsuarios(string idTienda);
+        List<Usuario> ObtenerTodosUsuariosFull(string idTienda); //algorithm
         void EliminarUsuario(string idUsuario, string idTienda);
 
         //--CALIFICACIONES--

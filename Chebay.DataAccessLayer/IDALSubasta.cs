@@ -14,6 +14,7 @@ namespace DataAccessLayer
         //--PRODUCTO--
         void AgregarProducto(Producto p, string idTienda);
         Producto ObtenerProducto(long idProducto, string idTienda);
+        List<Producto> ObtenerTodosProductos(); //algorithm
         
         List<DataProducto> ObtenerProductosPersonalizados(string urlTienda); //Devuelve los últimos 10 productos publicados para el index.
         List<DataProducto> ObtenerProductosPorTerminar(int cantProductos, string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.

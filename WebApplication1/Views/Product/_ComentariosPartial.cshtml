@@ -90,8 +90,8 @@
                 var commentText = $('#comentarioValue').val();
                 comentario = {
                     "userId" : userId,
-                    "fechaVal": moment().format("DD MMM YYYY, HH:mm"),
-                    "fecha"   : moment().format("YYYY-MM-DD HH:mm:ss"),
+                    "fechaVal": moment().format("DD MMM YYYY, HH:mm"), //Para mostrar
+                    "fecha"   : moment().format("YYYY-MM-DD HH:mm:ss"), //Para guardar
                     "texto"   : commentText,
                     "prodId"  : productId
                 };

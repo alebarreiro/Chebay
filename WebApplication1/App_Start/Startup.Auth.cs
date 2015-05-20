@@ -57,23 +57,23 @@ namespace Frontoffice
 
 
             /* CREDENCIALES http://localhost:56094/ */
-
+            /*
             var x = new FacebookAuthenticationOptions();
             x.Scope.Add("email");
             x.AppId = "943741452344510";
             x.AppSecret = "c28a04ba9e2f30a8f0513014afa1b917";
 
             app.UseFacebookAuthentication(x);
-
+            */
             /* PARA CUANDO HAGAMOS DEPLOY A AZURE USAR ESTAS: */
-            /*
+            
             var x = new FacebookAuthenticationOptions();
             x.Scope.Add("email");
             x.AppId = "934307863287869";
             x.AppSecret = "b1c707f2a41b570dd32f6a010dd2efe8";
             
             app.UseFacebookAuthentication(x);
-            */
+            
 
             //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
             //{

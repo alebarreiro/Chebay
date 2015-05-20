@@ -42,7 +42,7 @@
                 </div>
             </div>
             <div class="product-item-footer">
-                <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre </div>
+                <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre.Date.ToString("yyyy-MM-dd HH:mm:ss") </div>
                 @if (User.Identity.IsAuthenticated) 
                 { 
                     <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)"> OFERTAR! </button>
@@ -99,13 +99,14 @@
         }
 
         //Para el manejo de los timers
-        $(document).ready(function(){
+        $(document).ready(function () {
+            debugger;
             var auctions = $([]);
             $('.product-item-countdown').each(function(){
                 var _this = $(this);
                 var auction = {
                     auctionId : _this.data('id'),
-                    endTime   : moment(_this.text(), "DD-MM-YYYY H:mm:ss"),
+                    endTime: moment(_this.text(), "YYYY-MM-DD HH:mm:ss"),
                     timeDiv   : _this
                 };
                 auctions.push(auction);

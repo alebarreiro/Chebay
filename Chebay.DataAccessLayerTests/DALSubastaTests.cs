@@ -411,7 +411,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Sofisticado celular, con excelentes prestaciones, Pantalla touchscreen, Cámara de foto 3.15 MP, MP3/MP4, Facebook, Correo electrónico, entre otras.",
                 precio_base_subasta = 250,
                 precio_compra = 3000,
-                fecha_cierre = new DateTime(2015, 6, 10)
+                fecha_cierre = new DateTime(2015,6,10   )
             };
             idal.AgregarProducto(p, urlTest);
 

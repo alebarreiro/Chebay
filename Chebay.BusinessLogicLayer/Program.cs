@@ -10,6 +10,8 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+            BLNotificaciones bl = new BLNotificaciones();
+            bl.sendEmailNotification();
         }
     }
 }

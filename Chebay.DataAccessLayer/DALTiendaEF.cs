@@ -548,7 +548,19 @@ namespace DataAccessLayer
                     var qCat = from cat in context.categorias.Include("tipoatributos")
                                where cat.CategoriaID == idCategoria
                                select cat;
-                    List<TipoAtributo> ret = qCat.FirstOrDefault().tipoatributos.ToList();
+                    if (qCat.Count() == 0)
+                        throw new Exception("No existe la categoria " + idCategoria);
+
+                    List<TipoAtributo> ret = new List<TipoAtributo>();
+                    Categoria c = qCat.FirstOrDefault();
+                    while (c != null)
+                    {
+                        Debug.WriteLine("A");
+                        ret.AddRange(c.tipoatributos.ToList());
+                        if (c.padre == null)
+                            Debug.WriteLine("PAPA NULL");
+                        c = c.padre;
+                    }
                     return ret;
                 }
             }

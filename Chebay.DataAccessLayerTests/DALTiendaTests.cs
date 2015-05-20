@@ -24,11 +24,11 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTest()
         {
-            Test0Inicial();
+            /*Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();
             AgregarVariasCategorias();
-            AgregarVariosTipoAtributo();
+            AgregarVariosTipoAtributo();*/
         }
 
         [TestMethod]
@@ -458,6 +458,13 @@ namespace Chebay.DataAccessLayerTests
                 tipodato = TipoDato.INTEGER
             };
             it.AgregarTipoAtributo(ta, 1, urlTest);
+        }
+
+        [TestMethod]
+        public void ListarVariosTipoAtributo()
+        {
+            List<TipoAtributo> test = it.ListarTipoAtributo(4,urlTest);
+            Assert.AreEqual(7, test.Count);
         }
 
 

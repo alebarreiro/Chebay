@@ -26,6 +26,14 @@ namespace WebApplication1.Controllers
             public long CatID { get; set; }
         }
 
+        public class DatosCrearComentario
+        {
+            public string userId { get; set; }
+            public DateTime fecha { get; set; }
+            public string texto { get; set; }
+            public long prodId { get; set; }
+        }
+
         // GET: Product
         [Authorize]
         public ActionResult Index()
@@ -213,6 +221,53 @@ namespace WebApplication1.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
+
+        //POST Producto/agregarComentario
+        [Authorize]
+        [HttpPost]
+        public JsonResult agregarComentario(DatosCrearComentario datos)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                Comentario c = new Comentario
+                {
+                    texto = datos.texto,
+                    fecha = datos.fecha,
+                    ProductoID = datos.prodId,
+                    UsuarioID = datos.userId
+                };
+                cS.AgregarComentario(c, tiendaId);
+                var result = new { Success = "True" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //GET Producto/obtenerJsonComentarios
+        [Authorize]
+        [HttpGet]
+        public JsonResult obtenerJsonComentarios(long prodId)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<Comentario> comentarios = cS.ObtenerComentarios(prodId, tiendaId);
+                var result = new { Success = "True", Comentarios=comentarios };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
 
         // GET: Product/Edit/5
         public ActionResult Edit(int id)

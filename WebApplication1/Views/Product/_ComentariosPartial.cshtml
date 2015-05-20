@@ -3,7 +3,7 @@
 </section>
 <section id="seccion-menu">
     <textarea class="form-control" rows="3" placeholder="Agrega tu comentario aquí" id="comentarioValue"></textarea>
-    <button class="btn btn-info commentBoton" onclick="agregarComentario()"> Agregar comentario </button>
+    <button class="btn btn-info commentBoton" id="agregarCommentButton" onclick="agregarComentario()"> Agregar comentario </button>
 </section>
 <script id="comment-template" type="text/x-template">
     {{#comentarios}}
@@ -17,12 +17,12 @@
         <div class="commentItem-Details">
             <div class="commentItem-Autor">
                 <span>
-                    {{usuario}}
+                    {{userId}}
                 </span>
             </div>
             <div class="commentItem-Fecha">
                 <span>
-                    {{fecha}}
+                    {{fechaVal}}
                 </span>
             </div>
         </div>
@@ -41,42 +41,83 @@
 
     var userId = "@Context.User.Identity.Name"
     var isAuth = "@User.Identity.IsAuthenticated"
+    var productId = $('.infoProducto-container').data("key");
 
     $(function() {
         debugger;
         var template = $('#comment-template').html();
         var templateItem = $('#commentItem').html();
-        Mustache.parse(template);
-        var productId = $('.infoProducto-container').data("key");
-        var comentario = {
-            "usuario": "Un user",
-            "fecha" : moment().format("DD MMM YYYY, HH:mm"),
-            "texto": "Hace click en agregar comentario"
-        }
         var comentarios = [];
-        var viewObject = {
-            comentarios: comentarios
-        };
-        comentarios.push(comentario);
-        comentarios.push(comentario);
-        var rendered = Mustache.render(template, viewObject, { commentItem: templateItem });
-        $('#seccion-comentarios').html(rendered);
+        Mustache.parse(template);
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonComentarios", "Product")",
+            data: {
+                prodId : productId
+            },
+            accept: 'application/json',
+            success: function (data) {
+                console.log(data);
+                if (data.Comentarios.length > 0) {
+                    $.each(data.Comentarios, function () {
+                        console.log(this);
+                        var fecha = parseInt(this.fecha.replace("/Date(", "").replace(")/", ""), 10);
+                        var comentario = {
+                            userId: this.UsuarioID,
+                            fechaVal: moment(fecha).format("DD MMM YYYY, HH:mm"),
+                            texto : this.texto
+                        }
+                        comentarios.push(comentario);
+                    });
+                    console.log(comentarios);
+                    var viewObject = {
+                        comentarios: comentarios
+                    };
+                    var rendered = Mustache.render(template, viewObject, { commentItem: templateItem });
+                    $('#seccion-comentarios').html(rendered);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
+        
 
         agregarComentario = function () {
             debugger;
-            var commentText = $('#comentarioValue').val();
-            comentario = {
-                "usuario": "Otro user",
-                "fecha"  : moment().format("DD MMM YYYY, HH:mm"),
-                "texto"  : commentText
-            };
-            var templateNuevoComentario = Mustache.render(templateItem, comentario);
-
-            //Efecto para el nuevo comentario
-            $(templateNuevoComentario).appendTo('#seccion-comentarios').hide().slideDown();
-            //Si esta activado el scrollbar bajamos hasta el nuevo comentario
-            $('#seccion-comentarios').animate({ scrollTop: $('#seccion-comentarios')[0].scrollHeight }, 1500);
-            $('#comentarioValue').val("");
+            if (isAuth) {
+                $("#agregarCommentButton").html("Agregar comentario <i class=\"fa fa-spinner fa-pulse\"></i>");
+                var commentText = $('#comentarioValue').val();
+                comentario = {
+                    "userId" : userId,
+                    "fechaVal": moment().format("DD MMM YYYY, HH:mm"),
+                    "fecha"   : moment().format("YYYY-MM-DD HH:mm:ss"),
+                    "texto"   : commentText,
+                    "prodId"  : productId
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("agregarComentario", "Product")",
+                    data: comentario,
+                    accept: 'application/json',
+                    success: function (response) {
+                        $("#agregarCommentButton").html("Agregar comentario");
+                        $('#comentarioValue').val("");
+                        var templateNuevoComentario = Mustache.render(templateItem, comentario);
+                        //Efecto para el nuevo comentario
+                        $(templateNuevoComentario).appendTo('#seccion-comentarios').hide().slideDown();
+                        //Si esta activado el scrollbar bajamos hasta el nuevo comentario
+                        $('#seccion-comentarios').animate({ scrollTop: $('#seccion-comentarios')[0].scrollHeight }, 1500);
+                    },
+                    error: function (error) {
+                        sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
+                        console.log(error);
+                    }
+                });
+            } else {
+                swal("Inicia sesión para comentar.");
+            }
         };
 
             //$.ajax({

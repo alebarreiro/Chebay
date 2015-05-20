@@ -7,6 +7,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Shared.DataTypes;
 
 namespace WebApplication1.Controllers
 {
@@ -15,6 +16,7 @@ namespace WebApplication1.Controllers
 
         IDALTienda cT = new DALTiendaEF();
         IDALSubasta cS = new DALSubastaEF();
+        IDALUsuario cU = new DALUsuarioEF();
 
         public class DatosCrearProducto
         {
@@ -267,7 +269,25 @@ namespace WebApplication1.Controllers
             }
         }
 
-
+        
+        //GET Producto/obtenerJsonCalificaciones
+        [Authorize]
+        [HttpGet]
+        public JsonResult obtenerJsonCalificaciones(string userId)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                DataCalificacion dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
+                var result = new { Success = "True", Calificaciones = dataCal };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
 
         // GET: Product/Edit/5
         public ActionResult Edit(int id)

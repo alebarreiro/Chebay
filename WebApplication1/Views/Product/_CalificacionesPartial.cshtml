@@ -1,0 +1,52 @@
+﻿<ul class="infoProducto-stars">
+    <li>
+        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i>
+        <span id="cal5Value">(0)</span>
+    </li>
+    <li>
+        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i>
+        <span id="cal4Value">(0)</span>
+    </li>
+    <li>
+        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+        <span id="cal3Value">(0)</span>
+    </li>
+    <li>
+        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+        <span id="cal2Value">(0)</span>
+    </li>
+    <li>
+        <i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+        <span id="cal1Value">(0)</span>
+    </li>
+</ul>
+
+<script>
+    $('#myTab a[href="#reviews"]').click(function (e) {
+        debugger;
+        var ownerUserId = $('.infoProducto-container').data("ownerid");
+        console.log("hola reviews " + ownerUserId);
+        $(this).tab('show');
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonCalificaciones", "Product")",
+            data: {
+                userId: ownerUserId
+            },
+            accept: 'application/json',
+            success: function (data) {
+                console.log(data);
+                $("#cal5Value").html("(" + data.Calificaciones.cant5 + ")");
+                $("#cal4Value").html("(" + data.Calificaciones.cant4 + ")");
+                $("#cal3Value").html("(" + data.Calificaciones.cant3 + ")");
+                $("#cal2Value").html("(" + data.Calificaciones.cant2 + ")");
+                $("#cal1Value").html("(" + data.Calificaciones.cant1 + ")");
+            },
+            error: function (error) {
+                console.log(error);
+                sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
+            }
+        });
+    });
+</script>

@@ -44,7 +44,6 @@
     var productId = $('.infoProducto-container').data("key");
 
     $(function() {
-        debugger;
         var template = $('#comment-template').html();
         var templateItem = $('#commentItem').html();
         var comentarios = [];
@@ -119,14 +118,5 @@
                 swal("Inicia sesión para comentar.");
             }
         };
-
-            //$.ajax({
-             //   url: '@Url.Action("obtenerComentarios", "Producto")/' + productId,
-        //  success: function(comentario) {
-        //     var html = template(comentario);
-        //    $('#auction-details').html(html);
-        // }
-        //});
-        //});
     });
 </script>

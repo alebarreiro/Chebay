@@ -5,7 +5,7 @@
     var favoritos = Producto.favoritos;
 }
 
-<div class="infoProducto-container" data-key="@Producto.ProductoID">
+<div class="infoProducto-container" data-key="@Producto.ProductoID" data-ownerid="@Producto.UsuarioID">
     <div class="infoProducto-top">
         <div class="infoProducto-nombre">
             <h2>
@@ -117,42 +117,21 @@
     </div>
     <div class="infoProducto-tab">
         <ul class="nav nav-tabs" role="tablist" id="myTab">
-            <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Caracteristicas</a></li>
+            <li role="presentation" class="active"><a href="#atributos" aria-controls="atributos" role="tab" data-toggle="tab">Caracteristicas</a></li>
             <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
             <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Comparar producto</a></li>
-            <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Reviews</a></li>
+            <li role="presentation"><a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Reviews</a></li>
         </ul>
     </div>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="home"> CARACTERISTICAS </div>
+        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos"> Atributos del producto </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
             @Html.Partial("_ComentariosPartial")
         </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="messages"> COMPARAR PRODUCTOS</div>
-        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="settings">
-            <ul class="infoProducto-stars">
-                <li>
-                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i>
-                    <span>(0)</span>
-                </li>
-                <li>
-                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i>
-                    <span>(0)</span>
-                </li>
-                <li>
-                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
-                    <span>(0)</span>
-                </li>
-                <li>
-                    <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
-                    <span>(0)</span>
-                </li>
-                <li>
-                    <i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
-                    <span>(0)</span>
-                </li>
-            </ul>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="reviews">
+            @Html.Partial("_CalificacionesPartial")
         </div>
     </div>
 </div>
@@ -168,7 +147,7 @@
     };
 
     $(function () {
-        $('#myTab a:last').tab('show')
+        $('#myTab a[href="#atributos"]').tab('show')
     })
 
     $(document).ready(function () {
@@ -241,12 +220,6 @@
             }
         }
     }
-    
-    //$('#myTab a[href="#comentarios"]').click(function (e) {
-     //   console.log("hola");
-      //  $('#comentarios').load("@Url.Action("obtenerComentarios","Product")");
-       // $(this).tab('show');
-    //}); 
 </script>
 
 <style>

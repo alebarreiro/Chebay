@@ -329,6 +329,7 @@
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Product\_ComentariosPartial.cshtml" />
     <Content Include="Views\Product\_ReviewsPartial.cshtml" />
+    <Content Include="Views\Product\_CalificacionesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

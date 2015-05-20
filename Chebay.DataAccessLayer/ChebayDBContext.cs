@@ -171,12 +171,12 @@ namespace DataAccessLayer
         
         public void seed()
         {
-            Usuario[] users = { new Usuario{ UsuarioID="Dexter" },
-                                new Usuario{ UsuarioID="Newton" },
-                                new Usuario{ UsuarioID="Cantor" },
-                                new Usuario{ UsuarioID="Arquimedes" },
-                                new Usuario{ UsuarioID="Gauss"},
-                                new Usuario{ UsuarioID="Euler"}
+            Usuario[] users = { new Usuario{ UsuarioID="Dexter", fecha_ingreso= DateTime.Now},
+                                new Usuario{ UsuarioID="Newton", fecha_ingreso= DateTime.Now },
+                                new Usuario{ UsuarioID="Cantor" , fecha_ingreso= DateTime.Now},
+                                new Usuario{ UsuarioID="Arquimedes", fecha_ingreso= DateTime.Now},
+                                new Usuario{ UsuarioID="Gauss", fecha_ingreso= DateTime.Now},
+                                new Usuario{ UsuarioID="Euler", fecha_ingreso= DateTime.Now}
                               };
             foreach (var u in users)
             {
@@ -238,6 +238,7 @@ namespace DataAccessLayer
                             where a.AtributoID == 1
                             select a;
                 p.atributos.Add(atrib.First());
+                productos.Add(p);
             }
 
             SaveChanges();

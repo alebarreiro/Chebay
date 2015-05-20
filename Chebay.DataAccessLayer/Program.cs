@@ -17,11 +17,18 @@ namespace DataAccessLayer
         {
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
             //ChebayDBPublic.ProvidePublicSchema();
-            /*ChebayDBContext.ProvisionTenant("DB4.2");
-            using (var context = ChebayDBContext.CreateTenant("DB4.2"))
+            //ChebayDBContext.ProvisionTenant("DB4.3");
+            using (var context = ChebayDBContext.CreateTenant("DB4.3"))
             {
-                //context.seed();
-            }*/
+                //context.seed(); 
+                Comentario[] com = { new Comentario { fecha = DateTime.Now, ProductoID = 1, texto = "comentario1 de dexter", UsuarioID = "Dexter" },
+                                   new Comentario { fecha = DateTime.Now, ProductoID = 1, texto = "comentario2 de dexter", UsuarioID = "Dexter" }};
+                foreach (var c in com)
+                {
+                    context.comentarios.Add(c);
+                }
+                context.SaveChanges();
+            }
             //using (var context = ChebayDBPublic.CreatePublic())
             //    {
             //       context.Seed();

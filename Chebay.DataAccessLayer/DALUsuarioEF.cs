@@ -127,6 +127,35 @@ namespace DataAccessLayer
             }
         }
 
+        public List<Usuario> ObtenerTodosUsuariosFull(string idTienda)
+        {
+            try
+            {
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var query = from usr in context.usuarios
+                                .Include("publicados")
+                                .Include("visitas")
+                                .Include("favoritos")
+                                .Include("ofertas")
+                                .Include("compras")
+                                .Include("comentarios")
+                                .Include("calificaciones")
+                                .Include("calificacionesrecibidas")
+                                select usr;
+                    return query.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+
+
         public void EliminarUsuario(string idUsuario, string idTienda)
         {
             try

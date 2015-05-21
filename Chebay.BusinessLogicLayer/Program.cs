@@ -14,6 +14,7 @@ namespace Chebay.BusinessLogicLayer
         static void Main(string[] args)
         {
             int n = 5; //Cantidad de segundos a esperar.
+
             BLNotificaciones bl = new BLNotificaciones();
             IDALSubasta ip = new DALSubastaEF();
             IDALTienda it = new DALTiendaEF();

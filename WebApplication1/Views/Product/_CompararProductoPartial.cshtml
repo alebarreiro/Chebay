@@ -1,15 +1,43 @@
-﻿
-@{
+﻿@{
     var Categoria = ViewData["Categoria"];
 }
 
-<div>
-    Tenemos el producto con categoria:
-     @Categoria
+
+<section id="seccion-compararProductos">
+
+</section>
+
+<script id="comparar-template" type="text/x-template">
+    <h4> Productos similares: </h4>
+    <ul class="list-group">
+        {{#Productos}}
+        <li class="list-group-item" style="cursor: pointer;" data-prodid="{{ProductoID}}" onclick="cargarModal({{ProductoID}})">{{nombre}}</li>
+        {{/Productos}}
+    </ul>
+</script>
+
+<!-- Modal Comparar productos -->
+<div class="modal fade bs-example-modal-lg" id="modalCompararProd" tabindex="-1" role="dialog" aria-labelledby="modalCompararProd" aria-hidden="true">
+    <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+            </div>
+            <div class="modal-body" id="compararProductosBody">
+                ...
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 
 <script>
+    var productId = $('.infoProducto-container').data("key");
+
     $('#myTab a[href="#comparar"]').click(function (e) {
         debugger;
         var prodId = $('.infoProducto-container').data("key");
@@ -24,6 +52,14 @@
             accept: 'application/json',
             success: function (data) {
                 console.log(data);
+                var templateComparar = $('#comparar-template').html();
+                Mustache.parse(templateComparar);
+                var viewObject = {
+                    Productos: data.Productos
+                };
+                var rendered = Mustache.render(templateComparar, viewObject);
+                $('#seccion-compararProductos').html(rendered);
+
             },
             error: function (error) {
                 console.log(error);
@@ -31,4 +67,9 @@
             }
         });
     });
+
+    cargarModal = function (prodId2) {
+        $('#modalCompararProd').modal('show');
+        $('#compararProductosBody').html("Queres comparar " + prodId2 + " con " + productId)
+    }
 </script>

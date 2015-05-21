@@ -648,7 +648,7 @@ namespace DataAccessLayer
                     if (lo.Count < n)
                         return lo;
                     else
-                        return (List<Oferta>)lo.Take(n);
+                        return lo.GetRange(0,n);
                 }
             }
             catch (Exception e)

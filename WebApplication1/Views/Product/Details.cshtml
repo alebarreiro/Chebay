@@ -92,28 +92,10 @@
                 <div class="infoProducto-ofertas-title">
                     <h3>Últimas ofertas!</h3>
                 </div>
-                <div>
-                    <table class="table table-striped" id="tablita">
-                        <thead>
-                            <tr>
-                                <th>#</th>
-                                <th>Usuario</th>
-                                <th>Oferta</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            @foreach (var dp in Producto.ofertas)
-                            {
-                                contador = contador + 1;
-                                <tr>
-                                    <th scope="row">@contador</th>
-                                    <td>@dp.UsuarioID</td>
-                                    <td>@dp.monto</td>
-                                </tr>
-                            }
-                        </tbody>
-                    </table>
-                </div>
+                <!-- Ultimas ofertas, renderizado con ofertas-template -->
+                <section id="ultimasOfertas">
+
+                </section>
             </div>
         </div>
     </div>
@@ -140,6 +122,28 @@
     </div>
 </div>
 
+<!-- template de las ofertas usando mustache.js -->
+<script id="ofertas-template" type="text/x-template">
+    <table class="table table-striped" id="tablita">
+        <thead>
+            <tr>
+                <th>#</th>
+                <th>Usuario</th>
+                <th>Oferta</th>
+            </tr>
+        </thead>
+        <tbody>
+            {{#Ofertas}}
+            <tr data-ofertaid="{{OfertaID}}">
+                <th scope="row">{{index}}</th>
+                <td>{{UsuarioID}}</td>
+                <td>{{monto}}</td>
+            </tr>
+            {{/Ofertas}}
+        </tbody>
+    </table>
+</script>
+
 <script>
     var prodId = "@Producto.ProductoID"
     var userId = "@Context.User.Identity.Name"
@@ -154,11 +158,8 @@
         $('#myTab a[href="#atributos"]').tab('show')
     })
 
-    $('#tablita').addClass('animated flash');
-
     $(document).ready(function () {
         //Para el manejo del timer
-        debugger;
         $cowntdown = $(".infoProducto-cowndown");
         var auction = {
             auctionId: $cowntdown.data("id"),
@@ -189,6 +190,9 @@
             }, interval);
         }
 
+        //Para obtener las mejores ofertas y actualizar los precios
+        obtenerMejoresOfertas();
+
         //Para obtener la cantidad de favoritos y si el usuario lo tiene como favorito
         $.ajax({
             type: "GET",
@@ -208,7 +212,6 @@
                 console.log(error);
             }
         });
-
     });
 
     $(function () {
@@ -219,28 +222,8 @@
             if (productId == prodId) {
                 //Oferta sobre el producto que estoy viendo
                 //Voy a buscar las mejores ofertas
-                
-                $.ajax({
-                    type: "GET",
-                    url: "@Url.Action("obtenerJsonMejoresOfertas", "Product")",
-                    data: {
-                        N: 4,
-                        productId: productId,
-                    },
-                    accept: 'application/json',
-                    success: function (data) {
-                        console.log(data);
-                        $("#userGanador").text(userId);
-                        $("#precioMayorSubasta").text(newBid);
-                    },
-                    error: function (error) {
-                        console.log(error);
-                    }
-                });
-                
-
+                obtenerMejoresOfertas();
             }
-            console.log("hola " + productId + " desde ver info prod");
         };
 
         // Start the connection
@@ -305,6 +288,44 @@
                 });
             }
         }
+    }
+
+    obtenerMejoresOfertas = function() {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonMejoresOfertas", "Product")",
+            data: {
+            N: 6,
+            productId: productId,
+            },
+            accept: 'application/json',
+            success: function (data) {
+                debugger;
+                console.log(data);
+                if (data.Ofertas.length > 0) {
+                    var contador = 0;
+                    $.each(data.Ofertas, function () {
+                        contador++;
+                        this.index = contador;
+                    });
+                    var templateOfertas = $('#ofertas-template').html();
+                    Mustache.parse(templateOfertas);
+                    var viewObject = {
+                        Ofertas: data.Ofertas
+                    };
+                    var rendered = Mustache.render(templateOfertas, viewObject);
+                    $('#ultimasOfertas').html(rendered);
+                    $('#ultimasOfertas').removeClass().addClass('flash' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
+                        $(this).removeClass();
+                    });
+                }
+                $("#userGanador").text(data.Ofertas[0].UsuarioID);
+                $("#precioMayorSubasta").text(data.Ofertas[0].monto);
+            },
+            error: function (error) {
+                console.warn(error);
+            }
+        });
     }
 </script>
 

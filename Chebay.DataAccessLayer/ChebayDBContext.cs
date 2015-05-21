@@ -356,26 +356,22 @@ namespace DataAccessLayer
 
         public void Seed()
         {
-            Tienda[] tiendasarray = {   new Tienda{ TiendaID="mytienda1", nombre="SuperTienda", descripcion="Dale", administradores=new List<Administrador>()},
-                                        new Tienda{ TiendaID="mytienda2", nombre= "MegaTienda", descripcion= "Ok", administradores=new List<Administrador>()},
-                                        new Tienda{ TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>()},
-                                        new Tienda{ TiendaID="uruFutbol", nombre= "Fobal-CAP", descripcion= "Fobal uruguayo", administradores=new List<Administrador>()}
-
+            Tienda[] tiendasarray = {   
+                                        new Tienda { TiendaID="LaTienda", nombre= "LaTienda", descripcion= "LaTienda.com", administradores=new List<Administrador>() },
+                                        new Tienda { TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>() },
+                                        new Tienda { TiendaID="uruFutbol", nombre= "Fobal-CAP", descripcion= "Fobal uruguayo", administradores=new List<Administrador>() },
+                                        new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() }
                                     };
-            Administrador[] admins = { new Administrador { AdministradorID= "Admin1", password= "admin1"},
-                                       new Administrador { AdministradorID= "Admin2", password= "admin2"},
-                                       new Administrador { AdministradorID= "Admin3", password= "admin3"},
-                                       new Administrador { AdministradorID= "Admin4", password= "admin4"},
-                                       new Administrador { AdministradorID= "test@chebay.com", password= "#!Chebay1"}
-
+            Administrador[] admins = { 
+                                       new Administrador { AdministradorID= "test@chebay.com", password= "#!Chebay1", tiendas = new List<Tienda>() },
+                                       new Administrador { AdministradorID= "adminTestURL", password= "pass123", tiendas = new List<Tienda>() },
+                                       new Administrador { AdministradorID= "adminuruFutbol", password= "pass123", tiendas = new List<Tienda>() },
+                                       new Administrador { AdministradorID= "adminMobileCenter", password= "pass123", tiendas = new List<Tienda>() }                               
                                      };
-            foreach (var a in admins)
+
+            for (int i = 0; i < admins.Count(); i++ )
             {
-                a.tiendas = new List<Tienda>();
-                foreach (var t in tiendasarray){               
-                    a.tiendas.Add(t);
-                    //t.administradores.Add(a);
-                }
+                admins[i].tiendas.Add(tiendasarray[i]);
             }
 
             foreach (var a in admins)
@@ -391,8 +387,8 @@ namespace DataAccessLayer
             SaveChanges();
 
             AtributoSesion[] atrs = { 
-                                        new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="Algo", Datos="unvalordealgo"},
-                                        new AtributoSesion{AdministradorID="Admin1", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
+                                        new AtributoSesion{AdministradorID="adminTestURL", AtributoSesionID="Algo", Datos="unvalordealgo"},
+                                        new AtributoSesion{AdministradorID="adminTestURL", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
                                     };
             foreach (var a in atrs)
             {

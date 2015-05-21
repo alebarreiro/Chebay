@@ -23,7 +23,29 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTestSubasta()
         {
-            AgregarVariosProducto();
+
+            Producto p = new Producto
+            {
+                nombre = "ProductoPorVencer",
+                UsuarioID = "aleTest",
+                CategoriaID = 5,
+                descripcion = "Esta nuevo y esta bloqueado para ANTEL.",
+                precio_base_subasta = 99,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 21, 18, 22, 40)
+            };
+            idal.AgregarProducto(p, urlTest);
+
+            Oferta o = new Oferta
+            {
+                esFinal = false,
+                monto = 120,
+                ProductoID = 29,
+                UsuarioID = "Recoba"
+            };
+            idal.OfertarProducto(o, urlTest);
+            
+            //AgregarVariosProducto();
             
             /*TestInicialSubasta();
             AgregarProducto();
@@ -211,11 +233,11 @@ namespace Chebay.DataAccessLayerTests
             {
                 esFinal = false,
                 monto = 120,
-                ProductoID = 3,
-                UsuarioID = "userPrueba"
+                ProductoID = 18,
+                UsuarioID = "Recoba"
             };
             idal.OfertarProducto(o, urlTest);
-            o = new Oferta
+/*            o = new Oferta
             {
                 esFinal = false,
                 monto = 160,
@@ -230,7 +252,7 @@ namespace Chebay.DataAccessLayerTests
                 ProductoID = 3,
                 UsuarioID = "userPrueba"
             };
-            idal.OfertarProducto(o, urlTest);
+            idal.OfertarProducto(o, urlTest);*/
         }
 
         [TestMethod]
@@ -342,6 +364,20 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarVariosProducto()
         {
+
+            Producto p = new Producto
+            {
+                nombre = "Lumio 8000",
+                UsuarioID = "aleTest",
+                CategoriaID = 5,
+                descripcion = "Esta nuevo y esta bloqueado para ANTEL.",
+                precio_base_subasta = 99,
+                precio_compra = 2000,
+                fecha_cierre = new DateTime(2015, 5, 21, 17, 45, 00)
+            };
+            idal.AgregarProducto(p, urlTest);
+
+            /*
             Producto p = new Producto
             {
                 nombre = "Lumia 710",
@@ -551,7 +587,7 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 6, 10)
             };
             idal.AgregarProducto(p, urlTest);
-
+            */
         }
     }
 }

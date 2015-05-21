@@ -51,6 +51,7 @@ namespace DataAccessLayer
         void AgregarCompra(Compra c, string idTienda);
         Compra ObtenerCompra(long idCompra, string idTienda);
         List<Compra> ObtenerCompras(string idTienda);
+        bool ExisteCompra(long idProducto, string idTienda);
         void EliminarCompra(long idCompra, string idTienda);
 
         //--OFERTAS--

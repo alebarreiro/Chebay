@@ -477,7 +477,6 @@ namespace DataAccessLayer
         
         public List<Producto> ObtenerProductosVencidos(DateTime ini, DateTime fin, string idTienda)
         {
-            //COMENTARIOS, OFERTAS, CATEGORIAS, ATRIBUTOS
             try
             {
                 if (ini == null || fin == null)
@@ -982,7 +981,17 @@ namespace DataAccessLayer
                     Producto p = qProducto.FirstOrDefault();
                     p.fecha_cierre = DateTime.Now;
 
+                    var qUsuario = from usr in context.usuarios
+                                   where usr.UsuarioID == c.UsuarioID
+                                   select usr;
+                    Usuario u = qUsuario.FirstOrDefault();
+
+                    p.compra = c;
+                    if (u.compras == null)
+                        u.compras = new HashSet<Compra>();
+                    u.compras.Add(c);
                     context.compras.Add(c);
+                    
                     context.SaveChanges();
                 }
             }
@@ -1050,6 +1059,30 @@ namespace DataAccessLayer
                     var qCompra = from cmp in context.compras
                                   select cmp;
                     return qCompra.ToList();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public bool ExisteCompra(long idProducto, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de una compra.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qCompra = from cmp in context.compras
+                                  where cmp.ProductoID == idProducto
+                                  select cmp;
+                    if (qCompra.Count() > 0)
+                        return true;
+                    return false;
                 }
             }
             catch (Exception e)

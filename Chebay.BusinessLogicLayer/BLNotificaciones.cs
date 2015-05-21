@@ -18,19 +18,18 @@ namespace Chebay.BusinessLogicLayer
         private static string user = "azure_404bbab86c074fcb579f83fa985aa1c2@azure.com";
         private static string pass = "piEe0cK4Fn5uIIo";
 
-        public void sendEmailNotification(Compra c)
+        public void sendEmailNotification(Compra c, Producto p)
         {
             // Create the email object first, then add the properties.
             var myMessage = new SendGridMessage();
 
             // Add the message properties.
             myMessage.From = new MailAddress("no-reply@chebay.com");
-
+            
             // Add multiple addresses to the To field.
             List<String> recipients = new List<String>
             {
-                @"Alejandro Añón <alejandroanonmallo@gmail.com>",
-                @"Alejandro Barreiro <alebarreiro91@gmail.com>",
+                @"Alejandro Añón <" + c.UsuarioID + ">",
             };
 
             myMessage.AddTo(recipients);
@@ -38,7 +37,7 @@ namespace Chebay.BusinessLogicLayer
             myMessage.Subject = "¡Has ganado una subasta en Chebay!";
 
             //Add the HTML and Text bodies
-            myMessage.Html = "<p>Has ganado una subasta sobre el producto + ProductoID + ProductoNombre!</p>";
+            myMessage.Html = "<p>Has ganado una subasta sobre el producto " + c.ProductoID + " " + p.nombre + "!</p>";
             //myMessage.Text = "Hello World plain text!";
 
             // Create credentials, specifying your user name and password.

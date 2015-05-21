@@ -24,7 +24,10 @@ namespace DataAccessLayer
         List<Tienda> ListarTiendas(string idAdmin);
         List<Tienda> ObtenerTodasTiendas();
         bool ExisteTienda(string idTienda);
-        
+
+        int ObtenerCantPaginas(string idAdmin);
+        List<Tienda> ObtenerPagina(int n, string idAdmin);
+
         //--CATEGORIAS--
         void AgregarCategorias(List<Categoria> lCategorias, string idTienda);
         void AgregarCategoria(Categoria c, string idTienda);

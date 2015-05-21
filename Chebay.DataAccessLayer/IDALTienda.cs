@@ -43,7 +43,7 @@ namespace DataAccessLayer
         void EliminarTipoAtributo(string idTipoAtributo, string idTienda);
 
         //--PERSONALIZACIÓN DE LA TIENDA--
-        void PersonalizarTienda(string color, string idTienda);
+        void PersonalizarTienda(Personalizacion p, string idTienda);
         Personalizacion ObtenerPersonalizacionTienda(string idTienda);
         void EliminarPersonalizacion(string idTienda);
 

@@ -683,7 +683,7 @@ namespace DataAccessLayer
 
         #region personalizacion
         //--PERSONALIZACIÓN DE LA TIENDA--
-        public void PersonalizarTienda(string color, string idTienda)
+        public void PersonalizarTienda(Personalizacion pr, string idTienda)
         {
             try
             {
@@ -695,19 +695,13 @@ namespace DataAccessLayer
                                 select per;
                     if (qPers.Count() == 0) //Si no existe personalización.
                     {
-                        Personalizacion p = new Personalizacion
-                        {
-                            datos = color,
-                            PersonalizacionID = idTienda,
-                            algoritmo = null
-                        };
-                        context.personalizaciones.Add(p);
+                        context.personalizaciones.Add(pr);
                         context.SaveChanges();
                     }
                     else //Si existe y hay que actualizarla.
                     {
                         Personalizacion p = qPers.FirstOrDefault();
-                        p.datos = color;
+                        p.datos = pr.datos;
                         context.SaveChanges();
                     }
                 }

@@ -332,7 +332,7 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void ObtenerProductosCategoria()
         {
-            List<Producto> prods = idal.ObtenerProductosCategoria(1, urlTest);
+            List<Producto> prods = idal.ObtenerProductosCategoria(5, urlTest);
             foreach (Producto p in prods)
             {
                 Debug.WriteLine(p.nombre);
@@ -589,5 +589,13 @@ namespace Chebay.DataAccessLayerTests
             idal.AgregarProducto(p, urlTest);
             */
         }
+
+        [TestMethod]
+        public void ObtenerProdcutosCategorias()
+        {
+            Debug.WriteLine(idal.ObtenerProductosCategoria(5, urlTest).Count);
+        }
+
+    
     }
 }

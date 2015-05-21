@@ -61,6 +61,22 @@ namespace DataAccessLayer
             }
         }
 
+        public List<Producto> ObtenerTodosProductos(string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                var query = from p in context.productos
+                                .Include("usuario")
+                                .Include("categoria")
+                                .Include("visitas")
+                                .Include("favoritos")
+                                .Include("ofertas")
+                                .Include("comentarios")
+                            select p;
+                return query.ToList();
+            }
+        }
+
         public Producto ObtenerProducto(long idProducto, string idTienda)
         {
             try

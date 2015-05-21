@@ -7,13 +7,14 @@ using DataAccessLayer;
 using Shared.Entities;
 using System.Diagnostics;
 using Microsoft.AspNet.Identity;
+using System.Threading.Tasks;
 
 namespace Chebay.BackofficeIdentity.Controllers
 {
 
     public class DatosVerTienda
     {
-        public string idTienda { get; set; }
+        public string tienda { get; set; }
     }
 
     public class DatosPersonalizacion
@@ -105,11 +106,13 @@ namespace Chebay.BackofficeIdentity.Controllers
             }
             file.Close();
             AtributoSesion atr = new AtributoSesion();
-            atr.Datos = datos.idTienda;
+            atr.Datos = datos.tienda;
             atr.AdministradorID = User.Identity.Name;
             atr.AtributoSesionID = "tienda";
             idalTienda.AgregarAtributoSesion(atr);
-            return Content(pagina);
+            Debug.WriteLine("La tienda seleccionada es : " + datos.tienda);
+            var result = new { Success = "True", Message = pagina };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         // GET: /Tienda/CrearTienda
@@ -484,6 +487,60 @@ namespace Chebay.BackofficeIdentity.Controllers
             return Content(pagina);
         }
 
+        //POST: /Tienda/SubirAlgoritmoRecomendacion
+        [HttpPost]
+        public ActionResult SubirAlgoritmoRecomendacion()
+        {
+            try
+            {
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        Debug.WriteLine("El nombre del archivo subido es : " + fileContent.FileName);
+                        //var fileName = Path.GetFileName(file);
+                        //var path = Path.Combine(Server.MapPath("~/App_Data/Images"), fileName);
+                        //using (var fileStream = File.Create(path))
+                        //{
+                          //  stream.CopyTo(fileStream);
+                        //}
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return Json(new
+                {
+                    Success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new
+            {
+                Success = true
+            }, JsonRequestBehavior.AllowGet);
+            
+        }
+
+        // GET: /Tienda/AlgoritmoRecomendacion
+        [HttpGet]
+        public ActionResult AlgoritmoRecomendacion()
+        {
+            string pagina = "";
+            string line = "";
+            System.IO.StreamReader file =
+                new System.IO.StreamReader(AppDomain.CurrentDomain.BaseDirectory + "/Views/Tienda/AlgoritmoRecomendacion.cshtml");
+            while ((line = file.ReadLine()) != null)
+            {
+                pagina += line;
+            }
+            file.Close();
+            return Content(pagina);
+        }
 
         // GET: /Tienda/CrearPersonalizacion
         [HttpGet]

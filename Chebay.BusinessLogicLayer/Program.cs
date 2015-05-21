@@ -52,7 +52,6 @@ namespace Chebay.BusinessLogicLayer
                         //Si fue comprado por Subasta.
                         else if (p.ofertas != null)
                         {
-                            Debug.WriteLine("El producto fue ofertado pero aun no comprado.");
                             //Obtengo la oferta ganadora.
                             Oferta o = ip.ObtenerOfertaGanadora(p.ProductoID, idTienda);
 

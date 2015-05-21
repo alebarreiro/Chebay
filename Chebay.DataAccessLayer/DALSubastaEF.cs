@@ -474,6 +474,32 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+        
+        public List<Producto> ObtenerProductosVencidos(DateTime ini, DateTime fin, string idTienda)
+        {
+            //COMENTARIOS, OFERTAS, CATEGORIAS, ATRIBUTOS
+            try
+            {
+                if (ini == null || fin == null)
+                    throw new Exception("La fecha de inicio o de fin es inválida.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qProducto = from prod in context.productos.Include("ofertas")
+                                    where prod.fecha_cierre > ini
+                                    where prod.fecha_cierre < fin
+                                    select prod;
+                    List<Producto> ret = qProducto.ToList();
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+        
         #endregion
 
         #region comentarios
@@ -689,6 +715,29 @@ namespace DataAccessLayer
                 {
                     var qOfertas = from of in context.ofertas
                                    where of.OfertaID == idOferta
+                                   select of;
+                    return qOfertas.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public Oferta ObtenerOfertaGanadora (long idProducto, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var qOfertas = from of in context.ofertas
+                                   where of.ProductoID == idProducto
+                                   orderby of.monto descending
                                    select of;
                     return qOfertas.FirstOrDefault();
                 }

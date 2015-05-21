@@ -18,7 +18,7 @@ namespace DataAccessLayer
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
             //ChebayDBPublic.ProvidePublicSchema();
             //ChebayDBContext.ProvisionTenant("DB4.3");
-            using (var context = ChebayDBContext.CreateTenant("DB4.3"))
+            /*using (var context = ChebayDBContext.CreateTenant("DB4.3"))
             {
                 //context.seed(); 
                 Comentario[] com = { new Comentario { fecha = DateTime.Now, ProductoID = 1, texto = "comentario1 de dexter", UsuarioID = "Dexter" },
@@ -28,7 +28,7 @@ namespace DataAccessLayer
                     context.comentarios.Add(c);
                 }
                 context.SaveChanges();
-            }
+            }*/
             //using (var context = ChebayDBPublic.CreatePublic())
             //    {
             //       context.Seed();

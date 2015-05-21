@@ -9,6 +9,7 @@ using System.Net.Mail;
 using SendGrid;
 using System.Diagnostics;
 using System.Net.Mime;
+using Shared.Entities;
 
 namespace Chebay.BusinessLogicLayer
 {
@@ -17,7 +18,7 @@ namespace Chebay.BusinessLogicLayer
         private static string user = "azure_404bbab86c074fcb579f83fa985aa1c2@azure.com";
         private static string pass = "piEe0cK4Fn5uIIo";
 
-        public void sendEmailNotification()
+        public void sendEmailNotification(Compra c)
         {
             // Create the email object first, then add the properties.
             var myMessage = new SendGridMessage();

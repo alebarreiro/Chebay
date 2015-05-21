@@ -39,7 +39,7 @@ namespace Shared.Entities
         public virtual ICollection<Usuario> visitas { get; set; }
         public virtual ICollection<Usuario> favoritos { get; set; }
         public virtual ICollection<Oferta> ofertas { get; set; }
-        public virtual ICollection<Comentario> comentarios { get; set; } //nuevo
+        public virtual ICollection<Comentario> comentarios { get; set; }
         public virtual ICollection<Atributo> atributos { get; set; }
         public virtual ICollection<ImagenProducto> imagenes { get; set; }
         

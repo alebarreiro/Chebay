@@ -290,11 +290,51 @@ function DirigirCrearTienda() {
 }
 
 function DirigirVerTiendas() {
+    cargandoDatos("#container");
     $.ajax({
         url: '/Tienda/VerTiendas',
         type: 'GET',
         success: function (data, textStatus, jqxhr) {
+            finCargandoDatos("#container");
             $('#container').html(data);
+        }
+    });
+}
+
+function subirArchivoAlgoritmoRecomendacion() {
+    var files = $("#archivo").get(0).files;
+    var data = new FormData();
+    for (i = 0; i < files.length; i++) {
+        data.append("file" + i, files[i]);
+    }
+    cargandoDatos("#contenidoCrearTienda");
+    $.ajax({
+        type: "POST",
+        url: "/Tienda/SubirAlgoritmoRecomendacion",
+        contentType: false,
+        processData: false,
+        data: data,
+        success: function (data, textStatus, jqxhr) {
+                $.notify({
+                    // options
+                    message: '<strong>Se ha subido el algoritmo de recomendación correctamente.</strong>'
+                }, {
+                    // settings
+                    type: 'success'
+                });
+                finCargandoDatos("#contenidoCrearTienda");
+                $("#archivo").val('');
+            
+        },
+        error: function (data, textStatus, jqxhr) {
+            $.notify({
+                // options
+                message: '<strong>Error al subir el algoritmo de recomendación.</strong>'
+            }, {
+                // settings
+                type: 'danger'
+            });
+            finCargandoDatos("#contenidoCrearTienda");
         }
     });
 }
@@ -304,6 +344,7 @@ function seleccionarTienda(tienda) {
         tienda: tienda
     };
 
+    cargandoDatos("#container");
     $.ajax({
         url: '/Tienda/VerTienda',
         type: 'POST',
@@ -311,7 +352,7 @@ function seleccionarTienda(tienda) {
         contentType: 'application/json; charset=UTF-8',
         data: JSON.stringify(datos),
         success: function (data, textStatus, jqxhr) {
-            $('#container').html(data);
+            $('#container').html(data["Message"]);
         }
     });
 }
@@ -454,6 +495,38 @@ function mostrarPopover(categoria, nombre) {
     $("#" + categoria).popover(options);
     $("#" + categoria).popover('show');
 
+}
+
+function algoritmoRecomendacion() {
+    if (!tiendaCreada) {
+        $.notify({
+            // options
+            message: '<strong>Debes ingresar los datos generales de la tienda para poder subir el algoritmo de recomendación.</strong>'
+        }, {
+            // settings
+            type: 'danger'
+        });
+    }
+    else {
+        $.ajax({
+            url: '/Tienda/AlgoritmoRecomendacion',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#contenidoCrearTienda').html(data);
+            }
+        });
+    }
+
+}
+
+function algoritmoRecomendacionVerTienda() {
+    $.ajax({
+        url: '/Tienda/AlgoritmoRecomendacion',
+        type: 'GET',
+        success: function (data, textStatus, jqxhr) {
+            $('#contenidoCrearTienda').html(data);
+        }
+    });
 }
 
 function crearPersonalizacion() {

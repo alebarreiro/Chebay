@@ -14,17 +14,19 @@ namespace DataAccessLayer
         //--PRODUCTO--
         void AgregarProducto(Producto p, string idTienda);
         Producto ObtenerProducto(long idProducto, string idTienda);
+        List<Producto> ObtenerTodosProductos(string idTienda); //algorithm
         
         List<DataProducto> ObtenerProductosPersonalizados(string urlTienda); //Devuelve los últimos 10 productos publicados para el index.
         List<DataProducto> ObtenerProductosPorTerminar(int cantProductos, string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.
         List<DataProducto> ObtenerProductosBuscados(string searchTerm, string urlTienda);
 
-        List<Producto> ObtenerProductosCategoria(long idCategoria, string idTienda);//FALTA IMPLEMENTAR
+        List<Producto> ObtenerProductosCategoria(long idCategoria, string idTienda);
         
         Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario);
 
         //--ATRIBUTOS--
         void AgregarAtributo(Atributo a, string idTienda);
+        void AgregarAtributo(List<Atributo> la, string idTienda);
         List<Atributo> ObtenerAtributos(long idProducto, string idTienda);
         Atributo ObtenerAtributo(long idAtributo, string idTienda);
         void EliminarAtributo(long idAtributo, string idTienda);
@@ -57,7 +59,7 @@ namespace DataAccessLayer
 
         //--IMAGENES--
         void AgregarImagenProducto(ImagenProducto ip, string idTienda);
-        ImagenProducto ObtenerImagenProducto(long idProducto, string idTienda);
+        List<ImagenProducto> ObtenerImagenProducto(long idProducto, string idTienda);
         void EliminarImagenProducto(long idProducto, string idTienda);
 
 

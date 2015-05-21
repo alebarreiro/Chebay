@@ -24,6 +24,9 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTest()
         {
+
+            Debug.WriteLine(it.ObtenerCantPaginas("adminMC"));
+            Debug.WriteLine(it.ObtenerPagina(1,"adminMC").Count);
             /*Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();
@@ -388,20 +391,18 @@ namespace Chebay.DataAccessLayerTests
             };
             it.AgregarCategoria(c311, urlTest);
 
-            Categoria c312 = new CategoriaCompuesta
+            Categoria c312 = new CategoriaSimple
             {
                 Nombre = "5",
                 padre = (CategoriaCompuesta)c31,
-                hijas = new HashSet<Categoria>(),
                 tipoatributos = new HashSet<TipoAtributo>()
             };
             it.AgregarCategoria(c312, urlTest);
 
-            Categoria c313 = new CategoriaCompuesta
+            Categoria c313 = new CategoriaSimple
             {
                 Nombre = "4",
                 padre = (CategoriaCompuesta)c31,
-                hijas = new HashSet<Categoria>(),
                 tipoatributos = new HashSet<TipoAtributo>()
             };
             it.AgregarCategoria(c313, urlTest);

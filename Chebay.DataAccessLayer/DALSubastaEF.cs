@@ -61,6 +61,22 @@ namespace DataAccessLayer
             }
         }
 
+        public List<Producto> ObtenerTodosProductos(string idTienda)
+        {
+            using (var context = ChebayDBContext.CreateTenant(idTienda))
+            {
+                var query = from p in context.productos
+                                .Include("usuario")
+                                .Include("categoria")
+                                .Include("visitas")
+                                .Include("favoritos")
+                                .Include("ofertas")
+                                .Include("comentarios")
+                            select p;
+                return query.ToList();
+            }
+        }
+
         public Producto ObtenerProducto(long idProducto, string idTienda)
         {
             try
@@ -196,13 +212,11 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from c in context.categorias
-                                join p in context.productos on c.CategoriaID equals p.CategoriaID
-                                where c.CategoriaID == idCategoria
-                                select c;
-                    
-                    //return cs.productos.ToList();
-                    return null;
+                    var qProd = from p in context.productos.Include("atributos")
+                                where p.CategoriaID == idCategoria
+                                select p;
+                    List<Producto> ret = qProd.ToList();
+                    return ret;
                 }
             }
             catch (Exception e)
@@ -631,7 +645,10 @@ namespace DataAccessLayer
                                    orderby of.monto descending
                                    select of;
                     List<Oferta> lo = qOfertas.ToList();
-                    return (List<Oferta>)lo.Take(n);
+                    if (lo.Count < n)
+                        return lo;
+                    else
+                        return lo.GetRange(0,n);
                 }
             }
             catch (Exception e)
@@ -1014,7 +1031,7 @@ namespace DataAccessLayer
             }
         }
 
-        public ImagenProducto ObtenerImagenProducto(long idProducto, string idTienda)
+        public List<ImagenProducto> ObtenerImagenProducto(long idProducto, string idTienda)
         {
             try
             {
@@ -1024,7 +1041,7 @@ namespace DataAccessLayer
                     var qImg = from img in context.imagenesproducto
                                where img.ProductoID == idProducto
                                select img;
-                    ImagenProducto ret = qImg.FirstOrDefault();
+                    List<ImagenProducto> ret = qImg.ToList();
                     return ret;
                 }
             }
@@ -1059,6 +1076,43 @@ namespace DataAccessLayer
         #endregion
 
         #region atributos
+        public void AgregarAtributo(List<Atributo> lAtributos, string idTienda)
+        {
+               try
+               {
+                   if (lAtributos == null)
+                       throw new Exception("Tiene que pasar una lista de atributos.");
+                   chequearTienda(idTienda);
+                   using (var context = ChebayDBContext.CreateTenant(idTienda))
+                   {
+                       foreach (Atributo a in lAtributos)
+                       {
+                           //Consulto si existe el atributo
+                           var qAtributo = from atr in context.atributos
+                                           where atr.AtributoID == a.AtributoID
+                                           select atr;
+                           if (qAtributo.Count() > 0)
+                           { //Modificar Atributo
+                               Atributo at = qAtributo.FirstOrDefault();
+                               at.etiqueta = a.etiqueta;
+                               at.valor = a.valor;
+                               context.SaveChanges();
+                           }
+                           else
+                           { //Agregar Atributo
+                               context.atributos.Add(a);
+                               context.SaveChanges();
+                           }
+                       }
+                   }
+               }
+               catch (Exception e)
+               {
+                   Debug.WriteLine(e.Message);
+                   throw e;
+               }
+        }
+
         public void AgregarAtributo(Atributo a, string idTienda)
         {
             try

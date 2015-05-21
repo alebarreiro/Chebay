@@ -309,6 +309,70 @@ namespace DataAccessLayer
             return true;
         }
 
+        public int ObtenerCantPaginas(string idAdmin)
+        {
+            try
+            {
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    //Chequeo que exista el administrador
+                    var qAdmin = from adm in context.administradores
+                                 where adm.AdministradorID == idAdmin
+                                 select adm;
+                    if (qAdmin.Count() == 0)
+                        throw new Exception("No existe el administrador " + idAdmin);
+
+                    Administrador a = qAdmin.FirstOrDefault();
+
+                    var qTiendas = from tnd in context.tiendas.Include("administradores")
+                                   select tnd;
+                    int ret = 0;
+                    List<Tienda> aux = qTiendas.ToList();
+                    foreach (Tienda t in aux)
+                    {
+                        if (t.administradores.Contains(a))
+                            ret++;
+                    }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+
+        public List<Tienda> ObtenerPagina(int n, string idAdmin)
+        {
+            try
+            {
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    //Chequeo que exista el administrador
+                    var qAdmin = from adm in context.administradores.Include("tiendas")
+                                 where adm.AdministradorID == idAdmin
+                                 select adm;
+                    if (qAdmin.Count() == 0)
+                        throw new Exception("No existe el administrador " + idAdmin);
+
+                    Administrador a = qAdmin.FirstOrDefault();
+                    return (List<Tienda>)a.tiendas.Skip((n-1)*8).Take(8);
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
+        private int min(int a, int b)
+        {
+            if (a < b)
+                return a;
+            return b;
+        }
+
         #endregion
 
         #region categorias

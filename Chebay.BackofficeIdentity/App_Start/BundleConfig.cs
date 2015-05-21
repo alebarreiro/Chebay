@@ -35,6 +35,7 @@ namespace Chebay.BackofficeIdentity
                         "~/Content/bootstrap-theme.css",
                         "~/Content/bootstrap.css",
                         "~/Content/Estilos.css",
+                        "~/Content/styles.css",
                         "~/Content/bootstrap.min.css",
                         "~/Content/animate.css"
                 ));

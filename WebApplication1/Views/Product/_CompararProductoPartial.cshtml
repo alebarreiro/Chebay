@@ -1,0 +1,34 @@
+﻿
+@{
+    var Categoria = ViewData["Categoria"];
+}
+
+<div>
+    Tenemos el producto con categoria:
+     @Categoria
+</div>
+
+
+<script>
+    $('#myTab a[href="#comparar"]').click(function (e) {
+        debugger;
+        var prodId = $('.infoProducto-container').data("key");
+        var catId = "@Categoria"
+        $(this).tab('show');
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonProductosCategoria", "Product")",
+            data: {
+                catId : catId
+            },
+            accept: 'application/json',
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (error) {
+                console.log(error);
+                sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
+            }
+        });
+    });
+</script>

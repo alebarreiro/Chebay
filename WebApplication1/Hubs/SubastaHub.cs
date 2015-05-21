@@ -12,10 +12,10 @@ namespace WebApplication1.Hubs
 {
     public class SubastaHub : Hub
     {
+        IDALSubasta controladorSubasta = new DALSubastaEF();
 
         public void PlaceNewBid(int productId, int newBid, bool _esFinal, string userId, string tienda)
         {
-            IDALSubasta controladorSubasta = new DALSubastaEF();
 
             Oferta o = new Oferta { 
                 esFinal = _esFinal,

@@ -2,6 +2,8 @@
 @{
     ViewBag.Title = "Home Page";
     var productos = ViewBag.productos;
+    var usuario = @Context.User.Identity.Name;
+    var tienda = @Session["Tienda_Nombre"].ToString();
 }
 
 
@@ -45,7 +47,7 @@
                 <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre.Date.ToString("yyyy-MM-dd HH:mm:ss") </div>
                 @if (User.Identity.IsAuthenticated) 
                 { 
-                    <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID)"> OFERTAR! </button>
+                    <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID, '@usuario','@tienda');"> OFERTAR! </button>
                 }
                 else
                 {
@@ -82,62 +84,59 @@
         // Start the connection
         $.connection.hub.start();
 
-        //current user
-        var usuario = "@Context.User.Identity.Name"
-        var tienda = "@Session["Tienda_Nombre"].ToString()"
-        console.log(usuario);
         // Client methods
-        onNewBidClick = function (id) {
+        onNewBidClick = function (id, usuario, tienda) {
+            debugger;
             var productId = id,
               bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
             //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
             proxy.server.placeNewBid(productId, bidToPost, false, usuario, tienda);
         };
 
-        incrementOffer = function(id) {
-            $('#bidValue-' + id).text( parseInt($('#bidValue-' + id).text(), 10) + 1);
+        incrementOffer = function (id) {
+            $('#bidValue-' + id).text(parseInt($('#bidValue-' + id).text(), 10) + 1);
         }
+    });
 
-        //Para el manejo de los timers
-        $(document).ready(function () {
-            debugger;
-            var auctions = $([]);
-            $('.product-item-countdown').each(function(){
-                var _this = $(this);
-                var auction = {
-                    auctionId : _this.data('id'),
-                    endTime: moment(_this.text(), "YYYY-MM-DD HH:mm:ss"),
-                    timeDiv   : _this
-                };
-                auctions.push(auction);
-            });
+    //Para el manejo de los timers
+    $(document).ready(function () {
+        debugger;
+        var auctions = $([]);
+        $('.product-item-countdown').each(function () {
+            var _this = $(this);
+            var auction = {
+                auctionId: _this.data('id'),
+                endTime: moment(_this.text(), "YYYY-MM-DD HH:mm:ss"),
+                timeDiv: _this
+            };
+            auctions.push(auction);
+        });
 
-            auctions.each(function(){
-                var that = this;
-                var finishTime   = that.endTime,
-                    duration     = moment.duration(finishTime.diff(moment())),
-                    interval     = 1000;
-                console.log("Al producto " + this.auctionId + " le faltan: "); console.log(duration);
-                if (duration._milliseconds <= 0) {
-                    that.timeDiv.text("EXPIRED!")
-                } else {
-                  that.currentInterval = setInterval(function(){
-                      duration = moment.duration(finishTime.diff(moment()));
-                        if (duration._milliseconds <= 0) {
-                            console.log(duration);
-                            that.timeDiv.text("EXPIRED!");
-                            clearInterval(that.currentInterval);
-                        } else {
-                            var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),
-                                minutes = duration.minutes() < 10 ? '0' + duration.minutes() : duration.minutes(),
-                                seconds = duration.seconds() < 10 ? '0' + duration.seconds() : duration.seconds(),
-                                days = duration.days() > 0 ? duration.days() +"d" : "",
-                                months = duration.months() > 0 ? duration.months() +"m" : "";
-                            that.timeDiv.text(months + " " + days + " " + hours + ":" + minutes + ":" + seconds)
-                        }
-                    }, interval);
-                }
-            });
+        auctions.each(function () {
+            var that = this;
+            var finishTime = that.endTime,
+                duration = moment.duration(finishTime.diff(moment())),
+                interval = 1000;
+            console.log("Al producto " + this.auctionId + " le faltan: "); console.log(duration);
+            if (duration._milliseconds <= 0) {
+                that.timeDiv.text("EXPIRED!")
+            } else {
+                that.currentInterval = setInterval(function () {
+                    duration = moment.duration(finishTime.diff(moment()));
+                    if (duration._milliseconds <= 0) {
+                        console.log(duration);
+                        that.timeDiv.text("EXPIRED!");
+                        clearInterval(that.currentInterval);
+                    } else {
+                        var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),
+                            minutes = duration.minutes() < 10 ? '0' + duration.minutes() : duration.minutes(),
+                            seconds = duration.seconds() < 10 ? '0' + duration.seconds() : duration.seconds(),
+                            days = duration.days() > 0 ? duration.days() + "d" : "",
+                            months = duration.months() > 0 ? duration.months() + "m" : "";
+                        that.timeDiv.text(months + " " + days + " " + hours + ":" + minutes + ":" + seconds)
+                    }
+                }, interval);
+            }
         });
     });
 </script>

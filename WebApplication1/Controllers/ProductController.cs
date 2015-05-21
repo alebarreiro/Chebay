@@ -271,7 +271,6 @@ namespace WebApplication1.Controllers
 
         
         //GET Producto/obtenerJsonCalificaciones
-        [Authorize]
         [HttpGet]
         public JsonResult obtenerJsonCalificaciones(string userId)
         {
@@ -280,6 +279,42 @@ namespace WebApplication1.Controllers
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 DataCalificacion dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
                 var result = new { Success = "True", Calificaciones = dataCal };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //GET Producto/obtenerJsonCalificaciones
+        [HttpGet]
+        public JsonResult obtenerJsonProductosCategoria(long catId)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
+                var result = new { Success = "True", Productos = prods };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        //GET Producto/obtenerJsonMejoresOfertas
+        [HttpGet]
+        public JsonResult obtenerJsonMejoresOfertas(int N, long productId)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<Oferta> ofertas = cS.ObtenerOfertas(N, productId, tiendaId);
+                var result = new { Success = "True", Ofertas = ofertas };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

@@ -330,6 +330,7 @@
     <Content Include="Views\Product\_ComentariosPartial.cshtml" />
     <Content Include="Views\Product\_ReviewsPartial.cshtml" />
     <Content Include="Views\Product\_CalificacionesPartial.cshtml" />
+    <Content Include="Views\Product\_CompararProductoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -49,16 +49,18 @@
             <div class="infoProducto-data">
                 <div class="infoProducto-data-content">
                     <div class="infoProducto-precioActual">
-                       $ @Producto.precio_base_subasta <!-- Aca va a ir el precio actual (mayor oferta)-->
+                       $ <span id="precioMayorSubasta"> @Producto.precio_base_subasta </span>  <!-- Aca va a ir el precio actual (mayor oferta)-->
                     </div>
-                    <div class="product-item-countdown" style="background: white; color:red; margin-top:20px" data-id="@Producto.ProductoID">
-                        @Producto.fecha_cierre
+                    <div class="infoProducto-cowndown" data-id="@Producto.ProductoID">
+                        @Producto.fecha_cierre.Date.ToString("yyyy-MM-dd HH:mm:ss")
                     </div>     
                     <h3>
                         Oferta más alta
                     </h3>
                     <h4>
-                        username
+                        <span id="userGanador">
+                            username
+                        </span>
                     </h4>
                     <div class="infoProducto-nuevaOferta">
                         <form class="form-inline">
@@ -119,8 +121,8 @@
         <ul class="nav nav-tabs" role="tablist" id="myTab">
             <li role="presentation" class="active"><a href="#atributos" aria-controls="atributos" role="tab" data-toggle="tab">Caracteristicas</a></li>
             <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
-            <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Comparar producto</a></li>
-            <li role="presentation"><a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Reviews</a></li>
+            <li role="presentation"><a href="#comparar" aria-controls="comparar" role="tab" data-toggle="tab">Comparar producto</a></li>
+            <li role="presentation"><a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Calificación</a></li>
         </ul>
     </div>
 
@@ -129,7 +131,9 @@
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
             @Html.Partial("_ComentariosPartial")
         </div>
-        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="messages"> COMPARAR PRODUCTOS</div>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comparar"> 
+            @Html.Partial("_CompararProductoPartial", new ViewDataDictionary { { "Categoria", Producto.CategoriaID } })
+        </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="reviews">
             @Html.Partial("_CalificacionesPartial")
         </div>
@@ -150,7 +154,42 @@
         $('#myTab a[href="#atributos"]').tab('show')
     })
 
+    $('#tablita').addClass('animated flash');
+
     $(document).ready(function () {
+        //Para el manejo del timer
+        debugger;
+        $cowntdown = $(".infoProducto-cowndown");
+        var auction = {
+            auctionId: $cowntdown.data("id"),
+            endTime: moment($cowntdown.text(), "YYYY-MM-DD HH:mm:ss"),
+            timeDiv: $cowntdown
+        };
+
+        var duration = moment.duration(auction.endTime.diff(moment())),
+            interval = 1000;
+        console.log("Al producto " + auction.auctionId + " le faltan: "); console.log(duration);
+
+        if (duration._milliseconds <= 0) {
+            auction.timeDiv.text("EXPIRED!")
+        } else {
+            auction.currentInterval = setInterval(function () {
+                duration = moment.duration(auction.endTime.diff(moment()));
+                if (duration._milliseconds <= 0) {
+                    auction.timeDiv.text("EXPIRED!");
+                    clearInterval(that.currentInterval);
+                } else {
+                    var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),
+                        minutes = duration.minutes() < 10 ? '0' + duration.minutes() : duration.minutes(),
+                        seconds = duration.seconds() < 10 ? '0' + duration.seconds() : duration.seconds(),
+                        days = duration.days() > 0 ? duration.days() + "d" : "",
+                        months = duration.months() > 0 ? duration.months() + "m" : "";
+                    auction.timeDiv.text(months + " " + days + " " + hours + ":" + minutes + ":" + seconds)
+                }
+            }, interval);
+        }
+
+        //Para obtener la cantidad de favoritos y si el usuario lo tiene como favorito
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerDataFavorito", "Product")",
@@ -172,7 +211,54 @@
 
     });
 
-    $('#tablita').addClass('animated flash');
+    $(function () {
+        // Proxy creado a partir de signalr/hubs
+        var proxy = $.connection.subastaHub;
+        // Server callback methods
+        proxy.client.newBidPosted = function (productId, newBid, userId) {
+            if (productId == prodId) {
+                //Oferta sobre el producto que estoy viendo
+                //Voy a buscar las mejores ofertas
+                
+                $.ajax({
+                    type: "GET",
+                    url: "@Url.Action("obtenerJsonMejoresOfertas", "Product")",
+                    data: {
+                        N: 4,
+                        productId: productId,
+                    },
+                    accept: 'application/json',
+                    success: function (data) {
+                        console.log(data);
+                        $("#userGanador").text(userId);
+                        $("#precioMayorSubasta").text(newBid);
+                    },
+                    error: function (error) {
+                        console.log(error);
+                    }
+                });
+                
+
+            }
+            console.log("hola " + productId + " desde ver info prod");
+        };
+
+        // Start the connection
+        $.connection.hub.start();
+
+        // Client methods
+        onNewBidClick = function (id, usuario, tienda) {
+            debugger;
+            var productId = id,
+              bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
+            //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
+            proxy.server.placeNewBid(productId, bidToPost, false, usuario, tienda);
+        };
+
+        incrementOffer = function (id) {
+            $('#bidValue-' + id).text(parseInt($('#bidValue-' + id).text(), 10) + 1);
+        }
+    });
 
     marcarFavorito = function () {
         if (isAuth) {

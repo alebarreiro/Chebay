@@ -28,5 +28,19 @@ namespace WebApplication1.Hubs
             Clients.All.newBidPosted(productId, newBid, userId);
         }
 
+        public void BuyAuction(int productId, int monto, string userId, string tienda)
+        {
+            
+            Compra c = new Compra {
+                monto = monto,
+                fecha_compra = DateTime.Now,
+                ProductoID = productId,
+                UsuarioID = userId
+            };
+
+            controladorSubasta.AgregarCompra(c, tienda);
+            Clients.All.newBuyPosted(productId, monto, userId);
+        }
+
     }
 }

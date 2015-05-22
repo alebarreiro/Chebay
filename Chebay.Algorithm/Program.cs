@@ -24,21 +24,14 @@ namespace Chebay.Algorithm
         }
 
 
-        static List<Producto> custom_algorithm(Tienda tienda, List<Producto> products, Usuario user)
+        static List<Producto> custom_algorithm(Personalizacion personalizacion, List<Producto> products, Usuario user)
         {
-            string path = @"C:\Users\slave\Source\Repos\Chebay4\Chebay.AlgorithmDLL\bin\Debug\Chebay.AlgorithmDLL.dll";
-            byte [] sticky = File.ReadAllBytes(path);
-            Assembly ddl = Assembly.Load(sticky);
-            //Assembly ddl = Assembly.LoadFile(path);
+            //string path = @"C:\Users\slave\Source\Repos\Chebay4\Chebay.AlgorithmDLL\bin\Debug\Chebay.AlgorithmDLL.dll";
+            //byte [] sticky = File.ReadAllBytes(path);
+            Assembly ddl = Assembly.Load(personalizacion.algoritmo);
             var t = ddl.GetType("Chebay.AlgorithmDLL.ChebayAlgorithm");
             dynamic c = Activator.CreateInstance(t);
             List<Producto> res = (List<Producto>) c.getProducts(products, user);
-            //var obj = Activator.CreateInstance(t);
-            //var method = t.GetMethod("getProducts");
-            //Object result = method.Invoke(obj, new Object[]{});
-            
-
-
             return res;
         }
         
@@ -49,25 +42,39 @@ namespace Chebay.Algorithm
             IDALUsuario udal = new DALUsuarioEF();
             IDALTienda tdal = new DALTiendaEF();
             IDALSubasta sdat = new DALSubastaEF();
-            var productos = sdat.ObtenerTodosProductos("TestURL");
-            var u = udal.ObtenerUsuario("alebarreiro@live.com", "TestURL");
-            //var prods = custom_algorithm(productos, u);
+            //var productos = sdat.ObtenerTodosProductos("TestURL");
+            //var u = udal.ObtenerUsuario("alebarreiro@live.com", "TestURL");
+            //Tienda t = tdal.ObtenerTienda("TestURL");
+            //try
+            //{
+            //    var prods = custom_algorithm(t, productos, u);
+
+            //}
+            //catch (Exception E)
+            //{
+            //    System.Console.WriteLine("Error ejecutar DLL...");
+            //}
 
             System.Console.Read();
-            /*
+            
 
 
             List<Tienda> tiendas = tdal.ObtenerTodasTiendas();
 
             foreach (var tienda in tiendas)
             {
-                List<Producto> productos = sdat.ObtenerTodosProductos();
+                System.Console.WriteLine(tienda.TiendaID);
+
+                List<Producto> productos = sdat.ObtenerTodosProductos(tienda.TiendaID);
                 //obtengo algoritmo
-                Personalizacion p = tdal.ObtenerPersonalizacionTienda(tienda.TiendaID);
+                Personalizacion pers = tdal.ObtenerPersonalizacionTienda(tienda.TiendaID);
                 List<Usuario> usuarios = udal.ObtenerTodosUsuariosFull(tienda.TiendaID);
                 bool defaultalgorithm = false;
-                if (p.algoritmo.Length == 0)
+
+
+                if (pers.algoritmo== null || pers.algoritmo.Length == 0)
                 {
+
                     defaultalgorithm = true;
                 }
                 foreach (var user in usuarios)
@@ -79,15 +86,26 @@ namespace Chebay.Algorithm
                     }
                     else
                     {
-                        //rec = custom_algorithm(tienda, productos, user);
+                        try
+                        {
+                            rec = custom_algorithm(pers, productos, user);
+                        }
+                        catch (Exception E)
+                        {
+                            System.Console.WriteLine("Error ejecutar algoritmo custom... Ejecutando por defecto...");
+                            rec = default_recomendation_algorithm(productos, user);
+                        }
                     }
                     //savelist in mongo :)
+                    foreach (var pr in rec)
+                    {
+                        System.Console.WriteLine(+pr.ProductoID + pr.nombre);
+                    }
 
                 }
                 
-
             }
-            */
+            
             //var host = new JobHost();
             
             

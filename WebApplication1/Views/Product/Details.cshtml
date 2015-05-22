@@ -66,17 +66,15 @@
                             username
                         </span>
                     </h4>
-                    <div class="infoProducto-nuevaOferta">
-                        <form class="form-inline">
+                    <div class="infoProducto-nuevaOferta" style="display: -webkit-inline-box;">
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputAmount">Cantidad</label>
                                 <div class="input-group" style="width: 120px">
                                     <div class="input-group-addon">$</div>
-                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <input type="text" class="form-control" id="inputOferta" placeholder="Cantidad">
                                 </div>
                             </div>
-                            <button type="submit" id="ofertarYa" class="btn btn-primary">Ofertar!</button>
-                        </form>
+                            <button id="ofertarYa" class="btn btn-primary" onclick="ofertarYa()">Ofertar!</button>
                     </div>
 
                     <hr>  
@@ -242,8 +240,11 @@
         var proxy = $.connection.subastaHub;
 
         /** Server callback methods **/
-        proxy.client.newBidPosted = function (productId, newBid, userId) {
+        proxy.client.newBidPosted = function (productId, newBid, usuarioPoster) {
             if (productId == prodId) {
+                if (usuarioPoster == userId) {
+                    $("#ofertarYa").html("Ofertar!");
+                }
                 //Oferta sobre el producto que estoy viendo
                 //Voy a buscar las mejores ofertas
                 obtenerMejoresOfertas();
@@ -251,14 +252,18 @@
         };
 
         proxy.client.onError = function (productId, msg) {
+            //Para sacar loading
+            $("#ofertarYa").html("Ofertar!");
+            $("#comprarYa").html("COMPRAR YA POR " +montoTotal+ "!");
             sweetAlert("Oops...", msg, "error");
         };
 
-        proxy.client.newBuyPosted = function (productId, monto, userId) {
+        proxy.client.newBuyPosted = function (productId, monto, usuarioPoster) {
             debugger;
             if (productId == prodId) {
+                $("#comprarYa").html("VENDIDO");
                 $("#hayGanador").text("Hay ganador!!");
-                $("#userGanador").text(userId);
+                $("#userGanador").text(usuarioPoster);
                 $("#precioMayorSubasta").text(monto);
                 clearInterval(auction.currentInterval);
                 $cowntdown.text("Producto vendido.");
@@ -270,17 +275,30 @@
         // Start the connection
         $.connection.hub.start();
 
+        
+        function isInt(n) {
+            return n % 1 === 0;
+        }
         /**  Client methods **/
-        onNewBidClick = function (id, usuario, tienda) {
-            debugger;
-            var productId = id,
-              bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
-            //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
-            proxy.server.placeNewBid(productId, bidToPost, false, usuario, tienda);
-        };
+        ofertarYa = function () {
+            var amount = parseInt($("#inputOferta").val(), 10),
+                precioActual = parseInt($("#precioMayorSubasta").text(), 10);
+            if (isInt(amount)) {
+                if (amount <= precioActual) {
+                    swal("La cantidad ofertada no supera el precio actual.");
+                } else if (amount > montoTotal) {
+                    swal("La cantidad ofertada supera el precio comprar ya!");
+                } else {
+                    $("#ofertarYa").html("Ofertar! <i class=\"fa fa-spinner fa-pulse\"></i>");
+                    proxy.server.placeNewBid(prodId, amount, false, userId, tienda);
+                }
+            } else {
+                swal("Ingrese una oferta válida.");
+            }
+        }
 
         onBuyAuction = function () {
-            console.log("id: " + prodId + " user: " + userId + " " + " por: " + montoTotal);
+            $("#comprarYa").html($("#comprarYa").text() + " " + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             proxy.server.buyAuction(prodId, montoTotal, userId, tienda);
         }
 

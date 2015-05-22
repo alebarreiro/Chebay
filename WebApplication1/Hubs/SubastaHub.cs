@@ -31,7 +31,7 @@ namespace WebApplication1.Hubs
             }
             catch(Exception e)
             {
-                Clients.Caller.onError(e.Message);
+                Clients.Caller.onError(productId, e.Message);
             }
         }
 

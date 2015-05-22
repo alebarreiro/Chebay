@@ -12,6 +12,7 @@
                 @Producto.nombre
             </h2>
         </div>
+        <!-- SECCIÓN IMAGENES -->
         <div class="infoProducto-left">
             <div class="infoProducto-imgs">
                 @{
@@ -46,6 +47,7 @@
             </div>
         </div>
         <div class="module infoProducto-right">
+            <!-- SECCIÓN DE COMPRAR / OFERTAR -->
             <div class="infoProducto-data">
                 <div class="infoProducto-data-content">
                     <div class="infoProducto-precioActual">
@@ -64,17 +66,15 @@
                             username
                         </span>
                     </h4>
-                    <div class="infoProducto-nuevaOferta">
-                        <form class="form-inline">
+                    <div class="infoProducto-nuevaOferta" style="display: -webkit-inline-box;">
                             <div class="form-group">
                                 <label class="sr-only" for="exampleInputAmount">Cantidad</label>
                                 <div class="input-group" style="width: 120px">
                                     <div class="input-group-addon">$</div>
-                                    <input type="text" class="form-control" id="exampleInputAmount" placeholder="Amount">
+                                    <input type="text" class="form-control" id="inputOferta" placeholder="Cantidad">
                                 </div>
                             </div>
-                            <button type="submit" id="ofertarYa" class="btn btn-primary">Ofertar!</button>
-                        </form>
+                            <button id="ofertarYa" class="btn btn-primary" onclick="ofertarYa()">Ofertar!</button>
                     </div>
 
                     <hr>  
@@ -86,7 +86,6 @@
                     {
                         <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Inicia sesión para comprar."> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
                     }
-                    
 
                     <div class="infoProducto-favorito" onclick="marcarFavorito()">
                         <div class="infoProd-favLeft" id="favContainer" style="float:left">
@@ -98,28 +97,34 @@
                     </div>
                 </div>
             </div>
+            <!-- SECCIÓN ULTIMAS OFERTAS -->
             <div class="infoProducto-ofertas">
                 <div class="infoProducto-ofertas-title">
                     <h3>Últimas ofertas!</h3>
                 </div>
-                <!-- Ultimas ofertas, renderizado con ofertas-template -->
+                <!-- renderizado con ofertas-template -->
                 <section id="ultimasOfertas">
 
                 </section>
             </div>
         </div>
     </div>
+
+    <!-- SECCIÓN FOOTER - TAB PANE -->
     <div class="infoProducto-tab">
         <ul class="nav nav-tabs" role="tablist" id="myTab">
             <li role="presentation" class="active"><a href="#atributos" aria-controls="atributos" role="tab" data-toggle="tab">Caracteristicas</a></li>
             <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
             <li role="presentation"><a href="#comparar" aria-controls="comparar" role="tab" data-toggle="tab">Comparar producto</a></li>
             <li role="presentation"><a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Calificación</a></li>
+            <li role="presentation"><a href="#localizacion" aria-controls="reviews" role="tab" data-toggle="tab">Geolocalización</a></li>
         </ul>
     </div>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos"> Atributos del producto </div>
+        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos">
+            @Html.Partial("_AtributosProductoPartial")
+        </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
             @Html.Partial("_ComentariosPartial")
         </div>
@@ -128,6 +133,9 @@
         </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="reviews">
             @Html.Partial("_CalificacionesPartial")
+        </div>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="localizacion">
+            @Html.Partial("_GeoLocalizacionPartial")
         </div>
     </div>
 </div>
@@ -232,19 +240,30 @@
         var proxy = $.connection.subastaHub;
 
         /** Server callback methods **/
-        proxy.client.newBidPosted = function (productId, newBid, userId) {
+        proxy.client.newBidPosted = function (productId, newBid, usuarioPoster) {
             if (productId == prodId) {
+                if (usuarioPoster == userId) {
+                    $("#ofertarYa").html("Ofertar!");
+                }
                 //Oferta sobre el producto que estoy viendo
                 //Voy a buscar las mejores ofertas
                 obtenerMejoresOfertas();
             }
         };
 
-        proxy.client.newBuyPosted = function (productId, monto, userId) {
+        proxy.client.onError = function (productId, msg) {
+            //Para sacar loading
+            $("#ofertarYa").html("Ofertar!");
+            $("#comprarYa").html("COMPRAR YA POR " +montoTotal+ "!");
+            sweetAlert("Oops...", msg, "error");
+        };
+
+        proxy.client.newBuyPosted = function (productId, monto, usuarioPoster) {
             debugger;
             if (productId == prodId) {
+                $("#comprarYa").html("VENDIDO");
                 $("#hayGanador").text("Hay ganador!!");
-                $("#userGanador").text(userId);
+                $("#userGanador").text(usuarioPoster);
                 $("#precioMayorSubasta").text(monto);
                 clearInterval(auction.currentInterval);
                 $cowntdown.text("Producto vendido.");
@@ -256,17 +275,30 @@
         // Start the connection
         $.connection.hub.start();
 
+        
+        function isInt(n) {
+            return n % 1 === 0;
+        }
         /**  Client methods **/
-        onNewBidClick = function (id, usuario, tienda) {
-            debugger;
-            var productId = id,
-              bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
-            //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
-            proxy.server.placeNewBid(productId, bidToPost, false, usuario, tienda);
-        };
+        ofertarYa = function () {
+            var amount = parseInt($("#inputOferta").val(), 10),
+                precioActual = parseInt($("#precioMayorSubasta").text(), 10);
+            if (isInt(amount)) {
+                if (amount <= precioActual) {
+                    swal("La cantidad ofertada no supera el precio actual.");
+                } else if (amount > montoTotal) {
+                    swal("La cantidad ofertada supera el precio comprar ya!");
+                } else {
+                    $("#ofertarYa").html("Ofertar! <i class=\"fa fa-spinner fa-pulse\"></i>");
+                    proxy.server.placeNewBid(prodId, amount, false, userId, tienda);
+                }
+            } else {
+                swal("Ingrese una oferta válida.");
+            }
+        }
 
         onBuyAuction = function () {
-            console.log("id: " + prodId + " user: " + userId + " " + " por: " + montoTotal);
+            $("#comprarYa").html($("#comprarYa").text() + " " + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             proxy.server.buyAuction(prodId, montoTotal, userId, tienda);
         }
 

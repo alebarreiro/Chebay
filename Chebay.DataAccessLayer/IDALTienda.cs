@@ -57,5 +57,9 @@ namespace DataAccessLayer
 
         //--REPORTES--
         DataReporte ObtenerReporte(string idTienda);
+
+        //--ALGORITMO PERSONALIZACION--
+        void ActualizarAlgoritmoPersonalizacion(Personalizacion pers);
+
     }
 }

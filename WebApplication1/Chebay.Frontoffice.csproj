@@ -332,6 +332,8 @@
     <Content Include="Views\Product\_ReviewsPartial.cshtml" />
     <Content Include="Views\Product\_CalificacionesPartial.cshtml" />
     <Content Include="Views\Product\_CompararProductoPartial.cshtml" />
+    <Content Include="Views\Product\_GeoLocalizacionPartial.cshtml" />
+    <Content Include="Views\Product\_AtributosProductoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

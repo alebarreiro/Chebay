@@ -8,6 +8,8 @@ using Shared.Entities;
 using DataAccessLayer;
 using System.Reflection;
 using System.IO;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Chebay.Algorithm
 {
@@ -24,21 +26,36 @@ namespace Chebay.Algorithm
         }
 
 
-        static List<Producto> custom_algorithm(Tienda tienda, List<Producto> products, Usuario user)
+        static List<Producto> custom_algorithm(Personalizacion personalizacion, List<Producto> products, Usuario user)
         {
-            string path = @"C:\Users\slave\Source\Repos\Chebay4\Chebay.AlgorithmDLL\bin\Debug\Chebay.AlgorithmDLL.dll";
-            byte [] sticky = File.ReadAllBytes(path);
-            Assembly ddl = Assembly.Load(sticky);
-            //Assembly ddl = Assembly.LoadFile(path);
+            Assembly ddl = Assembly.Load(personalizacion.algoritmo);
             var t = ddl.GetType("Chebay.AlgorithmDLL.ChebayAlgorithm");
             dynamic c = Activator.CreateInstance(t);
-            List<Producto> res = (List<Producto>) c.getProducts(products, user);
-            //var obj = Activator.CreateInstance(t);
-            //var method = t.GetMethod("getProducts");
-            //Object result = method.Invoke(obj, new Object[]{});
-            
+            List<Producto> res = null;
+            bool finish = false;
 
+            Thread thread = new Thread(delegate()
+            {
+                res = (List<Producto>)c.getProducts(products, user);
+                finish = true;
+            });
 
+            int timeout = 50;
+            while (!finish)
+            {
+                Thread.Sleep(100);
+                if(!finish)
+                    timeout--;
+
+                if (timeout == 0)
+                {
+                    Debug.WriteLine("Timeout algorithm, infinite loop(?)");
+                    finish = true;
+                    thread.Abort();
+                    //return default algorithm
+                    res = default_recomendation_algorithm(products, user);
+                }
+            }
             return res;
         }
         
@@ -49,29 +66,28 @@ namespace Chebay.Algorithm
             IDALUsuario udal = new DALUsuarioEF();
             IDALTienda tdal = new DALTiendaEF();
             IDALSubasta sdat = new DALSubastaEF();
-            var productos = sdat.ObtenerTodosProductos("TestURL");
-            var u = udal.ObtenerUsuario("alebarreiro@live.com", "TestURL");
-            //var prods = custom_algorithm(productos, u);
-
-            System.Console.Read();
-            /*
-
 
             List<Tienda> tiendas = tdal.ObtenerTodasTiendas();
 
             foreach (var tienda in tiendas)
             {
-                List<Producto> productos = sdat.ObtenerTodosProductos();
+                System.Console.WriteLine(tienda.TiendaID);
+
+                List<Producto> productos = sdat.ObtenerTodosProductos(tienda.TiendaID);
                 //obtengo algoritmo
-                Personalizacion p = tdal.ObtenerPersonalizacionTienda(tienda.TiendaID);
+                Personalizacion pers = tdal.ObtenerPersonalizacionTienda(tienda.TiendaID);
                 List<Usuario> usuarios = udal.ObtenerTodosUsuariosFull(tienda.TiendaID);
                 bool defaultalgorithm = false;
-                if (p.algoritmo.Length == 0)
+
+
+                if (pers.algoritmo== null || pers.algoritmo.Length == 0)
                 {
+                    System.Console.WriteLine(tienda.TiendaID + "default algorithm");
                     defaultalgorithm = true;
                 }
                 foreach (var user in usuarios)
                 {
+                    System.Console.WriteLine("USUARIO::"+user.UsuarioID);
                     List<Producto> rec;
                     if (defaultalgorithm)
                     {
@@ -79,15 +95,27 @@ namespace Chebay.Algorithm
                     }
                     else
                     {
-                        //rec = custom_algorithm(tienda, productos, user);
+                        try
+                        {
+                            rec = custom_algorithm(pers, productos, user);
+                        }
+                        catch (Exception E)
+                        {
+                            System.Console.WriteLine("Error ejecutar algoritmo custom... Ejecutando por defecto...");
+                            rec = default_recomendation_algorithm(productos, user);
+                        }
                     }
                     //savelist in mongo :)
+                    foreach (var pr in rec)
+                    {
+                        System.Console.WriteLine(+pr.ProductoID + pr.nombre);
+                    }
 
                 }
-                
 
+                //System.Console.Read();
             }
-            */
+            
             //var host = new JobHost();
             
             

@@ -859,5 +859,32 @@ namespace DataAccessLayer
             }
         }
         #endregion
+
+        #region algoritmo personalizacion
+
+        public void ActualizarAlgoritmoPersonalizacion(Personalizacion pers)
+        {
+            try
+            {
+                chequearTienda(pers.PersonalizacionID);
+                using (var context = ChebayDBPublic.CreatePublic())
+                {
+                    Personalizacion p = context.personalizaciones.Find(pers.PersonalizacionID);
+                    p.algoritmo = pers.algoritmo;
+                    context.SaveChanges();
+                }
+
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+
+        }
+
+
+        #endregion
+
     }
 }

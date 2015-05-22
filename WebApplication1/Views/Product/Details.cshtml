@@ -12,6 +12,7 @@
                 @Producto.nombre
             </h2>
         </div>
+        <!-- SECCIÓN IMAGENES -->
         <div class="infoProducto-left">
             <div class="infoProducto-imgs">
                 @{
@@ -46,6 +47,7 @@
             </div>
         </div>
         <div class="module infoProducto-right">
+            <!-- SECCIÓN DE COMPRAR / OFERTAR -->
             <div class="infoProducto-data">
                 <div class="infoProducto-data-content">
                     <div class="infoProducto-precioActual">
@@ -86,7 +88,6 @@
                     {
                         <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Inicia sesión para comprar."> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
                     }
-                    
 
                     <div class="infoProducto-favorito" onclick="marcarFavorito()">
                         <div class="infoProd-favLeft" id="favContainer" style="float:left">
@@ -98,28 +99,34 @@
                     </div>
                 </div>
             </div>
+            <!-- SECCIÓN ULTIMAS OFERTAS -->
             <div class="infoProducto-ofertas">
                 <div class="infoProducto-ofertas-title">
                     <h3>Últimas ofertas!</h3>
                 </div>
-                <!-- Ultimas ofertas, renderizado con ofertas-template -->
+                <!-- renderizado con ofertas-template -->
                 <section id="ultimasOfertas">
 
                 </section>
             </div>
         </div>
     </div>
+
+    <!-- SECCIÓN FOOTER - TAB PANE -->
     <div class="infoProducto-tab">
         <ul class="nav nav-tabs" role="tablist" id="myTab">
             <li role="presentation" class="active"><a href="#atributos" aria-controls="atributos" role="tab" data-toggle="tab">Caracteristicas</a></li>
             <li role="presentation"><a href="#comentarios" aria-controls="comentarios" role="tab" data-toggle="tab">Comentarios</a></li>
             <li role="presentation"><a href="#comparar" aria-controls="comparar" role="tab" data-toggle="tab">Comparar producto</a></li>
             <li role="presentation"><a href="#reviews" aria-controls="reviews" role="tab" data-toggle="tab">Calificación</a></li>
+            <li role="presentation"><a href="#localizacion" aria-controls="reviews" role="tab" data-toggle="tab">Geolocalización</a></li>
         </ul>
     </div>
 
     <div class="tab-content">
-        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos"> Atributos del producto </div>
+        <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos">
+            @Html.Partial("_AtributosProductoPartial")
+        </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
             @Html.Partial("_ComentariosPartial")
         </div>
@@ -128,6 +135,9 @@
         </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="reviews">
             @Html.Partial("_CalificacionesPartial")
+        </div>
+        <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="localizacion">
+            @Html.Partial("_GeoLocalizacionPartial")
         </div>
     </div>
 </div>
@@ -238,6 +248,10 @@
                 //Voy a buscar las mejores ofertas
                 obtenerMejoresOfertas();
             }
+        };
+
+        proxy.client.onError = function (productId, msg) {
+            sweetAlert("Oops...", msg, "error");
         };
 
         proxy.client.newBuyPosted = function (productId, monto, userId) {

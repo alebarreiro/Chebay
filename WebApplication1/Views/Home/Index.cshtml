@@ -45,9 +45,9 @@
             </div>
             <div class="product-item-footer">
                 <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre.Date.ToString("yyyy-MM-dd HH:mm:ss") </div>
-                @if (User.Identity.IsAuthenticated) 
-                { 
-                    <button class="btn btn-success bid-button" id="bidButton" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID, '@usuario','@tienda');"> OFERTAR! </button>
+                @if (User.Identity.IsAuthenticated)
+                {
+                    <button class="btn btn-success bid-button" id="bidButton-@dp.ProductoID" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID, '@usuario','@tienda');"> OFERTAR! </button>
                 }
                 else
                 {
@@ -72,13 +72,47 @@
 </script>
 
 <script type="text/javascript">
+    var usuario = "@Context.User.Identity.Name"
+    var auctions = $([]);
+    $('.product-item-countdown').each(function () {
+        var _this = $(this);
+        var auction = {
+            auctionId: _this.data('id'),
+            endTime: moment(_this.text(), "YYYY-MM-DD HH:mm:ss"),
+            timeDiv: _this
+        };
+        auctions.push(auction);
+    });
+
     $(function () {
         // Proxy creado a partir de signalr/hubs
         var proxy = $.connection.subastaHub;
         // Server callback methods
         proxy.client.newBidPosted = function (productId, newBid, userId) {
+            if (userId == usuario) {
+                $("#bidButton-" + productId).html("OFERTAR!");
+            }
             $('#bidValue-' + productId).text(newBid);
             $('#userIdGanador-' + productId).text(userId);
+        };
+
+        proxy.client.onError = function (productId, msg) {
+            $("#bidButton-" + productId).html("OFERTAR!");
+            sweetAlert("Oops...", msg, "error");
+        };
+
+        proxy.client.newBuyPosted = function (productId, monto, userId) {
+            debugger;
+            auctions.each(function () {
+                if (this.auctionId == productId) {
+                    clearInterval(this.currentInterval);
+                    this.timeDiv.text("Producto vendido!")
+                    $('#bidValue-' + productId).text(monto);
+                    $('#userIdGanador-' + productId).text(userId);
+                    $('#bidButton-' + productId).addClass("disabled");
+                    return false;
+                }
+            });
         };
 
         // Start the connection
@@ -86,10 +120,9 @@
 
         // Client methods
         onNewBidClick = function (id, usuario, tienda) {
-            debugger;
+            $("#bidButton-" + id).html("OFERTAR! <i class=\"fa fa-spinner fa-pulse\"></i>");
             var productId = id,
               bidToPost = parseInt($('#bidValue-' + productId).text(), 10);
-            //var newBid = "{ 'productId': " + productId + ", 'Value': '" + bidToPost + "' }";
             proxy.server.placeNewBid(productId, bidToPost, false, usuario, tienda);
         };
 
@@ -101,31 +134,23 @@
     //Para el manejo de los timers
     $(document).ready(function () {
         debugger;
-        var auctions = $([]);
-        $('.product-item-countdown').each(function () {
-            var _this = $(this);
-            var auction = {
-                auctionId: _this.data('id'),
-                endTime: moment(_this.text(), "YYYY-MM-DD HH:mm:ss"),
-                timeDiv: _this
-            };
-            auctions.push(auction);
-        });
 
         auctions.each(function () {
             var that = this;
             var finishTime = that.endTime,
                 duration = moment.duration(finishTime.diff(moment())),
                 interval = 1000;
-            console.log("Al producto " + this.auctionId + " le faltan: "); console.log(duration);
+            //console.log("Al producto " + this.auctionId + " le faltan: "); console.log(duration);
             if (duration._milliseconds <= 0) {
-                that.timeDiv.text("EXPIRED!")
+                that.timeDiv.text("Finalizado!");
+                $('#bidButton-' + that.productId).addClass("disabled");
             } else {
                 that.currentInterval = setInterval(function () {
                     duration = moment.duration(finishTime.diff(moment()));
                     if (duration._milliseconds <= 0) {
                         console.log(duration);
-                        that.timeDiv.text("EXPIRED!");
+                        that.timeDiv.text("Finalizado!");
+                        $('#bidButton-' + that.productId).addClass("disabled");
                         clearInterval(that.currentInterval);
                     } else {
                         var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),

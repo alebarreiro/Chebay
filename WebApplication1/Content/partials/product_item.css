@@ -32,7 +32,7 @@
 
 .offer-section {
       /*border: 2px solid #e44d26;*/
-      width: 50%;
+      width: 45% !important;
       height: 40px;
       float: right;
       margin: 5px 5px 0px 0px;
@@ -104,6 +104,7 @@
 .bid-button{
     float: left;
     margin: 7px 5px 0px 5px;
+    width: 47% !important;
 }
 
 .product-item-countdown{

@@ -31,7 +31,7 @@ namespace WebApplication1.Hubs
             }
             catch(Exception e)
             {
-
+                Clients.Caller.onError(e.Message);
             }
         }
 
@@ -39,14 +39,6 @@ namespace WebApplication1.Hubs
         {
             try
             {
-                Compra c = new Compra
-                {
-                    monto = monto,
-                    fecha_compra = DateTime.Now,
-                    ProductoID = productId,
-                    UsuarioID = userId
-                };
-                controladorSubasta.AgregarCompra(c, tienda);
                 Oferta o = new Oferta
                 {
                     esFinal = true,
@@ -55,11 +47,19 @@ namespace WebApplication1.Hubs
                     UsuarioID = userId
                 };
                 controladorSubasta.OfertarProducto(o, tienda);
+                Compra c = new Compra
+                {
+                    monto = monto,
+                    fecha_compra = DateTime.Now,
+                    ProductoID = productId,
+                    UsuarioID = userId
+                };
+                controladorSubasta.AgregarCompra(c, tienda);
                 Clients.All.newBuyPosted(productId, monto, userId);
             }
             catch (Exception e)
             {
-
+                Clients.Caller.onError(productId, e.Message);
             }
         }
     }

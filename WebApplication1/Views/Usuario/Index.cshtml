@@ -6,11 +6,40 @@
 <h2>@ViewBag.Title.</h2>
 
 <div>
-    <h4>Account settings</h4>
-    <hr />
-    <dl class="dl-horizontal">
-        @usuario.UsuarioID
-    </dl>
+    <div role="tabpanel">
+        <!-- Nav tabs -->
+        <ul class="nav nav-tabs" role="tablist" id="tabUsuario">
+            <li role="presentation" class="active"><a href="#perfil" aria-controls="perfil" role="tab" data-toggle="tab">Mi Perfil</a></li>
+            <li role="presentation"><a href="#iniciarsubasta" aria-controls="iniciarsubasta" role="tab" data-toggle="tab">Iniciar subasta</a></li>
+            <li role="presentation"><a href="#subastas" aria-controls="suabastas" role="tab" data-toggle="tab">Mis subastas</a></li>
+            <li role="presentation"><a href="#compras" aria-controls="compras" role="tab" data-toggle="tab">Mis compras</a></li>
+            <li role="presentation"><a href="#balance" aria-controls="balance" role="tab" data-toggle="tab">Balance montetario</a></li>
+        </ul>
 
-    @Html.ActionLink("Crear subasta!", "CrearProducto", "Product", routeValues: null, htmlAttributes: new { title = "Crear subasta" })
+        <!-- Tab panes -->
+        <div class="tab-content">
+            <div role="tabpanel" class="tab-pane fade in active" id="perfil">
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="iniciarsubasta">
+               @Html.Partial("_IniciarSubastaPartial")
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="subastas">
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="compras">
+
+            </div>
+            <div role="tabpanel" class="tab-pane fade" id="balance">
+
+            </div>
+        </div>
+    </div>
 </div>
+
+<script>
+
+    $(function () {
+        $('#tabUsuario a[href="#perfil"]').tab('show')
+    })
+</script>

@@ -324,8 +324,8 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
     <Content Include="Views\Product\CrearProducto.cshtml" />
-    <Content Include="Views\Product\_DatosProductoPartial.cshtml" />
-    <Content Include="Views\Product\_DatosCategoriaPartial.cshtml" />
+    <Content Include="Views\Usuario\_DatosProductoPartial.cshtml" />
+    <Content Include="Views\Usuario\_DatosCategoriaPartial.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />
     <Content Include="Views\Product\Details.cshtml" />
     <Content Include="Views\Product\_ComentariosPartial.cshtml" />
@@ -334,6 +334,9 @@
     <Content Include="Views\Product\_CompararProductoPartial.cshtml" />
     <Content Include="Views\Product\_GeoLocalizacionPartial.cshtml" />
     <Content Include="Views\Product\_AtributosProductoPartial.cshtml" />
+    <Content Include="Views\Usuario\_IniciarSubastaPartial.cshtml" />
+    <Content Include="Views\Usuario\_DatosAtributosPartial.cshtml" />
+    <Content Include="Views\Usuario\_DatosImagenesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

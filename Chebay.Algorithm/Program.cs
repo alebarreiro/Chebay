@@ -8,6 +8,8 @@ using Shared.Entities;
 using DataAccessLayer;
 using System.Reflection;
 using System.IO;
+using System.Threading;
+using System.Diagnostics;
 
 namespace Chebay.Algorithm
 {
@@ -29,7 +31,31 @@ namespace Chebay.Algorithm
             Assembly ddl = Assembly.Load(personalizacion.algoritmo);
             var t = ddl.GetType("Chebay.AlgorithmDLL.ChebayAlgorithm");
             dynamic c = Activator.CreateInstance(t);
-            List<Producto> res = (List<Producto>) c.getProducts(products, user);
+            List<Producto> res = null;
+            bool finish = false;
+
+            Thread thread = new Thread(delegate()
+            {
+                res = (List<Producto>)c.getProducts(products, user);
+                finish = true;
+            });
+
+            int timeout = 50;
+            while (!finish)
+            {
+                Thread.Sleep(100);
+                if(!finish)
+                    timeout--;
+
+                if (timeout == 0)
+                {
+                    Debug.WriteLine("Timeout algorithm, infinite loop(?)");
+                    finish = true;
+                    thread.Abort();
+                    //return default algorithm
+                    res = default_recomendation_algorithm(products, user);
+                }
+            }
             return res;
         }
         
@@ -61,6 +87,7 @@ namespace Chebay.Algorithm
                 }
                 foreach (var user in usuarios)
                 {
+                    System.Console.WriteLine("USUARIO::"+user.UsuarioID);
                     List<Producto> rec;
                     if (defaultalgorithm)
                     {

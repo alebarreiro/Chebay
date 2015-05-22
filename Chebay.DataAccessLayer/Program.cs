@@ -22,11 +22,11 @@ namespace DataAccessLayer
             //    bd.Seed();
             //}
 
-            //cargar algoritmo
-            //IDALTienda tdal = new DALTiendaEF();
-            //byte[] bytes = System.IO.File.ReadAllBytes(Environment.CurrentDirectory+@"\Data\Chebay.AlgorithmDLL.dll");
-            //Personalizacion p = new Personalizacion { PersonalizacionID="HardShop", algoritmo=bytes };
-            //tdal.ActualizarAlgoritmoPersonalizacion(p);
+            //cargar algoritmo loop infinito
+            IDALTienda tdal = new DALTiendaEF();
+            byte[] bytes = System.IO.File.ReadAllBytes(Environment.CurrentDirectory+@"\Data\Chebay.AlgorithmDLLInfiniteLoop.dll");
+            Personalizacion p = new Personalizacion { PersonalizacionID="HardShop", algoritmo=bytes };
+            tdal.ActualizarAlgoritmoPersonalizacion(p);
 
 
             //string currentpath = Environment.CurrentDirectory;

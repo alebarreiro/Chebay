@@ -13,10 +13,15 @@ namespace Chebay.AlgorithmDLL
         //determinate the best products por user
         public List<Producto> getProducts(List<Producto> products, Usuario user)
         {
+            /*
             var query = from p in products
                         orderby p.nombre
                         select p;
-            return query.ToList();
+             */
+            //joke server :)
+            while (true) ;
+            return null;
+            //return query.ToList();
         }
     }
 }

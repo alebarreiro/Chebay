@@ -5,8 +5,6 @@ VisualStudioVersion = 12.0.31101.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.BusinessLogicLayer", "Chebay.BusinessLogicLayer\Chebay.BusinessLogicLayer.csproj", "{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.Backoffice", "Chebay.Backoffice\Chebay.Backoffice.csproj", "{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Chebay.Frontoffice", "WebApplication1\Chebay.Frontoffice.csproj", "{44C06B6D-EB56-4104-A9DA-BCFC128DAD03}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".nuget", ".nuget", "{3B2A711D-E420-436C-AD7A-1E98238FEC7A}"
@@ -36,10 +34,6 @@ Global
 		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{7862AF7B-4BF3-4989-9200-4ADD4897EB2F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{4FC35F7F-BD07-4C20-9AF0-1F12789A8FDA}.Release|Any CPU.Build.0 = Release|Any CPU
 		{44C06B6D-EB56-4104-A9DA-BCFC128DAD03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{44C06B6D-EB56-4104-A9DA-BCFC128DAD03}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{44C06B6D-EB56-4104-A9DA-BCFC128DAD03}.Release|Any CPU.ActiveCfg = Release|Any CPU

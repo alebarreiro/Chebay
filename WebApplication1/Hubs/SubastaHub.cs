@@ -16,31 +16,51 @@ namespace WebApplication1.Hubs
 
         public void PlaceNewBid(int productId, int newBid, bool _esFinal, string userId, string tienda)
         {
+            try
+            {
+                Oferta o = new Oferta
+                {
+                    esFinal = _esFinal,
+                    monto = newBid,
+                    ProductoID = productId,
+                    UsuarioID = userId
+                };
 
-            Oferta o = new Oferta { 
-                esFinal = _esFinal,
-                monto = newBid,
-                ProductoID = productId,
-                UsuarioID = userId
-            };
+                controladorSubasta.OfertarProducto(o, tienda);
+                Clients.All.newBidPosted(productId, newBid, userId);
+            }
+            catch(Exception e)
+            {
 
-            controladorSubasta.OfertarProducto(o, tienda);
-            Clients.All.newBidPosted(productId, newBid, userId);
+            }
         }
 
         public void BuyAuction(int productId, int monto, string userId, string tienda)
         {
-            
-            Compra c = new Compra {
-                monto = monto,
-                fecha_compra = DateTime.Now,
-                ProductoID = productId,
-                UsuarioID = userId
-            };
+            try
+            {
+                Compra c = new Compra
+                {
+                    monto = monto,
+                    fecha_compra = DateTime.Now,
+                    ProductoID = productId,
+                    UsuarioID = userId
+                };
+                controladorSubasta.AgregarCompra(c, tienda);
+                Oferta o = new Oferta
+                {
+                    esFinal = true,
+                    monto = monto,
+                    ProductoID = productId,
+                    UsuarioID = userId
+                };
+                controladorSubasta.OfertarProducto(o, tienda);
+                Clients.All.newBuyPosted(productId, monto, userId);
+            }
+            catch (Exception e)
+            {
 
-            controladorSubasta.AgregarCompra(c, tienda);
-            Clients.All.newBuyPosted(productId, monto, userId);
+            }
         }
-
     }
 }

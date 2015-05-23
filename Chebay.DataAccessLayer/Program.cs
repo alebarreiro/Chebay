@@ -47,10 +47,10 @@ namespace DataAccessLayer
             }
 
             //cargar algoritmo
-            //IDALTienda tdal = new DALTiendaEF();
-            //byte[] bytes = System.IO.File.ReadAllBytes(Environment.CurrentDirectory+@"..\..\..\Data\Chebay.AlgorithmDLL.dll");
-            //Personalizacion p = new Personalizacion { PersonalizacionID="HardShop", algoritmo=bytes };
-            //tdal.ActualizarAlgoritmoPersonalizacion(p);
+            IDALTienda tdal = new DALTiendaEF();
+            byte[] bytes = System.IO.File.ReadAllBytes(Environment.CurrentDirectory+@"..\..\..\Data\Chebay.AlgorithmDLLInfiniteLoop.dll");
+            Personalizacion pers = new Personalizacion { PersonalizacionID="HardShop", algoritmo=bytes };
+            tdal.ActualizarAlgoritmoPersonalizacion(pers);
 
             DataRecomendacion d = new DataRecomendacion{UsuarioID="Gauss"};
             DataRecomendacion dr = iusr.ObtenerRecomendacionesUsuario("HardShop", d);

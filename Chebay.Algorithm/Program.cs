@@ -48,8 +48,11 @@ namespace Chebay.Algorithm
                     if (defaultalgorithm)
                     {
                         Algorithms def = new Algorithms();
-                        //no thread
-                        def.default_recomendation_algorithm(productos, user,tienda.TiendaID);
+                        Thread defThread = new Thread(() =>
+                        {
+                            def.default_recomendation_algorithm(productos, user, tienda.TiendaID);
+                        });
+                        defThread.Start();
                     }
                     else
                     {

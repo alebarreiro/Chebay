@@ -7,6 +7,7 @@ using Shared.DataTypes;
 using Shared.Entities;
 using DataAccessLayer;
 using System.Reflection;
+using System.Threading;
 
 namespace Chebay.Algorithm
 {
@@ -39,10 +40,23 @@ namespace Chebay.Algorithm
             var t = ddl.GetType("Chebay.AlgorithmDLL.ChebayAlgorithm");
             dynamic c = Activator.CreateInstance(t);
             DataRecomendacion dr = new DataRecomendacion { UsuarioID = user.UsuarioID };
+            Thread timeThread = new Thread(() =>
+            {
+                dr.productos = (List<DataProducto>)c.getProducts(products, user);
+                IDALUsuario udal = new DALUsuarioEF();
+                udal.AgregarRecomendacionesUsuario(tiendaID, dr);
+            });
+            timeThread.Start();
 
-            dr.productos = (List<DataProducto>)c.getProducts(products, user);
-            IDALUsuario udal = new DALUsuarioEF();
-            udal.AgregarRecomendacionesUsuario(tiendaID, dr);
+            bool finished = timeThread.Join(5000);
+            if (!finished)
+            {
+                System.Console.WriteLine("Probablemente un loop infinito...");
+                timeThread.Abort();
+                //suspendo y llamo default
+                default_recomendation_algorithm(products,user,tiendaID);
+            }
+                    
         }
     }
 }

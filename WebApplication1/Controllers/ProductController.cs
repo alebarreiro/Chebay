@@ -36,6 +36,12 @@ namespace WebApplication1.Controllers
             public long prodId { get; set; }
         }
 
+        public class DataTipoAtributo
+        {
+            public string etiqueta { get; set; }
+            public string tipoDato { get; set; }
+        }
+
         // GET: Product
         [Authorize]
         public ActionResult Index()
@@ -71,10 +77,10 @@ namespace WebApplication1.Controllers
             return PartialView("_DatosProductoPartial");
         }
 
-        public string RecursionCategorias(CategoriaCompuesta categoria)
+        public string RecursionCategorias(CategoriaCompuesta categoria, string ancestros)
         {
             string resultado = "";
-            resultado += "<li><button class=\"btn btn-link\">" + categoria.Nombre + "</button>";
+            resultado += "<li><button class=\"btn btn-link disabled\" data-id=\"" + categoria.CategoriaID + "\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -85,20 +91,34 @@ namespace WebApplication1.Controllers
                     {
                         if (hija is CategoriaCompuesta)
                         {
-                            resultado += RecursionCategorias((CategoriaCompuesta)hija);
+                            ancestros += hija.CategoriaID + ",";
+                            resultado += RecursionCategorias((CategoriaCompuesta)hija, ancestros);
+                            ancestros = "";
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" data-id=\"" + hija.CategoriaID + "\"  onclick=\"seleccionarCategoriaSimple("+hija.CategoriaID+")\">" + hija.Nombre + "</button></li>";
+                            string ancestros2 = obtenerAncestros(hija.padre);
+                            resultado += "<li><button class=\"btn btn-link\" id=\"item-" + hija.CategoriaID + "\" data-id=\"" + hija.CategoriaID + "\" data-ancestros=\"" + ancestros2 + "\" onclick=\"seleccionarCategoriaSimple(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";
                 }
-
-
             }
             resultado += "</li>";
             return resultado;
+        }
+
+        public string obtenerAncestros(CategoriaCompuesta cc)
+        {
+            CategoriaCompuesta actual = cc;
+            List<long> ancestros = new List<long>();
+            while (actual.CategoriaID != 1)
+            {
+                ancestros.Add(actual.CategoriaID);
+                actual = actual.padre;
+            }
+            ancestros.Add(1);
+            return string.Join(",", ancestros.ToArray());
         }
 
         //GET: /Product/ObtenerCategorias
@@ -122,19 +142,12 @@ namespace WebApplication1.Controllers
             string tablaCategorias = "";
             List<Categoria> categorias = cT.ListarCategorias(Session["Tienda_Nombre"].ToString());
             tablaCategorias += "<div style=\"background-color : white;\"><ul>";
-            tablaCategorias += RecursionCategorias((CategoriaCompuesta)categorias.ElementAt(0));
+            tablaCategorias += RecursionCategorias((CategoriaCompuesta)categorias.ElementAt(0), "");
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);
         }
 
-
-
-
-        // GET: Product/Create
-       // public ActionResult Create()
-       // {
-       //     return View();
-       // }
+        /* CREAR PRODUCTO */
 
         // POST: Product/Create
         [HttpPost]
@@ -163,6 +176,46 @@ namespace WebApplication1.Controllers
             catch (Exception e)
             {
                 var result = new { Success = "False", Message = "No se pudo crear el producto :("};
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        
+        // GET Producto/obtenerJsonAtributosCategoria
+        [Authorize]
+        [HttpGet]
+        public JsonResult obtenerJsonAtributosCategoria(long catId, string ancestros)
+        {
+            String tiendaId = Session["Tienda_Nombre"].ToString();
+            try
+            {
+                List<TipoAtributo> resultado = new List<TipoAtributo>();
+                if (ancestros != "")
+                {
+                    List<long> ancestrosId = new List<long>(Array.ConvertAll(ancestros.Split(','), long.Parse));
+                    foreach (long ancestroId in ancestrosId) 
+                    {
+                        resultado.AddRange(cT.ListarTipoAtributo(ancestroId, tiendaId));
+                    }
+                }
+                
+                resultado.AddRange(cT.ListarTipoAtributo(catId, tiendaId));
+                List<DataTipoAtributo> listDta = new List<DataTipoAtributo>();
+                foreach (TipoAtributo ta in resultado)
+                {
+                    DataTipoAtributo dta = new DataTipoAtributo
+                    {
+                        etiqueta = ta.TipoAtributoID,
+                        tipoDato = ta.tipodato.ToString()
+                    };
+                    listDta.Add(dta);
+                }
+                var result = new { Success = "True", Atributos = listDta };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }

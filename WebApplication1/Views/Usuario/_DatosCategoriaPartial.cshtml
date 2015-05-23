@@ -15,8 +15,8 @@
 </div>
 
 <script>
-    $(document).ready(function() {
-        $('#categorias').load('/' + '@nombreTienda' + '/Product/MostrarCategorias')
+    $(document).ready(function () {
+        $('#categorias').load("@Url.Action("MostrarCategorias", "Product")")
     })
 
     seleccionarCategoriaSimple = function (catID) {
@@ -30,5 +30,28 @@
             datosProducto.CatID = catID;
             localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
         }
+        $("#warningAttr").hide();
+
+        $("#atributos").html("Aca van los atributos de la cat " + catID);
+        $catSeleccionada = $("#item-" + catID);
+        var ancestros = $catSeleccionada.data("ancestros");
+
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonAtributosCategoria", "Product")",
+            data: {
+                catId: catID,
+                ancestros: ancestros
+            },
+            accept: 'application/json',
+            success: function (data) {
+                console.log(data);
+                $("#atributos").html(data.Atributos);
+            },
+            error: function (error) {
+                console.warn(error);
+            }
+    });
+        
     }
 </script>

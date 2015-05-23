@@ -1,5 +1,22 @@
 ﻿<section id="seccion-atributos">
     <h1>PASO 3: INGRESAR ATRIBUTOS DEL PRODUCTO</h1>
 
+    <div id="atributos">
+
+    </div>
     Seccion atributos.
+    <div class="alert alert-warning" id="warningAttr" role="alert" style="display:none"></div>
 </section>
+
+<script>
+    $(document).ready(function () {
+        var datosProducto = JSON.parse(localStorage.getItem("DatosProducto"));
+        if (datosProducto && datosProducto.CatID) {
+            $("#warningAttr").hide();
+        } else {
+            $("#warningAttr").html("Previamente debes seleccionar una categoría.");
+            $("#warningAttr").show();
+
+        }
+    });
+</script>

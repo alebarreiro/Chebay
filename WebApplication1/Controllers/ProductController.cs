@@ -77,7 +77,7 @@ namespace WebApplication1.Controllers
             return PartialView("_DatosProductoPartial");
         }
 
-        public string RecursionCategorias(CategoriaCompuesta categoria, string ancestros)
+        public string RecursionCategorias(CategoriaCompuesta categoria)
         {
             string resultado = "";
             resultado += "<li><button class=\"btn btn-link disabled\" data-id=\"" + categoria.CategoriaID + "\">" + categoria.Nombre + "</button>";
@@ -91,9 +91,7 @@ namespace WebApplication1.Controllers
                     {
                         if (hija is CategoriaCompuesta)
                         {
-                            ancestros += hija.CategoriaID + ",";
-                            resultado += RecursionCategorias((CategoriaCompuesta)hija, ancestros);
-                            ancestros = "";
+                            resultado += RecursionCategorias((CategoriaCompuesta)hija);
                         }
                         else
                         {
@@ -142,7 +140,7 @@ namespace WebApplication1.Controllers
             string tablaCategorias = "";
             List<Categoria> categorias = cT.ListarCategorias(Session["Tienda_Nombre"].ToString());
             tablaCategorias += "<div style=\"background-color : white;\"><ul>";
-            tablaCategorias += RecursionCategorias((CategoriaCompuesta)categorias.ElementAt(0), "");
+            tablaCategorias += RecursionCategorias((CategoriaCompuesta)categorias.ElementAt(0));
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);
         }

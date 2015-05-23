@@ -8,6 +8,7 @@ using Shared.Entities;
 using System.Data.Entity.Core.EntityClient;
 using System.Data.Common;
 using System.Diagnostics;
+using Shared.DataTypes;
 
 namespace DataAccessLayer
 {
@@ -22,13 +23,43 @@ namespace DataAccessLayer
             //    bd.Seed();
             //}
 
-            //cargar algoritmo loop infinito
-            //IDALTienda tdal = new DALTiendaEF();
-            //byte[] bytes = System.IO.File.ReadAllBytes(Environment.CurrentDirectory+@"\Data\Chebay.AlgorithmDLLInfiniteLoop.dll");
-            //Personalizacion p = new Personalizacion { PersonalizacionID="HardShop", algoritmo=bytes };
-            //tdal.ActualizarAlgoritmoPersonalizacion(p);
+            IDALSubasta isub = new DALSubastaEF();
+            IDALUsuario iusr = new DALUsuarioEF();
 
+            using (var db = ChebayDBContext.CreateTenant("TestURL"))
+            {
+                /*
+                List<Producto>prods = isub.ObtenerTodosProductos("TestURL");
+                DataRecomendacion data = new DataRecomendacion {UsuarioID="unos", productos=new List<DataProducto>() };
+                foreach (var p in prods)
+                {
+                    data.productos.Add(new DataProducto(p));
+                }
+                iusr.AgregarRecomendacionesUsuario("TestURL", data);
+                DataRecomendacion d= iusr.ObtenerRecomendacionesUsuario("TestURL", data);
+                Console.Read();
+                foreach (var p in d.productos)
+                {
+                    System.Console.WriteLine(p.ProductoID);
+                }
 
+              */
+            }
+
+            //cargar algoritmo
+            IDALTienda tdal = new DALTiendaEF();
+            byte[] bytes = System.IO.File.ReadAllBytes(Environment.CurrentDirectory+@"..\..\..\Data\Chebay.AlgorithmDLLInfiniteLoop.dll");
+            Personalizacion pers = new Personalizacion { PersonalizacionID="HardShop", algoritmo=bytes };
+            tdal.ActualizarAlgoritmoPersonalizacion(pers);
+
+            DataRecomendacion d = new DataRecomendacion{UsuarioID="Gauss"};
+            DataRecomendacion dr = iusr.ObtenerRecomendacionesUsuario("HardShop", d);
+            foreach (var p in dr.productos)
+            {
+                System.Console.WriteLine(p.ProductoID+p.nombre);
+            }
+
+            Console.Read();
             //string currentpath = Environment.CurrentDirectory;
            
             //System.IO.Directory.GetParent();
@@ -57,7 +88,7 @@ namespace DataAccessLayer
             {
                 Console.WriteLine(l.AtributoSesionID+" "+l.AdministradorID+ " "+ l.Datos);
             }*/
-            Console.Read();
+            //Console.Read();
             //Ejemplo para crear schema
             //ChebayDBContext.ProvisionTenant("Tienda1");
             //ChebayDBPublic.ProvidePublicSchema();

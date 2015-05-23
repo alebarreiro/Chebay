@@ -30,6 +30,10 @@ namespace DataAccessLayer
         void AgregarImagenUsuario(ImagenUsuario iu, string idTienda);
         ImagenUsuario ObtenerImagenUsuario(string idUsuario, string idTienda);
         void EliminarImagenUsuario(string idUsuario, string idTienda);
+
+        //--RECOMENDACIONES--
+        DataRecomendacion ObtenerRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion);
+        void AgregarRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion);
         
     }
 }

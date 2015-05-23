@@ -66,8 +66,7 @@ namespace DataAccessLayer
             using (var context = ChebayDBContext.CreateTenant(idTienda))
             {
                 var query = from p in context.productos
-                                .Include("usuario")
-                                .Include("categoria")
+                                //.Include("usuario")//.Include("categoria")
                                 .Include("visitas")
                                 .Include("favoritos")
                                 .Include("ofertas")

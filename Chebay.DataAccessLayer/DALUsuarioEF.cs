@@ -388,6 +388,25 @@ namespace DataAccessLayer
             }
         }
         #endregion
+
+        #region recomendaciones
+
+        public DataRecomendacion ObtenerRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion)
+        {
+            MongoDB db = new MongoDB();
+            return db.GetRecomendacionesUsuario(TiendaID, dataRecomendacion);
+        }
+
+        public void AgregarRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion)
+        {
+            MongoDB db = new MongoDB();
+            Task t = db.InsertProducts(TiendaID, dataRecomendacion);
+            t.Wait();
+        }
+
+        #endregion
+
+
     }
 } 
         

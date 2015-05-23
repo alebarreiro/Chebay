@@ -38,6 +38,9 @@
     <Reference Include="EntityFramework">
       <HintPath>..\packages\EntityFramework.5.0.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
+    <Reference Include="MongoDB.Bson">
+      <HintPath>..\packages\MongoDB.Bson.2.0.0\lib\net45\MongoDB.Bson.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -51,6 +54,7 @@
   <ItemGroup>
     <Compile Include="DataTypes\DataCalificacion.cs" />
     <Compile Include="DataTypes\DataProducto.cs" />
+    <Compile Include="DataTypes\DataRecomendacion.cs" />
     <Compile Include="DataTypes\DataReporte.cs" />
     <Compile Include="DataTypes\DataReporteTrans.cs" />
     <Compile Include="DataTypes\DataReporteUsr.cs" />

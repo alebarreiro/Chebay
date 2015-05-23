@@ -10,54 +10,13 @@ using System.Reflection;
 using System.IO;
 using System.Threading;
 using System.Diagnostics;
+using Shared.DataTypes;
 
 namespace Chebay.Algorithm
 {
     // To learn more about Microsoft Azure WebJobs SDK, please see http://go.microsoft.com/fwlink/?LinkID=320976
     class Program
     {
-        //default algorithm return the mosts visited product
-        static List<Producto> default_recomendation_algorithm(List<Producto> products, Usuario user)
-        {
-            var query = from p in products
-                        orderby (p.visitas.Count) descending
-                        select p;
-            return query.ToList();
-        }
-
-
-        static List<Producto> custom_algorithm(Personalizacion personalizacion, List<Producto> products, Usuario user)
-        {
-            Assembly ddl = Assembly.Load(personalizacion.algoritmo);
-            var t = ddl.GetType("Chebay.AlgorithmDLL.ChebayAlgorithm");
-            dynamic c = Activator.CreateInstance(t);
-            List<Producto> res = null;
-            bool finish = false;
-
-            Thread thread = new Thread(delegate()
-            {
-                res = (List<Producto>)c.getProducts(products, user);
-                finish = true;
-            });
-
-            int timeout = 50;
-            while (!finish)
-            {
-                Thread.Sleep(100);
-                if(!finish)
-                    timeout--;
-
-                if (timeout == 0)
-                {
-                    Debug.WriteLine("Timeout algorithm, infinite loop(?)");
-                    finish = true;
-                    thread.Abort();
-                    //return default algorithm
-                    res = default_recomendation_algorithm(products, user);
-                }
-            }
-            return res;
-        }
         
         // Please set the following connection strings in app.config for this WebJob to run:
         // AzureWebJobsDashboard and AzureWebJobsStorage
@@ -79,43 +38,48 @@ namespace Chebay.Algorithm
                 List<Usuario> usuarios = udal.ObtenerTodosUsuariosFull(tienda.TiendaID);
                 bool defaultalgorithm = false;
 
-
                 if (pers.algoritmo== null || pers.algoritmo.Length == 0)
                 {
-                    System.Console.WriteLine(tienda.TiendaID + "default algorithm");
                     defaultalgorithm = true;
                 }
                 foreach (var user in usuarios)
                 {
                     System.Console.WriteLine("USUARIO::"+user.UsuarioID);
-                    List<Producto> rec;
                     if (defaultalgorithm)
                     {
-                        rec = default_recomendation_algorithm(productos, user);
+                        Algorithms def = new Algorithms();
+                        //no thread
+                        def.default_recomendation_algorithm(productos, user,tienda.TiendaID);
                     }
                     else
                     {
                         try
                         {
-                            rec = custom_algorithm(pers, productos, user);
+                            Thread t = new Thread(
+                                delegate(){
+                                    System.Console.WriteLine("CustomAlgorithm");
+                                    Algorithms a = new Algorithms();
+                                    a.custom_algorithm(pers, productos, user, tienda.TiendaID);
+                                });
+                            t.Start();
+                         
                         }
                         catch (Exception E)
                         {
                             System.Console.WriteLine("Error ejecutar algoritmo custom... Ejecutando por defecto...");
-                            rec = default_recomendation_algorithm(productos, user);
+                            Thread t = new Thread(
+                                delegate(){
+                                    System.Console.WriteLine("DefaultAlgorithm");
+                                    Algorithms a = new Algorithms();
+                                    a.default_recomendation_algorithm(productos, user,tienda.TiendaID);
+                                });
+                            t.Start();
+                                
                         }
                     }
-                    //savelist in mongo :)
-                    foreach (var pr in rec)
-                    {
-                        System.Console.WriteLine(+pr.ProductoID + pr.nombre);
-                    }
-
                 }
-
-                //System.Console.Read();
             }
-            
+            System.Console.Read();
             //var host = new JobHost();
             
             

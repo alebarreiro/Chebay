@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.Entities;
+using Shared.DataTypes;
 
 namespace Chebay.AlgorithmDLL
 {
@@ -11,17 +12,22 @@ namespace Chebay.AlgorithmDLL
     {
         //only read!
         //determinate the best products por user
-        public List<Producto> getProducts(List<Producto> products, Usuario user)
+        public List<DataProducto> getProducts(List<Producto> products, Usuario user)
         {
-            /*
+            System.Console.WriteLine("Algoritmo ha comenzado!");
+            List<DataProducto> ret = new List<DataProducto>();
             var query = from p in products
                         orderby p.nombre
                         select p;
-             */
+            
+            foreach (var p in query.ToList())
+            {               
+                ret.Add(new DataProducto(p));
+            }
             //joke server :)
-            while (true) ;
-            return null;
-            //return query.ToList();
+            //while (true) ;
+            //return null;
+            return ret;
         }
     }
 }

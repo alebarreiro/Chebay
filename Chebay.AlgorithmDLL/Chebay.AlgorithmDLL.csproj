@@ -47,6 +47,7 @@
     <Compile Include="ChebayAlgorithm.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="packages\Shared.dll" />
   </ItemGroup>

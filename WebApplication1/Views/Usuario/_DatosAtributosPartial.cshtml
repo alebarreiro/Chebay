@@ -1,22 +1,36 @@
 ﻿<section id="seccion-atributos">
     <h1>PASO 3: INGRESAR ATRIBUTOS DEL PRODUCTO</h1>
 
-    <div id="atributos">
-
-    </div>
-    Seccion atributos.
-    <div class="alert alert-warning" id="warningAttr" role="alert" style="display:none"></div>
+    <section id="content-atributos">
+        Seleccione una categoría.
+    </section>
 </section>
 
-<script>
-    $(document).ready(function () {
-        var datosProducto = JSON.parse(localStorage.getItem("DatosProducto"));
-        if (datosProducto && datosProducto.CatID) {
-            $("#warningAttr").hide();
-        } else {
-            $("#warningAttr").html("Previamente debes seleccionar una categoría.");
-            $("#warningAttr").show();
+<script id="atributos-template" type="text/x-template">
+    {{#Atributos}}
+    <div class="form-horizontal">
+    {{>atributoItem}}
+    </div>
+    {{/Atributos}}
+    <button type="button" class="btn btn-default">Confirmar atributos</button>
+</script>
 
-        }
-    });
+<script id="atributoItem" type="text/x-template">
+    {{#esBool}}
+    <div class="form-group">
+        <label for="input-{{etiqueta}}" class="col-sm-2 control-label">{{etiqueta}}</label>
+        <select class="form-control" style="margin-left: 15px; width: 10%; display: inline;">
+            <option>Si</option>
+            <option>No</option>
+        </select>
+    </div>
+    {{/esBool}}
+    {{^esBool}}
+    <div class="form-group">
+        <label for="input-{{etiqueta}}" class="col-sm-2 control-label">{{etiqueta}}</label>
+        <div class="col-sm-4">
+            <input type="email" class="form-control" id="input-{{etiqueta}}">
+        </div>
+    </div>
+    {{/esBool}}
 </script>

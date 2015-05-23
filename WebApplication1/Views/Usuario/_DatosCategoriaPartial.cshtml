@@ -46,7 +46,21 @@
             accept: 'application/json',
             success: function (data) {
                 console.log(data);
-                $("#atributos").html(data.Atributos);
+                if (data.Atributos.length > 0) {
+                    $.each(data.Atributos, function () {
+                        this.esBool = function () {
+                            return this.tipoDato == "BOOL" || this.tipoDato == "BINARY";
+                        }
+                    });
+                }
+                var template = $('#atributos-template').html();
+                var templateItem = $('#atributoItem').html();
+                Mustache.parse(template);
+                var viewObject = {
+                    Atributos: data.Atributos
+                };
+                var rendered = Mustache.render(template, viewObject, { atributoItem: templateItem });
+                $("#content-atributos").html(rendered);
             },
             error: function (error) {
                 console.warn(error);

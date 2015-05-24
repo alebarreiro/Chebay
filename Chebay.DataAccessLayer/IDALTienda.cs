@@ -42,6 +42,8 @@ namespace DataAccessLayer
         List<TipoAtributo> ListarTipoAtributo(long idCategoria, string idTienda);
         void EliminarTipoAtributo(string idTipoAtributo, string idTienda);
 
+        List<TipoAtributo> ListarTodosTipoAtributo(long idCategoria, string idTienda);
+
         //--PERSONALIZACIÓN DE LA TIENDA--
         void PersonalizarTienda(Personalizacion p, string idTienda);
         Personalizacion ObtenerPersonalizacionTienda(string idTienda);

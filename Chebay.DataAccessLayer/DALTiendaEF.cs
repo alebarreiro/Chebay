@@ -755,6 +755,57 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+
+        public List<TipoAtributo> ListarTodosTipoAtributo(long idCategoria, string idTienda)
+        {
+            List<TipoAtributo> ac = new List<TipoAtributo>();
+
+            using(var db = ChebayDBContext.CreateTenant(idTienda))
+            {
+                var query = from c in db.categorias
+                            where c.CategoriaID == idCategoria
+                            select c;
+                if (query.Count() == 0)
+                {
+                    throw new Exception("No existe la categoria "+ idCategoria);
+                }
+
+                Categoria itcat = query.First();
+                bool finish = false;
+                do
+                {
+                    //System.Console.WriteLine(itcat.CategoriaID);
+                    var itquery = from c in db.categorias.Include("tipoatributos").Include("padre")
+                                  where c.CategoriaID == itcat.CategoriaID
+                                  select c;
+
+                    itcat = itquery.First();
+                    foreach (var a in itcat.tipoatributos)
+                    {
+                        ac.Add(a);
+                    }
+                    if (itcat.CategoriaID != 1)
+                        itcat = itcat.padre;
+                    else
+                        finish = true;
+                } while (!finish);
+
+                //foreach (var a in ac)
+                //{
+                //    System.Console.WriteLine(a.TipoAtributoID);
+                //}
+                return ac;
+            }
+            
+
+
+
+        }
+
+
+
+
+
         #endregion
 
         #region atributos de sesion administrador

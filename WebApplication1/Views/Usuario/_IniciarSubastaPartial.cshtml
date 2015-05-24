@@ -68,6 +68,7 @@
             accept: 'application/json',
             success: function (data) {
                 swal("éxito!", "Iniciaste una nueva subasta!", "success");
+                localStorage.removeItem("DatosProducto");
             },
             error: function (error) {
                 swal("Oops...", "No se pudo crear el nuevo producto: " + error, "error");

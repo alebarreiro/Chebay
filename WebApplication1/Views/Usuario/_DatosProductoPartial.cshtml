@@ -29,30 +29,10 @@
             <label for="horaCierre">Hora cierre: </label>
             <input type="time" class="form-control" id="horaCierre">
         </div>
-
-        <button class="btn btn-default" onclick="productoValidar1()">Confirmar datos</button>
 </div>
 
 
 
 <script type="text/javascript">
-    productoValidar1 = function () {
-        var titulo = $('#titulo').val(),
-            descripcion = $('#descripcion').val(),
-            precioBase = $('#precioInicial').val(),
-            precioComprarYa = $('#precioComprarYa').val(),
-            fechaCierre = $('#fechaCierre').val(),
-            horaCierre = $('#horaCierre').val(),
-
-        datosProducto = {
-            'titulo': titulo,
-            'descripcion': descripcion,
-            'precioBase': precioBase,
-            'precioComprarYa': precioComprarYa,
-            'fechaCierre': fechaCierre + " " + horaCierre,
-        }
-        console.log(datosProducto);
-        localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
-        console.log(titulo + " " + descripcion);
-    }
+    
 </script>

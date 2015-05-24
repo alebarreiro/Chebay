@@ -15,61 +15,7 @@
 </div>
 
 <script>
-    var atributos;
-
     $(document).ready(function () {
         $('#categorias').load("@Url.Action("MostrarCategorias", "Product")")
     })
-
-    seleccionarCategoriaSimple = function (catID) {
-        $("#categoriaSeleccionada").html("Categoria seleccionada: #" + catID);
-        var datosProducto = JSON.parse(localStorage.getItem("DatosProducto"));
-        if (datosProducto) {
-            datosProducto.CatID = catID;
-            localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
-        } else {
-            datosProducto = {};
-            datosProducto.CatID = catID;
-            localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
-        }
-
-        $.ajax({
-            type: "GET",
-            url: "@Url.Action("obtenerJsonAtributosCategoria", "Product")",
-            data: {
-                catId: catID
-            },
-            accept: 'application/json',
-            success: function (data) {
-                atributos = data.Atributos;
-                if (data.Atributos.length > 0) {
-                    $.each(data.Atributos, function () {
-                        this.esBool = function () {
-                            return this.tipoDato == "BOOL" || this.tipoDato == "BINARY";
-                        }
-                    });
-                }
-                var template = $('#atributos-template').html();
-                var templateItem = $('#atributoItem').html();
-                Mustache.parse(template);
-                var viewObject = {
-                    Atributos: data.Atributos
-                };
-                var rendered = Mustache.render(template, viewObject, { atributoItem: templateItem });
-                $("#content-atributos").html(rendered);
-            },
-            error: function (error) {
-                console.warn(error);
-            }
-        });
-    }
-
-    confirmarAttrs = function() {
-        if (atributos) {
-            $.each(atributos, function () {
-                $input = $("#input-" + this.clave);
-                console.log($input.val());
-            })
-        }
-    };
 </script>

@@ -1,7 +1,7 @@
 ﻿<section id="seccion-atributos">
     <h1>PASO 3: INGRESAR ATRIBUTOS DEL PRODUCTO</h1>
 
-    <section id="content-atributos">
+    <section id="content-atributos" data-request-url="@Url.Action("obtenerJsonAtributosCategoria", "Product")">
         Seleccione una categoría.
     </section>
 </section>
@@ -12,7 +12,6 @@
     {{>atributoItem}}
     </div>
     {{/Atributos}}
-    <button type="button" class="btn btn-default" onclick="confirmarAttrs()">Confirmar atributos</button>
 </script>
 
 <script id="atributoItem" type="text/x-template">

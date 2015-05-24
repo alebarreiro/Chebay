@@ -4,7 +4,7 @@
     var nombreTienda = @Session["Tienda_Nombre"];
 }
 
-<div>
+<div id="crearProducto" data-request-url="@Url.Action("Create","Product")">
     <h4>Nueva subasta</h4>
     <hr />
     <dl class="dl-horizontal"></dl>
@@ -30,10 +30,12 @@
 
     <hr />
 
+    <!--
     <button class="btn btn-primary boton100" onclick="datosImagenes()">Cargar imagenes</button>
     <div id="datosImagenes" class="" style="display: none">
         @Html.Partial("_DatosImagenesPartial")
     </div>
+    -->
 
     <dl class="dl-horizontal"></dl>
     <button class="btn btn-success" onclick="confirmarProducto()">Confirmar subasta</button>
@@ -41,40 +43,7 @@
 </div>
 
 <script>
-    datosProd = function () {
-        $("#datosProducto").toggle(1000);
-    }
-
-    datosCat = function () {
-        $("#datosCategoria").toggle(1000);
-    }
-
-    datosAtributos = function () {
-        $("#datosAtributos").toggle(1000);
-    }
-
-    datosImagenes = function () {
-        $("#datosImagenes").toggle(1000);
-    }
-
-    confirmarProducto = function () {
-        console.log("Datos de producto: ");
-        var datosProducto = JSON.parse(localStorage.getItem("DatosProducto"));
-        console.log(datosProducto);
-        $.ajax({
-            type: "POST",
-            url: "@Url.Action("Create","Product")",
-            data: datosProducto,
-            accept: 'application/json',
-            success: function (data) {
-                swal("éxito!", "Iniciaste una nueva subasta!", "success");
-                localStorage.removeItem("DatosProducto");
-            },
-            error: function (error) {
-                swal("Oops...", "No se pudo crear el nuevo producto: " + error, "error");
-            }
-        });
-    }
+    
 
 </script>
 

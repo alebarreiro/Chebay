@@ -43,6 +43,13 @@ namespace WebApplication1.Controllers
             public string clave { get; set; }
         }
 
+        public class DataAtributo
+        {
+            public string TipoAtributoID { get; set; }
+            public string etiqueta { get; set; }
+            public string valor { get; set; }
+        }
+
         // GET: Product
         [Authorize]
         public ActionResult Index()
@@ -150,7 +157,7 @@ namespace WebApplication1.Controllers
 
         // POST: Product/Create
         [HttpPost]
-        public JsonResult Create(DatosCrearProducto producto)
+        public JsonResult Create(DatosCrearProducto producto, List<DataAtributo> atributos)
         {
             try
             {

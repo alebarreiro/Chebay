@@ -30,7 +30,8 @@ namespace Frontoffice
                         "~/Scripts/moment.with-locales.js",
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
-                        "~/Scripts/AppScripts/Subasta.js"
+                        "~/Scripts/AppScripts/Subasta.js",
+                        "~/Scripts/AppScripts/CrearProducto.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(

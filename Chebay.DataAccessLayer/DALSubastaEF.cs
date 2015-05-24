@@ -1157,12 +1157,14 @@ namespace DataAccessLayer
         #endregion
 
         #region atributos
-        public void AgregarAtributo(List<Atributo> lAtributos, string idTienda)
+        public void AgregarAtributo(List<Atributo> lAtributos, long idProducto, string idTienda)
         {
                try
                {
                    if (lAtributos == null)
                        throw new Exception("Tiene que pasar una lista de atributos.");
+                   if (idProducto == 0)
+                       throw new Exception("Tiene que pasar el identificador de un producto.");
                    chequearTienda(idTienda);
                    using (var context = ChebayDBContext.CreateTenant(idTienda))
                    {
@@ -1172,15 +1174,30 @@ namespace DataAccessLayer
                            var qAtributo = from atr in context.atributos
                                            where atr.AtributoID == a.AtributoID
                                            select atr;
+                           
+                           //Obtengo el producto.
+                           var qProducto = from prd in context.productos
+                                           where prd.ProductoID == idProducto
+                                           select prd;
+                           if (qProducto.Count() == 0)
+                               throw new Exception("No existe el producto.");
+                           Producto p = qProducto.FirstOrDefault();
+                           
                            if (qAtributo.Count() > 0)
                            { //Modificar Atributo
                                Atributo at = qAtributo.FirstOrDefault();
                                at.etiqueta = a.etiqueta;
                                at.valor = a.valor;
+                               if (at.productos == null)
+                                   at.productos = new HashSet<Producto>();
+                               at.productos.Add(p);
                                context.SaveChanges();
                            }
                            else
                            { //Agregar Atributo
+                               if (a.productos == null)
+                                   a.productos = new HashSet<Producto>();
+                               a.productos.Add(p);
                                context.atributos.Add(a);
                                context.SaveChanges();
                            }
@@ -1194,12 +1211,14 @@ namespace DataAccessLayer
                }
         }
 
-        public void AgregarAtributo(Atributo a, string idTienda)
+        public void AgregarAtributo(Atributo a, long idProducto, string idTienda)
         {
             try
             {
                 if (a == null)
                     throw new Exception("Tiene que pasar un atributo.");
+                if (idProducto == 0)
+                    throw new Exception("Tiene que pasar el identificador de un producto.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
@@ -1207,15 +1226,30 @@ namespace DataAccessLayer
                     var qAtributo = from atr in context.atributos
                                     where atr.AtributoID == a.AtributoID
                                     select atr;
+
+                    //Obtengo el producto.
+                    var qProducto = from prd in context.productos
+                                    where prd.ProductoID == idProducto
+                                    select prd;
+                    if (qProducto.Count() == 0)
+                        throw new Exception("No existe el producto.");
+                    Producto p = qProducto.FirstOrDefault();
+                    
                     if (qAtributo.Count() > 0)
                     { //Modificar Atributo
                         Atributo at = qAtributo.FirstOrDefault();
                         at.etiqueta = a.etiqueta;
                         at.valor = a.valor;
+                        if (at.productos == null)
+                            at.productos = new HashSet<Producto>();
+                        at.productos.Add(p);
                         context.SaveChanges();
                     }
                     else
                     { //Agregar Atributo
+                        if (a.productos == null)
+                            a.productos = new HashSet<Producto>();
+                        a.productos.Add(p);
                         context.atributos.Add(a);
                         context.SaveChanges();
                     }

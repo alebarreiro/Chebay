@@ -12,7 +12,7 @@ namespace DataAccessLayer
     {
 
         //--PRODUCTO--
-        void AgregarProducto(Producto p, string idTienda);
+        long AgregarProducto(Producto p, string idTienda);
         Producto ObtenerProducto(long idProducto, string idTienda);
         List<Producto> ObtenerTodosProductos(string idTienda); //algorithm
         

@@ -16,7 +16,7 @@ namespace DataAccessLayer
 
         #region productos
         //--PRODUCTOS--
-        public void AgregarProducto(Producto p, string idTienda)
+        public long AgregarProducto(Producto p, string idTienda)
         {
             try
             {
@@ -52,6 +52,10 @@ namespace DataAccessLayer
                 
                     context.productos.Add(p);
                     context.SaveChanges();
+
+                    //Obtengo el idProducto
+                    context.productos.Find(p);
+                    return p.ProductoID;
                 }
             }
             catch (Exception e)

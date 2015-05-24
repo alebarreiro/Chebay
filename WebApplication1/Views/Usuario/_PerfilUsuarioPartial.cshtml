@@ -7,6 +7,8 @@
         <input id="btnUploadFile" type="button" value="Upload File" />
 </div>
 
+<img src="@Url.Action("getUserImg", "Usuario", new { userId = @Context.User.Identity.Name })" alt="Person Image" />
+
 <script type="text/javascript">
     $(document).ready(function () {
 

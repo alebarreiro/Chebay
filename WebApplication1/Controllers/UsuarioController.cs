@@ -35,8 +35,9 @@ namespace WebApplication1.Controllers
 
         // GET: Usuario
         [Authorize]
-        public ActionResult Index(String tienda)
+        public ActionResult Index()
         {
+            String tienda = Session["Tienda_Nombre"].ToString();
             Debug.WriteLine(tienda);
             if (Session["Usuario"] != null)
             {
@@ -50,6 +51,8 @@ namespace WebApplication1.Controllers
                 {
                     Usuario u = uC.ObtenerUsuario(userName, Session["Tienda_Nombre"].ToString());
                     Session["Usuario"] = u;
+                    ImagenUsuario iu = uC.ObtenerImagenUsuario(userName, tienda);
+                    ViewBag.imagenUsuario = iu.Imagen;
                     ViewBag.usuario = u;
                 }
                 catch (Exception e)
@@ -61,6 +64,16 @@ namespace WebApplication1.Controllers
             return View();
         }
 
+        // To convert the Byte Array to the author Image
+        public FileContentResult getUserImg(String userId)
+        {
+            String tienda = Session["Tienda_Nombre"].ToString();
+            byte[] byteArray = uC.ObtenerImagenUsuario(userId, tienda).Imagen;
+            return byteArray != null
+                ? new FileContentResult(byteArray, "image/jpeg")
+                : null;
+        }
+
         [HttpPost]
         public void UploadFile()
         {
@@ -68,14 +81,26 @@ namespace WebApplication1.Controllers
             {
                 // Obtener la imagen subida
                 var httpPostedFile = System.Web.HttpContext.Current.Request.Files["UploadedImage"];
-
+                String usuarioId = User.Identity.Name;
+                String tienda = Session["Tienda_Nombre"].ToString();
                 if (httpPostedFile != null)
                 {
+                    //Nombre unico
+                    String fileName = Guid.NewGuid().ToString("N") + "_" + httpPostedFile.FileName;
                     // Path
-                    var fileSavePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles"), httpPostedFile.FileName);
+                    var fileSavePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles"), fileName);
 
                     // Guardar la imagen en UplodadedFiles
                     httpPostedFile.SaveAs(fileSavePath);
+
+                    byte[] imageBytes = System.IO.File.ReadAllBytes(fileSavePath);
+
+                    ImagenUsuario iu = new ImagenUsuario{
+                        UsuarioID = usuarioId,
+                        Imagen    = imageBytes
+                    };
+
+                    uC.AgregarImagenUsuario(iu, tienda);
                 }
             }
         }

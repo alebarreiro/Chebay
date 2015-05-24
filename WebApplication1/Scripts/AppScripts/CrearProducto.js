@@ -119,26 +119,6 @@ confirmarProducto = function () {
     }
 }
 
-productoValidar1 = function () {
-    var titulo = $('#titulo').val(),
-        descripcion = $('#descripcion').val(),
-        precioBase = $('#precioInicial').val(),
-        precioComprarYa = $('#precioComprarYa').val(),
-        fechaCierre = $('#fechaCierre').val(),
-        horaCierre = $('#horaCierre').val(),
-
-    datosProducto = {
-        'titulo': titulo,
-        'descripcion': descripcion,
-        'precioBase': precioBase,
-        'precioComprarYa': precioComprarYa,
-        'fechaCierre': fechaCierre + " " + horaCierre,
-    }
-    console.log(datosProducto);
-    localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
-    console.log(titulo + " " + descripcion);
-}
-
 seleccionarCategoriaSimple = function (catID) {
     categoriaSeleccionada = catID;
     $("#categoriaSeleccionada").html("Categoria seleccionada: #"+ catID);
@@ -182,12 +162,3 @@ seleccionarCategoriaSimple = function (catID) {
         }
     });
 }
-
-confirmarAttrs = function() {
-    if (atributos) {
-        $.each(atributos, function () {
-            $input = $("#input-" + this.clave);
-            console.log($input.val());
-        })
-    }
-};

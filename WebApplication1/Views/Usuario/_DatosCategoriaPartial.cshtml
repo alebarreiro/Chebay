@@ -15,6 +15,8 @@
 </div>
 
 <script>
+    var atributos;
+
     $(document).ready(function () {
         $('#categorias').load("@Url.Action("MostrarCategorias", "Product")")
     })
@@ -30,22 +32,16 @@
             datosProducto.CatID = catID;
             localStorage.setItem("DatosProducto", JSON.stringify(datosProducto));
         }
-        $("#warningAttr").hide();
-
-        $("#atributos").html("Aca van los atributos de la cat " + catID);
-        $catSeleccionada = $("#item-" + catID);
-        var ancestros = $catSeleccionada.data("ancestros");
 
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerJsonAtributosCategoria", "Product")",
             data: {
-                catId: catID,
-                ancestros: ancestros
+                catId: catID
             },
             accept: 'application/json',
             success: function (data) {
-                console.log(data);
+                atributos = data.Atributos;
                 if (data.Atributos.length > 0) {
                     $.each(data.Atributos, function () {
                         this.esBool = function () {
@@ -65,7 +61,15 @@
             error: function (error) {
                 console.warn(error);
             }
-    });
-        
+        });
     }
+
+    confirmarAttrs = function() {
+        if (atributos) {
+            $.each(atributos, function () {
+                $input = $("#input-" + this.clave);
+                console.log($input.val());
+            })
+        }
+    };
 </script>

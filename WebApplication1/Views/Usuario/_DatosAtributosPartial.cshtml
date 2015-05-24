@@ -12,14 +12,14 @@
     {{>atributoItem}}
     </div>
     {{/Atributos}}
-    <button type="button" class="btn btn-default">Confirmar atributos</button>
+    <button type="button" class="btn btn-default" onclick="confirmarAttrs()">Confirmar atributos</button>
 </script>
 
 <script id="atributoItem" type="text/x-template">
     {{#esBool}}
     <div class="form-group">
-        <label for="input-{{etiqueta}}" class="col-sm-2 control-label">{{etiqueta}}</label>
-        <select class="form-control" style="margin-left: 15px; width: 10%; display: inline;">
+        <label for="input-{{clave}}" class="col-sm-2 control-label">{{etiqueta}}</label>
+        <select class="form-control" id="input-{{clave}}" style="margin-left: 15px; width: 10%; display: inline;">
             <option>Si</option>
             <option>No</option>
         </select>
@@ -27,9 +27,9 @@
     {{/esBool}}
     {{^esBool}}
     <div class="form-group">
-        <label for="input-{{etiqueta}}" class="col-sm-2 control-label">{{etiqueta}}</label>
+        <label for="input-{{clave}}" class="col-sm-2 control-label">{{etiqueta}}</label>
         <div class="col-sm-4">
-            <input type="email" class="form-control" id="input-{{etiqueta}}">
+            <input type="text" class="form-control" id="input-{{clave}}">
         </div>
     </div>
     {{/esBool}}

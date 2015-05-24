@@ -40,6 +40,7 @@ namespace WebApplication1.Controllers
         {
             public string etiqueta { get; set; }
             public string tipoDato { get; set; }
+            public string clave { get; set; }
         }
 
         // GET: Product
@@ -95,8 +96,8 @@ namespace WebApplication1.Controllers
                         }
                         else
                         {
-                            string ancestros2 = obtenerAncestros(hija.padre);
-                            resultado += "<li><button class=\"btn btn-link\" id=\"item-" + hija.CategoriaID + "\" data-id=\"" + hija.CategoriaID + "\" data-ancestros=\"" + ancestros2 + "\" onclick=\"seleccionarCategoriaSimple(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
+                            //string ancestros2 = obtenerAncestros(hija.padre);
+                            resultado += "<li><button class=\"btn btn-link\" id=\"item-" + hija.CategoriaID + "\" data-id=\"" + hija.CategoriaID + "\" onclick=\"seleccionarCategoriaSimple(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";
@@ -182,29 +183,21 @@ namespace WebApplication1.Controllers
         // GET Producto/obtenerJsonAtributosCategoria
         [Authorize]
         [HttpGet]
-        public JsonResult obtenerJsonAtributosCategoria(long catId, string ancestros)
+        public JsonResult obtenerJsonAtributosCategoria(long catId)
         {
             String tiendaId = Session["Tienda_Nombre"].ToString();
             try
             {
-                List<TipoAtributo> resultado = new List<TipoAtributo>();
-                if (ancestros != "")
-                {
-                    List<long> ancestrosId = new List<long>(Array.ConvertAll(ancestros.Split(','), long.Parse));
-                    foreach (long ancestroId in ancestrosId) 
-                    {
-                        resultado.AddRange(cT.ListarTipoAtributo(ancestroId, tiendaId));
-                    }
-                }
+                List<TipoAtributo> resultado = cT.ListarTodosTipoAtributo(catId, tiendaId);
                 
-                resultado.AddRange(cT.ListarTipoAtributo(catId, tiendaId));
                 List<DataTipoAtributo> listDta = new List<DataTipoAtributo>();
                 foreach (TipoAtributo ta in resultado)
                 {
                     DataTipoAtributo dta = new DataTipoAtributo
                     {
                         etiqueta = ta.TipoAtributoID,
-                        tipoDato = ta.tipodato.ToString()
+                        tipoDato = ta.tipodato.ToString(),
+                        clave = ta.TipoAtributoID.Replace(" ",string.Empty)
                     };
                     listDta.Add(dta);
                 }

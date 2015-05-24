@@ -7,6 +7,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
+using System.IO;
 
 namespace WebApplication1.Controllers
 {
@@ -58,6 +59,25 @@ namespace WebApplication1.Controllers
             }
             
             return View();
+        }
+
+        [HttpPost]
+        public void UploadFile()
+        {
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            {
+                // Obtener la imagen subida
+                var httpPostedFile = System.Web.HttpContext.Current.Request.Files["UploadedImage"];
+
+                if (httpPostedFile != null)
+                {
+                    // Path
+                    var fileSavePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles"), httpPostedFile.FileName);
+
+                    // Guardar la imagen en UplodadedFiles
+                    httpPostedFile.SaveAs(fileSavePath);
+                }
+            }
         }
 
         // GET: Usuario/Details/5

@@ -239,6 +239,10 @@
     <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap.css" />
     <Content Include="Content\font-awesome.css" />
+    <Content Include="Content\Images\no-photo.png" />
+    <Content Include="Content\Images\prod_sin_imagen_100.jpg" />
+    <Content Include="Content\Images\prod_sin_imagen_50.jpg" />
+    <Content Include="Content\Images\user_sin_imagen.png" />
     <Content Include="Content\Images\wat.png" />
     <Content Include="Content\Images\wat2.jpg" />
     <Content Include="Content\jquery-ui.css" />

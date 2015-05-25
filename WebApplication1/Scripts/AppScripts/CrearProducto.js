@@ -23,6 +23,8 @@ isInt = function(n) {
 }
 
 confirmarProducto = function () {
+    $('#btnConfirmarSubasta').html("Confirmar subasta <i class=\"fa fa-spinner fa-pulse\"></i>");
+
     /* VALIDAR LOS DATOS DEL PRODUCTO */
     var titulo = $('#titulo').val(),
         descripcion = $('#descripcion').val(),
@@ -109,16 +111,22 @@ confirmarProducto = function () {
             },
             accept: 'application/json',
             success: function (data) {
+                $('#btnConfirmarSubasta').html("Confirmar subasta");
+                $('#btnConfirmarSubasta').hide();
                 swal("éxito!", "Iniciaste una nueva subasta! \nAhora puedes agregar imágenes al producto.", "success");
-                debugger;
-                $("#paso4-agregarimagenes").show();
+                $('#paso4-agregarimagenes').show();
                 $('#seccion-imagenes').attr('data-prodid', data.Message);
+                $('#btnFinalizarSubasta').show();
             },
             error: function (error) {
                 swal("Oops...", "No se pudo crear el nuevo producto: " + error, "error");
             }
         });
     }
+}
+
+finalizarCrearProducto = function () {
+
 }
 
 seleccionarCategoriaSimple = function (catID) {

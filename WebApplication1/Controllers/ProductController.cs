@@ -220,6 +220,25 @@ namespace WebApplication1.Controllers
             }
         }
 
+        // To convert the Byte Array to the author Image
+        public FileContentResult getProductImg(long productId)
+        {
+            String tienda = Session["Tienda_Nombre"].ToString();
+            List <ImagenProducto> imgsProd = cS.ObtenerImagenProducto(productId, tienda);
+            if ( imgsProd.Count > 0 ) {
+                byte[] byteArray = imgsProd.First().Imagen;
+                return byteArray != null
+                ? new FileContentResult(byteArray, "image/jpeg")
+                : null;
+            }
+            else
+            {
+                var dir = Server.MapPath("~/Content/Images");
+                var path = Path.Combine(dir, "no-photo.png");
+                return new FileContentResult(System.IO.File.ReadAllBytes(path), "image/jpeg");
+            }
+        }
+
         
         // GET Producto/obtenerJsonAtributosCategoria
         [Authorize]

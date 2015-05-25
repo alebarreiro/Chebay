@@ -227,12 +227,13 @@ namespace WebApplication1.Controllers
         }
 
         // To convert the Byte Array to the author Image
-        public FileContentResult getProductImg(long productId)
+        public FileContentResult getProductImg(long productId, int index)
         {
             String tienda = Session["Tienda_Nombre"].ToString();
             List <ImagenProducto> imgsProd = cS.ObtenerImagenProducto(productId, tienda);
-            if ( imgsProd.Count > 0 ) {
-                byte[] byteArray = imgsProd.First().Imagen;
+            if (imgsProd.Count > 0 && index <= imgsProd.Count)
+            {
+                byte[] byteArray = imgsProd.ElementAt(index).Imagen;
                 return byteArray != null
                 ? new FileContentResult(byteArray, "image/jpeg")
                 : null;

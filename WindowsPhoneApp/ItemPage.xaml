@@ -8,7 +8,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     DataContext="{Binding DefaultViewModel.Item, RelativeSource={RelativeSource Self}}"
-    d:DataContext="{Binding Items, Source={d:DesignData Source=/DataModel/data.json, Type=data:ProductoSource}}"
+    d:DataContext="{Binding Items[0], Source={d:DesignData Source=/DataModel/data.json, Type=data:ProductoSource}}"
     Background="{ThemeResource ApplicationPageBackgroundThemeBrush}">
     <Page.Transitions>
         <TransitionCollection>
@@ -29,20 +29,53 @@
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
+            <RowDefinition Height="120"/>
         </Grid.RowDefinitions>
 
         <!-- Title Panel -->
         <StackPanel Grid.Row="0" Margin="19,0,0,0">
-            <TextBlock x:Uid="Header" Text="application name" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0" />
+            <TextBlock x:Uid="Header" Text="Mobile Center APP" Style="{ThemeResource TitleTextBlockStyle}" Margin="0,12,0,0" />
             <TextBlock Text="{Binding Nombre}" Style="{ThemeResource HeaderTextBlockStyle}" Margin="0,-6.5,0,26.5" CharacterSpacing="{ThemeResource PivotHeaderItemCharacterSpacing}"/>
         </StackPanel>
-
-        <!-- 
-            TODO: Content should be placed within the following grid 
-                  to show details for the current item
-        -->
+        
         <Grid Grid.Row="1" x:Name="ContentRoot" Margin="19,9.5,19,0">
-
+            <ScrollViewer>
+                <TextBlock Name="Descripcion"
+                   Text="{Binding Descripcion}"
+                   FontSize="24"
+                   TextWrapping="Wrap"
+                   />
+            </ScrollViewer>
         </Grid>
+
+        <Grid Grid.Row="2" x:Name="SubastaBlock" Margin="19,9.5,19,0">
+            <TextBlock Name="SubastaPrecio"
+                       Text="precio"
+                       FontSize="24"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Left"
+                       VerticalAlignment="Top"
+                       />
+            <TextBlock Name="SubastaOfertante"
+                       Text="{Binding IDOfertante}"
+                       FontSize="24"
+                       TextWrapping="Wrap"
+                       HorizontalAlignment="Right"
+                       VerticalAlignment="Top"
+                       />
+            <TextBox Name="SubastaOferta"
+                     HorizontalAlignment="Left"
+                     VerticalAlignment="Bottom"
+                     Margin="10,10,10,10"
+                     Width="220"
+                     InputScope="Number"
+                     />
+            <Button Name="RealizarOferta"
+                    HorizontalAlignment="Right"
+                    VerticalAlignment="Bottom"
+                    Content="Ofertar"
+                    />
+        </Grid>
+
     </Grid>
 </Page>

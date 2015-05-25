@@ -72,6 +72,7 @@ namespace WindowsPhoneApp
             //var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
             var item = await ProductoSource.GetItemAsync((long)e.NavigationParameter);
             this.DefaultViewModel["Item"] = item;
+            SubastaPrecio.Text = String.Format("{0:C}",item.PrecioActual);
         }
 
         /// <summary>

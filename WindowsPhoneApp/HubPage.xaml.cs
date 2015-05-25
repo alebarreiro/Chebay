@@ -128,10 +128,10 @@ namespace WindowsPhoneApp
             }
         }
 
-        private async Task<string> BuscarProducto()
+        private async Task<string> BuscarProducto(string searchTerm)
         {
             HttpClient client = new HttpClient();
-            string url = "http://chebayrest1956.azurewebsites.net/api/subasta";
+            string url = "http://chebayrest1956.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
             var baseUrl = string.Format(url);
             Debug.WriteLine("C");
             string result = await client.GetStringAsync(baseUrl);
@@ -168,13 +168,14 @@ namespace WindowsPhoneApp
         
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
-            string json = await BuscarProducto();
+            string searchTerm = buscador.Text;
+            string json = await BuscarProducto(searchTerm);
             await deserializeJsonAsync(json);
         }
 
         private const string JSONFILENAME = "data.json";
 
-        public Stream GenerateStreamFromString(string s)
+        private Stream GenerateStreamFromString(string s)
         {
             MemoryStream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);
@@ -193,8 +194,6 @@ namespace WindowsPhoneApp
 
                 List<ProductoItem> myCars;
                 var jsonSerializer = new DataContractJsonSerializer(typeof(List<ProductoItem>));
-
-                //var myStream = await Package.Current.InstalledLocation.OpenStreamForReadAsync(JSONFILENAME);
 
                 myCars = (List<ProductoItem>)jsonSerializer.ReadObject(s);
 

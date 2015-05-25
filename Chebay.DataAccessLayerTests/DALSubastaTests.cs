@@ -24,6 +24,14 @@ namespace Chebay.DataAccessLayerTests
         public void SuperTestSubasta()
         {
 
+            List<DataProducto> ldp = idal.ObtenerProductosBuscados("Lumia", "MobileCenter");
+            foreach (DataProducto dp in ldp)
+            {
+                Debug.WriteLine(dp.nombre);
+            }
+            Debug.WriteLine(ldp.Count);
+            
+            /*
             Producto p = new Producto
             {
                 nombre = "ProductoPorVencer",
@@ -44,7 +52,7 @@ namespace Chebay.DataAccessLayerTests
                 UsuarioID = "Recoba"
             };
             idal.OfertarProducto(o, urlTest);
-            
+            */
             //AgregarVariosProducto();
             
             /*TestInicialSubasta();

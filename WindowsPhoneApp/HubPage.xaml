@@ -58,20 +58,25 @@
             </Grid>
         </DataTemplate>
     </Page.Resources>
-    
+    <!--
     <Page.BottomAppBar>
         <CommandBar>
+            
             <AppBarButton Icon="Zoom" 
                           Name="BuscarButton"
                           Label="Buscar"
                           Click="BuscarButton_Click"/>
         </CommandBar>
     </Page.BottomAppBar>
-
+-->
     <Grid x:Name="LayoutRoot">
-        <Hub x:Name="Hub" x:Uid="Hub" Header="application name" Background="{ThemeResource HubBackgroundImageBrush}">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="80"/>
+        </Grid.RowDefinitions>
+        <Hub x:Name="Hub" x:Uid="Hub" Header="Mobile Center" Background="{ThemeResource HubBackgroundImageBrush}">
 
-            <HubSection x:Uid="HubSection2" Header="SECTION 2" Width="Auto"
+            <HubSection x:Uid="HubSection2" Header="BÚSQUEDA" Width="Auto"
                          DataContext="{Binding}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
                     <GridView
@@ -92,7 +97,9 @@
                     </GridView>
                 </DataTemplate>
             </HubSection>
-<!--
+
+            
+            <!--
             <HubSection x:Uid="HubSection3" Header="SECTION 3"
                         DataContext="{Binding Groups[1]}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
@@ -110,5 +117,19 @@
             </HubSection>
 -->
         </Hub>
+        
+        <TextBox Name="buscador"
+                 Grid.Row="2"
+                 IsTextPredictionEnabled="True"
+                 FontSize="18"
+                 FontFamily="Helvetica"
+                 Margin="20,20,70,20"/>
+
+        <AppBarButton Icon="Zoom" 
+                      Grid.Row="2"
+                      Name="BuscarButton"
+                      Label="Buscar"
+                      Click="BuscarButton_Click"
+                      HorizontalAlignment="Right"/>
     </Grid>
 </Page>

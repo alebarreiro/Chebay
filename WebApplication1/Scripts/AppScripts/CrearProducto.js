@@ -109,8 +109,10 @@ confirmarProducto = function () {
             },
             accept: 'application/json',
             success: function (data) {
-                swal("éxito!", "Iniciaste una nueva subasta!", "success");
-                localStorage.removeItem("DatosProducto");
+                swal("éxito!", "Iniciaste una nueva subasta! \nAhora puedes agregar imágenes al producto.", "success");
+                debugger;
+                $("#paso4-agregarimagenes").show();
+                $('#seccion-imagenes').attr('data-prodid', data.Message);
             },
             error: function (error) {
                 swal("Oops...", "No se pudo crear el nuevo producto: " + error, "error");

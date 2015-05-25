@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Shared.DataTypes;
+using System.IO;
 
 namespace WebApplication1.Controllers
 {
@@ -157,10 +158,11 @@ namespace WebApplication1.Controllers
 
         // POST: Product/Create
         [HttpPost]
-        public JsonResult Create(DatosCrearProducto producto, List<DataAtributo> atributos)
+        public JsonResult Create(DatosCrearProducto producto, List<Atributo> atributos)
         {
             try
             {
+                String idTienda = Session["Tienda_Nombre"].ToString();
                 Producto p = new Producto
                 {
                     nombre = producto.Titulo,
@@ -168,21 +170,53 @@ namespace WebApplication1.Controllers
                     descripcion = producto.Descripcion,
                     precio_base_subasta = producto.PrecioBase,
                     precio_compra = producto.PrecioComprarYa,
-                    fecha_cierre = producto.FechaCierre
+                    fecha_cierre = producto.FechaCierre,
+                    CategoriaID = producto.CatID
                 };
 
+                long idProd = cS.AgregarProducto(p, idTienda);
+                cS.AgregarAtributo(atributos, idProd, idTienda);
 
-                CategoriaSimple cs = (CategoriaSimple)cT.ObtenerCategoria(Session["Tienda_Nombre"].ToString(), producto.CatID);
-                p.categoria = cs;
-                cS.AgregarProducto(p, Session["Tienda_Nombre"].ToString());
-                Debug.WriteLine(producto.Titulo);
-                var result = new { Success = "True", Message = producto };
+                var result = new { Success = "True", Message = idProd };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
-                var result = new { Success = "False", Message = "No se pudo crear el producto :("};
+                var result = new { Success = "False", Message = "No se pudo crear el producto: " + e.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public void UploadFile()
+        {
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            {
+                // Obtener la imagen subida
+                var httpPostedFile = System.Web.HttpContext.Current.Request.Files["UploadedImage"];
+                String usuarioId = User.Identity.Name;
+                String tienda = Session["Tienda_Nombre"].ToString();
+                long prodId = Convert.ToInt64(System.Web.HttpContext.Current.Request.Form["ProductoID"]);
+                if (httpPostedFile != null)
+                {
+                    //Nombre unico
+                    String fileName = Guid.NewGuid().ToString("N") + "_" + httpPostedFile.FileName;
+                    // Path
+                    var fileSavePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles"), fileName);
+
+                    // Guardar la imagen en UplodadedFiles
+                    httpPostedFile.SaveAs(fileSavePath);
+
+                    byte[] imageBytes = System.IO.File.ReadAllBytes(fileSavePath);
+
+                    ImagenProducto ip = new ImagenProducto
+                    {
+                        ProductoID = prodId,
+                        Imagen = imageBytes
+                    };
+
+                    cS.AgregarImagenProducto(ip, tienda);
+                }
             }
         }
 

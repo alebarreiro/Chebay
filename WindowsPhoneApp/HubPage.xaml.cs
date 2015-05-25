@@ -133,9 +133,9 @@ namespace WindowsPhoneApp
             HttpClient client = new HttpClient();
             string url = "http://chebayrest1956.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
             var baseUrl = string.Format(url);
-            Debug.WriteLine("C");
+            Debug.WriteLine("await client.GetStringAsync(baseUrl);");
             string result = await client.GetStringAsync(baseUrl);
-            Debug.WriteLine("D: " + result);
+            Debug.WriteLine("result: " + result);
             return result;
         }
 
@@ -168,9 +168,10 @@ namespace WindowsPhoneApp
         
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
+            
             string searchTerm = buscador.Text;
             string json = await BuscarProducto(searchTerm);
-            await deserializeJsonAsync(json);
+            deserializeJsonAsync(json);
         }
 
         private const string JSONFILENAME = "data.json";
@@ -186,7 +187,7 @@ namespace WindowsPhoneApp
         }
 
 
-        private async Task deserializeJsonAsync(string json)
+        private void deserializeJsonAsync(string json)
         {
             using (Stream s = GenerateStreamFromString(json))
             {

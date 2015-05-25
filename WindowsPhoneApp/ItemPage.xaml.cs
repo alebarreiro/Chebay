@@ -114,5 +114,11 @@ namespace WindowsPhoneApp
         }
 
         #endregion
+
+        private void SubastaOferta_LostFocus(object sender, RoutedEventArgs e)
+        {
+            SubastaOferta.Text = String.Format("{0:C}", SubastaOferta.Text);
+        }
+
     }
 }

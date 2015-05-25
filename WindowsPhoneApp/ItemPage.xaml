@@ -69,6 +69,7 @@
                      Margin="10,10,10,10"
                      Width="220"
                      InputScope="Number"
+                     LostFocus="SubastaOferta_LostFocus"
                      />
             <Button Name="RealizarOferta"
                     HorizontalAlignment="Right"

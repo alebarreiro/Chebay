@@ -51,7 +51,7 @@ namespace WindowsPhoneApp.Data
             //await _sampleDataSource.GetSampleDataAsync();
             // Simple linear search is acceptable for small data sets
             var matches = _sampleDataSource.Items.Select(prod => prod).Where((item) => item.ProductoID.Equals(uniqueId));
-                //.Groups.SelectMany(group => group.Items).Where((item) => item.UniqueId.Equals(uniqueId));
+            //.Groups.SelectMany(group => group.Items).Where((item) => item.UniqueId.Equals(uniqueId));
             if (matches.Count() == 1) return matches.First();
             return null;
         }

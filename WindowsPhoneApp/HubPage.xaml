@@ -96,26 +96,10 @@
                         </GridView.ItemsPanel>
                     </GridView>
                 </DataTemplate>
+                    
             </HubSection>
-
             
-            <!--
-            <HubSection x:Uid="HubSection3" Header="SECTION 3"
-                        DataContext="{Binding Groups[1]}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
-                <DataTemplate>
-                    <ListView 
-                        AutomationProperties.AutomationId="ItemListViewSection3"
-                        AutomationProperties.Name="Items In Group"
-                        SelectionMode="None"
-                        IsItemClickEnabled="True"
-                        ItemsSource="{Binding Items}"
-                        ItemTemplate="{StaticResource StandardTripleLineItemTemplate}"
-                        ItemClick="ItemView_ItemClick"
-                        ContinuumNavigationTransitionInfo.ExitElementContainer="True">
-                    </ListView>
-                </DataTemplate>
-            </HubSection>
--->
+
         </Hub>
         
         <TextBox Name="buscador"
@@ -125,6 +109,10 @@
                  FontFamily="Helvetica"
                  Margin="20,20,70,20"/>
 
+        <ProgressRing Name="ProgressRing"
+                      Grid.Row="1"
+                      />
+        
         <AppBarButton Icon="Zoom" 
                       Grid.Row="2"
                       Name="BuscarButton"

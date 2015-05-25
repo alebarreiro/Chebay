@@ -3,6 +3,7 @@
     var nombreTienda = @Session["Tienda_Nombre"];
     var favoritos = Producto.favoritos;
     var usuario = @Context.User.Identity.Name;  
+    var cantImagenes = Producto.imagenes.Count;
 }
 
 <div class="infoProducto-container" data-key="@Producto.ProductoID" data-ownerid="@Producto.UsuarioID">
@@ -25,14 +26,14 @@
                         <!-- SE ARMA EL VISOR -->
                         <div class="carousel-inner">
                             <div class="item active">
-                                <img src="@primeraImagen">
+                                <img src="@Url.Action("getProductImg", "Product", new { productId = @Producto.ProductoID, index = 0 })" alt="Responsive image" />
                             </div>
-                            <div class="item">
-                                <img src="@segundaImagen">
-                            </div>
-                            <div class="item">
-                                <img src="http://placehold.it/700x400">
-                            </div>
+                            @for (var i = 1; i < cantImagenes; i++)
+                            {
+                                <div class="item">
+                                    <img src="@Url.Action("getProductImg", "Product", new { productId = @Producto.ProductoID, index = @i })"  alt="Responsive image" />
+                                </div>
+                            }
                         </div>
 
                         <!-- SE ARMA EL NAVEGADOR DEL VISOR -->

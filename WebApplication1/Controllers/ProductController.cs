@@ -8,6 +8,7 @@ using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Shared.DataTypes;
+using System.IO;
 
 namespace WebApplication1.Controllers
 {
@@ -48,6 +49,12 @@ namespace WebApplication1.Controllers
             public string TipoAtributoID { get; set; }
             public string etiqueta { get; set; }
             public string valor { get; set; }
+        }
+
+        public class DataProductoBasico
+        {
+            public long ProductoID { get; set; }
+            public string nombre { get; set; }
         }
 
         // GET: Product
@@ -157,10 +164,11 @@ namespace WebApplication1.Controllers
 
         // POST: Product/Create
         [HttpPost]
-        public JsonResult Create(DatosCrearProducto producto, List<DataAtributo> atributos)
+        public JsonResult Create(DatosCrearProducto producto, List<Atributo> atributos)
         {
             try
             {
+                String idTienda = Session["Tienda_Nombre"].ToString();
                 Producto p = new Producto
                 {
                     nombre = producto.Titulo,
@@ -168,21 +176,73 @@ namespace WebApplication1.Controllers
                     descripcion = producto.Descripcion,
                     precio_base_subasta = producto.PrecioBase,
                     precio_compra = producto.PrecioComprarYa,
-                    fecha_cierre = producto.FechaCierre
+                    fecha_cierre = producto.FechaCierre,
+                    CategoriaID = producto.CatID
                 };
 
+                long idProd = cS.AgregarProducto(p, idTienda);
+                cS.AgregarAtributo(atributos, idProd, idTienda);
 
-                CategoriaSimple cs = (CategoriaSimple)cT.ObtenerCategoria(Session["Tienda_Nombre"].ToString(), producto.CatID);
-                p.categoria = cs;
-                cS.AgregarProducto(p, Session["Tienda_Nombre"].ToString());
-                Debug.WriteLine(producto.Titulo);
-                var result = new { Success = "True", Message = producto };
+                var result = new { Success = "True", Message = idProd };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
-                var result = new { Success = "False", Message = "No se pudo crear el producto :("};
+                var result = new { Success = "False", Message = "No se pudo crear el producto: " + e.Message };
                 return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+        [HttpPost]
+        public void UploadFile()
+        {
+            if (System.Web.HttpContext.Current.Request.Files.AllKeys.Any())
+            {
+                // Obtener la imagen subida
+                var httpPostedFile = System.Web.HttpContext.Current.Request.Files["UploadedImage"];
+                String usuarioId = User.Identity.Name;
+                String tienda = Session["Tienda_Nombre"].ToString();
+                long prodId = Convert.ToInt64(System.Web.HttpContext.Current.Request.Form["ProductoID"]);
+                if (httpPostedFile != null)
+                {
+                    //Nombre unico
+                    String fileName = Guid.NewGuid().ToString("N") + "_" + httpPostedFile.FileName;
+                    // Path
+                    var fileSavePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles"), fileName);
+
+                    // Guardar la imagen en UplodadedFiles
+                    httpPostedFile.SaveAs(fileSavePath);
+
+                    byte[] imageBytes = System.IO.File.ReadAllBytes(fileSavePath);
+
+                    ImagenProducto ip = new ImagenProducto
+                    {
+                        ProductoID = prodId,
+                        Imagen = imageBytes
+                    };
+
+                    cS.AgregarImagenProducto(ip, tienda);
+                }
+            }
+        }
+
+        // To convert the Byte Array to the author Image
+        public FileContentResult getProductImg(long productId, int index)
+        {
+            String tienda = Session["Tienda_Nombre"].ToString();
+            List <ImagenProducto> imgsProd = cS.ObtenerImagenProducto(productId, tienda);
+            if (imgsProd.Count > 0 && index <= imgsProd.Count)
+            {
+                byte[] byteArray = imgsProd.ElementAt(index).Imagen;
+                return byteArray != null
+                ? new FileContentResult(byteArray, "image/jpeg")
+                : null;
+            }
+            else
+            {
+                var dir = Server.MapPath("~/Content/Images");
+                var path = Path.Combine(dir, "no-photo.png");
+                return new FileContentResult(System.IO.File.ReadAllBytes(path), "image/jpeg");
             }
         }
 
@@ -347,7 +407,17 @@ namespace WebApplication1.Controllers
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
-                var result = new { Success = "True", Productos = prods };
+                List<DataProductoBasico> dpbs = new List<DataProductoBasico>();
+                foreach (Producto p in prods)
+                {
+                    DataProductoBasico dpb = new DataProductoBasico
+                    {
+                        ProductoID = p.ProductoID,
+                        nombre = p.nombre
+                    };
+                    dpbs.Add(dpb);
+                }
+                var result = new { Success = "True", Productos = dpbs };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

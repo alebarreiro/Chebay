@@ -54,7 +54,7 @@ namespace DataAccessLayer
                     context.SaveChanges();
 
                     //Obtengo el idProducto
-                    context.productos.Find(p);
+                    //context.productos.Find(p);
                     return p.ProductoID;
                 }
             }

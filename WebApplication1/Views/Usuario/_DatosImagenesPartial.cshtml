@@ -1,5 +1,42 @@
 ﻿<section id="seccion-imagenes">
     <h1>PASO 4: CARGAR IMÁGENES AL PRODUCTO</h1>
 
-    Cargar imagenes
+    <div>
+        <label for="fileUpload">
+            Select File to Upload: <input id="fileUploadProd" type="file" />
+            <button id="btnImagenProd" class="btn btn-default" type="submit"><i class="fa fa-camera-retro fa"></i> Cargar imágen </button>
+    </div>
 </section>
+
+<script type="text/javascript">
+    $(document).ready(function () {
+
+        $('#btnImagenProd').on('click', function () {
+            debugger;
+            $("#btnImagenProd").html($("#btnImagenProd").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
+            var prodId = $("#seccion-imagenes").data('prodid');
+            var data = new FormData();
+            data.append("ProductoID", prodId);
+            var files = $("#fileUploadProd").get(0).files;
+
+            // Add the uploaded image content to the form data collection
+            if (files.length > 0) {
+                data.append("UploadedImage", files[0]);
+            }
+
+            // Make Ajax request with the contentType = false, and procesDate = false
+            var ajaxRequest = $.ajax({
+                type: "POST",
+                url: "@Url.Action("UploadFile", "Product")",
+                contentType: false,
+                processData: false,
+                data: data
+            });
+
+            ajaxRequest.done(function (xhr, textStatus) {
+                $("#btnImagenProd").html("<i class=\"fa fa-camera-retro fa-2x\"></i> Cargar imágen ");
+                console.log("Done!");
+            });
+        });
+    });
+</script>

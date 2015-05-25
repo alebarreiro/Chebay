@@ -23,17 +23,42 @@ namespace ChebayREST.Controllers
             {
                 Subasta s = new Subasta
                 {
-                    descripcion = dp.descripcion,
+                    Descripcion = dp.descripcion,
                     ProductoID = dp.ProductoID,
-                    fecha_cierre = dp.fecha_cierre,
-                    idOfertante = dp.idOfertante,
-                    nombre = dp.nombre,
-                    precio_actual = dp.precio_actual
+                    //fecha_cierre = dp.fecha_cierre,
+                    IDOfertante = dp.idOfertante,
+                    Nombre = dp.nombre,
+                    PrecioActual = dp.precio_actual
                 };
                 ret[i] = s;
                 i++;
             }
             return ret;
         }
+        //CHEQUEAR
+        public Subasta[] Get(string searchTerm)
+        {
+            IDALSubasta ip = new DALSubastaEF();
+            List<DataProducto> ldp = ip.ObtenerProductosBuscados(searchTerm,"MobileCenter");
+            //DataProducto dp = ldp.FirstOrDefault();
+            Subasta[] ret = new Subasta[ldp.Count];
+            int i = 0;
+            foreach (DataProducto dp in ldp)
+            {
+                Subasta s = new Subasta
+                {
+                    Descripcion = dp.descripcion,
+                    ProductoID = dp.ProductoID,
+                    //fecha_cierre = dp.fecha_cierre,
+                    IDOfertante = dp.idOfertante,
+                    Nombre = dp.nombre,
+                    PrecioActual = dp.precio_actual
+                };
+                ret[i] = s;
+                i++;
+            }
+            return ret;
+        }
+
     }
 }

@@ -128,15 +128,15 @@ namespace WindowsPhoneApp
             }
         }
 
-        private async Task BuscarProducto()
+        private async Task<string> BuscarProducto()
         {
             HttpClient client = new HttpClient();
             string url = "http://chebayrest1956.azurewebsites.net/api/subasta";
             var baseUrl = string.Format(url);
             Debug.WriteLine("C");
-            string flickrResult = await client.GetStringAsync(baseUrl);
-            Debug.WriteLine("D: " + flickrResult);
-            
+            string result = await client.GetStringAsync(baseUrl);
+            Debug.WriteLine("D: " + result);
+            return result;
         }
 
         #region NavigationHelper registration
@@ -168,30 +168,64 @@ namespace WindowsPhoneApp
         
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
-            //await BuscarProducto();
-            await deserializeJsonAsync();
+            string json = await BuscarProducto();
+            await deserializeJsonAsync(json);
         }
 
         private const string JSONFILENAME = "data.json";
 
-        private async Task deserializeJsonAsync()
+        public Stream GenerateStreamFromString(string s)
         {
+            MemoryStream stream = new MemoryStream();
+            StreamWriter writer = new StreamWriter(stream);
+            writer.Write(s);
+            writer.Flush();
+            stream.Position = 0;
+            return stream;
+        }
+
+
+        private async Task deserializeJsonAsync(string json)
+        {
+            using (Stream s = GenerateStreamFromString(json))
+            {
+                string content = String.Empty;
+
+                List<ProductoItem> myCars;
+                var jsonSerializer = new DataContractJsonSerializer(typeof(List<ProductoItem>));
+
+                //var myStream = await Package.Current.InstalledLocation.OpenStreamForReadAsync(JSONFILENAME);
+
+                myCars = (List<ProductoItem>)jsonSerializer.ReadObject(s);
+
+                foreach (var car in myCars)
+                {
+                    content += String.Format("ID: {0}, Make: {1}, Model: {2} ... ", car.ProductoID, car.Nombre, car.Descripcion);
+                    ProductoSource.AddItem(car);
+                }
+                Debug.WriteLine(content);
+                this.DefaultViewModel["Productos"] = myCars;
+            }
+
+
+            /*
+
             string content = String.Empty;
 
             List<ProductoItem> myCars;
             var jsonSerializer = new DataContractJsonSerializer(typeof(List<ProductoItem>));
-
-            var myStream = await Package.Current.InstalledLocation.OpenStreamForReadAsync(JSONFILENAME);
             
-            myCars = (List<ProductoItem>)jsonSerializer.ReadObject(myStream);
+            var myStream = await Package.Current.InstalledLocation.OpenStreamForReadAsync(JSONFILENAME);
 
+            myCars = (List<ProductoItem>)jsonSerializer.ReadObject(myStream);
+            
             foreach (var car in myCars)
             {
                 content += String.Format("ID: {0}, Make: {1}, Model: {2} ... ", car.ProductoID, car.Nombre, car.Descripcion);
                 ProductoSource.AddItem(car);
             }
             Debug.WriteLine(content);
-            this.DefaultViewModel["Productos"] = myCars;
+            this.DefaultViewModel["Productos"] = myCars;*/
          //   resultTextBlock.Text = content;
         }
 

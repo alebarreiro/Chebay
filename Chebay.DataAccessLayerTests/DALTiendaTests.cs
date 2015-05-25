@@ -37,7 +37,7 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void PersonalizarTienda()
         {
-            it.PersonalizarTienda("63589F", urlTest);
+            //it.PersonalizarTienda("63589F", urlTest);
         }
 
         [TestMethod]

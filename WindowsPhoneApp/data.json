@@ -1,0 +1,32 @@
+﻿[
+    {
+        "ProductoID": 18,
+        "Nombre": "Lumia 8000",
+        "Descripcion": "Esta nuevo y esta bloqueado para ANTEL.",
+        "PrecioActual": 120,
+        "IDOfertante": "Recoba",
+        "ImagePath": "Assets/DarkGray.png"
+    },
+    {
+        "ProductoID": 29,
+        "Nombre": "ProductoPorVencer",
+        "Descripcion": "Esta nuevo y esta bloqueado para ANTEL.",
+        "precio_base_subasta": 99,
+        "precio_compra": 2000,
+        "fecha_cierre": "2015-05-21T18:22:47.577",
+        "PrecioActual": 120,
+        "IDOfertante": "Recoba",
+        "ImagePath": "Assets/DarkGray.png"
+    },
+    {
+        "ProductoID": 1,
+        "Nombre": "Lumia 710",
+        "Descripcion": "Esta nuevo y esta bloqueado para ANTEL.",
+        "precio_base_subasta": 99,
+        "precio_compra": 2000,
+        "fecha_cierre": "2015-05-22T12:00:13.697",
+        "PrecioActual": 120,
+        "IDOfertante": "will_bttracf_dinglesen@tfbnw.net",
+        "ImagePath": "Assets/DarkGray.png"
+    }
+]

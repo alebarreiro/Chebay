@@ -21,6 +21,10 @@ using Windows.UI.Xaml.Media.Imaging;
 using Windows.UI.Xaml.Navigation;
 using System.Net.Http;
 using System.Diagnostics;
+using System.Threading.Tasks;
+using System.Runtime.Serialization.Json;
+using Windows.Storage;
+using Windows.ApplicationModel;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -80,8 +84,8 @@ namespace WindowsPhoneApp
         private async void NavigationHelper_LoadState(object sender, LoadStateEventArgs e)
         {
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
-            var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
-            this.DefaultViewModel["Groups"] = sampleDataGroups;
+            //var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
+            //this.DefaultViewModel["Groups"] = sampleDataGroups;
         }
 
         /// <summary>
@@ -116,16 +120,16 @@ namespace WindowsPhoneApp
         {
             // Navigate to the appropriate destination page, configuring the new page
             // by passing required information as a navigation parameter
-            var itemId = ((SampleDataItem)e.ClickedItem).UniqueId;
+            Debug.WriteLine("ASDF");
+            var itemId = ((ProductoItem)e.ClickedItem).ProductoID;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }
         }
 
-        private async void BuscarProducto()
+        private async Task BuscarProducto()
         {
-
             HttpClient client = new HttpClient();
             string url = "http://chebayrest1956.azurewebsites.net/api/subasta";
             var baseUrl = string.Format(url);
@@ -162,9 +166,34 @@ namespace WindowsPhoneApp
         #endregion
 
         
-        private void BuscarButton_Click(object sender, RoutedEventArgs e)
+        private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
-            BuscarProducto();
+            //await BuscarProducto();
+            await deserializeJsonAsync();
         }
+
+        private const string JSONFILENAME = "data.json";
+
+        private async Task deserializeJsonAsync()
+        {
+            string content = String.Empty;
+
+            List<ProductoItem> myCars;
+            var jsonSerializer = new DataContractJsonSerializer(typeof(List<ProductoItem>));
+
+            var myStream = await Package.Current.InstalledLocation.OpenStreamForReadAsync(JSONFILENAME);
+            
+            myCars = (List<ProductoItem>)jsonSerializer.ReadObject(myStream);
+
+            foreach (var car in myCars)
+            {
+                content += String.Format("ID: {0}, Make: {1}, Model: {2} ... ", car.ProductoID, car.Nombre, car.Descripcion);
+                ProductoSource.AddItem(car);
+            }
+            Debug.WriteLine(content);
+            this.DefaultViewModel["Productos"] = myCars;
+         //   resultTextBlock.Text = content;
+        }
+
     }
 }

@@ -17,5 +17,4 @@ namespace ChebayREST.Models
         public int precio_actual { get; set; }
         public string idOfertante { get; set; }
     }
-
 }

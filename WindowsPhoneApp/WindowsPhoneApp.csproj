@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{c32fd0c1-e6ce-4843-91a0-e66b93b2a632}</ProjectGuid>
+    <ProjectGuid>{C32FD0C1-E6CE-4843-91A0-E66B93B2A632}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsPhoneApp</RootNamespace>
@@ -86,6 +86,7 @@
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
     <Compile Include="Common\SuspensionManager.cs" />
+    <Compile Include="DataModel\ProductoSource.cs" />
     <Compile Include="DataModel\SampleDataSource.cs" />
     <Compile Include="HubPage.xaml.cs">
       <DependentUpon>HubPage.xaml</DependentUpon>
@@ -106,8 +107,8 @@
   <ItemGroup>
     <Content Include="Assets\DarkGray.png" />
     <Content Include="Assets\LightGray.png" />
-    <Content Include="Assets\MediumGray.png" />	
-    <Content Include="Assets\HubBackground.theme-dark.png"/>
+    <Content Include="Assets\MediumGray.png" />
+    <Content Include="Assets\HubBackground.theme-dark.png" />
     <Content Include="Assets\HubBackground.theme-light.png" />
     <Content Include="Assets\Logo.scale-240.png" />
     <Content Include="Assets\SmallLogo.scale-240.png" />
@@ -140,6 +141,12 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="DataModel\data.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="data.json" />
   </ItemGroup>
   <PropertyGroup Condition=" '$(VisualStudioVersion)' == '' or '$(VisualStudioVersion)' &lt; '12.0' ">
     <VisualStudioVersion>12.0</VisualStudioVersion>

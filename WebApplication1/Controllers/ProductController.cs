@@ -51,6 +51,12 @@ namespace WebApplication1.Controllers
             public string valor { get; set; }
         }
 
+        public class DataProductoBasico
+        {
+            public long ProductoID { get; set; }
+            public string nombre { get; set; }
+        }
+
         // GET: Product
         [Authorize]
         public ActionResult Index()
@@ -400,7 +406,17 @@ namespace WebApplication1.Controllers
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
-                var result = new { Success = "True", Productos = prods };
+                List<DataProductoBasico> dpbs = new List<DataProductoBasico>();
+                foreach (Producto p in prods)
+                {
+                    DataProductoBasico dpb = new DataProductoBasico
+                    {
+                        ProductoID = p.ProductoID,
+                        nombre = p.nombre
+                    };
+                    dpbs.Add(dpb);
+                }
+                var result = new { Success = "True", Productos = dpbs };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

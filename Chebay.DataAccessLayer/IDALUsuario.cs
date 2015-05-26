@@ -35,5 +35,6 @@ namespace DataAccessLayer
         DataRecomendacion ObtenerRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion);
         void AgregarRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion);
         
+
     }
 }

@@ -154,6 +154,37 @@ namespace DataAccessLayer
             }
         }
 
+        public Usuario ObtenerUsuariosFull(string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    var query = from usr in context.usuarios
+                                .Include("publicados")
+                                .Include("visitas")
+                                .Include("favoritos")
+                                .Include("ofertas")
+                                .Include("compras")
+                                .Include("comentarios")
+                                .Include("calificaciones")
+                                .Include("calificacionesrecibidas")
+                                where usr.UsuarioID == idUsuario
+                                select usr;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe el usuario " + idUsuario +".");
+                    return query.FirstOrDefault();
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
 
 
         public void EliminarUsuario(string idUsuario, string idTienda)
@@ -334,8 +365,20 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    context.imagenesusuario.Add(iu);
-                    context.SaveChanges();
+                    var qImagen = from img in context.imagenesusuario
+                                  where img.UsuarioID == iu.UsuarioID
+                                  select img;
+                    if (qImagen.Count() == 0)
+                    { //Agregar Imágen
+                        context.imagenesusuario.Add(iu);
+                        context.SaveChanges();
+                    }
+                    else
+                    { //Modificar imágen
+                        ImagenUsuario imgu = qImagen.FirstOrDefault();
+                        imgu.Imagen = iu.Imagen;
+                        context.SaveChanges();
+                    }
                 }
             }
             catch (Exception e)
@@ -406,7 +449,7 @@ namespace DataAccessLayer
 
         #endregion
 
-
+      
     }
 } 
         

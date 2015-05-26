@@ -391,7 +391,7 @@ namespace DataAccessLayer
                 {
                     var qProd = from p in context.productos
                                 orderby p.fecha_cierre
-                                where p.fecha_cierre > DateTime.Today
+                                where p.fecha_cierre > DateTime.Now
                                 select p;
                     List<DataProducto> ret = new List<DataProducto>();
                     List<Producto> aux = qProd.ToList();
@@ -984,11 +984,25 @@ namespace DataAccessLayer
                     Producto p = qProducto.FirstOrDefault();
                     p.fecha_cierre = DateTime.Now;
 
+                    //Obtengo el usuario que esta comprando.
                     var qUsuario = from usr in context.usuarios
                                    where usr.UsuarioID == c.UsuarioID
                                    select usr;
                     Usuario u = qUsuario.FirstOrDefault();
 
+                    //Actualizo el balance monteario del comprador.
+                    u.compras_valor += c.monto;
+
+                    //Obtengo el usuario que esta vendiendo.
+                    var qVendedor = from vnd in context.usuarios
+                                    where vnd.UsuarioID == p.UsuarioID
+                                    select vnd;
+                    Usuario v = qVendedor.FirstOrDefault();
+
+                    //Actualizo el balance monteario del comprador.
+                    v.ventas_valor += c.monto;
+
+                    //Vinculo la compra con el producto y el usuario.
                     p.compra = c;
                     if (u.compras == null)
                         u.compras = new HashSet<Compra>();

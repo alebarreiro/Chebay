@@ -68,10 +68,20 @@ namespace WebApplication1.Controllers
         public FileContentResult getUserImg(String userId)
         {
             String tienda = Session["Tienda_Nombre"].ToString();
-            byte[] byteArray = uC.ObtenerImagenUsuario(userId, tienda).Imagen;
-            return byteArray != null
-                ? new FileContentResult(byteArray, "image/jpeg")
-                : null;
+            ImagenUsuario iu = uC.ObtenerImagenUsuario(userId, tienda);
+            if (iu != null)
+            {
+                byte[] byteArray = iu.Imagen; 
+                return byteArray != null
+                 ? new FileContentResult(byteArray, "image/jpeg")
+                 : null;
+            }
+            else
+            {
+                var dir = Server.MapPath("~/Content/Images");
+                var path = Path.Combine(dir, "user_sin_imagen.png");
+                return new FileContentResult(System.IO.File.ReadAllBytes(path), "image/jpeg");
+            }
         }
 
         [HttpPost]
@@ -99,7 +109,7 @@ namespace WebApplication1.Controllers
                         UsuarioID = usuarioId,
                         Imagen    = imageBytes
                     };
-
+                    //uC.EliminarImagenUsuario(usuarioId, tienda);
                     uC.AgregarImagenUsuario(iu, tienda);
                 }
             }

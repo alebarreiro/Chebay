@@ -255,6 +255,7 @@
     <Content Include="Content\personalizacion\EstiloUno\orangeStyle.css" />
     <Content Include="Content\sections\main\main.css" />
     <Content Include="Content\sections\producto\InfoProducto.css" />
+    <Content Include="Content\sections\usuario\PerfilUsuario.css" />
     <Content Include="Content\sweet-alert.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
@@ -340,7 +341,6 @@
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Usuario\Index.cshtml" />
-    <Content Include="Views\Product\CrearProducto.cshtml" />
     <Content Include="Views\Usuario\_DatosProductoPartial.cshtml" />
     <Content Include="Views\Usuario\_DatosCategoriaPartial.cshtml" />
     <Content Include="Views\Sweet\Alert.cshtml" />

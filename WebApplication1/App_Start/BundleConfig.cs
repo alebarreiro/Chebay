@@ -53,6 +53,7 @@ namespace Frontoffice
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/sections/main/main.css",
                       "~/Content/sections/producto/InfoProducto.css",
+                      "~/Content/sections/usuario/PerfilUsuario.css",
                       "~/Content/bootstrap.css",
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",

@@ -12,7 +12,6 @@
     $(document).ready(function () {
 
         $('#btnImagenProd').on('click', function () {
-            debugger;
             $("#btnImagenProd").html($("#btnImagenProd").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             var prodId = $("#seccion-imagenes").data('prodid');
             var data = new FormData();

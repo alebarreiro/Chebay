@@ -1,23 +1,28 @@
 ﻿Perfil de usuario
+<div id="perfil-user">
+    <div id="perfil-user-datos">
 
-<div>
-    <label for="fileUpload">
-        Select File to Upload: <input id="fileUpload" type="file" />
+    </div>
+    <div id="perfil-user-img">
+        <div id="img-perfil-user-container">
+            <img id="imgUser" class="img-responsive" src="@Url.Action("getUserImg", "Usuario", new { userId = @Context.User.Identity.Name })" alt="Person Image" />
+        </div>
+        <div class="form-group">
+            <label for="exampleInputFile">Seleccionar archivo: </label>
+            <input type="file" id="fileUploadUser">
+            <p class="help-block">Imágen de perfil de usuario.</p>
+        </div>
 
-        <input id="btnUploadFile" type="button" value="Upload File" />
+        <button type="button" id="btnUploadFileUser" class="btn btn-default">Cargar imágen</button>
+    </div>
 </div>
-
-<img src="@Url.Action("getUserImg", "Usuario", new { userId = @Context.User.Identity.Name })" alt="Person Image" />
-
 <script type="text/javascript">
     $(document).ready(function () {
 
-        $('#btnUploadFile').on('click', function () {
-
+        $('#btnUploadFileUser').on('click', function () {
+            $("#btnUploadFileUser").html($("#btnUploadFileUser").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             var data = new FormData();
-
-            var files = $("#fileUpload").get(0).files;
-
+            var files = $("#fileUploadUser").get(0).files;
             // Add the uploaded image content to the form data collection
             if (files.length > 0) {
                 data.append("UploadedImage", files[0]);
@@ -33,7 +38,12 @@
             });
 
             ajaxRequest.done(function (xhr, textStatus) {
-                console.log("Done!");
+                $("#btnUploadFileUser").html("Cargar imágen");
+                var src = $("#imgUser").attr('src');
+                $("#imgUser").attr('src', '');
+                setTimeout(function () {
+                    $("#imgUser").attr('src', src);
+                }, 500);
             });
         });
     });

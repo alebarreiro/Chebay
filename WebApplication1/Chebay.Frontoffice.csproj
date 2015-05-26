@@ -255,6 +255,7 @@
     <Content Include="Content\personalizacion\EstiloUno\orangeStyle.css" />
     <Content Include="Content\sections\main\main.css" />
     <Content Include="Content\sections\producto\InfoProducto.css" />
+    <Content Include="Content\sections\usuario\PerfilUsuario.css" />
     <Content Include="Content\sweet-alert.css" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />

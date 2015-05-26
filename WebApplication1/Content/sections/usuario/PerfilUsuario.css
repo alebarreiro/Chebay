@@ -1,0 +1,26 @@
+﻿body {
+}
+
+.img-perfil-user-container{
+    width: 25%
+}
+
+.perfil-user-datos{
+    width: 75%;
+    float: left;
+}
+
+.perfil-user-img{
+    width: 25%;
+    float: right;
+}
+
+.img-perfil-user{
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        margin: auto;
+        max-width: 100%;
+        max-height: 100%;
+}

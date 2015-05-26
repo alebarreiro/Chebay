@@ -159,7 +159,7 @@ namespace DataAccessLayer
             try
             {
                 if (idUsuario == null)
-                    throw new Exception("Debe pasar el identificador de un usuario.")
+                    throw new Exception("Debe pasar el identificador de un usuario.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {

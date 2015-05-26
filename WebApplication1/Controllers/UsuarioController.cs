@@ -109,7 +109,7 @@ namespace WebApplication1.Controllers
                         UsuarioID = usuarioId,
                         Imagen    = imageBytes
                     };
-                    uC.EliminarImagenUsuario(usuarioId, tienda);
+                    //uC.EliminarImagenUsuario(usuarioId, tienda);
                     uC.AgregarImagenUsuario(iu, tienda);
                 }
             }

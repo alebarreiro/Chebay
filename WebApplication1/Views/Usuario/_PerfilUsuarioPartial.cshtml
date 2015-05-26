@@ -1,7 +1,37 @@
-﻿Perfil de usuario
+﻿<h2>Datos personales</h2>
 <div class="perfil-user">
     <div class="perfil-user-datos">
-
+        <div class="form-inline">
+            <div class="form-group custom-form-group">
+                <label for="exampleInputName2">Nombre</label>
+                <input type="text" class="form-control" id="user-nombre" placeholder="Ingrese su nombre">
+            </div>
+            <div class="form-group custom-form-group">
+                <label for="exampleInputEmail2">Apellido</label>
+                <input type="email" class="form-control" id="user-apellido" placeholder="Ingrese su apellido">
+            </div>
+        </div>
+        <div class="form-inline">
+            <div class="form-group custom-form-group">
+                <label for="exampleInputName2">Pais</label>
+                <input type="text" class="form-control" id="user-pais" placeholder="Ingrese su país">
+            </div>
+            <div class="form-group custom-form-group">
+                <label for="exampleInputEmail2">Ciudad</label>
+                <input type="text" class="form-control" id="user-ciudad" placeholder="Ingrese su ciudad">
+            </div>
+        </div>
+        <div class="form-inline">
+            <div class="form-group custom-form-group">
+                <label for="exampleInputName2">Direccion</label>
+                <input type="text" class="form-control" id="user-direccion" placeholder="Ingrese su dirección">
+            </div>
+            <div class="form-group custom-form-group">
+                <label for="exampleInputEmail2">Número contacto</label>
+                <input type="text" class="form-control" id="user-nrocontacto" placeholder="Ingrese su número de contacto">
+            </div>
+        </div>
+        <button type="button" id="btnActualizarDatos" class="btn btn-default" style="margin: 5px">Actualizar Datos</button>
     </div>
     <div class="perfil-user-img">
         <div>
@@ -48,3 +78,10 @@
         });
     });
 </script>
+
+<style>
+    .custom-form-group{
+        width: 45%;
+        margin: 5px;
+    }
+</style>

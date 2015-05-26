@@ -70,6 +70,9 @@ confirmarProducto = function () {
             hayError = true;
         }
     }
+
+    //error de coordenadas no seleccionadas
+
     if (!categoriaSeleccionada){
         msgError += "- Debe seleccionar una categoria. \n"
         hayError = true;
@@ -172,3 +175,4 @@ seleccionarCategoriaSimple = function (catID) {
         }
     });
 }
+

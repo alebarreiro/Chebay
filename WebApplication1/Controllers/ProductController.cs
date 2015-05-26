@@ -57,6 +57,11 @@ namespace WebApplication1.Controllers
             public string nombre { get; set; }
         }
 
+        public class DataProductoIDPelado
+        {
+            public long ProductoID { get; set; }
+        }
+
         // GET: Product
         [Authorize]
         public ActionResult Index()
@@ -77,6 +82,15 @@ namespace WebApplication1.Controllers
             Producto infoFullP = cS.ObtenerInfoProducto(productId, tienda, userId);
             ViewBag.InfoProducto = infoFullP;
             return View();
+        }
+
+        //GET : Product/ObtenerCoordenadas
+        [HttpGet]
+        public ActionResult ObtenerCoordenadas(DataProductoIDPelado data)
+        {
+            Producto prod = cS.ObtenerProducto(data.ProductoID, (string)Session["Tienda_Nombre"]);
+            var result = new { Success = "True", Message = idProd };
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
 

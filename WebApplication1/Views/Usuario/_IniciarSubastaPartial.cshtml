@@ -37,14 +37,23 @@
         </div>
     </div>
 
+    <div>
+        <div id="map">
+        </div>
+    </div>
+    
+
     <dl class="dl-horizontal"></dl>
     <button id="btnConfirmarSubasta" class="btn btn-success" onclick="confirmarProducto()">Confirmar subasta</button>
     <button id="btnFinalizarSubasta" style="display:none" class="btn btn-success" onclick="finalizarCrearProducto()">Confirmar subasta</button>
 </div>
 
 <script>
-    
-
+    var map = new GMaps({
+        div: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+    });
 </script>
 
 <style>

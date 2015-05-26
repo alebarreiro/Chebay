@@ -1,7 +1,18 @@
 ﻿<section id="seccion-geolocalizacion">
-    Geolocalizacion del producto
+    Geolocalizacion del producto<br />
+    <div id="map">
+
+    </div>
 </section>
 
+<script src="~/Scripts/gmaps.min.js"></script>
+
 <script>
+    var map = new GMaps({
+        div: '#map',
+        lat: -12.043333,
+        lng: -77.028333
+    });
     var productId = $('.infoProducto-container').data("key");
+
 </script>

@@ -27,6 +27,8 @@ namespace WebApplication1.Controllers
             public int PrecioComprarYa { get; set; }
             public DateTime FechaCierre { get; set; }
             public long CatID { get; set; }
+            public double longitud { get; set; }
+            public double latitud { get; set; }
         }
 
         public class DatosCrearComentario
@@ -84,12 +86,12 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        //GET : Product/ObtenerCoordenadas
-        [HttpGet]
+        //POST : Product/ObtenerCoordenadas
+        [HttpPost]
         public ActionResult ObtenerCoordenadas(DataProductoIDPelado data)
         {
             Producto prod = cS.ObtenerProducto(data.ProductoID, (string)Session["Tienda_Nombre"]);
-            var result = new { Success = "True", Message = idProd };
+            var result = new { Success = "True", coordenadaX = prod.latitud, coordenadaY = prod.longitud };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -191,7 +193,9 @@ namespace WebApplication1.Controllers
                     precio_base_subasta = producto.PrecioBase,
                     precio_compra = producto.PrecioComprarYa,
                     fecha_cierre = producto.FechaCierre,
-                    CategoriaID = producto.CatID
+                    CategoriaID = producto.CatID,
+                    longitud = producto.longitud,
+                    latitud = producto.latitud
                 };
 
                 long idProd = cS.AgregarProducto(p, idTienda);

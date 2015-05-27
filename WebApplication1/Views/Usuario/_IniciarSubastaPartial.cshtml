@@ -3,7 +3,7 @@
     var categorias = ViewBag.categoriaRaiz;
     var nombreTienda = @Session["Tienda_Nombre"];
 }
-
+<script src="~/Scripts/gmaps.min.js"></script>
 <div id="crearProducto" data-request-url="@Url.Action("Create","Product")">
     <h4>Nueva subasta</h4>
     <hr />
@@ -37,7 +37,10 @@
         </div>
     </div>
 
+    <hr />
+
     <div>
+        <h4>Seleccione donde se localiza el producto a subastar</h4>
         <div id="map">
         </div>
     </div>
@@ -49,11 +52,8 @@
 </div>
 
 <script>
-    var map = new GMaps({
-        div: '#map',
-        lat: -12.043333,
-        lng: -77.028333
-    });
+    
+
 </script>
 
 <style>

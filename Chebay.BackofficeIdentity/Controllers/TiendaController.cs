@@ -515,13 +515,12 @@ namespace Chebay.BackofficeIdentity.Controllers
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
                         Debug.WriteLine("El nombre del archivo subido es : " + fileContent.FileName);
-                        Personalizacion p = new Personalizacion();
+                        Personalizacion p = idalTienda.ObtenerPersonalizacionTienda(tienda.Datos);
                         byte[] buf;
                         buf = new byte[stream.Length];  //declare arraysize
                         stream.Read(buf, 0, buf.Length);
                         p.algoritmo = buf;
-                        p.tienda = tienda.Datos;
-                        
+                        idalTienda.ActualizarAlgoritmoPersonalizacion(p);
                         //var fileName = Path.GetFileName(file);
                         //var path = Path.Combine(Server.MapPath("~/App_Data/Images"), fileName);
                         //using (var fileStream = File.Create(path))

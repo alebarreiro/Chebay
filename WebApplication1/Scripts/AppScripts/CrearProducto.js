@@ -2,6 +2,33 @@
     categoriaSeleccionada,
     datosIngresados;
 
+
+var map = new GMaps({
+    div: '#map',
+    lat: -34.905510300,
+    lng: -56.192056200
+});
+
+var marker;
+
+
+function placeMarker(location) {
+    if (marker) {
+        marker.setPosition(location);
+    } else {
+        marker = new google.maps.Marker({
+            position: location,
+            map: map
+        });
+    }
+}
+
+google.maps.event.addListener(map, 'click', function (event) {
+    placeMarker(event.latLng);
+});
+
+
+
 datosProd = function () {
     $("#datosProducto").toggle(1000);
 }
@@ -72,7 +99,10 @@ confirmarProducto = function () {
     }
 
     //error de coordenadas no seleccionadas
-
+    if (!marker) {
+        msgError += "- Ingrese el punto de localización del producto. \n"
+        hayError = true;
+    }
     if (!categoriaSeleccionada){
         msgError += "- Debe seleccionar una categoria. \n"
         hayError = true;
@@ -103,7 +133,9 @@ confirmarProducto = function () {
             'precioBase': precioBase,
             'precioComprarYa': precioComprarYa,
             'fechaCierre': fechaCierre + " " + horaCierre,
-            'catID' : categoriaSeleccionada
+            'catID': categoriaSeleccionada,
+            'latitud': marker.position.lat(),
+            'longitud': marker.position.lng()
         }
         $.ajax({
             type: "POST",

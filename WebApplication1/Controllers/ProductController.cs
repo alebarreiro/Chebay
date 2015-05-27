@@ -86,11 +86,11 @@ namespace WebApplication1.Controllers
             return View();
         }
 
-        //POST : Product/ObtenerCoordenadas
-        [HttpPost]
-        public ActionResult ObtenerCoordenadas(long ProductID)
+        //GET : Product/ObtenerCoordenadas
+        [HttpGet]
+        public ActionResult ObtenerCoordenadas(long productID)
         {
-            Producto prod = cS.ObtenerProducto(ProductID, (string)Session["Tienda_Nombre"]);
+            Producto prod = cS.ObtenerProducto(productID, (string)Session["Tienda_Nombre"]);
             var result = new { Success = "True", coordenadaX = prod.latitud, coordenadaY = prod.longitud };
             return Json(result, JsonRequestBehavior.AllowGet);
         }

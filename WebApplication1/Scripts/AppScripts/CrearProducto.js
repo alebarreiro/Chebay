@@ -1,4 +1,4 @@
-﻿document.write("<script src=\"http://maps.google.com/maps/api/js?sensor=true\"></script>" +
+﻿document.write("<script src=\"http://maps.google.com/maps/api/js?sensor=false\"></script>" +
 "<script src=\"/Scripts/gmaps.js\"></script>");
 
 var atributosIngresados,
@@ -12,30 +12,30 @@ var map;
 $(document).ready(function () {
         
 
-        map = new GMaps({
-        el: '#map',
-        lat: -34.905510300,
-        lng: -56.192056200,
-        width: '100%',
-        height: '400px',
-        zoom: 12,
-        zoomControl: true,
-        });
+    //    map = new GMaps({
+    //    el: '#map',
+    //    lat: -34.905510300,
+    //    lng: -56.192056200,
+    //    width: '100%',
+    //    height: '400px',
+    //    zoom: 12,
+    //    zoomControl: true
+    //    });
 
 
 
 
-     google.maps.event.addListener(map, 'click', function (event) {
-            alert('click en el mapa');
-        if (marker) {
-            marker.setPosition(event.latLng);
-        } else {
-            marker = new google.maps.Marker({
-                position: event.latLng,
-                map: map
-            });
-        }
-    });
+    // google.maps.event.addListener(map, 'click', function (event) {
+    //        alert('click en el mapa');
+    //    if (marker) {
+    //        marker.setPosition(event.latLng);
+    //    } else {
+    //        marker = new google.maps.Marker({
+    //            position: event.latLng,
+    //            map: map
+    //        });
+    //    }
+    //});
 });
 
 

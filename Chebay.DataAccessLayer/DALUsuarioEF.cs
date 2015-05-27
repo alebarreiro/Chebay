@@ -440,12 +440,19 @@ namespace DataAccessLayer
             return db.GetRecomendacionesUsuario(TiendaID, dataRecomendacion);
         }
 
-        public void AgregarRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion)
+        public async Task AgregarRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion)
         {
             MongoDB db = new MongoDB();
-            Task t = db.InsertProducts(TiendaID, dataRecomendacion);
-            t.Wait();
+            await db.InsertProducts(TiendaID, dataRecomendacion);
         }
+
+        public async Task InicializarColeccionRecomendaciones(string TiendaID)
+        {
+            MongoDB db = new MongoDB();
+            await db.createIndexRecomendation(TiendaID);
+        }
+
+
 
         #endregion
 

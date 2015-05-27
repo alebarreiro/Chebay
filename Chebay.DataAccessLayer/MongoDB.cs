@@ -20,8 +20,15 @@ namespace DataAccessLayer
             string connection = "mongodb://chebaylinux.cloudapp.net:27017";
             _client = new MongoClient(connection);
         }
-        
-        
+
+        public async Task createIndexRecomendation(string TiendaID)
+        {          
+            var db = _client.GetDatabase("recomendaciones");
+            var collection = db.GetCollection<DataRecomendacion>(TiendaID);
+            await collection.Indexes.CreateOneAsync(Builders<DataRecomendacion>.IndexKeys.Ascending(_ => _.UsuarioID));
+        }
+
+
         public async Task InsertProducts(string TiendaID, DataRecomendacion dataRecomendacion)
         {
             var db = _client.GetDatabase("recomendaciones");

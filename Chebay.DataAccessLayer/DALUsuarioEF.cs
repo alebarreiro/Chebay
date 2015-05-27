@@ -154,7 +154,7 @@ namespace DataAccessLayer
             }
         }
 
-        public Usuario ObtenerUsuariosFull(string idUsuario, string idTienda)
+        public Usuario ObtenerUsuarioFull(string idUsuario, string idTienda)
         {
             try
             {

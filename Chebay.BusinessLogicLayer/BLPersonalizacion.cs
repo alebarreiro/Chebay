@@ -10,7 +10,7 @@ namespace Chebay.BusinessLogicLayer
 {
     public class BLPersonalizacion
     {
-        public void PersonalizarTienda(string colorPrimario, string colorSecundario, string idTienda)
+        public void PersonalizarTienda(string colorPrimario, string colorSecundario, int estilo, string idTienda)
         {
             IDALTienda it = new DALTiendaEF();
             

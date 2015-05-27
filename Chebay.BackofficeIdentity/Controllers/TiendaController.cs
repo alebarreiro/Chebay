@@ -291,6 +291,8 @@ namespace Chebay.BackofficeIdentity.Controllers
                     }
                 }
                 Debug.WriteLine("Personalizar::valor del color = " + datos.color);
+                Personalizacion pers = new Personalizacion();
+                
                 idalTienda.PersonalizarTienda(datos.color, tienda.Datos);
                 var result = new { Success = "True", Message = "Se ha personalizado la Tienda correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
@@ -493,6 +495,17 @@ namespace Chebay.BackofficeIdentity.Controllers
         {
             try
             {
+                string idAdmin = User.Identity.GetUserName();
+                List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+                AtributoSesion tienda = null;
+                foreach (AtributoSesion a in atributos)
+                {
+                    if (a.AtributoSesionID.Equals("tienda"))
+                    {
+                        tienda = a;
+                        break;
+                    }
+                }
                 foreach (string file in Request.Files)
                 {
                     var fileContent = Request.Files[file];
@@ -502,6 +515,12 @@ namespace Chebay.BackofficeIdentity.Controllers
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
                         Debug.WriteLine("El nombre del archivo subido es : " + fileContent.FileName);
+                        Personalizacion p = idalTienda.ObtenerPersonalizacionTienda(tienda.Datos);
+                        byte[] buf;
+                        buf = new byte[stream.Length];  //declare arraysize
+                        stream.Read(buf, 0, buf.Length);
+                        p.algoritmo = buf;
+                        idalTienda.ActualizarAlgoritmoPersonalizacion(p);
                         //var fileName = Path.GetFileName(file);
                         //var path = Path.Combine(Server.MapPath("~/App_Data/Images"), fileName);
                         //using (var fileStream = File.Create(path))

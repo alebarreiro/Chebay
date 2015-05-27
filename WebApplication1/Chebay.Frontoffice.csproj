@@ -276,6 +276,7 @@
     <None Include="Properties\PublishProfiles\chebay %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\chebay.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Scripts\gmaps.js" />
     <Content Include="Scripts\gmaps.min.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />

@@ -88,9 +88,9 @@ namespace WebApplication1.Controllers
 
         //POST : Product/ObtenerCoordenadas
         [HttpPost]
-        public ActionResult ObtenerCoordenadas(DataProductoIDPelado data)
+        public ActionResult ObtenerCoordenadas(long ProductID)
         {
-            Producto prod = cS.ObtenerProducto(data.ProductoID, (string)Session["Tienda_Nombre"]);
+            Producto prod = cS.ObtenerProducto(ProductID, (string)Session["Tienda_Nombre"]);
             var result = new { Success = "True", coordenadaX = prod.latitud, coordenadaY = prod.longitud };
             return Json(result, JsonRequestBehavior.AllowGet);
         }

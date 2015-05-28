@@ -360,8 +360,6 @@
             },
             accept: 'application/json',
             success: function (data) {
-                debugger;
-                console.log(data);
                 if (data.Ofertas.length > 0) {
                     var contador = 0;
                     $.each(data.Ofertas, function () {

@@ -49,68 +49,25 @@ namespace WebApplication1.Controllers
         [Authorize]
         public ActionResult Index()
         {
-            String tienda = Session["Tienda_Nombre"].ToString();
-                String userName = User.Identity.GetUserName();
-                try
-                {
-                    Usuario u = uC.ObtenerUsuarioFull(userName, Session["Tienda_Nombre"].ToString());
-                    DatosUsuarioFull duf = new DatosUsuarioFull
-                    {
-                        Nombre = u.Nombre,
-                        Apellido = u.Apellido,
-                        Pais = u.Pais,
-                        Ciudad = u.Ciudad,
-                        Direccion = u.Direccion,
-                        NumeroContacto = u.NumeroContacto,
-                        CodigoPostal = u.CodigoPostal,
-                        Email = u.Email,
-                        compras_valor = u.compras_valor,
-                        ventas_valor = u.ventas_valor,
-                        promedio_calificacion = u.promedio_calificacion
-                    };
-                    List<DataProductoUsuario> dpus = new List<DataProductoUsuario>();
-                    if (u.publicados != null)
-                    {
-                        foreach (Producto p in u.publicados)
-                        {
-                            DataProductoUsuario dpu = new DataProductoUsuario
-                            {
-                                ProductoID = p.ProductoID,
-                                nombre = p.nombre
-                            };
-                            dpus.Add(dpu);
-                        }
-                    }
-                    
-                    duf.publicados = dpus;
-
-                    List<DataCompraUsuario> dcus = new List<DataCompraUsuario>();
-                    if (u.compras != null)
-                    {
-                        foreach (Compra c in u.compras)
-                        {
-                            DataCompraUsuario dcu = new DataCompraUsuario
-                            {
-                                ProductoID = c.ProductoID,
-                                monto = c.monto
-                            };
-                            dcus.Add(dcu);
-                        }
-                    }
-                    
-                    duf.compras = dcus;
-
-                    ImagenUsuario iu = uC.ObtenerImagenUsuario(userName, tienda);
-                    //ImagenUsuario iu = u.Imagen;
-                    ViewBag.imagenUsuario = iu.Imagen;
-                    ViewBag.usuario = duf;
-                }
-                catch (Exception e)
-                {
-                    Debug.WriteLine(e.Message);
-                }
-            
             return View();
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult obtenerJsonDatosUsuario(string userId)
+        {
+            try
+            {
+                Usuario u = uC.ObtenerUsuario(userId, Session["Tienda_Nombre"].ToString());
+                var result = new { Success = "True", Usuario = u };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         // To convert the Byte Array to the author Image

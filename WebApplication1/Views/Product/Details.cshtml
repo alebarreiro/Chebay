@@ -265,7 +265,6 @@
         };
 
         proxy.client.newBuyPosted = function (productId, monto, usuarioPoster) {
-            debugger;
             if (productId == prodId) {
                 $("#comprarYa").html("VENDIDO");
                 $("#hayGanador").text("Hay ganador!!");
@@ -284,15 +283,15 @@
                 precioActual = parseInt($("#precioMayorSubasta").text(), 10);
             if (isInt(amount)) {
                 if (amount <= precioActual) {
-                    swal("La cantidad ofertada no supera el precio actual.");
+                    swal("","La cantidad ofertada no supera el precio actual.");
                 } else if (amount > montoTotal) {
-                    swal("La cantidad ofertada supera el precio comprar ya!");
+                    swal("","La cantidad ofertada supera el precio comprar ya!");
                 } else {
                     $("#ofertarYa").html("Ofertar! <i class=\"fa fa-spinner fa-pulse\"></i>");
                     proxy.server.placeNewBid(prodId, amount, false, userId, tienda);
                 }
             } else {
-                swal("Ingrese una oferta válida.");
+                swal("","Ingrese una oferta válida.");
             }
         }
 

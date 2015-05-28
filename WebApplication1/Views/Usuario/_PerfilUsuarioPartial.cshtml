@@ -64,13 +64,24 @@
             },
             accept: 'application/json',
             success: function (data) {
-                console.log(data);
-
+                if (data.Usuario) {
+                    var u = data.Usuario;
+                    $("#user-nombre").val(u.Nombre);
+                    $("#user-apellido").val(u.Apellido);
+                    $("#user-ciudad").val(u.Ciudad);
+                    $("#user-pais").val(u.Pais);
+                    $("#user-direccion").val(u.Direccion);
+                    $("#user-nrocontacto").val(u.NumeroContacto);
+                }
             },
             error: function (error) {
-
+                sweetAlert("Oops...", error.Message, "error");
             }
         });
+        $('#btnActualizarDatos').on('click', function () {
+
+        });
+
         $('#btnUploadFileUser').on('click', function () {
             $("#btnUploadFileUser").html($("#btnUploadFileUser").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             var data = new FormData();

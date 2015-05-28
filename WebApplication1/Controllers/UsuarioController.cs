@@ -16,21 +16,15 @@ namespace WebApplication1.Controllers
 
         IDALUsuario uC = new DALUsuarioEF();
 
-        public class DatosUsuarioFull
+        public class DatosUsuario
         {
+            public string UsuarioID { get; set; }
             public string Nombre { get; set; }
             public string Apellido { get; set; }
             public string Pais { get; set; }
             public string Ciudad { get; set; }
             public string Direccion { get; set; }
             public string NumeroContacto { get; set; }
-            public int CodigoPostal { get; set; }
-            public string Email { get; set; }
-            public int compras_valor { get; set; }
-            public int ventas_valor { get; set; }
-            public double promedio_calificacion { get; set; }
-            public List<DataProductoUsuario> publicados { get; set; }
-            public List<DataCompraUsuario> compras { get; set; }
         }
 
         public class DataProductoUsuario
@@ -87,6 +81,33 @@ namespace WebApplication1.Controllers
                 var dir = Server.MapPath("~/Content/Images");
                 var path = Path.Combine(dir, "user_sin_imagen.png");
                 return new FileContentResult(System.IO.File.ReadAllBytes(path), "image/jpeg");
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public JsonResult actualizarDatosUsuario(DatosUsuario du)
+        {
+            try
+            {
+                Usuario u = new Usuario
+                {
+                    UsuarioID = du.UsuarioID,
+                    Nombre = du.Nombre,
+                    Apellido = du.Apellido,
+                    Pais = du.Pais,
+                    Ciudad = du.Ciudad,
+                    Direccion = du.Direccion,
+                    NumeroContacto = du.NumeroContacto
+                };
+                uC.ActualizarUsuario(u, Session["Tienda_Nombre"].ToString());
+                var result = new { Success = "True", Message = "Usuario actualizado" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
 

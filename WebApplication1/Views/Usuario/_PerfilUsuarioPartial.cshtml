@@ -80,6 +80,30 @@
         });
         $('#btnActualizarDatos').on('click', function () {
 
+            var datosUsuario = {
+                UsuarioID : userId,
+                Nombre : $("#user-nombre").val(),
+                Apellido: $("#user-apellido").val(),
+                Ciudad: $("#user-ciudad").val(),
+                Pais: $("#user-pais").val(),
+                Direccion: $("#user-direccion").val(),
+                NumeroContacto: $("#user-nrocontacto").val()
+            }
+            $("#btnActualizarDatos").html($("#btnActualizarDatos").text() + " " + "<i class=\"fa fa-spinner fa-pulse\"></i>");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("actualizarDatosUsuario", "Usuario")",
+                data: datosUsuario,
+                accept: 'application/json',
+                success: function (data) {
+                    $("#btnActualizarDatos").html("Actualizar Datos");
+                    swal("éxito!", "Tus datos fueron actualizados.", "success")
+                },
+                error: function (error) {
+                    sweetAlert("Oops...", error.Message, "error");
+                }
+            });
+
         });
 
         $('#btnUploadFileUser').on('click', function () {

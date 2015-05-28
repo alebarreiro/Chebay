@@ -9,42 +9,45 @@ var marker;
 var map;
 
 
-$(document).ready(function () {
-        
+    $(document).ready(function () {
 
-        map = new GMaps({
-        el: '#map',
-        lat: -34.905510300,
-        lng: -56.192056200,
-        width: '100%',
-        height: '400px',
-        click: function (event) {
-            map.removeMarkers();
-            var lat = event.latLng.lat();
-            var lng = event.latLng.lng();
-            marker = map.addMarker({
-                lat: lat,
-                lng: lng,
-                draggable: true,
+        if (document.getElementById('map') != null) {
+
+            map = new GMaps({
+                el: '#map',
+                lat: -34.905510300,
+                lng: -56.192056200,
+                width: '100%',
+                height: '400px',
+                click: function (event) {
+                    map.removeMarkers();
+                    var lat = event.latLng.lat();
+                    var lng = event.latLng.lng();
+                    marker = map.addMarker({
+                        lat: lat,
+                        lng: lng,
+                        draggable: true,
+                    });
+                }
             });
         }
-        });
 
 
 
+        // google.maps.event.addListener(map, 'click', function (event) {
+        //        alert('click en el mapa');
+        //    if (marker) {
+        //        marker.setPosition(event.latLng);
+        //    } else {
+        //        marker = new google.maps.Marker({
+        //            position: event.latLng,
+        //            map: map
+        //        });
+        //    }
+        //});
+    });
 
-    // google.maps.event.addListener(map, 'click', function (event) {
-    //        alert('click en el mapa');
-    //    if (marker) {
-    //        marker.setPosition(event.latLng);
-    //    } else {
-    //        marker = new google.maps.Marker({
-    //            position: event.latLng,
-    //            map: map
-    //        });
-    //    }
-    //});
-});
+
 
 
 
@@ -157,10 +160,10 @@ confirmarProducto = function () {
             'precioComprarYa': precioComprarYa,
             'fechaCierre': fechaCierre + " " + horaCierre,
             'catID': categoriaSeleccionada,
-            'latitud': marker.getPosition().lat(),
-            'longitud': marker.getPosition().lng()
+            'latitud': '' + marker.getPosition().lat(),
+            'longitud': '' + marker.getPosition().lng()
         }
-        alert(datosProducto);
+        
         $.ajax({
             type: "POST",
             url: $("#crearProducto").data('request-url'),

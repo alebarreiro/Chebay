@@ -27,8 +27,8 @@ namespace WebApplication1.Controllers
             public int PrecioComprarYa { get; set; }
             public DateTime FechaCierre { get; set; }
             public long CatID { get; set; }
-            public double latitud { get; set; }
-            public double longitud { get; set; }
+            public string latitud { get; set; }
+            public string longitud { get; set; }
         }
 
         public class DatosCrearComentario
@@ -91,7 +91,9 @@ namespace WebApplication1.Controllers
         public ActionResult ObtenerCoordenadas(long productID)
         {
             Producto prod = cS.ObtenerProducto(productID, (string)Session["Tienda_Nombre"]);
-            var result = new { Success = "True", coordenadaX = prod.latitud, coordenadaY = prod.longitud };
+            string x = prod.latitud.ToString();
+            string y = prod.longitud.ToString();
+            var result = new { Success = "True", coordenadaX = x, coordenadaY = y };
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
@@ -185,6 +187,7 @@ namespace WebApplication1.Controllers
             try
             {
                 String idTienda = Session["Tienda_Nombre"].ToString();
+                Debug.WriteLine("Lat, Long : " + producto.latitud + ", " + producto.longitud);
                 Producto p = new Producto
                 {
                     nombre = producto.Titulo,
@@ -194,10 +197,10 @@ namespace WebApplication1.Controllers
                     precio_compra = producto.PrecioComprarYa,
                     fecha_cierre = producto.FechaCierre,
                     CategoriaID = producto.CatID,
-                    longitud = producto.longitud,
-                    latitud = producto.latitud
+                    longitud = double.Parse(producto.longitud, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo),
+                    latitud = double.Parse(producto.latitud, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo)
                 };
-
+                Debug.WriteLine("Lat, Long : " + p.latitud + ", " + p.longitud);
                 long idProd = cS.AgregarProducto(p, idTienda);
                 cS.AgregarAtributo(atributos, idProd, idTienda);
 

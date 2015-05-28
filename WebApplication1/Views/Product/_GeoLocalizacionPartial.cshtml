@@ -30,9 +30,12 @@
         contentType: 'application/json; charset=UTF-8',
         success: function (data, textStatus, jqxhr) {
             mapa.addMarker({
-                lat: data['coordenadaX'],
-                lng: data['coordenadaY'],
-                map: mapa
+                lat: parseFloat(data['coordenadaX'].replace(",", ".")),
+                lng: parseFloat(data['coordenadaY'].replace(",", ".")),
+                draggable: false,
+                infoWindow: {
+                    content: '<p>El producto se ubica aquí</p>'
+                }
             });
         }
     });

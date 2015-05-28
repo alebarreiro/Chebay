@@ -24,8 +24,8 @@ namespace Shared.Entities
         [Required]
         public DateTime fecha_cierre { get; set; }
 
-        public double latitud { get; set; }
-        public double longitud { get; set; }
+        public string latitud { get; set; }
+        public string longitud { get; set; }
 
         public long CategoriaID { get; set; }
 

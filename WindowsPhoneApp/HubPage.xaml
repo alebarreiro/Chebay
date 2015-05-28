@@ -79,6 +79,7 @@
             <HubSection x:Uid="HubSection2" Header="BÚSQUEDA" Width="Auto"
                          DataContext="{Binding}" HeaderTemplate="{ThemeResource HubSectionHeaderTemplate}">
                 <DataTemplate>
+                    
                     <GridView
                         Margin="0,9.5,0,0"
                         ItemsSource="{Binding Productos}"
@@ -101,7 +102,7 @@
             
 
         </Hub>
-        
+       
         <TextBox Name="buscador"
                  Grid.Row="2"
                  IsTextPredictionEnabled="True"
@@ -112,12 +113,13 @@
         <ProgressRing Name="ProgressRing"
                       Grid.Row="1"
                       />
-        
+      
         <AppBarButton Icon="Zoom" 
                       Grid.Row="2"
                       Name="BuscarButton"
                       Label="Buscar"
                       Click="BuscarButton_Click"
                       HorizontalAlignment="Right"/>
+
     </Grid>
 </Page>

@@ -25,6 +25,9 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
 using Windows.Storage;
 using Windows.ApplicationModel;
+using Facebook.Client;
+using Windows.ApplicationModel.Activation;
+
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -86,6 +89,8 @@ namespace WindowsPhoneApp
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             //var sampleDataGroups = await SampleDataSource.GetGroupsAsync();
             //this.DefaultViewModel["Groups"] = sampleDataGroups;
+
+
         }
 
         /// <summary>
@@ -113,14 +118,9 @@ namespace WindowsPhoneApp
             }
         }
 
-        /// <summary>
-        /// Shows the details of an item clicked on in the <see cref="ItemPage"/>
-        /// </summary>
         private void ItemView_ItemClick(object sender, ItemClickEventArgs e)
         {
-            // Navigate to the appropriate destination page, configuring the new page
-            // by passing required information as a navigation parameter
-            Debug.WriteLine("ASDF");
+            //Navega hacia la página de información de producto, pasando el ProductoID.
             var itemId = ((ProductoItem)e.ClickedItem).ProductoID;
             if (!Frame.Navigate(typeof(ItemPage), itemId))
             {
@@ -130,12 +130,11 @@ namespace WindowsPhoneApp
 
         private async Task<string> BuscarProducto(string searchTerm)
         {
+            //Hace el pedido a la API Rest para buscar searchTerm.
             HttpClient client = new HttpClient();
             string url = "http://chebayrest1956.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
             var baseUrl = string.Format(url);
-            Debug.WriteLine("await client.GetStringAsync(baseUrl);");
             string result = await client.GetStringAsync(baseUrl);
-            Debug.WriteLine("result: " + result);
             return result;
         }
 
@@ -163,21 +162,34 @@ namespace WindowsPhoneApp
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            Debug.WriteLine("OnActivated");
+            //base.OnActivated(args);
+
+            // You can setup a event handler to be called back when the authentication has finished
+            Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
+
+            var protocolArgs = args as ProtocolActivatedEventArgs;
+            Debug.WriteLine("PRE OnFacebookAuthenticationFinished");
+            LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
+        }
+
         #endregion
 
         
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
+            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorApplicationOnly);
             
             string searchTerm = buscador.Text;
             string json = await BuscarProducto(searchTerm);
             deserializeJsonAsync(json);
         }
 
-        private const string JSONFILENAME = "data.json";
-
         private Stream GenerateStreamFromString(string s)
         {
+            //Convierte un String en un Stream para usar en jsonSerializer.ReadObject(stream)
             MemoryStream stream = new MemoryStream();
             StreamWriter writer = new StreamWriter(stream);
             writer.Write(s);
@@ -186,9 +198,9 @@ namespace WindowsPhoneApp
             return stream;
         }
 
-
         private void deserializeJsonAsync(string json)
         {
+            //Toma el json, obtiene los datos de los productos y los guarda en memoria.
             using (Stream s = GenerateStreamFromString(json))
             {
                 string content = String.Empty;
@@ -206,28 +218,15 @@ namespace WindowsPhoneApp
                 Debug.WriteLine(content);
                 this.DefaultViewModel["Productos"] = myCars;
             }
-
-
-            /*
-
-            string content = String.Empty;
-
-            List<ProductoItem> myCars;
-            var jsonSerializer = new DataContractJsonSerializer(typeof(List<ProductoItem>));
-            
-            var myStream = await Package.Current.InstalledLocation.OpenStreamForReadAsync(JSONFILENAME);
-
-            myCars = (List<ProductoItem>)jsonSerializer.ReadObject(myStream);
-            
-            foreach (var car in myCars)
-            {
-                content += String.Format("ID: {0}, Make: {1}, Model: {2} ... ", car.ProductoID, car.Nombre, car.Descripcion);
-                ProductoSource.AddItem(car);
-            }
-            Debug.WriteLine(content);
-            this.DefaultViewModel["Productos"] = myCars;*/
-         //   resultTextBlock.Text = content;
         }
 
+        
+
+        private void OnFacebookAuthenticationFinished(AccessTokenData session)
+        {
+            Debug.WriteLine("OnFacebookAuthenticationFinished");
+            // here the authentication succeeded callback will be received.
+            // put your login logic here
+        }
     }
 }

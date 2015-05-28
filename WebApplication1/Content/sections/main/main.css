@@ -102,6 +102,9 @@ nav a {
 
     color: white;
     background: #e44d26;
+
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 nav a:hover,
@@ -173,10 +176,11 @@ nav a:hover {
 
     nav a {
         float: left;
-        width: 27%;
+        width: 35%;
         margin: 0 1.7%;
         padding: 25px 2%;
         margin-bottom: 0;
+        height: 85px;
     }
 
     nav li:first-child a {

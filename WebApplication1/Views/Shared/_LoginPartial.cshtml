@@ -1,26 +1,31 @@
 ﻿@using Microsoft.AspNet.Identity
 @if (User.Identity.IsAuthenticated)//(Session["Usuario"] != null)
 {
-    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
-    {    
-    <script>
-        var usuario = "@Context.User.Identity.Name";
-        var tenanttienda = "@Session["Tienda_Nombre"]";
-    </script>
+    using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
+    {
+        <script>
+            var usuario = "@Context.User.Identity.Name";
+            var tenanttienda = "@Session["Tienda_Nombre"]";
+        </script>
 
-    <ul class="nav navbar-nav navbar-right">
-        <li>
-            @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Usuario", routeValues: null, htmlAttributes: new { title = "Usuarios" })
-        </li>
-        <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
-    </ul>
+        <nav>
+            <ul>
+                <li>
+                    @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Usuario", routeValues: null, htmlAttributes: new { title = "Usuarios" })
+                </li>
+
+                <li>
+                    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+                </li>
+            </ul>
+        </nav>
     }
 }
 else
 {
     <nav>
         <ul>
-            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+            <li>@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
         </ul>
     </nav>
 }

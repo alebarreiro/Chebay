@@ -36,17 +36,10 @@
     <!--  Header  -->
     <div class="header-container">
         <header class="wrapper clearfix">
-            @{ 
-                string title;
-                if (Session["Tienda_Nombre"] != null) {
-                    title = Session["Tienda_Nombre"].ToString();
-                }
-                else
-                {
-                    title = "Inicio";
-                }
-            }
-            <h1 class="title">@Html.ActionLink(title, "Index", "Home")</h1>
+            <a href="@Url.Action("Index", "Home")">
+                <h1 class="title">@Session["Tienda_Nombre"].ToString()</h1>
+            </a>
+
             <section id="login">
                 @Html.Partial("_LoginPartial")
             </section>

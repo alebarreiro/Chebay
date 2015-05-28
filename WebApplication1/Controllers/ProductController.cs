@@ -197,8 +197,8 @@ namespace WebApplication1.Controllers
                     precio_compra = producto.PrecioComprarYa,
                     fecha_cierre = producto.FechaCierre,
                     CategoriaID = producto.CatID,
-                    longitud = double.Parse(producto.longitud, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo),
-                    latitud = double.Parse(producto.latitud, System.Globalization.NumberStyles.AllowDecimalPoint, System.Globalization.NumberFormatInfo.InvariantInfo)
+                    longitud = producto.longitud, 
+                    latitud = producto.latitud
                 };
                 Debug.WriteLine("Lat, Long : " + p.latitud + ", " + p.longitud);
                 long idProd = cS.AgregarProducto(p, idTienda);

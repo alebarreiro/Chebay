@@ -61,6 +61,11 @@
     $(function () {
         // Proxy creado a partir de signalr/hubs
         var proxy = $.connection.subastaHub;
+        // Start the connection
+        $.connection.hub.start()
+            .done(function () { console.log('Now connected, connection ID=' + $.connection.hub.id); })
+            .fail(function () { console.log('Could not Connect!'); });
+
         // Server callback methods
         proxy.client.newBidPosted = function (productId, newBid, userId) {
             if (userId == usuario) {
@@ -88,9 +93,6 @@
                 }
             });
         };
-
-        // Start the connection
-        $.connection.hub.start();
 
         // Client methods
         onNewBidClick = function (id, usuario, tienda) {

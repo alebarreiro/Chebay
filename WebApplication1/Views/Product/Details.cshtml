@@ -240,6 +240,11 @@
         // Proxy creado a partir de signalr/hubs
         var proxy = $.connection.subastaHub;
 
+        // Start the connection
+        $.connection.hub.start()
+            .done(function () { console.log('Now connected, connection ID=' + $.connection.hub.id); })
+            .fail(function () { console.log('Could not Connect!'); });
+
         /** Server callback methods **/
         proxy.client.newBidPosted = function (productId, newBid, usuarioPoster) {
             if (productId == prodId) {
@@ -272,9 +277,6 @@
                 $("#ofertarYa").addClass("disabled");
             }
         };
-
-        // Start the connection
-        $.connection.hub.start();
 
         /**  Client methods **/
         ofertarYa = function () {

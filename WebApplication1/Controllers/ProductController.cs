@@ -27,8 +27,8 @@ namespace WebApplication1.Controllers
             public int PrecioComprarYa { get; set; }
             public DateTime FechaCierre { get; set; }
             public long CatID { get; set; }
-            public double longitud { get; set; }
             public double latitud { get; set; }
+            public double longitud { get; set; }
         }
 
         public class DatosCrearComentario

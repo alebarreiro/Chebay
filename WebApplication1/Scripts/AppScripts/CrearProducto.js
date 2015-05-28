@@ -12,15 +12,23 @@ var map;
 $(document).ready(function () {
         
 
-    //    map = new GMaps({
-    //    el: '#map',
-    //    lat: -34.905510300,
-    //    lng: -56.192056200,
-    //    width: '100%',
-    //    height: '400px',
-    //    zoom: 12,
-    //    zoomControl: true
-    //    });
+        map = new GMaps({
+        el: '#map',
+        lat: -34.905510300,
+        lng: -56.192056200,
+        width: '100%',
+        height: '400px',
+        click: function (event) {
+            map.removeMarkers();
+            var lat = event.latLng.lat();
+            var lng = event.latLng.lng();
+            marker = map.addMarker({
+                lat: lat,
+                lng: lng,
+                draggable: true,
+            });
+        }
+        });
 
 
 
@@ -149,9 +157,10 @@ confirmarProducto = function () {
             'precioComprarYa': precioComprarYa,
             'fechaCierre': fechaCierre + " " + horaCierre,
             'catID': categoriaSeleccionada,
-            'latitud': marker.position.lat(),
-            'longitud': marker.position.lng()
+            'latitud': marker.getPosition().lat(),
+            'longitud': marker.getPosition().lng()
         }
+        alert(datosProducto);
         $.ajax({
             type: "POST",
             url: $("#crearProducto").data('request-url'),

@@ -10,16 +10,14 @@
 <script src="~/Scripts/gmaps.min.js"></script>*@
 
 <script>
-    @*var marcador;
+    var marcador;
 
     var mapa = new GMaps({
         el: '#mapa',
         lat: -34.905510300,
         lng: -56.192056200,
         width: '100%',
-        height: '400px',
-        zoom: 12,
-        zoomControl: true
+        height: '400px'
     });
     var productId = $('.infoProducto-container').data("key");
 
@@ -31,12 +29,12 @@
         dataType: 'json',
         contentType: 'application/json; charset=UTF-8',
         success: function (data, textStatus, jqxhr) {
-            marcador = new google.maps.Marker({
+            mapa.addMarker({
                 lat: data['coordenadaX'],
-                long: data['coordenadaY'],
+                lng: data['coordenadaY'],
                 map: mapa
             });
         }
-    });*@
+    });
 
 </script>

@@ -18,7 +18,7 @@ namespace Shared.Entities
         public string UsuarioCalificado { get; set; }
 
         public int puntaje { get; set; }
-
+        public string comentario { get; set; }
         [ForeignKey("ProductoID")]
         public virtual Producto producto { get; set; }
         [ForeignKey("UsuarioEvalua")]

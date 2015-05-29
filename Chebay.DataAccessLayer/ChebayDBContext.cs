@@ -357,19 +357,19 @@ namespace DataAccessLayer
         public void Seed()
         {
             Tienda[] tiendasarray = {   
-                                        new Tienda { TiendaID="LaTienda", nombre= "LaTienda", descripcion= "LaTienda.com", administradores=new List<Administrador>() },
-                                        new Tienda { TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>() },
-                                        new Tienda { TiendaID="uruFutbol", nombre= "Fobal-CAP", descripcion= "Fobal uruguayo", administradores=new List<Administrador>() },
-                                        new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() },
-                                        new Tienda { TiendaID="HardShop", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
+                                        //new Tienda { TiendaID="LaTienda", nombre= "LaTienda", descripcion= "LaTienda.com", administradores=new List<Administrador>() },
+                                        //new Tienda { TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>() },
+                                        //new Tienda { TiendaID="uruFutbol", nombre= "Fobal-CAP", descripcion= "Fobal uruguayo", administradores=new List<Administrador>() },
+                                        new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() }
+                                        //new Tienda { TiendaID="HardShop", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
 
                                     };
             Administrador[] admins = { 
-                                       new Administrador { AdministradorID= "test@chebay.com", password= "#!Chebay1", tiendas = new List<Tienda>() },
-                                       new Administrador { AdministradorID= "adminTestURL", password= "pass123", tiendas = new List<Tienda>() },
-                                       new Administrador { AdministradorID= "adminuruFutbol", password= "pass123", tiendas = new List<Tienda>() },
-                                       new Administrador { AdministradorID= "adminMobileCenter", password= "pass123", tiendas = new List<Tienda>() },                               
-                                       new Administrador { AdministradorID= "adminHardShop", password= "pass123", tiendas = new List<Tienda>() }                                     
+                                       //new Administrador { AdministradorID= "test@chebay.com", password= "#!Chebay1", tiendas = new List<Tienda>() },
+                                       //new Administrador { AdministradorID= "adminTestURL", password= "pass123", tiendas = new List<Tienda>() },
+                                       //new Administrador { AdministradorID= "adminuruFutbol", password= "pass123", tiendas = new List<Tienda>() },
+                                       new Administrador { AdministradorID= "adminMobileCenter", password= "pass123", tiendas = new List<Tienda>() }                               
+                                       //new Administrador { AdministradorID= "adminHardShop", password= "pass123", tiendas = new List<Tienda>() }                                     
                                      };
 
             for (int i = 0; i < admins.Count(); i++ )
@@ -390,8 +390,8 @@ namespace DataAccessLayer
             SaveChanges();
 
             AtributoSesion[] atrs = { 
-                                        new AtributoSesion{AdministradorID="adminTestURL", AtributoSesionID="Algo", Datos="unvalordealgo"},
-                                        new AtributoSesion{AdministradorID="adminTestURL", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
+                                        //new AtributoSesion{AdministradorID="adminTestURL", AtributoSesionID="Algo", Datos="unvalordealgo"},
+                                        //new AtributoSesion{AdministradorID="adminTestURL", AtributoSesionID="estadointermedio", Datos="unjsonporejemplo"}
                                     };
             foreach (var a in atrs)
             {
@@ -400,11 +400,11 @@ namespace DataAccessLayer
             SaveChanges();
 
             Personalizacion[] pers = {  
-                                        new Personalizacion{PersonalizacionID="uruFutbol", datos="Blue"},
-                                        new Personalizacion{PersonalizacionID="TestURL", datos="Black"},
-                                        new Personalizacion{PersonalizacionID="LaTienda", datos="Black"},                 
-                                        new Personalizacion{PersonalizacionID="MobileCenter", datos="Black"},                             
-                                        new Personalizacion{PersonalizacionID="HardShop", datos="Black"}                             
+                                        //new Personalizacion{PersonalizacionID="uruFutbol", datos="Blue"},
+                                        //new Personalizacion{PersonalizacionID="TestURL", datos="Black"},
+                                        //new Personalizacion{PersonalizacionID="LaTienda", datos="Black"},                 
+                                        new Personalizacion{PersonalizacionID="MobileCenter", datos="Black"}   
+                                        //new Personalizacion{PersonalizacionID="HardShop", datos="Black"}                             
                                      };
             foreach (var p in pers)
             {

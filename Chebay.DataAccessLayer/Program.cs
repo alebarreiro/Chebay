@@ -22,7 +22,7 @@ namespace DataAccessLayer
             //{
             //    bd.Seed();
             //}
-
+            /*
             IDALSubasta isub = new DALSubastaEF();
             IDALUsuario iusr = new DALUsuarioEF();
             IDALTienda itie = new DALTiendaEF();
@@ -32,10 +32,11 @@ namespace DataAccessLayer
             {
                 System.Console.WriteLine(ta.TipoAtributoID);
             }
-
-            using (var db = ChebayDBContext.CreateTenant("HardShop"))
+            */
+            ChebayDBContext.ProvisionTenant("MobileCenter");
+            using (var db = ChebayDBContext.CreateTenant("MobileCenter"))
             {
-
+                db.seed();
                 #region algoritmo first
                 /*
                 // ALGORITMO!!!

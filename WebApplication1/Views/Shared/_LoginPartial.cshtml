@@ -8,24 +8,19 @@
             var tenanttienda = "@Session["Tienda_Nombre"]";
         </script>
 
-        <nav>
-            <ul>
-                <li>
-                    @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Usuario", routeValues: null, htmlAttributes: new { title = "Usuarios" })
-                </li>
 
-                <li>
-                    <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
-                </li>
-            </ul>
-        </nav>
+        <li>
+            @Html.ActionLink("Hola " + User.Identity.GetUserName() + "!", "Index", "Usuario", routeValues: null, htmlAttributes: new { title = "Usuarios" })
+        </li>
+
+        <li>
+            <a href="javascript:document.getElementById('logoutForm').submit()">Log off</a>
+        </li>
     }
 }
 else
 {
-    <nav>
-        <ul>
-            <li>@Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
-        </ul>
-    </nav>
+    <li>
+        @Html.ActionLink("Iniciar sesión", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })
+    </li>
 }

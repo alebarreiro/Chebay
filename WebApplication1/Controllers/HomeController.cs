@@ -15,13 +15,14 @@ namespace Frontoffice.Controllers
     {
         IDALSubasta controladorSubasta = new DALSubastaEF();
         IDALTienda controladorTienda = new DALTiendaEF();
+        IDALTienda it = new DALTiendaEF();
 
         public ActionResult Index(string urlTienda)
         {
             try
             {
                 //Si cambio de tienda destruimos la sesion
-                if (Session["Tienda_Nombre"] != null && Session["Tienda_Nombre"].ToString() != urlTienda)
+                if (Session["Tienda_Nombre"] != null && Session["Tienda_Anterior"] != null && Session["Tienda_Nombre"].ToString() != Session["Tienda_Anterior"].ToString())
                 {
                     FormsAuthentication.SignOut();
                     Session.Abandon(); //Destruye todos los objetos de la sesion

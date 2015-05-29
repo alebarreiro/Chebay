@@ -2,43 +2,80 @@
     <div class="search-container">
         <div class="search-line"> </div>
         <input class="search-input" id="search_form" type="search" placeholder="Buscar" />
-        <ul class="search-drop-list" style="display: none">
-            <li class="search-item">
-                <div class="search-link" onclick="verInfoProd(1)">
-                    <span> Producto 1</span>
-                </div>
-            </li>
-            <li class="search-item">
-                <div class="search-link" onclick="verInfoProd(2)">
-                    <span> Producto 2</span>
-                </div>
-            </li>
-            <li class="search-item">
-                <div class="search-link" onclick="verInfoProd(3)">
-                    <span> Producto 3</span>
-                </div>
-            </li>
-        </ul>
+        <section id="search-result">
+
+        </section>
     </div>
 </nav>
 
+<script id="template-buscados" type="text/x-template">
+    <ul class="search-drop-list">
+        {{#Productos}}
+        {{>productItem}}
+        {{/Productos}}
+    </ul>
+</script>
+
+<script id="template-productItem" type="text/x-template">
+    <li class="search-item">
+        <div class="search-link" onclick="verInfoProd({{ProductoID}})">
+            <span> {{nombre}} </span>
+        </div>
+    </li>
+</script>
 
 <script>
     $(document).ready(function () {
 
         $('#search_form').keyup(function () {
-            var value = $(this).val();
+            //Buscamos on key up pero si paso un intervalo de un segundo
+            delay(function () {
+                var value = $(this).val();
+                if (value != '') {
+                    var template = $('#template-buscados').html();
+                    var templateItem = $('#template-productItem').html();
+                    var productos = [];
+                    Mustache.parse(template);
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("obtenerJsonBuscarProductos", "Product")",
+                        data: {
+                            searchTerm : value
+                        },
+                        accept: 'application/json',
+                        success: function (data) {
+                            if (data.Productos.length > 0) {
+                                var viewObject = {
+                                    Productos: data.Productos
+                                };
+                                var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
+                                $('#search-result').html(rendered);
+                                $('#search-result').show("fast");
 
-            if (value != '') {
-                $('.search-drop-list').show();
-            } else {
-                $('.search-drop-list').hide();
-            }
-
+                            } else {
+                                $('#search-result').hide(1000);
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                } else {
+                    $('#search-result').hide(1000);
+                }
+            }.bind(this), 1000)
         })
         /*.blur(function () {
             $('.search-drop-list').hide();
         });*/
+
+        var delay = (function () {
+            var timer = 0;
+            return function (callback, ms) {
+                clearTimeout(timer);
+                timer = setTimeout(callback, ms);
+            };
+        })();
 
         verInfoProd = function (nro) {
         }

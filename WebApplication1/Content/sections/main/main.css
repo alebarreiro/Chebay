@@ -194,11 +194,35 @@ nav a:hover {
   outline: none;
 }
   
+.search-drop-list{
+  background-color: #e44d26;
+  -webkit-box-shadow: 0 5px 10px #aaa;
+  -moz-box-shadow: 0 5px 10px #aaa;
+  box-shadow: 0 5px 10px #aaa;
+  font-size: 15px;
+  top: 100px;
+  width: inherit;
+  z-index: 9999;
+  margin-left: 5px;
+  border-left: 5px solid white;
+  margin-top: -9px;
+}
 
+.search-item{
+  line-height: 3.5rem;
+  cursor: pointer;
+}
 
+.search-link{
+  text-indent: 25px;
+  color: white;
+  text-transform: uppercase;
+  cursor: pointer;
+}
 
-
-
+.search-link:hover{
+    background-color: #c83c19;
+}
 
 
 

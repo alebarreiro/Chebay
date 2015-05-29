@@ -91,6 +91,7 @@ body {
         line-height: 30px;
 }
 
+
 /*  ===============================================
      Pensando en un sitio responsive para el movil    
     =============================================== */
@@ -161,11 +162,37 @@ nav a:hover {
 }
 
 /* ==========================================================================
-   Custom styles  
+   SEARCH BAR HEADER
    ========================================================================== */
 
+.search-container{
+    margin: 10px;
+    height: 60px;
+    width: 95%;
+    white-space: nowrap;
+}
 
+.search-line{
+  border-left: 5px solid white;
+  height: 100%;
+  width: 25px;
+  display: inline-block;
+  position: relative;
+  margin-left: 5px;
+}
 
+.search-input{
+  position: relative;
+  top: -20px;
+  width: 80%;
+  background-color: transparent;
+  border: none;
+  color: white;
+  letter-spacing: 0.45px;
+  font-size: 35px;
+  outline: none;
+}
+  
 
 
 

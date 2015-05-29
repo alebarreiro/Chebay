@@ -48,19 +48,7 @@
                 </nav>
             </section>
             <section id="searchbar">
-                <nav>
-                    <div class="search-container">
-                        <div class="search-line"> </div>
-                        <input class="search-input" type="search" placeholder="Buscar" />
-                        <ul class="search-drop-list">
-                            <li class="search-item">
-                                <div class="search-link">
-                                    <p></p>
-                                </div>
-                            </li>
-                        </ul>
-                    </div>
-                </nav>
+                @Html.Partial("_SearchPartial")
             </section>
         </header>
     </div> <!-- #header-container -->

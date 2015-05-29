@@ -18,7 +18,7 @@
 
 <script id="template-productItem" type="text/x-template">
     <li class="search-item">
-        <div class="search-link" onclick="verInfoProd({{ProductoID}})">
+        <div class="search-link" onclick="location.href=location.href + '/Product/Details?productId=' + {{ProductoID}}">
             <span> {{nombre}} </span>
         </div>
     </li>
@@ -76,8 +76,5 @@
                 timer = setTimeout(callback, ms);
             };
         })();
-
-        verInfoProd = function (nro) {
-        }
     });
 </script>

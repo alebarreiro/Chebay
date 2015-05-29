@@ -15,6 +15,7 @@ namespace Frontoffice.Controllers
     {
         IDALSubasta controladorSubasta = new DALSubastaEF();
         IDALTienda controladorTienda = new DALTiendaEF();
+        IDALTienda it = new DALTiendaEF();
 
         public ActionResult Index(string urlTienda)
         {

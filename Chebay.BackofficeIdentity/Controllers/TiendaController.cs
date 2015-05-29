@@ -56,12 +56,20 @@ namespace Chebay.BackofficeIdentity.Controllers
         //En cada uno de los metodos de abajo, hay que generar la vista como un string, para eso es necesario 
         //crear paginas y copiar su contenido, para una correcta generacion del codigo html
 
-        //GET : /Tienda/VerTiendas
+        //GET : /Tienda/ObtenerPaginaTiendas
         [HttpGet]
-        public ActionResult VerTiendas()
+        public ActionResult ObtenerPaginaTiendas(int paginaTienda)
         {
             string pagina = "";
             pagina += "<h2>Tiendas del Administrador :</h2><br><br>";
+            string paginador = "<ul class=\"pagination\">";
+            int cantPaginas = idalTienda.ObtenerCantPaginas(User.Identity.Name);
+            for (int i = 1; i <= cantPaginas; i++)
+            {
+                paginador += "<li><a onclick=\"obtenerPaginaTiendas(" + i + ")\">" + i + "</a></li>";
+            }
+            paginador += "</ul>";
+            pagina += paginador;
             pagina += "<table class=\"table table-hover\">";
             pagina += "<thead>";
             pagina += "<tr>";
@@ -74,6 +82,57 @@ namespace Chebay.BackofficeIdentity.Controllers
             pagina += "</tr>";
             pagina += "</thead>";
             pagina += "<tbody>";
+            List<Tienda> tiendas = idalTienda.ObtenerPagina(paginaTienda, User.Identity.Name);
+            foreach (Tienda t in tiendas)
+            {
+                pagina += "<tr>";
+                pagina += "<td>";
+                pagina += t.nombre;
+                pagina += "</td>";
+                pagina += "<td>";
+                pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda : " + t.nombre + "</button>";
+                pagina += "</td>";
+                pagina += "<td>";
+                pagina += "<button class=\"btn btn-danger\" onclick=\"modalBorrarTienda('" + t.TiendaID + "')\">Borrar Tienda : " + t.nombre + "</button>";
+                pagina += "</td>";
+                pagina += "</tr>";
+            }
+            pagina += "</tbody>";
+            pagina += "</table>";
+            Debug.WriteLine("/Tienda/VerTiendas::contenido de pagina = " + pagina);
+            return Content(pagina);
+        }
+
+
+        //GET : /Tienda/VerTiendas
+        [HttpGet]
+        public ActionResult VerTiendas()
+        {
+            string pagina = "";
+            pagina += "<h2>Tiendas del Administrador :</h2><br><br>";
+            string paginador = "<ul class=\"pagination\">";
+            int cantPaginas = idalTienda.ObtenerCantPaginas(User.Identity.Name);
+            for(int i = 1; i <= cantPaginas; i++){
+                paginador += "<li><a onclick=\"obtenerPaginaTiendas(" + i + ")\">" + i + "</a></li>";
+            }
+            paginador += "</ul>";
+            pagina += paginador;
+            pagina += "<table class=\"table table-hover\">";
+            pagina += "<thead>";
+            pagina += "<tr>";
+            pagina += "<th>";
+            pagina += "Nombre";
+            pagina += "</th>";
+            pagina += "<th>";
+            pagina += "Ver Tienda :";
+            pagina += "</th>";
+            pagina += "<th>";
+            pagina += "Borrar Tienda :";
+            pagina += "</th>";
+            pagina += "</tr>";
+            pagina += "</thead>";
+            pagina += "<tbody>";
+            //List<Tienda> tiendas = idalTienda.ObtenerPagina(1, User.Identity.Name);
             List<Tienda> tiendas = idalTienda.ListarTiendas(User.Identity.Name);
             foreach (Tienda t in tiendas)
             {
@@ -84,12 +143,32 @@ namespace Chebay.BackofficeIdentity.Controllers
                     pagina += "<td>";
                     pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda : " + t.nombre + "</button>";
                     pagina += "</td>";
+                    pagina += "<td>";
+                    pagina += "<button class=\"btn btn-danger\" onclick=\"modalBorrarTienda('" + t.TiendaID + "')\">Borrar Tienda : " + t.nombre + "</button>";
+                    pagina += "</td>";
                     pagina += "</tr>";
             }
             pagina += "</tbody>";
             pagina += "</table>";
             Debug.WriteLine("/Tienda/VerTiendas::contenido de pagina = " + pagina);
             return Content(pagina);
+        }
+
+        //POST: /Tienda/BorrarTienda
+        [HttpGet]
+        public ActionResult BorrarTienda(string tienda)
+        {
+            try
+            {
+                idalTienda.EliminarTienda(tienda);
+                var result = new { Success = "True", Message = "Success" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch(Exception e)
+            {
+                var result = new { Success = "False", Message = "Error" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
         }
 
         //POST: /Tienda/VerTienda
@@ -293,7 +372,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                 Debug.WriteLine("Personalizar::valor del color = " + datos.color);
                 Personalizacion pers = new Personalizacion();
                 
-                idalTienda.PersonalizarTienda(datos.color, tienda.Datos);
+                idalTienda.PersonalizarTienda(pers, tienda.Datos);
                 var result = new { Success = "True", Message = "Se ha personalizado la Tienda correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

@@ -42,6 +42,7 @@ namespace Frontoffice
                 else if (Session["Tienda_Nombre"].ToString() != url)
                 {
                     //Cambiamos de tienda en la misma sesion
+                    Session["Tienda_Anterior"] = Session["Tienda_Nombre"];
                     Session["Tienda_Nombre"] = url;
                 }
             }

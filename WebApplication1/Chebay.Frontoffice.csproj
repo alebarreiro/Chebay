@@ -357,6 +357,7 @@
     <Content Include="Views\Usuario\_DatosAtributosPartial.cshtml" />
     <Content Include="Views\Usuario\_DatosImagenesPartial.cshtml" />
     <Content Include="Views\Usuario\_PerfilUsuarioPartial.cshtml" />
+    <Content Include="Views\Shared\_SearchPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

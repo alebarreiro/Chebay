@@ -1,0 +1,46 @@
+﻿<nav>
+    <div class="search-container">
+        <div class="search-line"> </div>
+        <input class="search-input" id="search_form" type="search" placeholder="Buscar" />
+        <ul class="search-drop-list" style="display: none">
+            <li class="search-item">
+                <div class="search-link" onclick="verInfoProd(1)">
+                    <span> Producto 1</span>
+                </div>
+            </li>
+            <li class="search-item">
+                <div class="search-link" onclick="verInfoProd(2)">
+                    <span> Producto 2</span>
+                </div>
+            </li>
+            <li class="search-item">
+                <div class="search-link" onclick="verInfoProd(3)">
+                    <span> Producto 3</span>
+                </div>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+
+<script>
+    $(document).ready(function () {
+
+        $('#search_form').keyup(function () {
+            var value = $(this).val();
+
+            if (value != '') {
+                $('.search-drop-list').show();
+            } else {
+                $('.search-drop-list').hide();
+            }
+
+        })
+        /*.blur(function () {
+            $('.search-drop-list').hide();
+        });*/
+
+        verInfoProd = function (nro) {
+        }
+    });
+</script>

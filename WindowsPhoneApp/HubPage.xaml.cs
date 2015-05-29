@@ -27,6 +27,7 @@ using Windows.Storage;
 using Windows.ApplicationModel;
 using Facebook.Client;
 using Windows.ApplicationModel.Activation;
+using Windows.Security.Authentication.Web;
 
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
@@ -162,30 +163,33 @@ namespace WindowsPhoneApp
             this.navigationHelper.OnNavigatedFrom(e);
         }
 
-        protected override void OnActivated(IActivatedEventArgs args)
-        {
-            Debug.WriteLine("OnActivated");
-            //base.OnActivated(args);
-
-            // You can setup a event handler to be called back when the authentication has finished
-            Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
-
-            var protocolArgs = args as ProtocolActivatedEventArgs;
-            Debug.WriteLine("PRE OnFacebookAuthenticationFinished");
-            LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
-        }
-
         #endregion
 
         
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
-            Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorApplicationOnly);
-            
-            string searchTerm = buscador.Text;
+            try
+            {
+                Debug.WriteLine("FBID: " + Session.ActiveSession.LoginInProgress);
+                Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorApplicationOnly);
+                //Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorWebViewOnly);
+                Debug.WriteLine("FBID: " + Session.ActiveSession.LoginInProgress);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("Excepcion " + ex.Message);
+            }
+            /*string searchTerm = buscador.Text;
             string json = await BuscarProducto(searchTerm);
-            deserializeJsonAsync(json);
+            deserializeJsonAsync(json);*/
         }
+
+        private void BuscarButton2_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine(WebAuthenticationBroker.GetCurrentApplicationCallbackUri());
+            
+        }
+
 
         private Stream GenerateStreamFromString(string s)
         {
@@ -222,11 +226,5 @@ namespace WindowsPhoneApp
 
         
 
-        private void OnFacebookAuthenticationFinished(AccessTokenData session)
-        {
-            Debug.WriteLine("OnFacebookAuthenticationFinished");
-            // here the authentication succeeded callback will be received.
-            // put your login logic here
-        }
     }
 }

@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Media.Animation;
 using Windows.UI.Xaml.Navigation;
+using System.Diagnostics;
+using Facebook.Client;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkId=391641
 
@@ -136,6 +138,27 @@ namespace WindowsPhoneApp
             var deferral = e.SuspendingOperation.GetDeferral();
             await SuspensionManager.SaveAsync();
             deferral.Complete();
+        }
+
+        protected override void OnActivated(IActivatedEventArgs args)
+        {
+            Debug.WriteLine("OnActivated");
+            base.OnActivated(args);
+
+            // You can setup a event handler to be called back when the authentication has finished
+            //Session.OnFacebookAuthenticationFinished += OnFacebookAuthenticationFinished;
+
+            var protocolArgs = args as ProtocolActivatedEventArgs;
+            Debug.WriteLine("PRE OnFacebookAuthenticationFinished");
+            LifecycleHelper.FacebookAuthenticationReceived(protocolArgs);
+        }
+
+            
+        private void OnFacebookAuthenticationFinished(AccessTokenData session)
+        {
+            Debug.WriteLine("OnFacebookAuthenticationFinished");
+            // here the authentication succeeded callback will be received.
+            // put your login logic here
         }
     }
 }

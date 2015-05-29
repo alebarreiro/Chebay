@@ -18,15 +18,20 @@ namespace Chebay.DataAccessLayerTests
         }
 
         private static string urlTest = "MobileCenter";
-        private static string adminTest = "adminMC";
+        private static string adminTest = "adminMobileCenter";
         private static IDALTienda it = new DALTiendaEF();
 
         [TestMethod]
         public void SuperTest()
         {
 
-            Debug.WriteLine(it.ObtenerCantPaginas("adminMC"));
-            Debug.WriteLine(it.ObtenerPagina(1,"adminMC").Count);
+            Debug.WriteLine(it.ObtenerCantPaginas(adminTest));
+            Debug.WriteLine(it.ObtenerPagina(1, adminTest).Count);
+            List<Tienda> lt = it.ObtenerPagina(1, adminTest);
+            foreach (Tienda t in lt)
+            {
+                Debug.WriteLine(t.TiendaID);
+            }
             /*Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();

@@ -203,7 +203,6 @@ namespace DataAccessLayer
         {
             try
             {
-
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     var qTienda = from t in context.tiendas
@@ -211,11 +210,16 @@ namespace DataAccessLayer
                                   select t;
                     if (qTienda.Count() != 0)
                     {
-                        var query = from t in context.tiendas
-                                    where t.TiendaID == idTienda
-                                    select t;
-                        Tienda tnd = query.FirstOrDefault();
+                        //EliminarAdministrador la Tienda.
+                        Tienda tnd = qTienda.FirstOrDefault();
                         context.tiendas.Remove(tnd);
+
+                        //Elimina la personalización de la tienda.
+                        var qPers = from p in context.personalizaciones
+                                    where p.PersonalizacionID == idTienda
+                                    select p;
+                        context.personalizaciones.Remove(qPers.FirstOrDefault());
+
                         context.SaveChanges();
                         Debug.WriteLine("La tienda " + idTienda + " ha sido eliminada.");
                     }
@@ -327,13 +331,13 @@ namespace DataAccessLayer
                     var qTiendas = from tnd in context.tiendas.Include("administradores")
                                    select tnd;
                     int ret = 0;
-                    List<Tienda> aux = qTiendas.ToList();
+                    List<Tienda> aux = qTiendas.ToList(); 
                     foreach (Tienda t in aux)
                     {
                         if (t.administradores.Contains(a))
                             ret++;
                     }
-                    return ret;
+                    return (int)Math.Ceiling((double)ret / 8);
                 }
             }
             catch (Exception e)
@@ -350,14 +354,28 @@ namespace DataAccessLayer
                 using (var context = ChebayDBPublic.CreatePublic())
                 {
                     //Chequeo que exista el administrador
-                    var qAdmin = from adm in context.administradores.Include("tiendas")
+                    var qAdmin = from adm in context.administradores
                                  where adm.AdministradorID == idAdmin
                                  select adm;
                     if (qAdmin.Count() == 0)
                         throw new Exception("No existe el administrador " + idAdmin);
-
                     Administrador a = qAdmin.FirstOrDefault();
-                    return (List<Tienda>)a.tiendas.Skip((n-1)*8).Take(8);
+
+                    var qTienda = from t in context.tiendas
+                                  select t;
+                    List<Tienda> lt = qTienda.ToList();
+                    List<Tienda> ret = new List<Tienda>();
+                    int cant = 1;
+                    foreach (Tienda t in lt)
+                    {
+                        if (t.administradores.Contains(a))
+                        {
+                            if ((cant >= (n - 1) * 8) && (cant <= n * 8 - 1))
+                                ret.Add(t);
+                            cant++;
+                        }       
+                    }
+                    return ret;
                 }
             }
             catch (Exception e)

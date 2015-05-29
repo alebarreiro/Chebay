@@ -79,24 +79,16 @@
     @RenderSection("scripts", required: false)
 
 
-    <div id="modalLogin" class="modal fade">
+    <div id="modalBorrarTienda" class="modal fade">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
                 <div class="modal-header">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Login</h4>
-                </div>
-                <div class="modal-body">
-                    Email : <br />
-                    <input type="email" class="form-control" id="mail"
-                           placeholder="Email"><br />
-                    Password :<br />
-                    <input type="password" class="form-control" id="pass"
-                           placeholder="Password">
+                    <h4 class="modal-title">Está seguro que desea borrar la tienda seleccionada?</h4>
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-primary" onclick="login()">Login</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                    <button type="button" class="btn btn-danger" onclick="borrarTienda()">Si</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
                 </div>
             </div>
         </div>

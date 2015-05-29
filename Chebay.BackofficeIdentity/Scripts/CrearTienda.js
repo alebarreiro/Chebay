@@ -1,5 +1,6 @@
 ﻿var hayAtributos, hayCategorias, hayDatosGenerales, hayPersonalizacion, idCategorias, idTiposAtributo, tiendaCreada;
 var categoriasCreadas = false;
+var tiendaBorrar;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 
 var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingCargarDatos, categoriaAgregarTipoAtributo;
@@ -297,6 +298,65 @@ function DirigirVerTiendas() {
         success: function (data, textStatus, jqxhr) {
             finCargandoDatos("#container");
             $('#container').html(data);
+        }
+    });
+}
+
+function obtenerPaginaTiendas(pagina) {
+    var datos = {
+        paginaTienda : pagina
+    };
+    cargandoDatos("#container");
+    $.ajax({
+        url: '/Tienda/ObtenerPaginaTiendas',
+        type: 'GET',
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: datos,
+        success: function (data, textStatus, jqxhr) {
+            finCargandoDatos("#container");
+            $('#container').html(data);
+        }
+    });
+}
+
+function modalBorrarTienda(tienda) {
+    tiendaBorrar = tienda;
+    $("#modalBorrarTienda").modal();
+}
+
+function borrarTienda() {
+    var datos = {
+        tienda: tiendaBorrar
+    };
+    $("#modalBorrarTienda").modal("hide");
+    cargandoDatos("#container");
+    $.ajax({
+        url: '/Tienda/BorrarTienda',
+        type: 'GET',
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: datos,
+        success: function (data, textStatus, jqxhr) {
+            $.notify({
+                // options
+                message: '<strong>Se ha borrado la tienda correctamente.</strong>'
+            }, {
+                // settings
+                type: 'success'
+            });
+            finCargandoDatos("#container");
+            DirigirVerTiendas();
+        },
+        error: function (data, textStatus, jqxhr) {
+            $.notify({
+                // options
+                message: '<strong>Error al borrar la tienda.</strong>'
+            }, {
+                // settings
+                type: 'danger'
+            });
+            finCargandoDatos("#container");
         }
     });
 }

@@ -466,6 +466,26 @@ namespace WebApplication1.Controllers
             }
         }
 
+        //GET Producto/obtenerJsonBuscarProductos
+        [HttpGet]
+        public JsonResult obtenerJsonBuscarProductos(string searchTerm)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<DataProducto> productos = cS.ObtenerProductosBuscados(searchTerm, tiendaId);
+                var result = new { Success = "True", Productos = productos };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
         // GET: Product/Edit/5
         public ActionResult Edit(int id)
         {

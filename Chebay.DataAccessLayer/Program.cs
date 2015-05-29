@@ -17,6 +17,8 @@ namespace DataAccessLayer
         static void Main(string[] args)
         {
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
+            Console.Read();
+        }
             //ChebayDBPublic.ProvidePublicSchema();
             //using (var bd = ChebayDBPublic.CreatePublic())
             //{
@@ -33,7 +35,7 @@ namespace DataAccessLayer
                 System.Console.WriteLine(ta.TipoAtributoID);
             }
             */
-            ChebayDBContext.ProvisionTenant("MobileCenter");
+            /*ChebayDBContext.ProvisionTenant("MobileCenter");
             using (var db = ChebayDBContext.CreateTenant("MobileCenter"))
             {
                 db.seed();
@@ -99,7 +101,7 @@ namespace DataAccessLayer
                 {
                     System.Console.WriteLine(a.TipoAtributoID);
                 }
-                */
+                
 #endregion
 
                 #region test algoritmo obtener todos tipo atributos
@@ -175,7 +177,7 @@ namespace DataAccessLayer
                 db.productos.Add(p);
                 db.SaveChanges();
                 
-                */
+                
                 #endregion
 
                 /*
@@ -209,7 +211,7 @@ namespace DataAccessLayer
             //    System.Console.WriteLine(p.ProductoID+p.nombre);
             //}
 
-            Console.Read();
+            
             //string currentpath = Environment.CurrentDirectory;
            
             //System.IO.Directory.GetParent();
@@ -247,7 +249,5 @@ namespace DataAccessLayer
             //using (var context = ChebayDBContext.CreateTenant("Tienda1"))
             //{
             //}
-        }
-           
-    }
+     
 }

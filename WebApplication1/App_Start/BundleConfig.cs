@@ -51,13 +51,13 @@ namespace Frontoffice
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/sections/main/main.css",
+
                       "~/Content/sections/producto/InfoProducto.css",
                       "~/Content/sections/usuario/PerfilUsuario.css",
                       "~/Content/bootstrap.css",
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",
-                      "~/Content/partials/product_item.css",
+                      
                       "~/Content/partials/comentarios.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.ui.chatbox.css",
@@ -66,11 +66,16 @@ namespace Frontoffice
                       "~/Content/sweet-alert.css"));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
-                "~/Content/personalizacion/EstiloUno/orangeStyle.css"
+                "~/Content/personalizacion/EstiloUno/orangeStyle.css",
+                "~/Content/personalizacion/EstiloUno/main.css",
+                "~/Content/personalizacion/EstiloUno/product_item.css"
             ));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
-                "~/Content/personalizacion/EstiloDos/violetStyle.css"
+                "~/Content/personalizacion/EstiloDos/ie8.css",
+                "~/Content/personalizacion/EstiloDos/main.css",
+                "~/Content/personalizacion/EstiloDos/product_item2.css",
+                "~/Content/personalizacion/EstiloDos/fixes.css"
             ));
         }
     }

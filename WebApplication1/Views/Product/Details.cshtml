@@ -75,17 +75,17 @@
                                     <input type="text" class="form-control" id="inputOferta" placeholder="Cantidad">
                                 </div>
                             </div>
-                            <button id="ofertarYa" class="btn btn-primary" onclick="ofertarYa()">Ofertar!</button>
+                        <button id="ofertarYa" class="btn btn-primary fixbutton" onclick="ofertarYa()">Ofertar!</button>
                     </div>
 
                     <hr>  
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <button type="button" id="comprarYa" class="btn btn-success" onclick="onBuyAuction();"> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
+                        <button type="button" id="comprarYa" class="btn btn-success fixbutton" onclick="onBuyAuction();"> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
                     }
                     else
                     {
-                        <button type="button" class="btn btn-success" data-toggle="tooltip" data-placement="left" title="Inicia sesión para comprar."> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
+                        <button type="button" class="btn btn-success fixbutton" data-toggle="tooltip" data-placement="left" title="Inicia sesión para comprar."> COMPRAR YA POR &#x00A; @Producto.precio_compra $</button>
                     }
 
                     <div class="infoProducto-favorito" onclick="marcarFavorito()">

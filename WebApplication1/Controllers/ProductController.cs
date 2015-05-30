@@ -119,7 +119,7 @@ namespace WebApplication1.Controllers
             {
                 if (categoria.hijas.Count() > 0)
                 {
-                    resultado += "<ul>";
+                    resultado += "<ul class=\"ulfix\">";
                     foreach (Categoria hija in categoria.hijas)
                     {
                         if (hija is CategoriaCompuesta)
@@ -172,7 +172,7 @@ namespace WebApplication1.Controllers
         {
             string tablaCategorias = "";
             List<Categoria> categorias = cT.ListarCategorias(Session["Tienda_Nombre"].ToString());
-            tablaCategorias += "<div style=\"background-color : white;\"><ul>";
+            tablaCategorias += "<div style=\"background-color : white;\"><ul class=\"ulfix\">";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta)categorias.ElementAt(0));
             tablaCategorias += "</ul></div>";
             return Content(tablaCategorias);

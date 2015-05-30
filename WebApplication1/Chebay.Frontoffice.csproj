@@ -250,10 +250,14 @@
     <Content Include="Content\normalize.css" />
     <Content Include="Content\normalize.min.css" />
     <Content Include="Content\partials\comentarios.css" />
-    <Content Include="Content\partials\product_item.css" />
-    <Content Include="Content\personalizacion\EstiloDos\violetStyle.css" />
+    <Content Include="Content\personalizacion\EstiloDos\fixes.css" />
+    <Content Include="Content\personalizacion\EstiloDos\product_item2.css" />
+    <Content Include="Content\personalizacion\EstiloUno\product_item.css" />
+    <Content Include="Content\personalizacion\EstiloDos\ie8.css" />
+    <Content Include="Content\personalizacion\EstiloDos\images\bg01.png" />
+    <Content Include="Content\personalizacion\EstiloDos\main.css" />
     <Content Include="Content\personalizacion\EstiloUno\orangeStyle.css" />
-    <Content Include="Content\sections\main\main.css" />
+    <Content Include="Content\personalizacion\EstiloUno\main.css" />
     <Content Include="Content\sections\producto\InfoProducto.css" />
     <Content Include="Content\sections\usuario\PerfilUsuario.css" />
     <Content Include="Content\sweet-alert.css" />
@@ -273,6 +277,7 @@
     <Content Include="fonts\fontawesome-webfont.woff" />
     <Content Include="fonts\fontawesome-webfont.woff2" />
     <Content Include="fonts\FontAwesome.otf" />
+    <Content Include="Content\personalizacion\EstiloDos\images\Thumbs.db" />
     <None Include="Properties\PublishProfiles\chebay %282%29.pubxml" />
     <None Include="Properties\PublishProfiles\chebay.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
@@ -358,9 +363,12 @@
     <Content Include="Views\Usuario\_DatosImagenesPartial.cshtml" />
     <Content Include="Views\Usuario\_PerfilUsuarioPartial.cshtml" />
     <Content Include="Views\Shared\_SearchPartial.cshtml" />
+    <Content Include="Views\Shared\_Layout2.cshtml" />
+    <Content Include="Views\Shared\_SearchPartial2.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
+    <Folder Include="Content\sections\main\" />
     <Folder Include="UploadedFiles\" />
   </ItemGroup>
   <ItemGroup>

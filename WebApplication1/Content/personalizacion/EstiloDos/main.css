@@ -1671,7 +1671,9 @@
 		button.big,
 		.button.big {
 			font-size: 2.25em;
-			padding: 0.8em 0.9em;
+			padding: 0.9em 0.4em;
+            text-overflow: ellipsis;
+            overflow: hidden;
 		}
 
 /* List */

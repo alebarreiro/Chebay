@@ -49,7 +49,7 @@
                         @using Microsoft.AspNet.Identity
                         @if (User.Identity.IsAuthenticated)//(Session["Usuario"] != null)
                         {
-                            using (Html.BeginForm("Cerrar sesión", "Account", FormMethod.Post, new { id = "logoutForm" }))
+                            using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm" }))
                             {
 
                                 <li>
@@ -57,7 +57,7 @@
                                 </li>
 
                                 <li>
-                                    <a href="javascript:document.getElementById('logoutForm').submit()" class="button alt big icon fa-sign-out">Log off</a>
+                                    <a href="javascript:document.getElementById('logoutForm').submit()" class="button alt big icon fa-sign-out">Cerrar sesión</a>
                                 </li>
                             }
                         }

@@ -39,10 +39,92 @@
     }
 </div>
 
-<script>
-    $('.carousel').carousel({
-       'interval': 6000
+<div class="row" id="allProductos">
+     
+</div>
+
+<div class="row" id="recomendadosProductos">
+
+</div>
+     
+<script id="listar-productos" type="text/x-template">
+     {{#Productos}}
+     {{>productItem}}
+     {{/Productos}}
+</script>
+
+<script id="productItem" type="text/x-template">
+    <div class="product-item">
+        <a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId={{ProductoID}}">
+            <div class="product-item-header"> {{nombre}}</div>
+        </a>
+        <div class="c-wrapper">
+            <img src="@Session["Tienda_Nombre"].ToString()/Product/getProductImg?productId={{ProductoID}}&index=0" class=" img-centrada" alt="Responsive image" />
+        </div>
+        <div class="product-item-footer">
+            <div class="product-item-countdown" data-id="{{ProductoID}}"> {{fecha_cierre}} </div>
+            @if (User.Identity.IsAuthenticated)
+            {
+                <button class="btn btn-success bid-button" id="bidButton-{{ProductoID}}" data-id="{{ProductoID}}" onclick="onNewBidClick({{ProductoID}}, '@usuario','@tienda');"> OFERTAR! </button>
+            }
+            else
+            {
+                <button class="btn btn-success bid-button disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
+            }
+            <div class="offer-section">
+                <div class="offer-section-price" id="bidValue-{{ProductoID}}"> {{precio_actual}} </div>
+                <button class="offer-section-button" onclick="incrementOffer({{ProductoID}})"> + </button>
+            </div>
+            <div class="product-user-winner">
+                <p id="userIdGanador-{{ProductoID}}">{{idOfertante}}</p>
+            </div>
+        </div>
+    </div>
+</script>
+
+<script type="text/javascript">
+    /* PARA EL LISTADO DE PRODUCTOS */
+    var allProductos = [];
+    var template = $('#listar-productos').html();
+    var templateItem = $('#productItem').html();
+    Mustache.parse(template);
+
+    $(document).ready(function () {
+        
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonAllProductos", "Product")",
+            data: {},
+            accept: 'application/json',
+            success: function (data) {
+                debugger;
+                console.log(data);
+                if (data.Productos.length > 0) {
+                    $.each(data.Productos, function () {
+                        var prodItem = {};
+                        console.log(this);
+                        prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
+                        prodItem.ProductoID = this.ProductoID;
+                        prodItem.idOfertante = this.idOfertante;
+                        prodItem.nombre = this.nombre;
+                        prodItem.precio_actual = this.precio_actual;
+                        allProductos.push(prodItem);
+                    });
+                    console.log(allProductos);
+
+                    var viewObject = {
+                        Productos: allProductos
+                    };
+                    var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
+                    $('#allProductos').html(rendered);
+                }
+            },
+            error: function (error) {
+                console.log(error);
+            }
+        });
     });
+    
 </script>
 
 <script type="text/javascript">

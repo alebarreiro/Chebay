@@ -41,7 +41,7 @@ namespace Frontoffice
                     //Personalización de la tienda
                     String fileName = "_ViewStart.cshtml";
                     var filePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Views"), fileName);
-                    String text = "@{Layout = \"~/Views/Shared/_Layout2.cshtml\";}";
+                    String text = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
                     System.IO.File.WriteAllText(filePath, text);
                     //Inicializamos el nombre de la tienda por primera vez en la sesion
                     Session["Tienda_Nombre"] = url;

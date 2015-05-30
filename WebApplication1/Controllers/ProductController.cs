@@ -97,6 +97,24 @@ namespace WebApplication1.Controllers
             return Json(result, JsonRequestBehavior.AllowGet);
         }
 
+        //GET : Product/obtenerJsonAllProductos
+        [HttpGet]
+        public ActionResult obtenerJsonAllProductos()
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<DataProducto> prods = cS.ObtenerProductosPorTerminar(100, tiendaId);
+                var result = new { Success = "True", Productos = prods };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
 
         // GET: Product/CrearProducto
         [Authorize]

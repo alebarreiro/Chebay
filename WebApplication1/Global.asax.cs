@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -36,12 +37,24 @@ namespace Frontoffice
                 }
                 if (Session["Tienda_Nombre"] == null)
                 {
+                    /* Inciamos la tienda por primera vez en la sesion */
+                    //Personalización de la tienda
+                    String fileName = "_ViewStart.cshtml";
+                    var filePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Views"), fileName);
+                    String text = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
+                    System.IO.File.WriteAllText(filePath, text);
                     //Inicializamos el nombre de la tienda por primera vez en la sesion
                     Session["Tienda_Nombre"] = url;
                 }
                 else if (Session["Tienda_Nombre"].ToString() != url)
                 {
-                    //Cambiamos de tienda en la misma sesion
+                    /*Cambiamos de tienda en la misma sesion*/
+                    //Personalización de la tienda
+                    String fileName = "_ViewStart.cshtml";
+                    var filePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Views"), fileName);
+                    String text = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
+                    System.IO.File.WriteAllText(filePath, text);
+                    //Seteamos la nueva id de la tienda
                     Session["Tienda_Anterior"] = Session["Tienda_Nombre"];
                     Session["Tienda_Nombre"] = url;
                 }

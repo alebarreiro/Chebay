@@ -250,7 +250,8 @@
     <Content Include="Content\normalize.css" />
     <Content Include="Content\normalize.min.css" />
     <Content Include="Content\partials\comentarios.css" />
-    <Content Include="Content\personalizacion\EstiloDos\product_item.css" />
+    <Content Include="Content\personalizacion\EstiloDos\fixes.css" />
+    <Content Include="Content\personalizacion\EstiloDos\product_item2.css" />
     <Content Include="Content\personalizacion\EstiloUno\product_item.css" />
     <Content Include="Content\personalizacion\EstiloDos\ie8.css" />
     <Content Include="Content\personalizacion\EstiloDos\images\bg01.png" />

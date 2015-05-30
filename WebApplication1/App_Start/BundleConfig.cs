@@ -74,7 +74,8 @@ namespace Frontoffice
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
                 "~/Content/personalizacion/EstiloDos/ie8.css",
                 "~/Content/personalizacion/EstiloDos/main.css",
-                "~/Content/personalizacion/EstiloDos/product_item.css"
+                "~/Content/personalizacion/EstiloDos/product_item2.css",
+                "~/Content/personalizacion/EstiloDos/fixes.css"
             ));
         }
     }

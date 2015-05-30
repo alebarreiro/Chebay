@@ -1,0 +1,80 @@
+﻿<nav>
+    <div class="search-container">
+        <div class="search-line"> <i class="fa fa-search fa-3"></i> </div>
+        <input class="search-input" id="search_form" type="search" placeholder="Buscar" />
+        <section id="search-result">
+
+        </section>
+    </div>
+</nav>
+
+<script id="template-buscados" type="text/x-template">
+    <ul class="search-drop-list">
+        {{#Productos}}
+        {{>productItem}}
+        {{/Productos}}
+    </ul>
+</script>
+
+<script id="template-productItem" type="text/x-template">
+    <li class="search-item">
+        <div class="search-link" onclick="location.href= '@Session["Tienda_Nombre"].ToString()' + '/Product/Details?productId=' + {{ProductoID}}">
+            <span> {{nombre}}   -   Precio actual: {{precio_actual}} </span>
+        </div>
+    </li>
+</script>
+
+<script>
+    $(document).ready(function () {
+
+        $('#search_form').keyup(function () {
+            //Buscamos on key up pero si paso un intervalo de un segundo
+            delay(function () {
+                var value = $(this).val();
+                if (value != '') {
+                    var template = $('#template-buscados').html();
+                    var templateItem = $('#template-productItem').html();
+                    var productos = [];
+                    Mustache.parse(template);
+                    $.ajax({
+                        type: "GET",
+                        url: "@Url.Action("obtenerJsonBuscarProductos", "Product")",
+                        data: {
+                            searchTerm : value
+                        },
+                        accept: 'application/json',
+                        success: function (data) {
+                            if (data.Productos.length > 0) {
+                                var viewObject = {
+                                    Productos: data.Productos
+                                };
+                                var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
+                                $('#search-result').html(rendered);
+                                $('#search-result').show("fast");
+
+                            } else {
+                                $('#search-result').hide(1000);
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error);
+                        }
+                    });
+                } else {
+                    $('#search-result').hide(1000);
+                }
+            }.bind(this), 1000)
+        })
+        /*.blur(function () {
+            $('.search-drop-list').hide();
+        });*/
+
+        var delay = (function () {
+            var timer = 0;
+            return function (callback, ms) {
+                clearTimeout(timer);
+                timer = setTimeout(callback, ms);
+            };
+        })();
+    });
+</script>

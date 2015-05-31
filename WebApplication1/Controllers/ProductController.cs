@@ -59,6 +59,11 @@ namespace WebApplication1.Controllers
             public string nombre { get; set; }
         }
 
+        public class DataComparacionProductos {
+            public long prod1Id {get; set; }
+            public long prod2Id {get; set; }
+        }
+
         public class DataProductoIDPelado
         {
             public long ProductoID { get; set; }
@@ -155,6 +160,76 @@ namespace WebApplication1.Controllers
             }
             resultado += "</li>";
             return resultado;
+        }
+
+        //GET : /Product/obtenerComparacionProductos
+        [HttpGet]
+        public JsonResult obtenerComparacionProductos(DataComparacionProductos comp)
+        {
+            string contenido = "";
+            try
+            {
+                String tienda = Session["Tienda_Nombre"].ToString();
+                String userId;
+                if (User.Identity.IsAuthenticated)
+                {
+                    userId = User.Identity.GetUserName();
+                }
+                else
+                {
+                    userId = null;
+                }
+
+                Producto prod1 = cS.ObtenerInfoProducto(comp.prod1Id, tienda, userId);
+                Producto prod2 = cS.ObtenerInfoProducto(comp.prod2Id, tienda, userId);
+
+                contenido += "<div class=\"prodDerecha\">";
+
+                if (prod1.atributos.Count > 0)
+                {
+                    contenido += "<table class=\"table table-hover\">";
+                    contenido += "<tr><td>Atributo</td><td>Valor</td></tr>";
+                    foreach (Atributo a in prod1.atributos)
+                    {
+                        contenido += "<tr><td>" + a.etiqueta + "</td><td>" + a.valor + "</td></tr>";
+                    }
+                    contenido += "</table>";
+                }
+                else
+                {
+                    contenido += "Éste producto no tiene atributos.";
+                }
+                
+
+                contenido += "</div>";
+
+                contenido += "<div class=\"prodIzquierda\">";
+
+                if (prod2.atributos.Count > 0)
+                {
+                    contenido += "<table class=\"table table-hover\">";
+                    contenido += "<tr><td>Atributo</td><td>Valor</td></tr>";
+                    foreach (Atributo a in prod2.atributos)
+                    {
+                        contenido += "<tr><td>" + a.etiqueta + "</td><td>" + a.valor + "</td></tr>";
+                    }
+                    contenido += "</table>";
+                }
+                else
+                {
+                    contenido += "Éste producto no tiene atributos.";
+                }
+
+                contenido += "</div>";
+                var result = new { Success = "True", Contenido = contenido };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = "Error" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
         }
 
         public string obtenerAncestros(CategoriaCompuesta cc)

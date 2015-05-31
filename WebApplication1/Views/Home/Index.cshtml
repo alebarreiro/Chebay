@@ -42,6 +42,12 @@
 <div class="row" id="allProductos">
      
 </div>
+<div class="paginador" id="paginador-content">
+    <ul class="pagination" id="pagination" style="cursor:pointer">
+
+    </ul>
+</div>
+
 
 <div class="row" id="recomendadosProductos">
 
@@ -87,6 +93,8 @@
     var allProductos = [];
     var template = $('#listar-productos').html();
     var templateItem = $('#productItem').html();
+    var pageSize = 1; //8 productos por pagina
+    var cantPaginas = 1; //Calculado despues de obtener todos los prods
     Mustache.parse(template);
 
     $(document).ready(function () {
@@ -97,7 +105,6 @@
             data: {},
             accept: 'application/json',
             success: function (data) {
-                debugger;
                 console.log(data);
                 if (data.Productos.length > 0) {
                     $.each(data.Productos, function () {
@@ -110,13 +117,28 @@
                         prodItem.precio_actual = this.precio_actual;
                         allProductos.push(prodItem);
                     });
-                    console.log(allProductos);
+                    cantPaginas = Math.ceil(data.Productos.length / pageSize);
                     var viewObject = {
                         Productos: allProductos
                     };
                     var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
-                    debugger;
+                    //Armamos el paginador
+                    var ul = document.getElementById("pagination");
+                    for (i=1; i <= cantPaginas; i++) {
+                        var li = document.createElement("li"),
+                            a = document.createElement("a");
+                        a.appendChild(document.createTextNode(i));
+                        li.appendChild(a);
+                        ul.appendChild(li);
+                    }
+                    //Evento click pagina
+                    $("#pagination li a").click(function () {
+                        showPage(parseInt($(this).text()))
+                    });
+                    //Render del contenido
                     $('#allProductos').html(rendered);
+                    //Mostramos primera pagina
+                    showPage(1);
                     inicializarTimers();
                 }
             },
@@ -164,6 +186,14 @@
                 }
             });
         }
+
+        showPage = function (page) {
+            $(".product-item").hide();
+            $(".product-item").each(function (n) {
+                if (n >= pageSize * (page - 1) && n < pageSize * page)
+                    $(this).show();
+            });
+        }
     });
     
 </script>
@@ -196,7 +226,6 @@
         };
 
         proxy.client.newBuyPosted = function (productId, monto, userId) {
-            debugger;
             auctions.each(function () {
                 if (this.auctionId == productId) {
                     clearInterval(this.currentInterval);

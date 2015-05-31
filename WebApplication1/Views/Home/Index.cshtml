@@ -39,7 +39,7 @@
     }
 </div>
 
-<div class="dropdown">
+<div class="dropdown" style="width:100%">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
         Filtrar por categoría
         <span class="caret"></span>
@@ -52,7 +52,7 @@
 <div class="row" id="allProductos">
      
 </div>
-<div class="paginador" id="paginador-content">
+<div class="paginador" id="paginador-content" style="width: 100%">
     <ul class="pagination" id="pagination" style="cursor:pointer">
 
     </ul>
@@ -206,6 +206,68 @@
                 if (n >= pageSize * (page - 1) && n < pageSize * page)
                     $(this).show();
             });
+        }
+
+        renderProductosCategoria = function (catId) {
+            sacarProductosActuales();
+            $.ajax({
+                type: "GET",
+                url: "@Url.Action("obtenerJsonProductosCategoriaIndex", "Product")",
+                data: {
+                    catId : catId
+                },
+                accept: 'application/json',
+                success: function (data) {
+                    console.log(data);
+                    if (data.Productos.length > 0) {
+                        $.each(data.Productos, function () {
+                            var prodItem = {};
+                            console.log(this);
+                            prodItem.fecha_cierre = moment().add(1, 'day');//moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
+                            prodItem.ProductoID = this.ProductoID;
+                            prodItem.idOfertante = "test"//this.idOfertante;
+                            prodItem.nombre = this.nombre;
+                            prodItem.precio_actual = 123;//this.precio_actual;
+                            allProductos.push(prodItem);
+                        });
+                        cantPaginas = Math.ceil(data.Productos.length / pageSize);
+                        var viewObject = {
+                            Productos: allProductos
+                        };
+                        var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
+                        //Armamos el paginador
+                        $('#pagination').empty();
+                        var ul = document.getElementById("pagination");
+                        for (i=1; i <= cantPaginas; i++) {
+                            var li = document.createElement("li"),
+                                a = document.createElement("a");
+                            a.appendChild(document.createTextNode(i));
+                            li.appendChild(a);
+                            ul.appendChild(li);
+                        }
+                        //Evento click pagina
+                        $("#pagination li a").click(function () {
+                            showPage(parseInt($(this).text()))
+                        });
+                        //Render del contenido
+                        $('#allProductos').html(rendered).removeClass("fadeOutLeft").addClass("fadeInLeft");
+                        $('#pagination').removeClass("fadeOutLeft").addClass("fadeInLeft");
+                        //Mostramos primera pagina
+                        showPage(1);
+                        inicializarTimers();
+                    }
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+        sacarProductosActuales = function () {
+            $("#allProductos").addClass("fadeOutLeft animated");
+            $('#pagination').addClass("fadeOutLeft animated");
+            allProductos = [];
+            
         }
     });
     

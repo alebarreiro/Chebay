@@ -199,7 +199,7 @@ namespace WebApplication1.Controllers
         public String recursionDropDown(CategoriaCompuesta categoria, int profundidad)
         {
             string resultado = "";
-            resultado += "<li role=\"presentation\" style=\"padding-left: "+profundidad+"px;\"><a role=\"menuitem\" tabindex=\"-1\">" + categoria.Nombre + "</a></li>";
+            resultado += "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" style=\"padding-left: " + profundidad + "px;\" onclick=\"renderProductosCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</a></li>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -215,7 +215,7 @@ namespace WebApplication1.Controllers
                         else
                         {
                             int profHija = profundidad + 30;
-                            resultado += "<li role=\"presentation\" style=\"padding-left: " + profHija + "px;\"><a role=\"menuitem\" tabindex=\"-1\">" + hija.Nombre + "</a></li>";
+                            resultado += "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" style=\"padding-left: " + profHija + "px;\" onclick=\"renderProductosCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</a></li>";
                         }
                     }
                 }
@@ -466,6 +466,36 @@ namespace WebApplication1.Controllers
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 DataCalificacion dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
                 var result = new { Success = "True", Calificaciones = dataCal };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        //GET Producto/obtenerJsonProductosCategoriaIndex
+        [HttpGet]
+        public JsonResult obtenerJsonProductosCategoriaIndex(long catId)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
+                List<DataProductoBasico> dpbs = new List<DataProductoBasico>();
+                foreach (Producto p in prods)
+                {
+                    DataProductoBasico dpb = new DataProductoBasico
+                    {
+                        ProductoID = p.ProductoID,
+                        nombre = p.nombre,
+                    };
+                    dpbs.Add(dpb);
+                }
+                var result = new { Success = "True", Productos = dpbs };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

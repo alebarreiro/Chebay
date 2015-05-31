@@ -196,6 +196,43 @@ namespace WebApplication1.Controllers
             return Content(tablaCategorias);
         }
 
+        public String recursionDropDown(CategoriaCompuesta categoria, int profundidad)
+        {
+            string resultado = "";
+            resultado += "<li role=\"presentation\" style=\"padding-left: "+profundidad+"px;\"><a role=\"menuitem\" tabindex=\"-1\">" + categoria.Nombre + "</a></li>";
+            //debo crear un arreglo JSON con las categorias
+            if (categoria.hijas != null)
+            {
+                if (categoria.hijas.Count() > 0)
+                {
+                    foreach (Categoria hija in categoria.hijas)
+                    {
+                        if (hija is CategoriaCompuesta)
+                        {
+                            
+                            resultado += recursionDropDown((CategoriaCompuesta)hija, profundidad + 30);
+                        }
+                        else
+                        {
+                            int profHija = profundidad + 30;
+                            resultado += "<li role=\"presentation\" style=\"padding-left: " + profHija + "px;\"><a role=\"menuitem\" tabindex=\"-1\">" + hija.Nombre + "</a></li>";
+                        }
+                    }
+                }
+            }
+            return resultado;
+        }
+
+        public ContentResult MostrarDropdownCategorias()
+        {
+            /*<li role="presentation"><a role="menuitem" tabindex="-1" href="#">Categoria 1</a></li>*/
+            List<Categoria> categorias = cT.ListarCategorias(Session["Tienda_Nombre"].ToString());
+            CategoriaCompuesta raiz = (CategoriaCompuesta)categorias.ElementAt(0);
+            int padding = 0;
+            String res = recursionDropDown(raiz, padding);
+            return Content(res);
+        }
+
         /* CREAR PRODUCTO */
 
         // POST: Product/Create

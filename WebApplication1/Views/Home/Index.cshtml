@@ -39,6 +39,16 @@
     }
 </div>
 
+<div class="dropdown">
+    <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
+        Filtrar por categoría
+        <span class="caret"></span>
+    </button>
+    <ul class="dropdown-menu" id="categorias-drop" role="menu" aria-labelledby="dropdownMenu1">
+        
+    </ul>
+</div>
+
 <div class="row" id="allProductos">
      
 </div>
@@ -93,12 +103,15 @@
     var allProductos = [];
     var template = $('#listar-productos').html();
     var templateItem = $('#productItem').html();
-    var pageSize = 1; //8 productos por pagina
+    var pageSize = 2; //8 productos por pagina
     var cantPaginas = 1; //Calculado despues de obtener todos los prods
     Mustache.parse(template);
 
     $(document).ready(function () {
-        
+        $(document).ready(function () {
+            $('#categorias-drop').load("@Url.Action("MostrarDropdownCategorias", "Product")")
+        })
+
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerJsonAllProductos", "Product")",

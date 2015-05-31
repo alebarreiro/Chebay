@@ -62,7 +62,7 @@
             <img src="@Session["Tienda_Nombre"].ToString()/Product/getProductImg?productId={{ProductoID}}&index=0" class=" img-centrada" alt="Responsive image" />
         </div>
         <div class="product-item-footer">
-            <div class="product-item-countdown" data-id="{{ProductoID}}"> {{fecha_cierre}} </div>
+            <div class="product-item-countdown" data-id="{{ProductoID}}" data-value="{{fecha_cierre}}"> --:-- </div>
             @if (User.Identity.IsAuthenticated)
             {
                 <button class="btn btn-success bid-button" id="bidButton-{{ProductoID}}" data-id="{{ProductoID}}" onclick="onNewBidClick({{ProductoID}}, '@usuario','@tienda');"> OFERTAR! </button>
@@ -111,18 +111,59 @@
                         allProductos.push(prodItem);
                     });
                     console.log(allProductos);
-
                     var viewObject = {
                         Productos: allProductos
                     };
                     var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
+                    debugger;
                     $('#allProductos').html(rendered);
+                    inicializarTimers();
                 }
             },
             error: function (error) {
                 console.log(error);
             }
         });
+
+        inicializarTimers = function () {
+            var auctions = $([]);
+            $('.product-item-countdown').each(function () {
+                var _this = $(this);
+                var auction = {
+                    auctionId: _this.data('id'),
+                    endTime: moment(_this.data("value")),
+                    timeDiv: _this
+                };
+                auctions.push(auction);
+            });
+            auctions.each(function () {
+                var that = this;
+                var finishTime = that.endTime,
+                    duration = moment.duration(finishTime.diff(moment())),
+                    interval = 1000;
+                if (duration._milliseconds <= 0) {
+                    that.timeDiv.text("Finalizado!");
+                    $('#bidButton-' + that.productId).addClass("disabled");
+                } else {
+                    that.currentInterval = setInterval(function () {
+                        duration = moment.duration(finishTime.diff(moment()));
+                        if (duration._milliseconds <= 0) {
+                            console.log(duration);
+                            that.timeDiv.text("Finalizado!");
+                            $('#bidButton-' + that.productId).addClass("disabled");
+                            clearInterval(that.currentInterval);
+                        } else {
+                            var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),
+                                minutes = duration.minutes() < 10 ? '0' + duration.minutes() : duration.minutes(),
+                                seconds = duration.seconds() < 10 ? '0' + duration.seconds() : duration.seconds(),
+                                days = duration.days() > 0 ? duration.days() + "d" : "",
+                                months = duration.months() > 0 ? duration.months() + "m" : "";
+                            that.timeDiv.text(months + " " + days + " " + hours + ":" + minutes + ":" + seconds)
+                        }
+                    }, interval);
+                }
+            });
+        }
     });
     
 </script>

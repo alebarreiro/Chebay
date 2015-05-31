@@ -44,7 +44,7 @@ namespace Frontoffice.Controllers
 
                     Response.Redirect(Request.Url.ToString(), true);
                 }
-                List<DataProducto> prods = controladorSubasta.ObtenerProductosPorTerminar(8, urlTienda);
+                List<DataProducto> prods = new List<DataProducto>();  //controladorSubasta.ObtenerProductosPorTerminar(8, urlTienda);
                 //List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
                 Tienda t = controladorTienda.ObtenerTienda(urlTienda);
 

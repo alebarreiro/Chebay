@@ -17,10 +17,13 @@ namespace Chebay.BackofficeIdentity.Controllers
         public string tienda { get; set; }
     }
 
-    public class DatosPersonalizacion
+    public class PersonalizacionEstiloUno
     {
-        public string color { get; set; }
+        public string colorPrimario { get; set; }
+        public string colorSecundario { get; set; }
     }
+
+
 
     public class DatosObtenerTiposAtributo
     {
@@ -132,8 +135,8 @@ namespace Chebay.BackofficeIdentity.Controllers
             pagina += "</tr>";
             pagina += "</thead>";
             pagina += "<tbody>";
-            //List<Tienda> tiendas = idalTienda.ObtenerPagina(1, User.Identity.Name);
-            List<Tienda> tiendas = idalTienda.ListarTiendas(User.Identity.Name);
+            List<Tienda> tiendas = idalTienda.ObtenerPagina(1, User.Identity.Name);
+            //List<Tienda> tiendas = idalTienda.ListarTiendas(User.Identity.Name);
             foreach (Tienda t in tiendas)
             {
                     pagina += "<tr>";
@@ -351,9 +354,9 @@ namespace Chebay.BackofficeIdentity.Controllers
             }
         }
 
-        //GET: /Tienda/Personalizar
+        //GET: /Tienda/PersonalizarEstiloUno
         [HttpPost]
-        public ActionResult Personalizar(DatosPersonalizacion datos)
+        public ActionResult PersonalizarEstiloUno(PersonalizacionEstiloUno datos)
         {
             try
             {
@@ -369,7 +372,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         break;
                     }
                 }
-                Debug.WriteLine("Personalizar::valor del color = " + datos.color);
+                Debug.WriteLine("Personalizar::valor del color = " + datos.colorPrimario);
                 Personalizacion pers = new Personalizacion();
                 
                 idalTienda.PersonalizarTienda(pers, tienda.Datos);
@@ -382,6 +385,66 @@ namespace Chebay.BackofficeIdentity.Controllers
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             
+        }
+
+        //POST : /Tienda/PersonalizarEstiloDos
+        [HttpPost]
+        public ActionResult PersonalizarEstiloDos()
+        {
+            try
+            {
+                string idAdmin = User.Identity.GetUserName();
+                List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
+                AtributoSesion tienda = null;
+                foreach (AtributoSesion a in atributos)
+                {
+                    if (a.AtributoSesionID.Equals("tienda"))
+                    {
+                        tienda = a;
+                        break;
+                    }
+                }
+                foreach (string file in Request.Files)
+                {
+                    var fileContent = Request.Files[file];
+                    if (fileContent != null && fileContent.ContentLength > 0)
+                    {
+                        // get a stream
+                        var stream = fileContent.InputStream;
+                        // and optionally write the file to disk
+                        Debug.WriteLine("El nombre del archivo subido es : " + fileContent.FileName);
+                        Personalizacion p = idalTienda.ObtenerPersonalizacionTienda(tienda.Datos);
+                        if (p == null)
+                        {
+                            p = new Personalizacion();
+                        }
+                        byte[] buf;
+                        buf = new byte[stream.Length];  //declare arraysize
+                        stream.Read(buf, 0, buf.Length);
+                        //aca iria lo de personalizar la tienda 
+                        
+
+                        //var fileName = Path.GetFileName(file);
+                        //var path = Path.Combine(Server.MapPath("~/App_Data/Images"), fileName);
+                        //using (var fileStream = File.Create(path))
+                        //{
+                        //  stream.CopyTo(fileStream);
+                        //}
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                return Json(new
+                {
+                    Success = false
+                }, JsonRequestBehavior.AllowGet);
+            }
+
+            return Json(new
+            {
+                Success = true
+            }, JsonRequestBehavior.AllowGet);
         }
 
         //POST: /Tienda/ObtenerTiposAtributo

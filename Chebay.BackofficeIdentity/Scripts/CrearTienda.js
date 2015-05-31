@@ -11,39 +11,91 @@ function modalAgregarCategoria(padre) {
 }
 
 function personalizar() {
-    var color = $("#colorTienda").val();
-    var datos = {
-        color : color
-    }
-    cargandoDatos("#divPersonalizacion");
-
-    $.ajax({
-        url: '/Tienda/Personalizar',
-        type: 'POST',
-        dataType: "json",
-        contentType: 'application/json; charset=UTF-8',
-        data: JSON.stringify(datos),
-        success: function (data, textStatus, jqxhr) {
-            finCargandoDatos("#divPersonalizacion");
-            $.notify({
-                // options
-                message: '<strong>Se ha personalizado la Tienda correctamente.</strong>'
-            }, {
-                // settings
-                type: 'success'
-            });
-        },
-        error: function (data, textStatus, jqxhr) {
-            finCargandoDatos("#divPersonalizacion");
-            $.notify({
-                // options
-                message: '<strong>Error al personalizar la Tienda.</strong>'
-            }, {
-                // settings
-                type: 'danger'
-            });
+    var estilo = $("#estiloTienda").val();
+    var datos;
+    
+    var url;
+    if (estilo == 1) {
+        url = '/Tienda/PersonalizarEstiloUno';
+        var colorPrimario = $("#colorPrimario").val();
+        var colorSecundario = $("#colorSecundario").val();
+        datos = {
+            estilo : 1,
+            colorPrimario: colorPrimario,
+            colorSecundario: colorSecundario
         }
-    });
+        cargandoDatos("#divPersonalizacion");
+        $.ajax({
+            url: url,
+            type: 'POST',
+            dataType: "json",
+            contentType: 'application/json; charset=UTF-8',
+            data: JSON.stringify(datos),
+            success: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divPersonalizacion");
+                $.notify({
+                    // options
+                    message: '<strong>Se ha personalizado la Tienda correctamente.</strong>'
+                }, {
+                    // settings
+                    type: 'success'
+                });
+            },
+            error: function (data, textStatus, jqxhr) {
+                finCargandoDatos("#divPersonalizacion");
+                $.notify({
+                    // options
+                    message: '<strong>Error al personalizar la Tienda.</strong>'
+                }, {
+                    // settings
+                    type: 'danger'
+                });
+            }
+        });
+    }
+    else {
+        url = '/Tienda/PersonalizarEstiloDos';
+        var files = $("#imagenFondo").get(0).files;
+        var data = new FormData();
+        for (i = 0; i < files.length; i++) {
+            data.append("file" + i, files[i]);
+        }
+        cargandoDatos("#divPersonalizacion");
+        $.ajax({
+            type: "POST",
+            url: url,
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (data, textStatus, jqxhr) {
+                $.notify({
+                    // options
+                    message: '<strong>Se ha personalizado la tienda correctamente.</strong>'
+                }, {
+                    // settings
+                    type: 'success'
+                });
+                finCargandoDatos("#divPersonalizacion");
+                $("#imagenTienda").val('');
+
+            },
+            error: function (data, textStatus, jqxhr) {
+                $.notify({
+                    // options
+                    message: '<strong>Error al personalizar la tienda.</strong>'
+                }, {
+                    // settings
+                    type: 'danger'
+                });
+                finCargandoDatos("#divPersonalizacion");
+            }
+        });
+    }
+    
+    
+    
+
+    
 }
 
 function verTiposAtributo(categoria, nombre) {
@@ -318,6 +370,18 @@ function obtenerPaginaTiendas(pagina) {
             $('#container').html(data);
         }
     });
+}
+
+function cambiarEstilo() {
+    var estilo = $("#estiloTienda").val();
+    if (estilo == 1) {
+        $("#estiloDos").hide();
+        $("#estiloUno").show();
+    }
+    else {
+        $("#estiloUno").hide();
+        $("#estiloDos").show();
+    }
 }
 
 function modalBorrarTienda(tienda) {

@@ -5,13 +5,29 @@
     Elija la personalización que desee en la lista de opciones inferior.
 </div>
 <br /><br />
-<h3>Seleccione el color de la Tienda</h3>
-<br /><br />
-<select class="form-control" id="colorTienda">
-    <option value="1">Naranja</option>
-    <option value="2">Violeta</option>
+<select class="form-control" id="estiloTienda" onchange="cambiarEstilo()">
+    <option selected value="1">Estilo 1</option>
+    <option value="2">Estilo 2</option>
 </select>
 <br /><br />
+<div id="estiloUno">
+    <h3>Seleccione el color primario de la Tienda</h3>
+    <input type="color" id="colorPrimario" class="form-control" onchange="clickColor(0, -1, -1, 5)" value="#ff0000">
+    <br /><br />
+    <h3>Seleccione el color secundario de la Tienda</h3>
+    <input type="color" id="colorSecundario" class="form-control" onchange="clickColor(0, -1, -1, 5)" value="#ff0000">
+</div>
+
+<div id="estiloDos" style="display:none">
+    <div>
+        <h3>Subir Imagen de Fondo</h3>
+    </div>
+
+    <input type="file" style="width : 100%;" multiple="multiple" name="uploadFiles" id="imagenFondo" />
+</div>
+
+<br /><br />
+
 <button class="btn btn-primary" onclick="personalizar()">Guardar Personalización</button>
 
 <div id="divPersonalizacion">

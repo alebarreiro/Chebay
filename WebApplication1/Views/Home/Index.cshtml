@@ -83,7 +83,7 @@
 </script>
 
 <script type="text/javascript">
-    /* PARA EL LISTADO DE PRODUCTOS */
+    /* PARA EL LISTADO DE PRODUCTOS Y TIMERS */
     var allProductos = [];
     var template = $('#listar-productos').html();
     var templateItem = $('#productItem').html();
@@ -169,17 +169,9 @@
 </script>
 
 <script type="text/javascript">
+    /** LÓGICA SIGNAL R **/
+
     var usuario = "@Context.User.Identity.Name"
-    var auctions = $([]);
-    $('.product-item-countdown').each(function () {
-        var _this = $(this);
-        var auction = {
-            auctionId: _this.data('id'),
-            endTime: moment(_this.text(), "YYYY-MM-DD HH:mm:ss"),
-            timeDiv: _this
-        };
-        auctions.push(auction);
-    });
 
     $(function () {
         // Proxy creado a partir de signalr/hubs
@@ -230,37 +222,6 @@
         }
     });
 
-    //Para el manejo de los timers
-    $(document).ready(function () {
-        auctions.each(function () {
-            var that = this;
-            var finishTime = that.endTime,
-                duration = moment.duration(finishTime.diff(moment())),
-                interval = 1000;
-            //console.log("Al producto " + this.auctionId + " le faltan: "); console.log(duration);
-            if (duration._milliseconds <= 0) {
-                that.timeDiv.text("Finalizado!");
-                $('#bidButton-' + that.productId).addClass("disabled");
-            } else {
-                that.currentInterval = setInterval(function () {
-                    duration = moment.duration(finishTime.diff(moment()));
-                    if (duration._milliseconds <= 0) {
-                        console.log(duration);
-                        that.timeDiv.text("Finalizado!");
-                        $('#bidButton-' + that.productId).addClass("disabled");
-                        clearInterval(that.currentInterval);
-                    } else {
-                        var hours = duration.hours() < 10 ? '0' + duration.hours() : duration.hours(),
-                            minutes = duration.minutes() < 10 ? '0' + duration.minutes() : duration.minutes(),
-                            seconds = duration.seconds() < 10 ? '0' + duration.seconds() : duration.seconds(),
-                            days = duration.days() > 0 ? duration.days() + "d" : "",
-                            months = duration.months() > 0 ? duration.months() + "m" : "";
-                        that.timeDiv.text(months + " " + days + " " + hours + ":" + minutes + ":" + seconds)
-                    }
-                }, interval);
-            }
-        });
-    });
 </script>
 
 <style>

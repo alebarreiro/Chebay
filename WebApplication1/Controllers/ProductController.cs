@@ -59,6 +59,11 @@ namespace WebApplication1.Controllers
             public string nombre { get; set; }
         }
 
+        public class DataComparacionProductos {
+            public long prod1Id {get; set; }
+            public long prod2Id {get; set; }
+        }
+
         public class DataProductoIDPelado
         {
             public long ProductoID { get; set; }
@@ -157,6 +162,83 @@ namespace WebApplication1.Controllers
             return resultado;
         }
 
+        //GET : /Product/obtenerComparacionProductos
+        [HttpGet]
+        public JsonResult ObtenerComparacionProductos(DataComparacionProductos comp)
+        {
+            string contenido = "";
+            try
+            {
+                String tienda = Session["Tienda_Nombre"].ToString();
+                String userId;
+                if (User.Identity.IsAuthenticated)
+                {
+                    userId = User.Identity.GetUserName();
+                }
+                else
+                {
+                    userId = null;
+                }
+
+                Producto prod1 = cS.ObtenerInfoProducto(comp.prod1Id, tienda, userId);
+                Producto prod2 = cS.ObtenerInfoProducto(comp.prod2Id, tienda, userId);
+
+                contenido += "<div class=\"prodDerecha\">";
+                contenido += "<h3>" + prod1.nombre +"</h3>";
+                Debug.WriteLine("ObtenerComparacionProductos:: contenido = " + contenido);
+                if (prod1.atributos.Count > 0)
+                {
+                    contenido += "<table class=\"table table-hover\">";
+                    contenido += "<thead><tr><th class=\"active\">Atributo</th><th class=\"success\">Valor</th></tr></thead>";
+                    contenido += "<tbody>";
+                    foreach (Atributo a in prod1.atributos)
+                    {
+                        contenido += "<tr><td>" + a.etiqueta + "</td><td>" + a.valor + "</td></tr>";
+                    }
+                    contenido += "</tbody>";
+                    contenido += "</table>";
+                }
+                else
+                {
+                    contenido += "Éste producto no tiene atributos.";
+                }
+                
+
+                contenido += "</div>";
+
+                contenido += "<div class=\"prodIzquierda\">";
+                contenido += "<h3>" + prod1.nombre + "</h3>";
+
+                if (prod2.atributos.Count > 0)
+                {
+                    contenido += "<table class=\"table table-hover\">";
+                    contenido += "<thead><tr><th class=\"active\">Atributo</th><th class=\"success\">Valor</th></tr></thead>";
+                    contenido += "<tbody>";
+                    foreach (Atributo a in prod2.atributos)
+                    {
+                        contenido += "<tr><td>" + a.etiqueta + "</td><td>" + a.valor + "</td></tr>";
+                    }
+                    contenido += "</tbody>";
+                    contenido += "</table>";
+                    contenido += "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Cerrar</button>";
+                }
+                else
+                {
+                    contenido += "Éste producto no tiene atributos.";
+                }
+                Debug.WriteLine("ObtenerComparacionProductos:: contenido = " + contenido);
+                contenido += "</div>";
+                var result = new { Success = "True", Message = contenido };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message +  " " + comp.prod1Id + " " + comp.prod2Id};
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            
+        }
+
         public string obtenerAncestros(CategoriaCompuesta cc)
         {
             CategoriaCompuesta actual = cc;
@@ -199,7 +281,7 @@ namespace WebApplication1.Controllers
         public String recursionDropDown(CategoriaCompuesta categoria, int profundidad)
         {
             string resultado = "";
-            resultado += "<li role=\"presentation\" style=\"padding-left: "+profundidad+"px;\"><a role=\"menuitem\" tabindex=\"-1\">" + categoria.Nombre + "</a></li>";
+            resultado += "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" style=\"padding-left: " + profundidad + "px;\" onclick=\"renderProductosCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</a></li>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -215,7 +297,7 @@ namespace WebApplication1.Controllers
                         else
                         {
                             int profHija = profundidad + 30;
-                            resultado += "<li role=\"presentation\" style=\"padding-left: " + profHija + "px;\"><a role=\"menuitem\" tabindex=\"-1\">" + hija.Nombre + "</a></li>";
+                            resultado += "<li role=\"presentation\"><a role=\"menuitem\" tabindex=\"-1\" style=\"padding-left: " + profHija + "px;\" onclick=\"renderProductosCategoria(" + hija.CategoriaID + ")\">" + hija.Nombre + "</a></li>";
                         }
                     }
                 }
@@ -466,6 +548,36 @@ namespace WebApplication1.Controllers
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 DataCalificacion dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
                 var result = new { Success = "True", Calificaciones = dataCal };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
+
+        //GET Producto/obtenerJsonProductosCategoriaIndex
+        [HttpGet]
+        public JsonResult obtenerJsonProductosCategoriaIndex(long catId)
+        {
+            try
+            {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
+                List<DataProductoBasico> dpbs = new List<DataProductoBasico>();
+                foreach (Producto p in prods)
+                {
+                    DataProductoBasico dpb = new DataProductoBasico
+                    {
+                        ProductoID = p.ProductoID,
+                        nombre = p.nombre,
+                    };
+                    dpbs.Add(dpb);
+                }
+                var result = new { Success = "True", Productos = dpbs };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

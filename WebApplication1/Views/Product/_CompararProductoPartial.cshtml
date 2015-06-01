@@ -7,6 +7,20 @@
 
 </section>
 
+<style>
+    .prodDerecha{
+        width : 45%;
+        height : 90%;
+        float : left;
+    }
+
+    .prodIzquierda{
+        width : 45%;
+        height : 90%;
+        float: right;
+    }
+</style>
+
 <script id="comparar-template" type="text/x-template">
     <h4> Productos similares: </h4>
     <ul class="list-group">
@@ -17,18 +31,11 @@
 </script>
 
 <!-- Modal Comparar productos -->
-<div class="modal fade bs-example-modal-lg" id="modalCompararProd" tabindex="-1" role="dialog" aria-labelledby="modalCompararProd" aria-hidden="true">
+<div class="modal fade modal-lg" id="modalCompararProd" tabindex="-1" role="dialog" aria-labelledby="modalCompararProd" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Modal title</h4>
-            </div>
-            <div class="modal-body" id="compararProductosBody">
-                ...
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        <div class="modal-content modal-lg">
+            <div class="modal-footer" id="compararProductosBody">
+                
             </div>
         </div>
     </div>
@@ -69,7 +76,25 @@
     });
 
     cargarModal = function (prodId2) {
-        $('#modalCompararProd').modal('show');
-        $('#compararProductosBody').html("Queres comparar " + prodId2 + " con " + productId)
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("ObtenerComparacionProductos", "Product")",
+            data: {
+                prod1Id : productId,
+                prod2Id : prodId2
+            },
+        accept: 'application/json',
+        success: function (data, textStatus, jqxhr) {
+            $("#compararProductosBody").html(data["Message"]);
+            $('#modalCompararProd').modal('show');
+
+        },
+        error: function (data, textStatus, jqxhr) {
+            console.log(error);
+            sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
+        }
+    });
+        
+        //$('#compararProductosBody').html("Queres comparar " + prodId2 + " con " + productId)
     }
 </script>

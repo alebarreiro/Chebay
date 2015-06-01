@@ -31,19 +31,11 @@
 </script>
 
 <!-- Modal Comparar productos -->
-<div class="modal fade bs-example-modal-lg" id="modalCompararProd" tabindex="-1" role="dialog" aria-labelledby="modalCompararProd" aria-hidden="true">
+<div class="modal fade modal-lg" id="modalCompararProd" tabindex="-1" role="dialog" aria-labelledby="modalCompararProd" aria-hidden="true">
     <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="myModalLabel">Comparar Productos</h4>
-            </div>
-            <div class="modal-body" id="compararProductosBody">
+        <div class="modal-content modal-lg">
+            <div class="modal-footer" id="compararProductosBody">
                 
-
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>
     </div>
@@ -86,18 +78,18 @@
     cargarModal = function (prodId2) {
         $.ajax({
             type: "GET",
-            url: "@Url.Action("obtenerComparacionProductos", "Product")",
+            url: "@Url.Action("ObtenerComparacionProductos", "Product")",
             data: {
-                prod1 : productId,
-                prod2 : prodId2
+                prod1Id : productId,
+                prod2Id : prodId2
             },
         accept: 'application/json',
-        success: function (data) {
-            $("#compararProductosBody").html(data["Contenido"]);
+        success: function (data, textStatus, jqxhr) {
+            $("#compararProductosBody").html(data["Message"]);
             $('#modalCompararProd').modal('show');
 
         },
-        error: function (error) {
+        error: function (data, textStatus, jqxhr) {
             console.log(error);
             sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
         }

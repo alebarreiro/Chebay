@@ -164,7 +164,7 @@ namespace WebApplication1.Controllers
 
         //GET : /Product/obtenerComparacionProductos
         [HttpGet]
-        public JsonResult obtenerComparacionProductos(DataComparacionProductos comp)
+        public JsonResult ObtenerComparacionProductos(DataComparacionProductos comp)
         {
             string contenido = "";
             try
@@ -184,15 +184,18 @@ namespace WebApplication1.Controllers
                 Producto prod2 = cS.ObtenerInfoProducto(comp.prod2Id, tienda, userId);
 
                 contenido += "<div class=\"prodDerecha\">";
-
+                contenido += "<h3>" + prod1.nombre +"</h3>";
+                Debug.WriteLine("ObtenerComparacionProductos:: contenido = " + contenido);
                 if (prod1.atributos.Count > 0)
                 {
                     contenido += "<table class=\"table table-hover\">";
-                    contenido += "<tr><td>Atributo</td><td>Valor</td></tr>";
+                    contenido += "<thead><tr><th class=\"active\">Atributo</th><th class=\"success\">Valor</th></tr></thead>";
+                    contenido += "<tbody>";
                     foreach (Atributo a in prod1.atributos)
                     {
                         contenido += "<tr><td>" + a.etiqueta + "</td><td>" + a.valor + "</td></tr>";
                     }
+                    contenido += "</tbody>";
                     contenido += "</table>";
                 }
                 else
@@ -204,29 +207,33 @@ namespace WebApplication1.Controllers
                 contenido += "</div>";
 
                 contenido += "<div class=\"prodIzquierda\">";
+                contenido += "<h3>" + prod1.nombre + "</h3>";
 
                 if (prod2.atributos.Count > 0)
                 {
                     contenido += "<table class=\"table table-hover\">";
-                    contenido += "<tr><td>Atributo</td><td>Valor</td></tr>";
+                    contenido += "<thead><tr><th class=\"active\">Atributo</th><th class=\"success\">Valor</th></tr></thead>";
+                    contenido += "<tbody>";
                     foreach (Atributo a in prod2.atributos)
                     {
                         contenido += "<tr><td>" + a.etiqueta + "</td><td>" + a.valor + "</td></tr>";
                     }
+                    contenido += "</tbody>";
                     contenido += "</table>";
+                    contenido += "<button type=\"button\" class=\"btn btn-default\" data-dismiss=\"modal\">Cerrar</button>";
                 }
                 else
                 {
                     contenido += "Éste producto no tiene atributos.";
                 }
-
+                Debug.WriteLine("ObtenerComparacionProductos:: contenido = " + contenido);
                 contenido += "</div>";
-                var result = new { Success = "True", Contenido = contenido };
+                var result = new { Success = "True", Message = contenido };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
             {
-                var result = new { Success = "False", Message = "Error" };
+                var result = new { Success = "False", Message = e.Message +  " " + comp.prod1Id + " " + comp.prod2Id};
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             

@@ -206,27 +206,60 @@ namespace DataAccessLayer
             }
         }
 
-        public List<Producto> ObtenerProductosCategoria(long idCategoria, string idTienda)
+       
+        public List<DataProducto> ObtenerProductosCategoria(long idCategoria, string idTienda)
         {
-            try
-            {
-                if (idCategoria == 0)
-                    throw new Exception("Debe pasar el identificador de una categoría.");
-                chequearTienda(idTienda);
-                using (var context = ChebayDBContext.CreateTenant(idTienda))
-                {
-                    var qProd = from p in context.productos.Include("atributos")
-                                where p.CategoriaID == idCategoria
-                                select p;
-                    List<Producto> ret = qProd.ToList();
-                    return ret;
+            IDALTienda idalt = new DALTiendaEF();
+            List<DataProducto> listadp = new List<DataProducto>();
+            
+
+            //obtengo todas las categorias simples de idCategoria
+            using(var db = ChebayDBContext.CreateTenant(idTienda))
+            {         
+                //valido
+                var query = from cat in db.categorias
+                            where cat.CategoriaID == idCategoria
+                            select cat;
+                if(query.Count()==0){
+                    throw new Exception("DALSubastaEF::ObtenerProductosCategoria: No existe categoria");
                 }
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                throw e;
-            }
+                
+                //backtracking
+                List<Categoria> stack = new List<Categoria>();
+                stack.Add(query.First());
+
+                while (stack.Count() != 0)
+                {
+                    var first = stack.First();
+                    System.Console.WriteLine(first.CategoriaID);
+
+                    if (first is CategoriaSimple)
+                    {
+                        CategoriaSimple cs = (CategoriaSimple)first;
+                        db.Entry(cs).Collection(c => c.productos).Load();
+                        
+                        foreach (var p in cs.productos)
+                        {
+                            listadp.Add(new DataProducto(p));
+                        }
+                    }
+                    else
+                    {
+                        CategoriaCompuesta cc = (CategoriaCompuesta)first;
+                        db.Entry(cc).Collection(p => p.hijas).Load();
+                        
+                        foreach (var c in cc.hijas)
+                        {
+                            stack.Add(c);
+                        }
+                    }
+                    //quito el primero
+                    stack.RemoveAt(0);
+                }
+                
+            }//using
+
+            return listadp;
         }
 
         public List<Producto> ObtenerProductosVisitados(string idUsuario, string idTienda)

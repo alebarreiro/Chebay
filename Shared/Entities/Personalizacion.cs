@@ -15,6 +15,12 @@ namespace Shared.Entities
         public string PersonalizacionID { get; set; }
         public string datos { get; set; }
         public byte[] algoritmo { get; set; }
+
+        ////css
+        public int template { get; set; }
+        public byte[] backgroud_image { get; set; }
+        public string css { get; set; }
+
         public virtual Tienda tienda { get; set; }
     }
 }

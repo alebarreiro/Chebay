@@ -23,7 +23,7 @@ namespace DataAccessLayer
         List<Producto> ObtenerProductosVencidos(DateTime ini, DateTime fin, string idTienda); //FALTA IMPLEMENTAR
         //Devuelve los productos que se vencieron entre ini y fin.
 
-        List<Producto> ObtenerProductosCategoria(long idCategoria, string idTienda);
+        List<DataProducto> ObtenerProductosCategoria(long idCategoria, string idTienda);
         
         Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario);
 

@@ -153,6 +153,8 @@
                     //Mostramos primera pagina
                     showPage(1);
                     inicializarTimers();
+                } else {
+                    $('#allProductos').html("<h2> No hay productos. </h2>")
                 }
             },
             error: function (error) {
@@ -250,13 +252,16 @@
                             showPage(parseInt($(this).text()))
                         });
                         //Render del contenido
-                        $("#dropdownMenu1").html("Filtrar por categoría <span class=\"caret\"></span>");
-                        $('#allProductos').html(rendered).removeClass("fadeOutLeft").addClass("fadeInLeft");
+                        
+                        $('#allProductos').html(rendered).removeClass("zoomOutUp").addClass("zoomInDown");
                         $('#pagination').removeClass("fadeOutLeft").addClass("fadeInLeft");
                         //Mostramos primera pagina
                         showPage(1);
                         inicializarTimers();
+                    } else {
+                        $('#allProductos').html("<h2> No hay productos. </h2>").removeClass("zoomOutUp").addClass("zoomInDown");
                     }
+                    $("#dropdownMenu1").html("Filtrar por categoría <span class=\"caret\"></span>");
                 },
                 error: function (error) {
                     console.log(error);
@@ -266,7 +271,7 @@
 
         sacarProductosActuales = function () {
             $("#dropdownMenu1").html("Filtrar por categoría <i class=\"fa fa-spinner fa-pulse\"></i>");
-            $("#allProductos").addClass("fadeOutLeft animated");
+            $("#allProductos").addClass("zoomOutUp animated");
             $('#pagination').addClass("fadeOutLeft animated");
             allProductos = [];
             

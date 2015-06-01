@@ -223,11 +223,11 @@
                         $.each(data.Productos, function () {
                             var prodItem = {};
                             console.log(this);
-                            prodItem.fecha_cierre = moment().add(1, 'day');//moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
+                            prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
                             prodItem.ProductoID = this.ProductoID;
-                            prodItem.idOfertante = "test"//this.idOfertante;
+                            prodItem.idOfertante = this.idOfertante;
                             prodItem.nombre = this.nombre;
-                            prodItem.precio_actual = 123;//this.precio_actual;
+                            prodItem.precio_actual = this.precio_actual;
                             allProductos.push(prodItem);
                         });
                         cantPaginas = Math.ceil(data.Productos.length / pageSize);
@@ -250,6 +250,7 @@
                             showPage(parseInt($(this).text()))
                         });
                         //Render del contenido
+                        $("#dropdownMenu1").html("Filtrar por categoría <span class=\"caret\"></span>");
                         $('#allProductos').html(rendered).removeClass("fadeOutLeft").addClass("fadeInLeft");
                         $('#pagination').removeClass("fadeOutLeft").addClass("fadeInLeft");
                         //Mostramos primera pagina
@@ -264,6 +265,7 @@
         }
 
         sacarProductosActuales = function () {
+            $("#dropdownMenu1").html("Filtrar por categoría <i class=\"fa fa-spinner fa-pulse\"></i>");
             $("#allProductos").addClass("fadeOutLeft animated");
             $('#pagination').addClass("fadeOutLeft animated");
             allProductos = [];

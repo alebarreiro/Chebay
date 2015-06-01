@@ -566,18 +566,9 @@ namespace WebApplication1.Controllers
             try
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
-                List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
-                List<DataProductoBasico> dpbs = new List<DataProductoBasico>();
-                foreach (Producto p in prods)
-                {
-                    DataProductoBasico dpb = new DataProductoBasico
-                    {
-                        ProductoID = p.ProductoID,
-                        nombre = p.nombre,
-                    };
-                    dpbs.Add(dpb);
-                }
-                var result = new { Success = "True", Productos = dpbs };
+                List<DataProducto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
+
+                var result = new { Success = "True", Productos = prods };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -587,25 +578,16 @@ namespace WebApplication1.Controllers
             }
         }
 
-        //GET Producto/obtenerJsonCalificaciones
+        //GET Producto/obtenerJsonProductosCategoria
         [HttpGet]
         public JsonResult obtenerJsonProductosCategoria(long catId)
         {
             try
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
-                List<Producto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
-                List<DataProductoBasico> dpbs = new List<DataProductoBasico>();
-                foreach (Producto p in prods)
-                {
-                    DataProductoBasico dpb = new DataProductoBasico
-                    {
-                        ProductoID = p.ProductoID,
-                        nombre = p.nombre
-                    };
-                    dpbs.Add(dpb);
-                }
-                var result = new { Success = "True", Productos = dpbs };
+                List<DataProducto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
+
+                var result = new { Success = "True", Productos = prods };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

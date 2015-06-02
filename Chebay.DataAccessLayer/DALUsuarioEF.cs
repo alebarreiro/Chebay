@@ -354,6 +354,71 @@ namespace DataAccessLayer
                 throw e;
             }
         }
+
+        public DataPuedoCalificar PuedoCalificar(long idProducto, string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idProducto == 0)
+                    throw new Exception("Debe pasar el identificador de un producto.");
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    DataPuedoCalificar dpc = new DataPuedoCalificar();
+                    
+                    //Verifica si idUsuario compró idProducto
+                    var qCompra = from cmp in context.compras
+                                  where cmp.ProductoID == idProducto
+                                  select cmp;
+                    if (qCompra.Count() == 0)
+                        throw new Exception("Nadie ha comprado el producto " + idProducto + ".");
+                    
+                    Compra c = qCompra.FirstOrDefault();
+
+                    //Si idUsuario NO realizó la compra, devuelve false.
+                    if (c.UsuarioID != idUsuario)
+                    {
+                        dpc.puedoCalificar = false;
+                        return dpc;
+                    }
+                    
+                    //Si idUsuario SI realizó la compra...
+
+                    //Chequeo que no haya realizado la calificación.
+                    var qCalif = from clf in context.calificaciones
+                                 where clf.ProductoID == idProducto
+                                 where clf.UsuarioEvalua == idUsuario
+                                 select clf;
+                    //Si idUsuario ya realizó la calificación, no puede volver a calificar.
+                    if (qCalif.Count() > 0)
+                    {
+                        dpc.puedoCalificar = false;
+                        return dpc;
+                    }
+                    
+                    //Si idUsuario es el comprador y no realizó la calificación.
+                    dpc.puedoCalificar = true;
+                    
+                    //Obtengo el id del vendedor.
+                    var qProd = from prd in context.productos
+                                where prd.ProductoID == idProducto
+                                select prd;
+                    if (qProd.Count() == 0)
+                        throw new Exception("No existe el producto " + idProducto + ".");
+
+                    Producto p = qProd.FirstOrDefault();
+                    dpc.idVendedor = p.UsuarioID;
+                    return dpc;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                throw e;
+            }
+        }
         #endregion
 
         #region imagenes

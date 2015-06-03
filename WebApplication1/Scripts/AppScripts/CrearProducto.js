@@ -5,7 +5,7 @@
 var marker;
 var map;
 
-cargarMapa = function () {
+function cargarMapa() {
 
     if (document.getElementById('map') != null) {
 

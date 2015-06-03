@@ -145,7 +145,7 @@ namespace DataAccessLayer
                     Personalizacion p = new Personalizacion
                     {
                         PersonalizacionID = tienda.TiendaID,
-                        datos = "1",
+                        template = 1,
                         algoritmo = null
                     };
                     context.personalizaciones.Add(p);
@@ -720,6 +720,9 @@ namespace DataAccessLayer
                     {
                         Personalizacion p = qPers.FirstOrDefault();
                         p.datos = pr.datos;
+                        p.template = pr.template;
+                        p.backgroud_image = pr.backgroud_image;
+                        p.css = pr.css;
                         context.SaveChanges();
                     }
                 }

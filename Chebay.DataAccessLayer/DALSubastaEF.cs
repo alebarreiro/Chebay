@@ -831,7 +831,7 @@ namespace DataAccessLayer
         {
             try
             {
-                if (idProducto == null)
+                if (idProducto == 0)
                     throw new Exception("Debe pasar el identificador de un producto.");
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))

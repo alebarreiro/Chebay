@@ -2,6 +2,7 @@
 using Shared.Entities;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,15 +16,22 @@ namespace Chebay.BusinessLogicLayer
             IDALTienda it = new DALTiendaEF();
             
             //Obtener Template
-            Personalizacion p = it.ObtenerPersonalizacionTienda(idTienda);
+            Personalizacion p ;
+            if (estilo == 1)
+                p = it.ObtenerPersonalizacionTienda("template1");
+            else // if (estilo == 2)
+                p = it.ObtenerPersonalizacionTienda("template2");
 
             //Modificar Template
-            string css = p.datos;
-            css.Replace("#e44d26",colorPrimario);
-            css.Replace("#f16529", colorSecundario);
+            string newcss = p.css;
+            Debug.WriteLine(newcss);
+            newcss = newcss.Replace("colorPrimario", colorPrimario);
+            newcss = newcss.Replace("colorSecundario", colorSecundario);
+            Debug.WriteLine(newcss);
 
             //Guardar CSS en la base
-            p.datos = css;
+            p.css = newcss;
+            p.template = estilo;
             it.PersonalizarTienda(p, idTienda);
 
         }

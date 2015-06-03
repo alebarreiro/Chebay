@@ -13,6 +13,11 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+
+            BLPersonalizacion blp = new BLPersonalizacion();
+            blp.PersonalizarTienda("009933", "0066FF", 1, "MobileCenter");
+
+            /*
             int n = 5; //Cantidad de segundos a esperar.
 
             BLNotificaciones bl = new BLNotificaciones();
@@ -83,7 +88,7 @@ namespace Chebay.BusinessLogicLayer
                 //Espera n segundos.
                 System.Threading.Thread.Sleep(n*1000);
             }
-            
+            */
         }
     }
 }

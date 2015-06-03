@@ -23,38 +23,8 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTestSubasta()
         {
-
-            List<DataProducto> ldp = idal.ObtenerProductosBuscados("Lumia", "MobileCenter");
-            foreach (DataProducto dp in ldp)
-            {
-                Debug.WriteLine(dp.nombre);
-            }
-            Debug.WriteLine(ldp.Count);
-            
-            /*
-            Producto p = new Producto
-            {
-                nombre = "ProductoPorVencer",
-                UsuarioID = "aleTest",
-                CategoriaID = 5,
-                descripcion = "Esta nuevo y esta bloqueado para ANTEL.",
-                precio_base_subasta = 99,
-                precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 21, 18, 22, 40)
-            };
-            idal.AgregarProducto(p, urlTest);
-
-            Oferta o = new Oferta
-            {
-                esFinal = false,
-                monto = 120,
-                ProductoID = 29,
-                UsuarioID = "Recoba"
-            };
-            idal.OfertarProducto(o, urlTest);
-            */
-            //AgregarVariosProducto();
-            
+            AgregarVariosProducto();
+//            AgregarProducto();
             /*TestInicialSubasta();
             AgregarProducto();
             AgregarComentario();
@@ -88,7 +58,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es un celular",
                 precio_base_subasta = 100,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(1993, 3, 27)
+                fecha_cierre = new DateTime(2015, 10, 27)
             };
             IDALTienda it = new DALTiendaEF();
             idal.AgregarProducto(p, urlTest);
@@ -125,7 +95,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es una yegua",
                 precio_base_subasta = 1000,
                 precio_compra = 20000,
-                fecha_cierre = new DateTime(2015, 5, 10)
+                fecha_cierre = new DateTime(2015, 7, 10)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -137,7 +107,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es una cocker",
                 precio_base_subasta = 30,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 6)
+                fecha_cierre = new DateTime(2015, 6, 6)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -149,7 +119,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es una iguana",
                 precio_base_subasta = 500,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 12)
+                fecha_cierre = new DateTime(2015, 6, 12)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -161,7 +131,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es una siames",
                 precio_base_subasta = 70,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 14)
+                fecha_cierre = new DateTime(2015, 6, 14)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -173,7 +143,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es un ratón",
                 precio_base_subasta = 10,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 6)
+                fecha_cierre = new DateTime(2015, 6, 6)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -185,7 +155,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es un hereford",
                 precio_base_subasta = 1200,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 16)
+                fecha_cierre = new DateTime(2015, 6, 16)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -197,7 +167,7 @@ namespace Chebay.DataAccessLayerTests
                 descripcion = "Es un toro",
                 precio_base_subasta = 140,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 16)
+                fecha_cierre = new DateTime(2015, 6, 16)
             };
             idal.AgregarProducto(p, urlTest);
             /*Producto ret = idal.ObtenerProducto(1, urlTest);
@@ -340,8 +310,8 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void ObtenerProductosCategoria()
         {
-            List<Producto> prods = idal.ObtenerProductosCategoria(5, urlTest);
-            foreach (Producto p in prods)
+            List<DataProducto> prods = idal.ObtenerProductosCategoria(5, urlTest);
+            foreach (DataProducto p in prods)
             {
                 Debug.WriteLine(p.nombre);
             }
@@ -372,77 +342,63 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void AgregarVariosProducto()
         {
-
-            Producto p = new Producto
-            {
-                nombre = "Lumio 8000",
-                UsuarioID = "aleTest",
-                CategoriaID = 5,
-                descripcion = "Esta nuevo y esta bloqueado para ANTEL.",
-                precio_base_subasta = 99,
-                precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 5, 21, 17, 45, 00)
-            };
-            idal.AgregarProducto(p, urlTest);
-
-            /*
-            Producto p = new Producto
+        Producto p = new Producto
             {
                 nombre = "Lumia 710",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 5,
                 descripcion = "Esta nuevo y esta bloqueado para ANTEL.",
                 precio_base_subasta = 99,
                 precio_compra = 2000,
-                fecha_cierre = new DateTime(2015, 6, 2)
+                fecha_cierre = new DateTime(2015, 6, 5)
             };
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Lumia 640 XL Dual SIM",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 5,
                 descripcion = "Con una pantalla HD de 5,7 pulgadas y una cámara de 13 MP, tienes todo lo que necesitas que encontrar el equilibrio perfecto entre juego y trabajo.",
                 precio_base_subasta = 1000,
                 precio_compra = 3000,
-                fecha_cierre = new DateTime(2015, 6, 2)
+                fecha_cierre = new DateTime(2015, 6, 5)
             };
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Lumia 640 XL",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 5,
                 descripcion = "Con una pantalla HD de 5,7 pulgadas y una cámara de 13 MP, tienes todo lo que necesitas que encontrar el equilibrio perfecto entre juego y trabajo.",
                 precio_base_subasta = 1000,
                 precio_compra = 3000,
-                fecha_cierre = new DateTime(2015, 6, 2)
+                fecha_cierre = new DateTime(2015, 6, 5)
             };
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Lumia 532",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 5,
                 descripcion = "Es Lumia 532, es un potente smartphone con el software más reciente y las mejores características nuevas de Windows.",
                 precio_base_subasta = 1000,
                 precio_compra = 3000,
-                fecha_cierre = new DateTime(2015, 6, 2)
+                fecha_cierre = new DateTime(2015, 6, 6)
             };
             idal.AgregarProducto(p, urlTest);
 
             p = new Producto
             {
                 nombre = "Nokia Lumia 635",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 5,
                 descripcion = "Gran pantalla de 4,5\", pantalla táctil super sensible, alta velocidad para navegar.",
                 precio_base_subasta = 250,
                 precio_compra = 3000,
-                fecha_cierre = new DateTime(2015, 6, 2)
+                fecha_cierre = new DateTime(2015, 6, 12)
             };
             idal.AgregarProducto(p, urlTest);
 
@@ -450,7 +406,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Nokia Asha 311",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 6,
                 descripcion = "Sofisticado celular, con excelentes prestaciones, Pantalla touchscreen, Cámara de foto 3.15 MP, MP3/MP4, Facebook, Correo electrónico, entre otras.",
                 precio_base_subasta = 250,
@@ -462,7 +418,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Nokia Asha 503",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 6,
                 descripcion = "Un diseño que causa sensación, con excelentes funciones de cámara, redes sociales integradas y acceso rápido Fastlane. Haz fotos y compártelas más rápido que nunca. Desbloquea la pantalla sólo con deslizar el dedo.",
                 precio_base_subasta = 250,
@@ -475,7 +431,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung S5 Mini",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 8,
                 descripcion = "Galaxy S5 mini tiene una pantalla HD Super AMOLED de 4.5\". Cámara de 8MP. Posee sensor de huellas dactilares en su tecla de inicio desbloquear la pantalla. Resistente al polvo y al agua.",
                 precio_base_subasta = 400,
@@ -487,7 +443,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung Galaxy S5",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 8,
                 descripcion = "Cuenta con la tecnología Download booster que permite que las descargas sean todavía más rápidas gracias a la suma de la conexión Wi-Fi que tengas más los 20 Mbps de velocidad LTE que te brinda Antel.",
                 precio_base_subasta = 981,
@@ -499,7 +455,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung Galaxy S6",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 8,
                 descripcion = "Su elegante diseño de cuerpo metálico, más potente y con carga ultra-rápida de bateria. Cuenta con una pantalla Quad HD Super AMOLED de 5,1\", cámara de 16 MP, procesador Octa-Core y 3 GB de RAM.",
                 precio_base_subasta = 1418,
@@ -511,7 +467,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung Galaxy S6 Edge",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 8,
                 descripcion = "El primer smartphone con doble borde curvo. Cuenta con una pantalla Quad HD Super AMOLED de 5,1\", cámara de 16 MP, procesador Octa-Core, 3 GB de RAM y carga ultra-rápida de batería.",
                 precio_base_subasta = 1418,
@@ -524,7 +480,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung Galaxy Note 4",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 9,
                 descripcion = "Descubrí el nuevo Galaxy Note, con una pantalla de 5,7? Super AMOLED Quad HD, cámara de 16MP con estabilizador óptico Smart OIS, batería de larga duración con carga rápida y un nuevo S PEN más preciso y funcional.",
                 precio_base_subasta = 1418,
@@ -536,7 +492,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung Note 3",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 9,
                 descripcion = "Smartphone con sistema operativo Android, cámara de 13 megapíxeles, pantalla de 5,7 pulgadas, 3 gigas de RAM y hasta 64 gigas de almacenamiento. Además cuenta con las funcionalidades de \"Smart scroll\", \"Smart pause\" y \"Air gesture\".",
                 precio_base_subasta = 1418,
@@ -549,7 +505,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Samsung Ace 4",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 10,
                 descripcion = "Smartphone con conexión LTE, sistema operativo Android 4.4 KitKat , cámara de 5 MP, pantalla de 4.3 pulgadas. Procesador de 1.2 GHz.",
                 precio_base_subasta = 1418,
@@ -562,7 +518,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "iPhone 6",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 12,
                 descripcion = "El iPhone 6 no es simplemente más grande, es mejor en todo sentido. Más grande, pero asombrosamente delgado. Más poderoso, pero increíblemente eficiente.",
                 precio_base_subasta = 1418,
@@ -574,7 +530,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "iPhone 6 Plus",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 12,
                 descripcion = "El iPhone 6 no es simplemente más grande, es mejor en todo sentido. Más grande, pero asombrosamente delgado. Más poderoso, pero increíblemente eficiente.",
                 precio_base_subasta = 1418,
@@ -587,7 +543,7 @@ namespace Chebay.DataAccessLayerTests
             p = new Producto
             {
                 nombre = "Apple iPhone 5S",
-                UsuarioID = "aleTest",
+                UsuarioID = "alebarreiro@live.com",
                 CategoriaID = 12,
                 descripcion = "El Iphone 5s es el primer smartphone que integra un chip con arquitectura de 64 bits, que combinado con el IOS 7, lo hacen muy rápido. Es un teléfono fino y liviano. Incluye un nuevo sensor de identidad por huella, denominado Touch ID.",
                 precio_base_subasta = 1071,
@@ -595,7 +551,6 @@ namespace Chebay.DataAccessLayerTests
                 fecha_cierre = new DateTime(2015, 6, 10)
             };
             idal.AgregarProducto(p, urlTest);
-            */
         }
 
         [TestMethod]

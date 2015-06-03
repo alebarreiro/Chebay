@@ -5,6 +5,7 @@ using DataAccessLayer;
 using System.Diagnostics;
 using Shared.Entities;
 using System.Collections.Generic;
+using System.IO;
 
 namespace Chebay.DataAccessLayerTests
 {
@@ -17,21 +18,37 @@ namespace Chebay.DataAccessLayerTests
 
         }
 
-        private static string urlTest = "MobileCenter";
+        private static string urlTest = "template1";
         private static string adminTest = "adminMobileCenter";
         private static IDALTienda it = new DALTiendaEF();
 
         [TestMethod]
         public void SuperTest()
         {
-
-            Debug.WriteLine(it.ObtenerCantPaginas(adminTest));
-            Debug.WriteLine(it.ObtenerPagina(1, adminTest).Count);
-            List<Tienda> lt = it.ObtenerPagina(1, adminTest);
-            foreach (Tienda t in lt)
+            /*Tienda template1 = new Tienda 
             {
-                Debug.WriteLine(t.TiendaID);
-            }
+                TiendaID = "template2",
+                descripcion = "Tienda con el Template 2.",
+                nombre = "template2",
+                administradores = new HashSet<Administrador>()
+            };
+            it.AgregarTienda(template1, adminTest);
+            */
+            
+            string path = @"C:\\Users\\Alejandro\\template1.css";
+            string readText = File.ReadAllText(path);
+            Debug.Write(readText);
+
+            Personalizacion pr = new Personalizacion
+            {
+                PersonalizacionID = urlTest,
+                datos = null,
+                template = 1,
+                backgroud_image = null,
+                css = readText
+            };
+            it.PersonalizarTienda(pr, "template1");
+
             /*Test0Inicial();
             AgregarAdministrador();
             AgregarTienda();

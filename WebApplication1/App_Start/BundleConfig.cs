@@ -67,12 +67,6 @@ namespace Frontoffice
                       "~/Content/font-awesome.css",
                       "~/Content/sweet-alert.css"));
 
-            bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
-                "~/Content/personalizacion/EstiloUno/orangeStyle.css",
-                "~/Content/personalizacion/EstiloUno/main.css",
-                "~/Content/personalizacion/EstiloUno/product_item.css"
-            ));
-
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
                 "~/Content/personalizacion/EstiloDos/ie8.css",
                 "~/Content/personalizacion/EstiloDos/main.css",

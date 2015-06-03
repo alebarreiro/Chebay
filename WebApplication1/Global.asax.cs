@@ -8,6 +8,9 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web.Security;
+using Shared;
+using DataAccessLayer;
+using Shared.Entities;
 
 namespace Frontoffice
 {
@@ -38,33 +41,62 @@ namespace Frontoffice
                 if (Session["Tienda_Nombre"] == null)
                 {
                     /* Inciamos la tienda por primera vez en la sesion */
-                    //Personalización de la tienda
-                    try
-                    {
-                        String fileName = "_ViewStart.cshtml";
-                        var filePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Views"), fileName);
-                        String text = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
-                        System.IO.File.WriteAllText(filePath, text);
+
                         //Inicializamos el nombre de la tienda por primera vez en la sesion
                         Session["Tienda_Nombre"] = url;
-                    }
+                        //Personalización de la tienda
                     
-                    catch (Exception ex) {
-
-                    }
+                        cargarPersonalizacion(url);
                 }
                 else if (Session["Tienda_Nombre"].ToString() != url)
                 {
                     /*Cambiamos de tienda en la misma sesion*/
-                    //Personalización de la tienda
-                    String fileName = "_ViewStart.cshtml";
-                    var filePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Views"), fileName);
-                    String text = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
-                    System.IO.File.WriteAllText(filePath, text);
+                    
                     //Seteamos la nueva id de la tienda
                     Session["Tienda_Anterior"] = Session["Tienda_Nombre"];
                     Session["Tienda_Nombre"] = url;
+
+                    cargarPersonalizacion(url);
                 }
+            }
+        }
+
+        public void cargarPersonalizacion(string url)
+        {
+            try {
+                 //Personalizacion
+                IDALTienda it = new DALTiendaEF();
+
+                String fileName = "_ViewStart.cshtml";
+                var filePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Views"), fileName);
+
+                Personalizacion p = it.ObtenerPersonalizacionTienda(url);
+                String layout = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
+                if (p.template != null && p.template == 1)
+                {
+                    layout = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
+                    if (p.css != null)
+                    {
+                        //Escribir css
+                        String cssFileName = "orangeStyle.css";
+                        var cssFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/personalizacion/EstiloUno"), cssFileName);
+                        System.IO.File.WriteAllText(cssFilePath, p.css);
+                    }
+                }
+                else if (p.template != null && p.template == 2)
+                {
+                    layout = "@{Layout = \"~/Views/Shared/_Layout2.cshtml\";}";
+                    if (p.backgroud_image != null)
+                    {
+                        //Copiar imagen
+                    }
+                }
+
+                //Escribimos el layout a usar que carga todos los css para esa pers.
+                System.IO.File.WriteAllText(filePath, layout);
+            }
+            catch (Exception ex){
+
             }
         }
     }

@@ -789,8 +789,8 @@ namespace DataAccessLayer
 
                 //Modificar Template
                 string newcss = p.css;
-                newcss = newcss.Replace("colorPrimario", colorPrimario);
-                newcss = newcss.Replace("colorSecundario", colorSecundario);
+                newcss = newcss.Replace("#colorPrimario", colorPrimario);
+                newcss = newcss.Replace("#colorSecundario", colorSecundario);
                 p.css = newcss;
             }
             else // if (estilo == 2)

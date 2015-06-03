@@ -3,6 +3,7 @@ using DataAccessLayer;
 using Shared.DataTypes;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -21,6 +22,7 @@ namespace ChebayREST.Controllers
             int i = 0;
             foreach (DataProducto dp in ldp)
             {
+                Debug.WriteLine("GET");
                 Subasta s = new Subasta
                 {
                     Descripcion = dp.descripcion,
@@ -40,9 +42,9 @@ namespace ChebayREST.Controllers
         {
             IDALSubasta ip = new DALSubastaEF();
             List<DataProducto> ldp = ip.ObtenerProductosBuscados(searchTerm,"MobileCenter");
-            //DataProducto dp = ldp.FirstOrDefault();
             Subasta[] ret = new Subasta[ldp.Count];
             int i = 0;
+            Debug.WriteLine("A");
             foreach (DataProducto dp in ldp)
             {
                 Subasta s = new Subasta
@@ -56,6 +58,7 @@ namespace ChebayREST.Controllers
                 };
                 ret[i] = s;
                 i++;
+                Debug.WriteLine("b");
             }
             return ret;
         }

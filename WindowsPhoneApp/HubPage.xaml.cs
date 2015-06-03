@@ -129,16 +129,6 @@ namespace WindowsPhoneApp
             }
         }
 
-        private async Task<string> BuscarProducto(string searchTerm)
-        {
-            //Hace el pedido a la API Rest para buscar searchTerm.
-            HttpClient client = new HttpClient();
-            string url = "http://chebayrest1956.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
-            var baseUrl = string.Format(url);
-            string result = await client.GetStringAsync(baseUrl);
-            return result;
-        }
-
         #region NavigationHelper registration
 
         /// <summary>
@@ -168,7 +158,7 @@ namespace WindowsPhoneApp
         
         private async void BuscarButton_Click(object sender, RoutedEventArgs e)
         {
-            try
+            /*try
             {
                 Debug.WriteLine("FBID: " + Session.ActiveSession.LoginInProgress);
                 Session.ActiveSession.LoginWithBehavior("email,public_profile,user_friends", FacebookLoginBehavior.LoginBehaviorApplicationOnly);
@@ -178,18 +168,24 @@ namespace WindowsPhoneApp
             catch (Exception ex)
             {
                 Debug.WriteLine("Excepcion " + ex.Message);
-            }
-            /*string searchTerm = buscador.Text;
+            }*/
+            string searchTerm = buscador.Text;
+            Debug.WriteLine(searchTerm);
             string json = await BuscarProducto(searchTerm);
-            deserializeJsonAsync(json);*/
+            Debug.WriteLine(json);
+            deserializeJsonAsync(json);
         }
 
-        private void BuscarButton2_Click(object sender, RoutedEventArgs e)
+        private async Task<string> BuscarProducto(string searchTerm)
         {
-            Debug.WriteLine(WebAuthenticationBroker.GetCurrentApplicationCallbackUri());
-            
+            //Hace el pedido a la API Rest para buscar searchTerm.
+            HttpClient client = new HttpClient();
+            string url = "http://chebayrest1956.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
+            Debug.WriteLine(url);
+            var baseUrl = string.Format(url);
+            string result = await client.GetStringAsync(baseUrl);
+            return result;
         }
-
 
         private Stream GenerateStreamFromString(string s)
         {

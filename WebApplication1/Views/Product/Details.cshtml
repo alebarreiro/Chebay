@@ -26,12 +26,12 @@
                         <!-- SE ARMA EL VISOR -->
                         <div class="carousel-inner">
                             <div class="item active">
-                                <img src="@Url.Action("getProductImg", "Product", new { productId = @Producto.ProductoID, index = 0 })" alt="Responsive image" />
+                                <img src="@Url.Action("getProductImg", "Product", new { productId = @Producto.ProductoID, index = 0 })" class="img-responsive" alt="Responsive image" />
                             </div>
                             @for (var i = 1; i < cantImagenes; i++)
                             {
                                 <div class="item">
-                                    <img src="@Url.Action("getProductImg", "Product", new { productId = @Producto.ProductoID, index = @i })"  alt="Responsive image" />
+                                    <img src="@Url.Action("getProductImg", "Product", new { productId = @Producto.ProductoID, index = @i })"  class="img-responsive" alt="Responsive image" />
                                 </div>
                             }
                         </div>
@@ -394,13 +394,17 @@
 
     .carousel-inner > .item > img,
     .carousel-inner > .item > a > img {
-        width: auto;
-        height: 360px;
-        margin: auto;
+      display: block;
+      height: auto;
+      max-width: 100%;
     }
 
     .fa-star,
     .fa-star-o{
         color: #DAA520;
+    }
+
+    .nav a {
+      background: transparent;
     }
 </style>

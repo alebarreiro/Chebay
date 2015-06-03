@@ -40,10 +40,17 @@ namespace WebApplication1.Controllers
         }
 
         // GET: Usuario
-        [Authorize]
         public ActionResult Index()
         {
-            return View();
+            if (!User.Identity.IsAuthenticated)
+            {
+                var url = Request.Url.LocalPath;
+                return RedirectToAction("Login", "Account", new { ReturnUrl = Request.Url.LocalPath });
+            }
+            else
+            {
+                return View();
+            }
         }
 
         [HttpGet]
@@ -84,7 +91,6 @@ namespace WebApplication1.Controllers
             }
         }
 
-        [Authorize]
         [HttpPost]
         public JsonResult actualizarDatosUsuario(DatosUsuario du)
         {
@@ -139,6 +145,19 @@ namespace WebApplication1.Controllers
                     //uC.EliminarImagenUsuario(usuarioId, tienda);
                     uC.AgregarImagenUsuario(iu, tienda);
                 }
+            }
+        }
+
+        public ActionResult CalificarUsuario(String userId, long prodId)
+        {
+            if (!User.Identity.IsAuthenticated)
+            {
+                var url = Request.Url.LocalPath;
+                return RedirectToAction("Login", "Account", new { ReturnUrl = Request.Url.LocalPath });
+            }
+            else
+            {
+                return View();
             }
         }
 

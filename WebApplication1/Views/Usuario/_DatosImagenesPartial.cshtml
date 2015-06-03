@@ -4,13 +4,17 @@
     <div>
         <label for="fileUpload">
             Select File to Upload: <input id="fileUploadProd" type="file" />
-            <button id="btnImagenProd" class="btn btn-default" type="submit"><i class="fa fa-camera-retro fa"></i> Cargar imágen </button>
+            <button id="btnImagenProd" class="btn btn-default" type="submit"><i class="fa fa-camera-retro fa-2x"></i> Cargar imágen </button>
+    </div>
+
+    <div id="imagenesCargadas">
+
     </div>
 </section>
 
 <script type="text/javascript">
     $(document).ready(function () {
-
+        var cantImagenes = 0;
         $('#btnImagenProd').on('click', function () {
             $("#btnImagenProd").html($("#btnImagenProd").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             var prodId = $("#seccion-imagenes").data('prodid');
@@ -34,7 +38,10 @@
 
             ajaxRequest.done(function (xhr, textStatus) {
                 $("#btnImagenProd").html("<i class=\"fa fa-camera-retro fa-2x\"></i> Cargar imágen ");
-                console.log("Done!");
+                var src = "@Url.Action("getProductImg", "Product")" + "?productId=" + prodId + "&index=" + cantImagenes;
+                var imgTemplate = "<img class=\"img-responsive\" style=\"display: inline\" src=\"" + src + "\" alt=\"Product Image\" width=\"150\" height=\"150\" />";
+                $("#imagenesCargadas").append(imgTemplate);
+                cantImagenes++;
             });
         });
     });

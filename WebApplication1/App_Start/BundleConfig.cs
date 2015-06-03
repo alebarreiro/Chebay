@@ -30,6 +30,8 @@ namespace Frontoffice
                         "~/Scripts/moment.with-locales.js",
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
+                        "~/Scripts/gmapsapi.js",
+                        "~/Scripts/gmaps.min.js",
                         "~/Scripts/AppScripts/Subasta.js",
                         "~/Scripts/AppScripts/CrearProducto.js"
                         ));
@@ -64,12 +66,6 @@ namespace Frontoffice
                       "~/Content/animate.css",
                       "~/Content/font-awesome.css",
                       "~/Content/sweet-alert.css"));
-
-            bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloUno/css").Include(
-                "~/Content/personalizacion/EstiloUno/orangeStyle.css",
-                "~/Content/personalizacion/EstiloUno/main.css",
-                "~/Content/personalizacion/EstiloUno/product_item.css"
-            ));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
                 "~/Content/personalizacion/EstiloDos/ie8.css",

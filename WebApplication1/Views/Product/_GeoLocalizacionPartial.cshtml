@@ -6,38 +6,38 @@
 
     </div>
 </section>
-@*<script src="http://maps.google.com/maps/api/js?sensor=true"></script>
-<script src="~/Scripts/gmaps.min.js"></script>*@
 
 <script>
-    var marcador;
 
-    var mapa = new GMaps({
-        el: '#mapa',
-        lat: -34.905510300,
-        lng: -56.192056200,
-        width: '100%',
-        height: '400px'
-    });
-    var productId = $('.infoProducto-container').data("key");
+    $(document).ready(function () {
+        var mapa = new GMaps({
+            el: '#mapa',
+            lat: -34.905510300,
+            lng: -56.192056200,
+            width: '100%',
+            height: '400px'
+        });
+        var productId = $('.infoProducto-container').data("key");
 
-
-    $.ajax({
-        url: "@Url.Action("ObtenerCoordenadas", "Product")",
-        type: 'GET',
-        data: { productID: productId },
-        dataType: 'json',
-        contentType: 'application/json; charset=UTF-8',
-        success: function (data, textStatus, jqxhr) {
-            mapa.addMarker({
-                lat: parseFloat(data['coordenadaX'].replace(",", ".")),
-                lng: parseFloat(data['coordenadaY'].replace(",", ".")),
-                draggable: false,
-                infoWindow: {
-                    content: '<p>El producto se ubica aquí</p>'
-                }
-            });
-        }
+        $.ajax({
+            url: "@Url.Action("ObtenerCoordenadas", "Product")",
+            type: 'GET',
+            data: { productID: productId },
+            dataType: 'json',
+            contentType: 'application/json; charset=UTF-8',
+            success: function (data, textStatus, jqxhr) {
+                mapa.addMarker({
+                    lat: parseFloat(data['coordenadaX'].replace(",", ".")),
+                    lng: parseFloat(data['coordenadaY'].replace(",", ".")),
+                    draggable: false,
+                    infoWindow: {
+                        content: '<p>El producto se ubica aquí</p>'
+                    }
+                });
+                //mapa.setCenter(parseFloat(data['coordenadaX'].replace(",", ".")), parseFloat(data['coordenadaY'].replace(",", ".")));
+                //mapa.setZoom(10);
+            }
+        });
     });
 
 </script>

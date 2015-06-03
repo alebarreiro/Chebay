@@ -1,58 +1,33 @@
-﻿document.write("<script src=\"http://maps.google.com/maps/api/js?sensor=false\"></script>" +
-"<script src=\"/Scripts/gmaps.js\"></script>");
-
-var atributosIngresados,
+﻿var atributosIngresados,
     categoriaSeleccionada,
     datosIngresados;
 
 var marker;
 var map;
 
+cargarMapa = function () {
 
-    $(document).ready(function () {
+    if (document.getElementById('map') != null) {
 
-        if (document.getElementById('map') != null) {
-
-            map = new GMaps({
-                el: '#map',
-                lat: -34.905510300,
-                lng: -56.192056200,
-                width: '100%',
-                height: '400px',
-                click: function (event) {
-                    map.removeMarkers();
-                    var lat = event.latLng.lat();
-                    var lng = event.latLng.lng();
-                    marker = map.addMarker({
-                        lat: lat,
-                        lng: lng,
-                        draggable: true,
-                    });
-                }
-            });
-        }
-
-
-
-        // google.maps.event.addListener(map, 'click', function (event) {
-        //        alert('click en el mapa');
-        //    if (marker) {
-        //        marker.setPosition(event.latLng);
-        //    } else {
-        //        marker = new google.maps.Marker({
-        //            position: event.latLng,
-        //            map: map
-        //        });
-        //    }
-        //});
-    });
-
-
-
-
-
-
-
+        map = new GMaps({
+            el: '#map',
+            lat: -34.905510300,
+            lng: -56.192056200,
+            width: '100%',
+            height: '400px',
+            click: function (event) {
+                map.removeMarkers();
+                var lat = event.latLng.lat();
+                var lng = event.latLng.lng();
+                marker = map.addMarker({
+                    lat: lat,
+                    lng: lng,
+                    draggable: true,
+                });
+            }
+        });
+    }
+}
 
 
 datosProd = function () {
@@ -179,6 +154,7 @@ confirmarProducto = function () {
                 $('#paso4-agregarimagenes').show();
                 $('#seccion-imagenes').attr('data-prodid', data.Message);
                 $('#btnFinalizarSubasta').show();
+                $('#btnConfirmarSubasta').hide();
             },
             error: function (error) {
                 swal("Oops...", "No se pudo crear el nuevo producto: " + error, "error");
@@ -187,9 +163,6 @@ confirmarProducto = function () {
     }
 }
 
-finalizarCrearProducto = function () {
-
-}
 
 seleccionarCategoriaSimple = function (catID) {
     categoriaSeleccionada = catID;

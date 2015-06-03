@@ -49,8 +49,8 @@ namespace DataAccessLayer
         Personalizacion ObtenerPersonalizacionTienda(string idTienda);
         void EliminarPersonalizacion(string idTienda);
 
+
         bool AutenticarAdministrador(string idAdministrador, string passwd);
-        
         
         //--ATRIBUTOS DE SESION ADMINISTRADOR--
         void AgregarAtributoSesion(AtributoSesion AtributoS);

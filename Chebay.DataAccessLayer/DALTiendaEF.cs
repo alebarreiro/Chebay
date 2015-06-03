@@ -794,7 +794,11 @@ namespace DataAccessLayer
                 p.css = newcss;
             }
             else // if (estilo == 2)
+            {
                 p = it.ObtenerPersonalizacionTienda("template2");
+                p.backgroud_image = img;
+            }
+                
 
             //Guardar CSS en la base
             p.template = estilo;

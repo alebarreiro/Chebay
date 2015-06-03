@@ -1,36 +1,33 @@
-﻿document.write("<script src=\"http://maps.google.com/maps/api/js?sensor=false\"></script>" +
-"<script src=\"/Scripts/gmaps.js\"></script>");
-
-var atributosIngresados,
+﻿var atributosIngresados,
     categoriaSeleccionada,
     datosIngresados;
 
 var marker;
 var map;
 
+cargarMapa = function () {
 
-    cargarMapa = function() {
+    if (document.getElementById('map') != null) {
 
-        if (document.getElementById('map') != null) {
-
-            map = new GMaps({
-                el: '#map',
-                lat: -34.905510300,
-                lng: -56.192056200,
-                width: '100%',
-                height: '400px',
-                click: function (event) {
-                    map.removeMarkers();
-                    var lat = event.latLng.lat();
-                    var lng = event.latLng.lng();
-                    marker = map.addMarker({
-                        lat: lat,
-                        lng: lng,
-                        draggable: true,
-                    });
-                }
-            });
-        }
+        map = new GMaps({
+            el: '#map',
+            lat: -34.905510300,
+            lng: -56.192056200,
+            width: '100%',
+            height: '400px',
+            click: function (event) {
+                map.removeMarkers();
+                var lat = event.latLng.lat();
+                var lng = event.latLng.lng();
+                marker = map.addMarker({
+                    lat: lat,
+                    lng: lng,
+                    draggable: true,
+                });
+            }
+        });
+    }
+}
 
 
 datosProd = function () {

@@ -30,6 +30,8 @@ namespace Frontoffice
                         "~/Scripts/moment.with-locales.js",
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
+                        "~/Scripts/gmapsapi.js",
+                        "~/Scripts/gmaps.min.js",
                         "~/Scripts/AppScripts/Subasta.js",
                         "~/Scripts/AppScripts/CrearProducto.js"
                         ));

@@ -32,8 +32,7 @@ namespace Frontoffice
                         "~/Scripts/mustache.js",
                         "~/Scripts/gmapsapi.js",
                         "~/Scripts/gmaps.min.js",
-                        "~/Scripts/AppScripts/Subasta.js",
-                        "~/Scripts/AppScripts/CrearProducto.js"
+                        "~/Scripts/AppScripts/Subasta.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(

@@ -11,7 +11,7 @@ namespace Chebay.BusinessLogicLayer
 {
     public class BLPersonalizacion
     {
-        public void PersonalizarTienda(string colorPrimario, string colorSecundario, int estilo, string idTienda)
+        public void PersonalizarTienda(string colorPrimario, string colorSecundario, int estilo, byte[] img, string idTienda)
         {
             IDALTienda it = new DALTiendaEF();
             
@@ -32,6 +32,8 @@ namespace Chebay.BusinessLogicLayer
             //Guardar CSS en la base
             p.css = newcss;
             p.template = estilo;
+            p.backgroud_image = img;
+            p.PersonalizacionID = idTienda;//
             it.PersonalizarTienda(p, idTienda);
 
         }

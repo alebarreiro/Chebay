@@ -495,7 +495,10 @@ namespace DataAccessLayer
                     foreach (Producto p in lp)
                     {
                         if (p.nombre.ToLower().Contains(searchTerm.ToLower()) ||
-                            p.descripcion.ToLower().Contains(searchTerm.ToLower()) ||
+                            ( 
+                                p.descripcion != null && 
+                                p.descripcion.ToLower().Contains(searchTerm.ToLower())
+                            ) ||
                             p.UsuarioID.ToLower().Contains(searchTerm.ToLower()))
                         {
                             DataProducto dp = new DataProducto

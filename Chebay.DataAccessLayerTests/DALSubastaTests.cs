@@ -23,7 +23,8 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTestSubasta()
         {
-            AgregarVariosProducto();
+            List<DataProducto> ldp = idal.ObtenerProductosBuscados("i", "MobileCenter");
+            Debug.WriteLine(ldp.Count);
 //            AgregarProducto();
             /*TestInicialSubasta();
             AgregarProducto();

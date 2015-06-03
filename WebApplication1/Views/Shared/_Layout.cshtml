@@ -15,6 +15,9 @@
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
     <script src="~/Scripts/modernizr-2.8.3-respond-1.4.2.min.js"></script>
     <script src="~/Scripts/AppScripts/CrearProducto.js"></script>
+    <script src="~/Scripts/gmaps.min.js"></script>
+    <script src="~/Scripts/gmapsapi.js"></script>
+    
     
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -72,9 +75,10 @@
         </footer>
     </div> <!-- #footer-container-->
 
-    @if (Context.User != null && Context.User.Identity.IsAuthenticated) { 
-        @Scripts.Render("~/bundles/Chat")
-        
+    @if (Context.User != null && Context.User.Identity.IsAuthenticated)
+    {
+        <script src="~/Scripts/Chat.js"></script>
+
     }
 
 

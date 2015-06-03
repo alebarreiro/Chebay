@@ -11,7 +11,7 @@ function modalAgregarCategoria(padre) {
 }
 
 function personalizar() {
-    var estilo = $("#estiloTienda").val();
+    var estilo = parseInt($("#estiloTienda").val());
     var datos;
     
     var url;
@@ -373,7 +373,7 @@ function obtenerPaginaTiendas(pagina) {
 }
 
 function cambiarEstilo() {
-    var estilo = $("#estiloTienda").val();
+    var estilo = parseInt($("#estiloTienda").val());
     if (estilo == 1) {
         $("#estiloDos").hide();
         $("#estiloUno").show();

@@ -33,6 +33,14 @@
 
     <hr />
 
+    <div>
+        <h4>Seleccione donde se localiza el producto a subastar</h4>
+        <div id="map">
+        </div>
+    </div>
+
+    <hr />
+
     <div id="paso4-agregarimagenes" style="display: none">
         <button class="btn btn-primary boton100" onclick="datosImagenes()">Cargar imagenes</button>
         <div id="datosImagenes" class="" style="display: none">
@@ -40,22 +48,15 @@
         </div>
     </div>
 
-    <hr />
-
-    <div>
-        <h4>Seleccione donde se localiza el producto a subastar</h4>
-        <div id="map">
-        </div>
-    </div>
-    
-
     <dl class="dl-horizontal"></dl>
     <button id="btnConfirmarSubasta" class="btn btn-success" onclick="confirmarProducto()">Confirmar subasta</button>
-    <button id="btnFinalizarSubasta" style="display:none; float: right" class="btn btn-success" onclick="location.href = '@Session["Tienda_Nombre"].ToString()'">Finalizar subasta</button>
+    <a class="button" id="btnFinalizarSubasta" style="display:none; float: right" href="@Url.Action("Index", "Home")">Finalizar subasta</a>
 </div>
 
 <script>
-    
+    $(document).ready(function () {
+        cargarMapa()
+    });
 
 </script>
 

@@ -9,7 +9,7 @@ var marker;
 var map;
 
 
-    $(document).ready(function () {
+    cargarMapa = function() {
 
         if (document.getElementById('map') != null) {
 
@@ -31,28 +31,6 @@ var map;
                 }
             });
         }
-
-
-
-        // google.maps.event.addListener(map, 'click', function (event) {
-        //        alert('click en el mapa');
-        //    if (marker) {
-        //        marker.setPosition(event.latLng);
-        //    } else {
-        //        marker = new google.maps.Marker({
-        //            position: event.latLng,
-        //            map: map
-        //        });
-        //    }
-        //});
-    });
-
-
-
-
-
-
-
 
 
 datosProd = function () {

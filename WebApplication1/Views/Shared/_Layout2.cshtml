@@ -46,7 +46,7 @@
                     <a href="@Url.Action("Index", "Home")">
                         <h2>Bienvenido a @Session["Tienda_Nombre"].ToString() </h2>
                     </a>
-                    <p>El sitio donde puedes ofertar y subastar de todo.</p>
+                    <p>@Session["Tienda_Desc"].ToString()</p>
                 </div>
                 <div class="5u 12u(medium)">
                     <ul>

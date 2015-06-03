@@ -179,6 +179,7 @@ confirmarProducto = function () {
                 $('#paso4-agregarimagenes').show();
                 $('#seccion-imagenes').attr('data-prodid', data.Message);
                 $('#btnFinalizarSubasta').show();
+                $('#btnConfirmarSubasta').hide();
             },
             error: function (error) {
                 swal("Oops...", "No se pudo crear el nuevo producto: " + error, "error");
@@ -187,9 +188,6 @@ confirmarProducto = function () {
     }
 }
 
-finalizarCrearProducto = function () {
-
-}
 
 seleccionarCategoriaSimple = function (catID) {
     categoriaSeleccionada = catID;

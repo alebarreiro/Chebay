@@ -111,7 +111,7 @@ nav a {
     font-weight: bold;
 
     color: white;
-    background: #e44d26;
+    /*background: #e44d26;*/
 
     text-overflow: ellipsis;
     overflow: hidden;

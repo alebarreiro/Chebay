@@ -53,3 +53,15 @@ nav a {
 .offer-section-button {
     background: #e44d26;
 }
+
+.nav a {
+    background: #63589F;
+}
+
+.search-line {
+    border-left: 5px solid white;
+}
+
+.footer-container footer {
+    color: white !important;
+}

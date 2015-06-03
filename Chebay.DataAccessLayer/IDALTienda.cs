@@ -48,6 +48,7 @@ namespace DataAccessLayer
         void PersonalizarTienda(Personalizacion p, string idTienda);
         Personalizacion ObtenerPersonalizacionTienda(string idTienda);
         void EliminarPersonalizacion(string idTienda);
+        void PersonalizarTienda(string colorPrimario, string colorSecundario, int estilo, byte[] img, string idTienda);
 
 
         bool AutenticarAdministrador(string idAdministrador, string passwd);

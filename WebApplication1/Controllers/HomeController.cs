@@ -47,7 +47,7 @@ namespace Frontoffice.Controllers
                 List<DataProducto> prods = new List<DataProducto>();  //controladorSubasta.ObtenerProductosPorTerminar(8, urlTienda);
                 //List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
                 Tienda t = controladorTienda.ObtenerTienda(urlTienda);
-
+                ViewBag.descripcion = t.descripcion;
                 ViewBag.productos = prods;
                 Session["Tienda_Nombre"] = urlTienda;
                 ViewBag.Message = urlTienda;

@@ -9,7 +9,7 @@ namespace WindowsPhoneAPP.Common
 
     public class FacebookHelper
     {
-        private readonly Uri callbackUri = WebAuthenticationBroker.GetCurrentApplicationCallbackUri();
+     /*   private readonly Uri callbackUri = WebAuthenticationBroker.GetCurrentApplicationCallbackUri();
 
         private readonly Uri loginUri;
 
@@ -33,7 +33,7 @@ namespace WindowsPhoneAPP.Common
                         });
         }
 
-        public FacebookClient Client { get; private set; }
+        //public FacebookClient Client { get; private set; }
 
         public string AccessToken
         {
@@ -80,6 +80,6 @@ namespace WindowsPhoneAPP.Common
                     this.Client.AccessToken = null;
                     break;
             }
-        }
+        }*/
     }
 }

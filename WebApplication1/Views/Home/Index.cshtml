@@ -103,7 +103,7 @@
     var allProductos = [];
     var template = $('#listar-productos').html();
     var templateItem = $('#productItem').html();
-    var pageSize = 4; //8 productos por pagina
+    var pageSize = 8; //8 productos por pagina
     var cantPaginas = 1; //Calculado despues de obtener todos los prods
     Mustache.parse(template);
 
@@ -122,7 +122,6 @@
                 if (data.Productos.length > 0) {
                     $.each(data.Productos, function () {
                         var prodItem = {};
-                        console.log(this);
                         prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
                         prodItem.ProductoID = this.ProductoID;
                         prodItem.idOfertante = this.idOfertante;

@@ -1,5 +1,4 @@
-﻿document.write("<script src=\"http://maps.google.com/maps/api/js?sensor=false\"></script>" +
- "<script src=\"/Scripts/gmaps.js\"></script>");
+﻿
 
 var atributosIngresados,
     categoriaSeleccionada,
@@ -9,7 +8,6 @@ var marker;
 var map;
 
 function cargarMapa() {
-
     if (document.getElementById('map') != null) {
 
         map = new GMaps({

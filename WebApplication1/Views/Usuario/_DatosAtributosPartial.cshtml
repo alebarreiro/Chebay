@@ -4,6 +4,10 @@
     <section id="content-atributos" data-request-url="@Url.Action("obtenerJsonAtributosCategoria", "Product")">
         Seleccione una categoría.
     </section>
+    <div>
+        <button class="btn btn-default" style="float:right" onclick="datosAtributos()">Siguiente</button>
+        <button class="btn btn-default" style="float:left" onclick="volverProd('datosCategoria')">Anterior</button>
+    </div>
 </section>
 
 <script id="atributos-template" type="text/x-template">

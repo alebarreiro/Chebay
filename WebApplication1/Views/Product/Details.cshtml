@@ -370,9 +370,14 @@
                     $('#ultimasOfertas').removeClass().addClass('flash' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
                         $(this).removeClass();
                     });
+                    $("#userGanador").text(data.Ofertas[0].UsuarioID);
+                    $("#precioMayorSubasta").text(data.Ofertas[0].monto);
                 }
-                $("#userGanador").text(data.Ofertas[0].UsuarioID);
-                $("#precioMayorSubasta").text(data.Ofertas[0].monto);
+                else
+                {
+                    $("#userGanador").text("-")
+                }
+                
             },
             error: function (error) {
                 console.warn(error);

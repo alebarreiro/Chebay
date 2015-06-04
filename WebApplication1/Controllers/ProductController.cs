@@ -87,13 +87,7 @@ namespace WebApplication1.Controllers
                 userId = null;
             }
             Producto infoFullP = cS.ObtenerInfoProducto(productId, tienda, userId);
-            Dictionary<string, string> atributos = new Dictionary<string, string>();
-            foreach (Atributo a in infoFullP.atributos)
-            {
-                atributos.Add(a.etiqueta, a.valor);
-            }
             ViewBag.InfoProducto = infoFullP;
-            ViewBag.atributos = atributos;
             return View();
         }
 

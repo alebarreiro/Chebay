@@ -777,6 +777,35 @@ namespace DataAccessLayer
             }
         }
 
+        public void PersonalizarTienda(string colorPrimario, string colorSecundario, int estilo, byte[] img, string idTienda)
+        {
+            IDALTienda it = new DALTiendaEF();
+
+            //Obtener Template
+            Personalizacion p;
+            if (estilo == 1)
+            {
+                p = it.ObtenerPersonalizacionTienda("template1");
+
+                //Modificar Template
+                string newcss = p.css;
+                newcss = newcss.Replace("#colorPrimario", colorPrimario);
+                newcss = newcss.Replace("#colorSecundario", colorSecundario);
+                p.css = newcss;
+            }
+            else // if (estilo == 2)
+            {
+                p = it.ObtenerPersonalizacionTienda("template2");
+                p.backgroud_image = img;
+            }
+                
+
+            //Guardar CSS en la base
+            p.template = estilo;
+            it.PersonalizarTienda(p, idTienda);
+        }
+
+
         public List<TipoAtributo> ListarTodosTipoAtributo(long idCategoria, string idTienda)
         {
             List<TipoAtributo> ac = new List<TipoAtributo>();

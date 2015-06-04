@@ -17,25 +17,17 @@ namespace DataAccessLayer
         static void Main(string[] args)
         {
             Console.WriteLine("Utilizar en caso de pruebas minimas...");
-            /*
-            var idal = new DALSubastaEF();
-            
-            List<DataProducto> l = idal.ObtenerProductosCategoria(1, "MobileCenter");
-            foreach (var dp in l)
-            {
-                System.Console.WriteLine(dp.ProductoID+" "+dp.nombre);
-            }
-            Console.Read();
-        }*/
-
-            /*
-            ChebayDBPublic.ProvidePublicSchema();
-            using (var bd = ChebayDBPublic.CreatePublic())
-            {
-                bd.Seed();
-            }*/
+            DALMercadoLibreREST ml = new DALMercadoLibreREST();
+            ml.test();
             Console.Read();
         }
+       
+
+            //ChebayDBPublic.ProvidePublicSchema();
+            //using (var bd = ChebayDBPublic.CreatePublic())
+            //{
+            //    bd.Seed();
+            //}
             /*
             IDALSubasta isub = new DALSubastaEF();
             IDALUsuario iusr = new DALUsuarioEF();

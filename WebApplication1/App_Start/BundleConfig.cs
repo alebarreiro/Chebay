@@ -21,19 +21,12 @@ namespace Frontoffice
                        "~/Scripts/jquery.signalR-2.1.2.js"
                        ));
 
-            bundles.Add(new ScriptBundle("~/bundles/Chat").Include(
-                       "~/Scripts/Chat.js"
-                       ));
-
             bundles.Add(new ScriptBundle("~/bundles/customScripts").Include(
                         "~/Scripts/moment.js",
                         "~/Scripts/moment.with-locales.js",
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
-                        "~/Scripts/gmapsapi.js",
-                        "~/Scripts/gmaps.min.js",
-                        "~/Scripts/AppScripts/Subasta.js",
-                        "~/Scripts/AppScripts/CrearProducto.js"
+                        "~/Scripts/AppScripts/Subasta.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(

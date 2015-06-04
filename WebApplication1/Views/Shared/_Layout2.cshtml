@@ -13,7 +13,9 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="apple-touch-icon" href="apple-touch-icon.png">
-    <script src="Scripts/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script src="~/Scripts/modernizr-2.8.3-respond-1.4.2.min.js"></script>
+    <script src="~/Scripts/AppScripts/CrearProducto.js"></script>
+    
 
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
@@ -42,7 +44,7 @@
                     <a href="@Url.Action("Index", "Home")">
                         <h2>Bienvenido a @Session["Tienda_Nombre"].ToString() </h2>
                     </a>
-                    <p>El sitio donde puedes ofertar y subastar de todo.</p>
+                    <p>@Session["Tienda_Desc"].ToString()</p>
                 </div>
                 <div class="5u 12u(medium)">
                     <ul>
@@ -104,7 +106,7 @@
 
     @if (Context.User != null && Context.User.Identity.IsAuthenticated)
     {
-        @Scripts.Render("~/bundles/Chat")
+        <script src="~/Scripts/Chat.js"></script>
 
     }
 

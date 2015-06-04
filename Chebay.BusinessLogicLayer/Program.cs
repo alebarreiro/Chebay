@@ -15,8 +15,7 @@ namespace Chebay.BusinessLogicLayer
         {
 
             BLPersonalizacion blp = new BLPersonalizacion();
-            blp.PersonalizarTienda("009933", "0066FF", 1, "MobileCenter");
-
+            blp.PersonalizarTienda("e44d26", "f16529", 2, "HardPC");
             /*
             int n = 5; //Cantidad de segundos a esperar.
 

@@ -1,9 +1,13 @@
 ﻿using DataAccessLayer;
+using Microsoft.Azure;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
 using Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -13,9 +17,31 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+            QueueClient Client;
+            // Establecer el número máximo de conexiones concurrentes. 
+            ServicePointManager.DefaultConnectionLimit = 12;
+            string QueueName = "notificacionescompra";
+            // Crear la cola si no existe aún
+            string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+            var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
+            if (!namespaceManager.QueueExists(QueueName))
+            {
+                namespaceManager.CreateQueue(QueueName);
+            }
 
-            BLPersonalizacion blp = new BLPersonalizacion();
-            blp.PersonalizarTienda("e44d26", "f16529", 2, "HardPC");
+            // Inicializar la conexión con la cola de Service Bus
+            Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
+
+            var message = new BrokeredMessage("algo") { ScheduledEnqueueTimeUtc= DateTime.UtcNow.AddMinutes(1)};
+            Client.Send(message);
+            System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
+            System.Console.Read();
+            
+            
+            
+            
+            //BLPersonalizacion blp = new BLPersonalizacion();
+            //blp.PersonalizarTienda("e44d26", "f16529", 2, "HardPC");
             /*
             int n = 5; //Cantidad de segundos a esperar.
 

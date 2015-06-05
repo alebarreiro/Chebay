@@ -25,54 +25,20 @@ namespace WebAlgorithm
             a.Run((int)data, _threads);
         }
 
+
+        //Hace broadcast a topic, para todas las instancias del worker role.
         static void Main()
         {
-            //var host = new JobHost();
-            // The following code ensures that the WebJob will be running continuously
-            
-            
+            string TopicName = CloudConfigurationManager.GetSetting("TopicString"); // "algorithm";
 
-
-            //Thread[] pool = new Thread[_threads];
-            //for (int i = 0; i < _threads; i++)
-            //{
-            //    pool[i] = new Thread(Run);
-            //    pool[i].Start(i);
-            //}
-
-            //host.RunAndBlock();
-
-
-            string TopicName = "algorithm";
-
-             DataCalificacion model = new DataCalificacion();
- 
-             // prepare the message
-             model.cantCalificaciones=10;
-             model.promedio=2;
-             // get the connection string from config (app.config in this sample)
-             string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
-
-             TopicClient Client = TopicClient.CreateFromConnectionString(connectionString, TopicName);
- 
-             // Create message, passing our model
-             BrokeredMessage message = new BrokeredMessage(model);
-
-             // Send message to the topic
-             Client.Send(message);
-
-
-             const string SubscriptionName = "AlgorithmSuscription";
-             // QueueClient es seguro para subprocesos. Se recomienda almacenarlo en caché 
-             // en lugar de crearlo de nuevo con cada solicitud
-             //QueueClient Client;
-             SubscriptionClient ClientR;
-             ClientR = SubscriptionClient.CreateFromConnectionString(connectionString, TopicName, SubscriptionName);
-
-             BrokeredMessage bm = ClientR.Receive();
-             System.Console.WriteLine(bm.GetBody<DataCalificacion>());
-             System.Console.Read();
-
+            // get the connection string from config (app.config in this sample)
+            string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+            TopicClient Client = TopicClient.CreateFromConnectionString(connectionString, TopicName);
+            BrokeredMessage message = new BrokeredMessage(DateTime.Now.ToString());
+            // Send message to the topic
+            Client.Send(message);
+            System.Console.WriteLine("Message Send...");
+            System.Console.Read();
 
         }
     }

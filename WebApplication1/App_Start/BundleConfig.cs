@@ -26,7 +26,8 @@ namespace Frontoffice
                         "~/Scripts/moment.with-locales.js",
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
-                        "~/Scripts/AppScripts/Subasta.js"
+                        "~/Scripts/AppScripts/Subasta.js",
+                        "~/Scripts/star-rating.min.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -48,7 +49,7 @@ namespace Frontoffice
                       "~/Content/bootstrap.css",
                       "~/Content/normalize.css",
                       "~/Content/normalize.min.css",
-                      
+                      "~/Content/star-rating.min.css",
                       "~/Content/partials/comentarios.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.ui.chatbox.css",

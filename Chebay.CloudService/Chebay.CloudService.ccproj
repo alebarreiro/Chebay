@@ -38,19 +38,21 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AlgorithmWorkRole\AlgorithmWorkRole.csproj">
-      <Name>AlgorithmWorkRole</Name>
-      <Project>{c88d952b-d1a3-4908-aecd-c6b98a953a29}</Project>
+    <ProjectReference Include="..\AlgorithmWorkerRoleQueue\AlgorithmWorkerRoleQueue.csproj">
+      <Name>AlgorithmWorkerRoleQueue</Name>
+      <Project>{3e1d1865-6e86-49ae-bafc-202c8fd8b7c7}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
-      <RoleName>AlgorithmWorkRole</RoleName>
+      <RoleName>AlgorithmWorkerRoleQueue</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="AlgorithmWorkerRoleQueueContent\" />
     <Folder Include="AlgorithmWorkRoleContent\" />
   </ItemGroup>
   <ItemGroup>
+    <DiagnosticsConfiguration Include="AlgorithmWorkerRoleQueueContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="AlgorithmWorkRoleContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->

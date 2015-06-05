@@ -38,5 +38,7 @@ namespace DataAccessLayer
         Task AgregarRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion);
         Task InicializarColeccionRecomendaciones(string TiendaID);
 
+        List<DataFactura> ObtenerFactura(string idUsuario, string idTienda);
+
     }
 }

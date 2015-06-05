@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ServiceConfiguration serviceName="Chebay.CloudService" xmlns="http://schemas.microsoft.com/ServiceHosting/2008/10/ServiceConfiguration" osFamily="4" osVersion="*" schemaVersion="2015-04.2.6">
-  <Role name="AlgorithmWorkRole">
+  <Role name="AlgorithmWorkerRoleQueue">
     <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://algorithm-ns.servicebus.windows.net/;SharedAccessKeyName=access;SharedAccessKey=Ki0UPOxgqImNX9SZ2s6Xpo8nd/DX0ah6gGcy0x1l1oc=" />
+      <Setting name="Instances" value="2" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

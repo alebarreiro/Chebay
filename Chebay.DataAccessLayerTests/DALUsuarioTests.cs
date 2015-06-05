@@ -4,6 +4,7 @@ using DataAccessLayer;
 using Shared.Entities;
 using System.Collections.Generic;
 using Shared.DataTypes;
+using System.Diagnostics;
 
 namespace Chebay.DataAccessLayerTests
 {
@@ -19,8 +20,7 @@ namespace Chebay.DataAccessLayerTests
         [TestMethod]
         public void SuperTest()
         {
-            AgregarUsuario();
-            ActualizarUsuario();
+            ObtenerFactura();
         }
 
         [TestMethod]
@@ -88,6 +88,21 @@ namespace Chebay.DataAccessLayerTests
             };
             iu.AgregarCalificacion(c, urlTest);
         }
+
+        [TestMethod]
+        public void ObtenerFactura()
+        {
+            List<DataFactura> ldf = iu.ObtenerFactura("alejandroanonmallo@gmail.com", "MobileCenter");
+            foreach (DataFactura df in ldf)
+            {
+                Debug.WriteLine("A");
+                Debug.WriteLine(df.nombreProducto);
+                Debug.WriteLine(df.fecha);
+                Debug.WriteLine(df.monto);
+                Debug.WriteLine(df.esCompra);
+            }
+        }
+
 
         /*
         //--CALIFICACIONES--

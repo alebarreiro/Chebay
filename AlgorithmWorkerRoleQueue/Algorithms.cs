@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Threading;
 using System.Diagnostics;
 
-namespace WebAlgorithm
+namespace AlgorithmWorkerRoleQueue
 {
     public class Algorithms
     {
@@ -73,6 +73,7 @@ namespace WebAlgorithm
         public void Run(int instance, int threads)
         {
             System.Console.WriteLine("New thread " + instance);
+            Debug.WriteLine("New thread " + instance);
 
             IDALUsuario udal = new DALUsuarioEF();
             IDALTienda tdal = new DALTiendaEF();
@@ -89,6 +90,8 @@ namespace WebAlgorithm
                 {
                     System.Console.WriteLine("Instance::" + instance + "::" + tienda.TiendaID);
                     System.Console.WriteLine("TiendaHash: " + tienda.TiendaID.GetHashCode());
+                    Debug.WriteLine("Instance::" + instance + "::" + tienda.TiendaID);
+                    Debug.WriteLine("TiendaHash: " + tienda.TiendaID.GetHashCode());
 
                     List<Producto> productos = sdat.ObtenerTodosProductos(tienda.TiendaID);
                     //obtengo algoritmo

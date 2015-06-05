@@ -373,9 +373,8 @@ namespace Chebay.BackofficeIdentity.Controllers
                     }
                 }
                 Debug.WriteLine("Personalizar::valor del color = " + datos.colorPrimario);
-                Personalizacion pers = new Personalizacion();
                 
-                idalTienda.PersonalizarTienda(pers, tienda.Datos);
+                idalTienda.PersonalizarTienda(datos.colorPrimario, datos.colorSecundario, 1, null, tienda.Datos);
                 var result = new { Success = "True", Message = "Se ha personalizado la Tienda correctamente" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
@@ -422,7 +421,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         buf = new byte[stream.Length];  //declare arraysize
                         stream.Read(buf, 0, buf.Length);
                         //aca iria lo de personalizar la tienda 
-                        
+                        idalTienda.PersonalizarTienda(null, null, 2, buf, tienda.Datos);
 
                         //var fileName = Path.GetFileName(file);
                         //var path = Path.Combine(Server.MapPath("~/App_Data/Images"), fileName);

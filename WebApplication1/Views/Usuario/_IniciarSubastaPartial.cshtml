@@ -11,51 +11,41 @@
     <h3>Nueva subasta</h3>
     <hr />
     <dl class="dl-horizontal"></dl>
-    <button class="btn btn-primary boton100" onclick="datosProd()">Ingresar datos del producto</button>
-    <div id="datosProducto" class="" style="display: none">
+    <div id="datosProducto" class="" style="display: none; min-height: 500px;">
         @Html.Partial("_DatosProductoPartial")
     </div>
 
-    <hr />
-    <dl class="dl-horizontal"></dl>
-
-    <button class="btn btn-primary boton100" onclick="datosCat()">Seleccionar una categoría</button>
-    <div id="datosCategoria" class="" style="display: none">
+    <div id="datosCategoria" class="" style="display: none; min-height: 560px;">
         @Html.Partial("_DatosCategoriaPartial")
     </div>
 
-    <hr />
-
-    <button class="btn btn-primary boton100" onclick="datosAtributos()">Ingresar atributos</button>
-    <div id="datosAtributos" class="" style="display: none">
+    <div id="datosAtributos" class="" style="display: none; min-height: 560px;">
         @Html.Partial("_DatosAtributosPartial")
     </div>
 
-    <hr />
-
-    <div>
+    <div id="geolocalizacion" style="display:none; min-height: 560px;">
         <h4>Seleccione donde se localiza el producto a subastar</h4>
         <div id="map">
         </div>
+        
+        <div>
+            <button id="btnConfirmarSubasta" class="btn btn-success" style="float:right" onclick="confirmarProducto()">Confirmar subasta</button>
+            <button class="btn btn-default" style="float:left" onclick="volverProd('datosAtributos')">Anterior</button>
+        </div>
     </div>
 
-    <hr />
-
-    <div id="paso4-agregarimagenes" style="display: none">
-        <button class="btn btn-primary boton100" onclick="datosImagenes()">Cargar imagenes</button>
-        <div id="datosImagenes" class="" style="display: none">
+    <div id="paso4-agregarimagenes" style="display: none; min-height: 560px;">
+        <div id="datosImagenes" class="">
             @Html.Partial("_DatosImagenesPartial")
         </div>
     </div>
 
-    <dl class="dl-horizontal"></dl>
-    <button id="btnConfirmarSubasta" class="btn btn-success" onclick="confirmarProducto()">Confirmar subasta</button>
-    <a class="button" id="btnFinalizarSubasta" style="display:none; float: right" href="@Url.Action("Index", "Home")">Finalizar subasta</a>
 </div>
 
 <script>
     $(document).ready(function () {
-        cargarMapa()
+        cargarMapa();
+        $('#datosProducto').show();
     });
 
 </script>

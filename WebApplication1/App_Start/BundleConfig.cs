@@ -29,10 +29,6 @@ namespace Frontoffice
                         "~/Scripts/AppScripts/Subasta.js"
                         ));
 
-            bundles.Add(new ScriptBundle("~/bundles/Subasta").Include(
-                       "~/Scripts/Subasta.js"
-                       ));
-
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
 

@@ -784,22 +784,25 @@ namespace DataAccessLayer
             //Obtener Template
             Personalizacion p;
             if (estilo == 1)
+            {
                 p = it.ObtenerPersonalizacionTienda("template1");
-            else // if (estilo == 2)
-                p = it.ObtenerPersonalizacionTienda("template2");
 
-            //Modificar Template
-            string newcss = p.css;
-            Debug.WriteLine(newcss);
-            newcss = newcss.Replace("colorPrimario", colorPrimario);
-            newcss = newcss.Replace("colorSecundario", colorSecundario);
-            Debug.WriteLine(newcss);
+                //Modificar Template
+                string newcss = p.css;
+                newcss = newcss.Replace("#colorPrimario", colorPrimario);
+                newcss = newcss.Replace("#colorSecundario", colorSecundario);
+                p.css = newcss;
+            }
+            else // if (estilo == 2)
+            {
+                p = it.ObtenerPersonalizacionTienda("template2");
+                p.backgroud_image = img;
+            }
+                
 
             //Guardar CSS en la base
-            p.css = newcss;
             p.template = estilo;
             it.PersonalizarTienda(p, idTienda);
-
         }
 
 

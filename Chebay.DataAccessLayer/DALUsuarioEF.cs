@@ -521,7 +521,58 @@ namespace DataAccessLayer
 
         #endregion
 
-      
+        public List<DataFactura> ObtenerFactura(string idUsuario, string idTienda)
+        {
+            try
+            {
+                if (idUsuario == null)
+                    throw new Exception("Debe pasar el identificador de un usuario.");
+                chequearTienda(idTienda);
+                using (var context = ChebayDBContext.CreateTenant(idTienda))
+                {
+                    //Obtengo todas las compras realizadas.
+                    var qCompras = from cmp in context.compras.Include("producto")
+                                   where cmp.UsuarioID == idUsuario
+                                   select cmp;
+                    List<Compra> lc = qCompras.ToList();
+                    List<DataFactura> ret = new List<DataFactura>();
+                    foreach (Compra c in lc)
+                    {
+                        DataFactura df = new DataFactura
+                        {
+                            monto = c.monto,
+                            esCompra = true,
+                            fecha = c.fecha_compra,
+                            nombreProducto = c.producto.nombre
+                        };
+                        ret.Add(df);
+                    }
+
+                    //Obtengo todas las ventas realizadas.
+                    var qVentas = from vnt in context.compras.Include("producto")
+                                  where vnt.producto.UsuarioID == idUsuario
+                                  select vnt;
+                    lc = qVentas.ToList();
+                    foreach (Compra c in lc)
+                    {
+                        DataFactura df = new DataFactura
+                        {
+                            monto = c.monto,
+                            esCompra = false,
+                            fecha = c.fecha_compra,
+                            nombreProducto = c.producto.nombre
+                        };
+                        ret.Add(df);
+                    }
+                    return ret;
+                }
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message + e.StackTrace);
+                throw;
+            }
+        }
     }
 } 
         

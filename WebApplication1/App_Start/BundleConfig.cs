@@ -27,7 +27,7 @@ namespace Frontoffice
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
                         "~/Scripts/AppScripts/Subasta.js",
-                        "~/Scripts/star-rataing.min.js"
+                        "~/Scripts/star-rating.min.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

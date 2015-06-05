@@ -40,6 +40,16 @@ namespace WebApplication1.Controllers
             public int monto { get; set; }
         }
 
+        public class DataCrearCalificacion
+        {
+            public long ProductoID { get; set; }
+            public string UsuarioEvalua { get; set; }
+            public string UsuarioCalificado { get; set; }
+
+            public int puntaje { get; set; }
+            public string comentario { get; set; }
+        }
+
         // GET: Usuario
         public ActionResult Index()
         {
@@ -163,6 +173,32 @@ namespace WebApplication1.Controllers
                 DataPuedoCalificar dpc = uC.PuedoCalificar(prodId, usuarioId, tiendaId);
                 ViewBag.DataCalificacion = dpc;
                 return View();
+            }
+        }
+
+        [Authorize]
+        [HttpPost]
+        public JsonResult agregarCalificacion(DataCrearCalificacion dcc)
+        {
+            String tiendaId = Session["Tienda_Nombre"].ToString();
+            try
+            {
+                Calificacion c = new Calificacion
+                {
+                    ProductoID = dcc.ProductoID,
+                    UsuarioEvalua = dcc.UsuarioEvalua,
+                    UsuarioCalificado = dcc.UsuarioCalificado,
+                    puntaje = dcc.puntaje,
+                    comentario = dcc.comentario
+                };
+                uC.AgregarCalificacion(c, tiendaId);
+                var result = new { Success = "True" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = e.Message };
+                return Json(result, JsonRequestBehavior.AllowGet);
             }
         }
 

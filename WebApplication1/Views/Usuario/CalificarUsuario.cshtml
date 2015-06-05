@@ -12,7 +12,7 @@
     {
         <div class="bs-callout bs-producto">
             <div class="datos-calif-left">
-                <img src="@Url.Action("getProductImg", "Product", new { productId = @dc.idProd, index = 0 }) " class=" img-centrada" alt="Responsive image" />
+                <img src="@Url.Action("getProductImg", "Product", new { productId = @dc.idProd, index = 0 }) " class="img-centrada" width="150px" alt="Responsive image" />
             </div>
             <div class="datos-calificacion">
                 <span class="labels-c"> <b> Producto: </b> @dc.nombreProd </span>
@@ -40,45 +40,18 @@
 
     <div class="bs-callout bs-callout-info">
         <h4>2. ¿Como calificas la compra? </h4>
-        <div class="radio">
-            <label>
-                <input type="radio" name="optionsRadios2" id="optionsRadios1" value="5" checked>
-                5. Excelente vendedor y producto. Un verdadero CheSeller.
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="4">
-                4. Muy buen vendedor y producto. Lo recomendaría.
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="3">
-                3. Aceptable.
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="2">
-                2. Malo. No fue lo que esperaba.
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="1">
-                1. No lo recomiendo para nada.
-            </label>
-        </div>
+        <input id="input-2c" class="rating" min="0" max="5" step="1" data-size="sm"
+               data-symbol="&#xf005;" data-glyphicon="false" data-rating-class="rating-fa">
     </div>
 
     <div class="bs-callout bs-callout-info">
         <h4>3. ¿Algún comentario sobre la operación? </h4>
-        <textarea class="form-control" rows="3"></textarea>
+        <textarea class="form-control" id="calif-coment" rows="3"></textarea>
     </div>
         
     <div class="footer-calif">
-        <button class="btn btn-default" style="float:right; margin-top: 20px" onclick="confirmarCalif()">Enviar calificación</button>
+        <button class="btn btn-default" id="confirmCalificacion"  style="float:right; margin-top: 20px" onclick="confirmarCalif()">Enviar calificación</button>
+        <a class="button" id="btnFinalizarCalificacion" style="display:none; float: right" href="@Url.Action("Index", "Home")">Finalizar calificación</a>
     </div>
     }
     else
@@ -88,7 +61,47 @@
 </div>
 
 <script>
+    var ProductoID = "@dc.idProd"
+    var UsuarioCalificado = "@dc.idVendedor"
+    var UsuarioEvalua = "@Context.User.Identity.Name"
+    $(document).ready(function () {
+        $("#input-2c").rating();
+    });
 
+    confirmarCalif = function () {
+        var rating = parseInt($("#input-2c").val(), 10),
+            comentario = $("#calif-coment").val();
+        if (!comentario) {
+            comentario = "";
+        }
+        if (!rating) {
+            swal("Datos incompletos", "Ingrese calificacion")
+        } else {
+            $("#confirmCalificacion").html("Enviar calificación" + "<i class=\"fa fa-spinner fa-pulse\"></i>");
+            $.ajax({
+                type: "POST",
+                url: "@Url.Action("agregarCalificacion", "Usuario")",
+                data: {
+                    ProductoID: ProductoID,
+                    UsuarioEvalua: UsuarioEvalua,
+                    UsuarioCalificado: UsuarioCalificado,
+                    puntaje: rating,
+                    comentario: comentario
+                },
+                accept: 'application/json',
+                success: function (response) {
+                    swal("éxito!", "Tu calificación fue ingresada.", "success");
+                    $("#confirmCalificacion").html("Enviar calificación");
+                    $("#confirmCalificacion").hide();
+                    $("#btnFinalizarCalificacion").show();
+                },
+                error: function (error) {
+                    console.log(error);
+                }
+            });
+        }
+
+    }
 </script>
 
 <style>
@@ -128,5 +141,9 @@
     .labels-c{
         display: inherit;
 
+    }
+
+    .rating-container{
+        line-height: 50px !important;
     }
 </style>

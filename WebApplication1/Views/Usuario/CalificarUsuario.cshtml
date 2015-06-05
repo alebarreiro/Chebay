@@ -1,7 +1,132 @@
 ﻿
 @{
     ViewBag.Title = "CalificarUsuario";
+    var dc = ViewBag.DataCalificacion;
 }
 
-<h2> Calificar usuario </h2>
+<h2> Calificar compra </h2>
+<div class="calificacion-container">
 
+
+    @if (dc.puedoCalificar)
+    {
+        <div class="bs-callout bs-producto">
+            <div class="datos-calif-left">
+                <img src="@Url.Action("getProductImg", "Product", new { productId = @dc.idProd, index = 0 }) " class=" img-centrada" alt="Responsive image" />
+            </div>
+            <div class="datos-calificacion">
+                <span class="labels-c"> <b> Producto: </b> @dc.nombreProd </span>
+                <span class="labels-c"> <b> Vendedor: </b> @dc.idVendedor </span>  
+                <span class="labels-c"> <b> Precio compra: </b> @dc.precioProd </span>
+                <span class="labels-c"> <b> Fecha compra: </b> @dc.fecha_compra </span> 
+            </div>
+        </div>
+
+        <div class="bs-callout bs-callout-info">
+            <h4>1. ¿Ya recibiste el producto?</h4>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios1" value="option1" checked>
+                    Sí, ya recibí el producto.
+                </label>
+            </div>
+            <div class="radio">
+                <label>
+                    <input type="radio" name="optionsRadios" id="optionsRadios2" value="option2">
+                    No recibí el producto.
+                </label>
+            </div>
+        </div>
+
+    <div class="bs-callout bs-callout-info">
+        <h4>2. ¿Como calificas la compra? </h4>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios2" id="optionsRadios1" value="5" checked>
+                5. Excelente vendedor y producto. Un verdadero CheSeller.
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="4">
+                4. Muy buen vendedor y producto. Lo recomendaría.
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="3">
+                3. Aceptable.
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="2">
+                2. Malo. No fue lo que esperaba.
+            </label>
+        </div>
+        <div class="radio">
+            <label>
+                <input type="radio" name="optionsRadios2" id="optionsRadios2" value="1">
+                1. No lo recomiendo para nada.
+            </label>
+        </div>
+    </div>
+
+    <div class="bs-callout bs-callout-info">
+        <h4>3. ¿Algún comentario sobre la operación? </h4>
+        <textarea class="form-control" rows="3"></textarea>
+    </div>
+        
+    <div class="footer-calif">
+        <button class="btn btn-default" style="float:right; margin-top: 20px" onclick="confirmarCalif()">Enviar calificación</button>
+    </div>
+    }
+    else
+    {
+       <h2>Usted no puede calificar esta compra.</h2> 
+    }
+</div>
+
+<script>
+
+</script>
+
+<style>
+    .bs-callout {
+      padding: 20px;
+      margin: 20px 0;
+      border: 1px solid #eee;
+      border-left-width: 5px;
+      border-radius: 3px;
+    }
+
+    .bs-callout-info {
+      border-left-color: #1b809e;
+    }
+
+    .bs-producto{
+        border-color: #1b809e;
+        height: 190px;
+    }
+
+    .datos-calif-left{
+      width: 30%;
+      float: left;
+      border-right: 1px solid #eeeeee;
+      height: 150px;
+      display: inline-block;
+    }
+
+    .datos-calificacion{
+        width: 60%;
+        float: right;
+        margin-left: 40px;
+        display: block;
+        margin-top: 20px;
+    }
+
+    .labels-c{
+        display: inherit;
+
+    }
+</style>

@@ -8,6 +8,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using System.Diagnostics;
 using System.IO;
+using Shared.DataTypes;
 
 namespace WebApplication1.Controllers
 {
@@ -148,7 +149,7 @@ namespace WebApplication1.Controllers
             }
         }
 
-        public ActionResult CalificarUsuario(String userId, long prodId)
+        public ActionResult CalificarUsuario(long prodId)
         {
             if (!User.Identity.IsAuthenticated)
             {
@@ -157,6 +158,10 @@ namespace WebApplication1.Controllers
             }
             else
             {
+                String tiendaId = Session["Tienda_Nombre"].ToString();
+                String usuarioId = User.Identity.Name;
+                DataPuedoCalificar dpc = uC.PuedoCalificar(prodId, usuarioId, tiendaId);
+                ViewBag.DataCalificacion = dpc;
                 return View();
             }
         }

@@ -410,6 +410,10 @@ namespace DataAccessLayer
 
                     Producto p = qProd.FirstOrDefault();
                     dpc.idVendedor = p.UsuarioID;
+                    dpc.precioProd = c.monto;
+                    dpc.nombreProd = p.nombre;
+                    dpc.idProd = p.ProductoID;
+                    dpc.fecha_compra = c.fecha_compra;
                     return dpc;
                 }
             }

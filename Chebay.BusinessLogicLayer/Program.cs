@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.DataTypes;
 
 namespace Chebay.BusinessLogicLayer
 {
@@ -17,6 +18,13 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+            
+            BLNotificaciones not = new BLNotificaciones();
+            Compra c = new Compra { ProductoID=1, UsuarioID="joleocl@gmail.com", monto=2, fecha_compra= DateTime.UtcNow};
+            DataProductoQueue dp = new DataProductoQueue { nombre = "prueba", OwnerProducto = "joleocl@gmail.com" , fecha_cierre=DateTime.UtcNow};
+            not.sendEmailNotification(c, dp);
+
+            /*
             QueueClient Client;
             // Establecer el número máximo de conexiones concurrentes. 
             ServicePointManager.DefaultConnectionLimit = 12;
@@ -36,7 +44,7 @@ namespace Chebay.BusinessLogicLayer
             Client.Send(message);
             System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
             System.Console.Read();
-            
+            */
             
             
             

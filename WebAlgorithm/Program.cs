@@ -7,6 +7,9 @@ using Microsoft.Azure.WebJobs;
 using DataAccessLayer;
 using Shared.Entities;
 using System.Threading;
+using Shared.DataTypes;
+using Microsoft.WindowsAzure;
+using Microsoft.ServiceBus.Messaging;
 
 namespace WebAlgorithm
 {
@@ -15,24 +18,28 @@ namespace WebAlgorithm
     {
         // Please set the following connection strings in app.config for this WebJob to run:
         // AzureWebJobsDashboard and AzureWebJobsStorage
+        static int _threads = 2;
+        static void Run(object data)
+        {
+            Algorithms a = new Algorithms();
+            a.Run((int)data, _threads);
+        }
+
+
+        //Hace broadcast a topic, para todas las instancias del worker role.
         static void Main()
         {
-            //var host = new JobHost();
-            // The following code ensures that the WebJob will be running continuously
-            int threads = 2;
-            for (int i = 0; i < threads; i++)
-            {
-                Thread t = new Thread(delegate(){
-                    Algorithms al = new Algorithms();
-                    al.Run(i, threads);            
-                });
-                t.Start();
-                System.Console.WriteLine("New thread "+ i);
-            }
+            string TopicName = CloudConfigurationManager.GetSetting("TopicString"); // "algorithm";
 
+            // get the connection string from config (app.config in this sample)
+            string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+            TopicClient Client = TopicClient.CreateFromConnectionString(connectionString, TopicName);
+            BrokeredMessage message = new BrokeredMessage(DateTime.Now.ToString());
+            // Send message to the topic
+            Client.Send(message);
+            System.Console.WriteLine("Message Send...");
+            System.Console.Read();
 
-
-            //host.RunAndBlock();
         }
     }
 }

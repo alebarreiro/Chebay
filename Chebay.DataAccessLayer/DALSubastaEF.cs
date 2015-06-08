@@ -102,6 +102,23 @@ namespace DataAccessLayer
         #endregion
 
         #region varios obtener productos
+
+        public bool TieneOfertas(long ProductoID, string TiendaID)
+        {
+            using (var db = ChebayDBContext.CreateTenant(TiendaID))
+            {
+                var query = from p in db.productos.Include("ofertas")
+                            where p.ProductoID == ProductoID
+                            select p;
+                Producto prod = query.First();
+                if (prod.ofertas.Count() > 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         public Producto ObtenerInfoProducto(long idProducto, string idTienda, string idUsuario)
         {
             //COMENTARIOS, OFERTAS, CATEGORIAS, ATRIBUTOS

@@ -16,10 +16,10 @@ namespace DataAccessLayer
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Utilizar en caso de pruebas minimas...");
-            DALMercadoLibreREST ml = new DALMercadoLibreREST();
-            ml.test();
-            Console.Read();
+            //Console.WriteLine("Utilizar en caso de pruebas minimas...");
+            //DALMercadoLibreREST ml = new DALMercadoLibreREST();
+            //ml.test();
+            //Console.Read();
         }
        
 

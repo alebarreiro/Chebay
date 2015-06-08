@@ -1,15 +1,17 @@
-﻿document.write("<script src=\"http://maps.google.com/maps/api/js?sensor=false\"></script>" +
- "<script src=\"/Scripts/gmaps.js\"></script>");
+﻿
 
 var atributosIngresados,
     categoriaSeleccionada,
-    datosIngresados;
+    datosIngresados,
+    fadeOut = 'fadeOutLeft',
+    fadeIn = 'fadeInRight',
+    divActual;
+
 
 var marker;
 var map;
 
 function cargarMapa() {
-
     if (document.getElementById('map') != null) {
 
         map = new GMaps({
@@ -34,23 +36,94 @@ function cargarMapa() {
 
 
 datosProd = function () {
-    $("#datosProducto").toggle(1000);
+    if (!divActual) {
+        divActual = $('#datosProducto');
+    }
+    res = validarDatosProd();
+    if (res.error) {
+        swal("Datos incompletos", res.msg)
+    } else {
+        divActual.hide();
+        $("#datosCategoria").show();
+        divActual = $("#datosCategoria");
+    }
+}
+
+volverProd = function (anterior) {
+    divAnterior = $('#' + anterior);
+    divActual.hide();
+    divAnterior.show();
+    divActual = divAnterior;
 }
 
 datosCat = function () {
-    $("#datosCategoria").toggle(1000);
+    if (!categoriaSeleccionada) {
+        swal("Datos incompletos", "Selecciona una categoría para continuar.");
+    } else {
+        divActual.hide();
+        $("#datosAtributos").show();
+        divActual = $("#datosAtributos");
+    }
 }
 
 datosAtributos = function () {
-    $("#datosAtributos").toggle(1000);
+    divActual.hide();
+    $("#geolocalizacion").show();
+    divActual = $("#geolocalizacion");
 }
 
 datosImagenes = function () {
-    $("#datosImagenes").toggle(1000);
+    divActual.hide();
+    $("#paso4-agregarimagenes").show();
 }
 
 isInt = function(n) {
     return n % 1 === 0;
+}
+
+validarDatosProd = function () {
+    var titulo = $('#titulo').val(),
+        descripcion = $('#descripcion').val(),
+        precioBase = parseInt($("#precioInicial").val(), 10),
+        precioComprarYa = parseInt($("#precioComprarYa").val(), 10),
+        fechaCierre = $('#fechaCierre').val(),
+        horaCierre = $('#horaCierre').val(),
+        fecha,
+        msgError = "",
+        hayError = false;
+
+    if (titulo == "") {
+        msgError += "- Ingrese un título para el producto.\n"
+        hayError = true;
+    }
+    if (descripcion == "") {
+        msgError += "- Ingrese una descripción al producto. \n"
+        hayError = true;
+    }
+    if (!precioBase) {
+        msgError += "- Ingrese un precio base válido. \n"
+        hayError = true;
+    }
+    if (!precioComprarYa) {
+        msgError += "- Ingrese un precio comprar ya válido. \n"
+        hayError = true;
+    }
+    if (precioBase && precioComprarYa && (precioComprarYa <= precioBase)) {
+        msgError += "- El precio comprar ya debe superar el precio base. \n"
+        hayError = true;
+    }
+    if (!fechaCierre || !horaCierre) {
+        msgError += "- Ingrese la fecha y hora de cierre. \n"
+        hayError = true;
+    }
+    if (fechaCierre && horaCierre) {
+        fecha = new Date(fechaCierre + " " + horaCierre);
+        if (Date.now() >= fecha) {
+            msgError += "- La fecha de cierre no debe ser anterior a la fecha actual. \n"
+            hayError = true;
+        }
+    }
+    return { error: hayError, msg: msgError };
 }
 
 confirmarProducto = function () {
@@ -122,15 +195,12 @@ confirmarProducto = function () {
                     attrValues.push(attrValue);
                 }
             });
-            console.log("Atributos seleccionados: ");
-            console.log(attrValues);
         }
     }
 
     if ( hayError ) {
         swal("Datos incompletos", msgError)
     } else {
-        debugger;
         datosProducto = {
             'titulo': titulo,
             'descripcion': descripcion,
@@ -154,7 +224,7 @@ confirmarProducto = function () {
                 $('#btnConfirmarSubasta').html("Confirmar subasta");
                 $('#btnConfirmarSubasta').hide();
                 swal("éxito!", "Iniciaste una nueva subasta! \nAhora puedes agregar imágenes al producto.", "success");
-                $('#paso4-agregarimagenes').show();
+                datosImagenes();
                 $('#seccion-imagenes').attr('data-prodid', data.Message);
                 $('#btnFinalizarSubasta').show();
                 $('#btnConfirmarSubasta').hide();

@@ -20,6 +20,7 @@ namespace DataAccessLayer
         List<DataProducto> ObtenerProductosPorTerminar(int cantProductos, string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.
         List<DataProducto> ObtenerProductosBuscados(string searchTerm, string urlTienda);
 
+        //ELIMINAR POST IMPLEMENTACION
         List<Producto> ObtenerProductosVencidos(DateTime ini, DateTime fin, string idTienda); //FALTA IMPLEMENTAR
         //Devuelve los productos que se vencieron entre ini y fin.
 
@@ -61,6 +62,7 @@ namespace DataAccessLayer
         Oferta ObtenerOferta(long idOferta, string idTienda);
         void EliminarOferta(long idOferta, string idTienda);
         Oferta ObtenerOfertaGanadora(long idProducto, string idTienda); //FALTA IMPLEMENTAR.
+        bool TieneOfertas(long ProductoID, string TiendaID);
 
         //--IMAGENES--
         void AgregarImagenProducto(ImagenProducto ip, string idTienda);

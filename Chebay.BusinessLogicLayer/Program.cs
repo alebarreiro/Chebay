@@ -1,11 +1,16 @@
 ﻿using DataAccessLayer;
+using Microsoft.Azure;
+using Microsoft.ServiceBus;
+using Microsoft.ServiceBus.Messaging;
 using Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Threading.Tasks;
+using Shared.DataTypes;
 
 namespace Chebay.BusinessLogicLayer
 {
@@ -13,9 +18,42 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+            //ChebayDBPublic.ProvidePublicSchema();
+            //using (var db = ChebayDBPublic.CreatePublic())
+            //{
+            //    db.Seed();
+            //}
+            //BLNotificaciones not = new BLNotificaciones();
+            //Compra c = new Compra { ProductoID=1, UsuarioID="joleocl@gmail.com", monto=2, fecha_compra= DateTime.UtcNow};
+            //DataProductoQueue dp = new DataProductoQueue { nombre = "prueba", OwnerProducto = "joleocl@gmail.com" , fecha_cierre=DateTime.UtcNow};
+            //not.sendEmailNotification(c, dp);
 
-            BLPersonalizacion blp = new BLPersonalizacion();
-            blp.PersonalizarTienda("e44d26", "f16529", 2, "HardPC");
+            /*
+            QueueClient Client;
+            // Establecer el número máximo de conexiones concurrentes. 
+            ServicePointManager.DefaultConnectionLimit = 12;
+            string QueueName = "notificacionescompra";
+            // Crear la cola si no existe aún
+            string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+            var namespaceManager = NamespaceManager.CreateFromConnectionString(connectionString);
+            if (!namespaceManager.QueueExists(QueueName))
+            {
+                namespaceManager.CreateQueue(QueueName);
+            }
+
+            // Inicializar la conexión con la cola de Service Bus
+            Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
+
+            var message = new BrokeredMessage("algo") { ScheduledEnqueueTimeUtc= DateTime.UtcNow.AddMinutes(1)};
+            Client.Send(message);
+            System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
+            System.Console.Read();
+            */
+            
+            
+            
+            //BLPersonalizacion blp = new BLPersonalizacion();
+            //blp.PersonalizarTienda("e44d26", "f16529", 2, "HardPC");
             /*
             int n = 5; //Cantidad de segundos a esperar.
 

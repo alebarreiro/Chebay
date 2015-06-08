@@ -2,14 +2,16 @@
     <h1>PASO 4: CARGAR IMÁGENES AL PRODUCTO</h1>
 
     <div>
-        <label for="fileUpload">
-            Select File to Upload: <input id="fileUploadProd" type="file" />
-            <button id="btnImagenProd" class="btn btn-default" type="submit"><i class="fa fa-camera-retro fa-2x"></i> Cargar imágen </button>
+        <label for="fileUpload"> Seleccione el archivo: </label>
+        <input id="fileUploadProd" type="file" />
+        <button id="btnImagenProd" class="btn btn-default" style="margin-top: 20px" type="submit"><i class="fa fa-camera-retro fa-2x"></i> Cargar imágen </button>
     </div>
 
-    <div id="imagenesCargadas">
+    <div id="imagenesCargadas" style="margin:10px">
 
     </div>
+
+    <a class="button" id="btnFinalizarSubasta" style="display:none; float: right" href="@Url.Action("Index", "Home")">Finalizar subasta</a>
 </section>
 
 <script type="text/javascript">

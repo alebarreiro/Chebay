@@ -213,7 +213,7 @@ namespace WebApplication1.Controllers
                 contenido += "</div>";
 
                 contenido += "<div class=\"prodIzquierda\">";
-                contenido += "<h3>" + prod1.nombre + "</h3>";
+                contenido += "<h3>" + prod2.nombre + "</h3>";
 
                 if (prod2.atributos.Count > 0)
                 {

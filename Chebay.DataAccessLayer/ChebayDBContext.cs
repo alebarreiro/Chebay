@@ -22,7 +22,9 @@ namespace DataAccessLayer
     public class ChebayDBContext : DbContext
     {
         //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        //static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        //@"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBContext()//(string connection): base(connection)
@@ -272,7 +274,9 @@ namespace DataAccessLayer
     public class ChebayDBPublic : DbContext
     {
         //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        static string con = @"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        //static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Database=chebay;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+//@"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBPublic()

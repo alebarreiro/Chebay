@@ -72,6 +72,7 @@ namespace WebAlgorithm
 
         public void Run(int instance, int threads)
         {
+            System.Console.WriteLine("New thread " + instance);
 
             IDALUsuario udal = new DALUsuarioEF();
             IDALTienda tdal = new DALTiendaEF();
@@ -83,15 +84,11 @@ namespace WebAlgorithm
             {
                 //hardocoded numero instancias.
 
-                //Debug.WriteLine("NUMERO DE INSTANCIAS.." + workerRoleInstance);
                 //tiene asignado algunas instancias de la tienda.
-
-                //Debug.WriteLine(tienda.TiendaID+"MOD::"+tienda.TiendaID.GetHashCode() % workerRoleInstance);
                 if (Math.Abs(tienda.TiendaID.GetHashCode() % threads) == instance)
                 {
-                    Debug.WriteLine("Instance::" + instance + "::" + tienda.TiendaID);
-                    Debug.WriteLine("TiendaHash: " + tienda.TiendaID.GetHashCode());
-
+                    System.Console.WriteLine("Instance::" + instance + "::" + tienda.TiendaID);
+                    System.Console.WriteLine("TiendaHash: " + tienda.TiendaID.GetHashCode());
 
                     List<Producto> productos = sdat.ObtenerTodosProductos(tienda.TiendaID);
                     //obtengo algoritmo

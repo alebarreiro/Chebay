@@ -18,11 +18,15 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
-            
-            BLNotificaciones not = new BLNotificaciones();
-            Compra c = new Compra { ProductoID=1, UsuarioID="joleocl@gmail.com", monto=2, fecha_compra= DateTime.UtcNow};
-            DataProductoQueue dp = new DataProductoQueue { nombre = "prueba", OwnerProducto = "joleocl@gmail.com" , fecha_cierre=DateTime.UtcNow};
-            not.sendEmailNotification(c, dp);
+            //ChebayDBPublic.ProvidePublicSchema();
+            //using (var db = ChebayDBPublic.CreatePublic())
+            //{
+            //    db.Seed();
+            //}
+            //BLNotificaciones not = new BLNotificaciones();
+            //Compra c = new Compra { ProductoID=1, UsuarioID="joleocl@gmail.com", monto=2, fecha_compra= DateTime.UtcNow};
+            //DataProductoQueue dp = new DataProductoQueue { nombre = "prueba", OwnerProducto = "joleocl@gmail.com" , fecha_cierre=DateTime.UtcNow};
+            //not.sendEmailNotification(c, dp);
 
             /*
             QueueClient Client;

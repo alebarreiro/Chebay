@@ -422,14 +422,16 @@ namespace WebApplication1.Controllers
                 List<TipoAtributo> resultado = cT.ListarTodosTipoAtributo(catId, tiendaId);
                 
                 List<DataTipoAtributo> listDta = new List<DataTipoAtributo>();
+                int counter = 0;
                 foreach (TipoAtributo ta in resultado)
                 {
                     DataTipoAtributo dta = new DataTipoAtributo
                     {
                         etiqueta = ta.TipoAtributoID,
                         tipoDato = ta.tipodato.ToString(),
-                        clave = ta.TipoAtributoID.Replace(" ",string.Empty)
+                        clave = "attr-" + counter
                     };
+                    counter++;
                     listDta.Add(dta);
                 }
                 var result = new { Success = "True", Atributos = listDta };

@@ -4,6 +4,9 @@
     var favoritos = Producto.favoritos;
     var usuario = @Context.User.Identity.Name;  
     var cantImagenes = Producto.imagenes.Count;
+    var atributos = ViewBag.atributos;
+    var valores = ViewBag.valores;
+    
 }
 
 <div class="infoProducto-container" data-key="@Producto.ProductoID" data-ownerid="@Producto.UsuarioID">
@@ -119,7 +122,34 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos">
-            @Html.Partial("_AtributosProductoPartial")
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Descripción</h4>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @Producto.descripcion
+                        </div>
+                    </div>
+                    <h4>Atributos</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="active">Atributo</th>
+                                <th class="success">Valor</th>
+                            </tr>
+                            @foreach (KeyValuePair<string, string> atributo in atributos)
+                            {
+                                <tr>
+                                    <td>@atributo.Key</td>
+                                    <td>@atributo.Value</td>
+                                </tr>
+                            }
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
         </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
             @Html.Partial("_ComentariosPartial")

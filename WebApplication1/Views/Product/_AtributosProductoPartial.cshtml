@@ -1,3 +1,61 @@
 ﻿<section id="seccion-atributosProducto">
     Atributos del producto
 </section>
+
+
+<script>
+    var productId = $('.infoProducto-container').data("key");
+
+    $('#myTab a[href="#comparar"]').click(function (e) {
+        debugger;
+        var prodId = $('.infoProducto-container').data("key");
+        var catId = "@Categoria"
+        $(this).tab('show');
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("obtenerJsonProductosCategoria", "Product")",
+            data: {
+                catId : catId
+            },
+            accept: 'application/json',
+            success: function (data) {
+                console.log(data);
+                var templateComparar = $('#comparar-template').html();
+                Mustache.parse(templateComparar);
+                var viewObject = {
+                    Productos: data.Productos
+                };
+                var rendered = Mustache.render(templateComparar, viewObject);
+                $('#seccion-compararProductos').html(rendered);
+
+            },
+            error: function (error) {
+                console.log(error);
+                sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
+            }
+        });
+    });
+
+    cargarModal = function (prodId2) {
+        $.ajax({
+            type: "GET",
+            url: "@Url.Action("ObtenerComparacionProductos", "Product")",
+            data: {
+                prod1Id : productId,
+                prod2Id : prodId2
+            },
+        accept: 'application/json',
+        success: function (data, textStatus, jqxhr) {
+            $("#compararProductosBody").html(data["Message"]);
+            $('#modalCompararProd').modal('show');
+
+        },
+        error: function (data, textStatus, jqxhr) {
+            console.log(error);
+            sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
+        }
+    });
+
+        //$('#compararProductosBody').html("Queres comparar " + prodId2 + " con " + productId)
+    }
+</script>

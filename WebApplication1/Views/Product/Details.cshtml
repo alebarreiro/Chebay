@@ -61,8 +61,8 @@
                         </span>
                     </h3>
                     <h4>
-                        <span id="userGanador">
-                            username
+                        <span id="userGanador" class="span-oferflow-fix">
+                            -
                         </span>
                     </h4>
                     <div class="infoProducto-nuevaOferta" style="display: -webkit-inline-box;">
@@ -180,7 +180,7 @@
             {{#Ofertas}}
             <tr data-ofertaid="{{OfertaID}}">
                 <th scope="row">{{index}}</th>
-                <td>{{UsuarioID}}</td>
+                <td class="td-overflow-fix">{{UsuarioID}}</td>
                 <td>{{monto}}</td>
             </tr>
             {{/Ofertas}}
@@ -436,5 +436,17 @@
 
     .nav a {
       background: transparent;
+    }
+
+    .td-overflow-fix{
+          max-width: 180px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+    }
+
+    .span-oferflow-fix{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
     }
 </style>

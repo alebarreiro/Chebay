@@ -4,6 +4,9 @@
     var favoritos = Producto.favoritos;
     var usuario = @Context.User.Identity.Name;  
     var cantImagenes = Producto.imagenes.Count;
+    var atributos = ViewBag.atributos;
+    var valores = ViewBag.valores;
+    
 }
 
 <div class="infoProducto-container" data-key="@Producto.ProductoID" data-ownerid="@Producto.UsuarioID">
@@ -58,8 +61,8 @@
                         </span>
                     </h3>
                     <h4>
-                        <span id="userGanador">
-                            username
+                        <span id="userGanador" class="span-oferflow-fix">
+                            -
                         </span>
                     </h4>
                     <div class="infoProducto-nuevaOferta" style="display: -webkit-inline-box;">
@@ -119,7 +122,34 @@
 
     <div class="tab-content">
         <div role="tabpanel" class="tab-pane fade in active infoProducto-pane" id="atributos">
-            @Html.Partial("_AtributosProductoPartial")
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <h4>Descripción</h4>
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+                            @Producto.descripcion
+                        </div>
+                    </div>
+                    <h4>Atributos</h4>
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th class="active">Atributo</th>
+                                <th class="success">Valor</th>
+                            </tr>
+                            @foreach (KeyValuePair<string, string> atributo in atributos)
+                            {
+                                <tr>
+                                    <td>@atributo.Key</td>
+                                    <td>@atributo.Value</td>
+                                </tr>
+                            }
+                        </thead>
+                    </table>
+                </div>
+            </div>
+
         </div>
         <div role="tabpanel" class="tab-pane fade infoProducto-pane" id="comentarios">
             @Html.Partial("_ComentariosPartial")
@@ -150,7 +180,7 @@
             {{#Ofertas}}
             <tr data-ofertaid="{{OfertaID}}">
                 <th scope="row">{{index}}</th>
-                <td>{{UsuarioID}}</td>
+                <td class="td-overflow-fix">{{UsuarioID}}</td>
                 <td>{{monto}}</td>
             </tr>
             {{/Ofertas}}
@@ -406,5 +436,17 @@
 
     .nav a {
       background: transparent;
+    }
+
+    .td-overflow-fix{
+          max-width: 180px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+    }
+
+    .span-oferflow-fix{
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: flex;
     }
 </style>

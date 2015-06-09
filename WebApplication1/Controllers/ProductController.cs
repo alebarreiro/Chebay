@@ -87,7 +87,13 @@ namespace WebApplication1.Controllers
                 userId = null;
             }
             Producto infoFullP = cS.ObtenerInfoProducto(productId, tienda, userId);
+            Dictionary<string, string> atributos = new Dictionary<string, string>();
+            foreach (Atributo a in infoFullP.atributos)
+            {
+                atributos.Add(a.etiqueta, a.valor);
+            }
             ViewBag.InfoProducto = infoFullP;
+            ViewBag.atributos = atributos;
             return View();
         }
 
@@ -416,14 +422,16 @@ namespace WebApplication1.Controllers
                 List<TipoAtributo> resultado = cT.ListarTodosTipoAtributo(catId, tiendaId);
                 
                 List<DataTipoAtributo> listDta = new List<DataTipoAtributo>();
+                int counter = 0;
                 foreach (TipoAtributo ta in resultado)
                 {
                     DataTipoAtributo dta = new DataTipoAtributo
                     {
                         etiqueta = ta.TipoAtributoID,
                         tipoDato = ta.tipodato.ToString(),
-                        clave = ta.TipoAtributoID.Replace(" ",string.Empty)
+                        clave = "attr-" + counter
                     };
+                    counter++;
                     listDta.Add(dta);
                 }
                 var result = new { Success = "True", Atributos = listDta };

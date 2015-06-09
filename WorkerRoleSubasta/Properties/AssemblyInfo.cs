@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // Información general acerca de cómo el siguiente conjunto de atributos 
 // controla un ensamblado. Cambie los valores de estos atributos para modificar la información
 // asociada con un ensamblado.
-[assembly: AssemblyTitle("NotificationsWorkerRole")]
+[assembly: AssemblyTitle("WorkerRoleSubasta")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("NotificationsWorkerRole")]
+[assembly: AssemblyProduct("WorkerRoleSubasta")]
 [assembly: AssemblyCopyright("Copyright ©  2015")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // El siguiente GUID es para el Id. de typelib si este proyecto se expone a COM
-[assembly: Guid("a0f4a8f7-ad96-4108-bc6b-30b0f9e30364")]
+[assembly: Guid("fec0c948-f51d-43d0-ac63-3835f3985571")]
 
 // La información de la versión de un ensamblado está formada por los siguientes cuatro valores:
 //

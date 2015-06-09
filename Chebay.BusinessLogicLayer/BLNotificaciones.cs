@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System;
 using System.Net;
 using System.Net.Mail;
-using SendGrid;
 using System.Diagnostics;
 using System.Net.Mime;
 using Shared.Entities;
@@ -35,26 +33,37 @@ namespace Chebay.BusinessLogicLayer
             };
         }
 
+        public void sendMailOwner(DataProductoQueue p)
+        {
+            MailAddress toAddress;
+            string subject;
+            string body;
+            toAddress = new MailAddress(p.OwnerProducto, "");
+            subject = "Producto " + p.nombre;
+            body = "<p>Lo sentimos... El producto " + p.ProductoID + " " + p.nombre + " ha alcanzado su fecha de finalizacion y no ha sido vendido.</p>";
+            //mando mail al que publico el producto informando que no se vendio
+            using (var message = new MailMessage(fromAddress, toAddress)
+            {
+                Subject = subject,
+                IsBodyHtml = true,
+                Body = body
+            })
+            {
+                smtp.Send(message);
+            }
+
+        }
+
         public void sendEmailNotification(Compra c, DataProductoQueue p)
         {
             MailAddress toAddress;
             string subject;
             string body;
 
-            if (c == null)
-            {
-                toAddress = new MailAddress(p.OwnerProducto, "");
-                subject = "Producto " + p.nombre;
-                body = "<p>Lo sentimos... El producto " + c.ProductoID + " " + p.nombre + " ha alcanzado su fecha de finalizacion y no ha sido vendido.</p>";
-
-                //mando mail al que publico el producto informando que no se vendio
-                return;
-            }
             //aviso al usuario que gano la subasta
             toAddress = new MailAddress(c.UsuarioID, "");
             subject = "¡Has ganado una subasta en Chebay!";
-            body = "<p>Has ganado una subasta sobre el producto " + c.ProductoID + " " + p.nombre + "!</p>";
-
+            body = "<p>Has ganado una subasta sobre el producto " + p.ProductoID + " " + p.nombre + "!</p>";
 
             using (var message = new MailMessage(fromAddress, toAddress)
             {

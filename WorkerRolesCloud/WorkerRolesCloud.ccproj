@@ -5,13 +5,13 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>2.6</ProductVersion>
-    <ProjectGuid>343b0831-d4d6-4deb-bcd0-067fa2d8792c</ProjectGuid>
+    <ProjectGuid>81d2a264-c28f-497b-b570-e51c1a856467</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AzureWorkerRoles</RootNamespace>
-    <AssemblyName>AzureWorkerRoles</AssemblyName>
+    <RootNamespace>WorkerRolesCloud</RootNamespace>
+    <AssemblyName>WorkerRolesCloud</AssemblyName>
     <StartDevelopmentStorage>True</StartDevelopmentStorage>
-    <Name>AzureWorkerRoles</Name>
+    <Name>WorkerRolesCloud</Name>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -37,26 +37,20 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AlgorithmWorkerRoleTopic\AlgorithmWorkerRoleTopic.csproj">
-      <Name>AlgorithmWorkerRoleTopic</Name>
-      <Project>{3015c853-0e76-4417-a310-426e460324a1}</Project>
+    <ProjectReference Include="..\WorkerRoleSubasta\WorkerRoleSubasta.csproj">
+      <Name>WorkerRoleSubasta</Name>
+      <Project>{488f372d-ba82-4e68-9936-3ccd17ac6168}</Project>
       <Private>True</Private>
       <RoleType>Worker</RoleType>
-      <RoleName>AlgorithmWorkerRoleTopic</RoleName>
+      <RoleName>WorkerRoleSubasta</RoleName>
       <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="AlgorithmWorkerRoleTopicContent\" />
-    <Folder Include="NotificationsWorkerRoleContent\" />
-    <Folder Include="Profiles" />
+    <Folder Include="WorkerRoleSubastaContent\" />
   </ItemGroup>
   <ItemGroup>
-    <DiagnosticsConfiguration Include="AlgorithmWorkerRoleTopicContent\diagnostics.wadcfgx" />
-    <DiagnosticsConfiguration Include="NotificationsWorkerRoleContent\diagnostics.wadcfgx" />
-  </ItemGroup>
-  <ItemGroup>
-    <PublishProfile Include="Profiles\chebayProduction.azurePubxml" />
+    <DiagnosticsConfiguration Include="WorkerRoleSubastaContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

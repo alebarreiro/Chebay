@@ -1,7 +1,5 @@
 ﻿using DataAccessLayer;
-using Microsoft.Azure;
-using Microsoft.ServiceBus;
-using Microsoft.ServiceBus.Messaging;
+
 using Shared.Entities;
 using System;
 using System.Collections.Generic;
@@ -11,6 +9,8 @@ using System.Net;
 using System.Text;
 using System.Threading.Tasks;
 using Shared.DataTypes;
+using Microsoft.Azure;
+using Microsoft.ServiceBus.Messaging;
 
 namespace Chebay.BusinessLogicLayer
 {
@@ -18,6 +18,40 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+
+
+
+            //ChebayDBPublic.ProvidePublicSchema();
+            //using (var db = ChebayDBPublic.CreatePublic())
+            //{
+            //    db.Seed();
+            //}
+
+            IDALSubasta sdal = new DALSubastaEF();
+            string tenant = "MobileCenter";
+            //ChebayDBContext.ProvisionTenant(tenant);
+            using (var db = ChebayDBContext.CreateTenant(tenant))
+            {
+                //db.seed();
+                Producto p = new Producto { UsuarioID = "Arquimedes", nombre="ifone6", CategoriaID=3, fecha_cierre=DateTime.UtcNow };
+                //string QueueName = "subasta";
+                //string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+
+                ////mandar a la queue fecha de cierre
+                //QueueClient Client;
+                //Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
+
+                ////creo dataproductoqueue
+                //DataProductoQueue dpq = new DataProductoQueue { OwnerProducto = "joleocl@gmail.com", nombre = p.nombre, fecha_cierre = p.fecha_cierre, ProductoID = p.ProductoID, TiendaID = "MobileCenter" };
+
+                ////MODIFICAR
+                //var message = new BrokeredMessage(dpq) { ScheduledEnqueueTimeUtc = DateTime.UtcNow.AddMinutes(1) };
+                //Client.Send(message);
+                //System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
+
+                sdal.AgregarProducto(p, tenant);
+            }
+
             //ChebayDBPublic.ProvidePublicSchema();
             //using (var db = ChebayDBPublic.CreatePublic())
             //{

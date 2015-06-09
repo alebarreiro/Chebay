@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 using System.Data.SqlClient;
 using System.Diagnostics;
 using System.Data.Entity.Validation;
+using Microsoft.ServiceBus.Messaging;
+using Microsoft.Azure;
 
 namespace DataAccessLayer
 {
@@ -53,8 +55,23 @@ namespace DataAccessLayer
                     context.productos.Add(p);
                     context.SaveChanges();
 
-                    //Obtengo el idProducto
-                    //context.productos.Find(p);
+                    //app.config...
+
+                    string QueueName = "subasta";
+                    string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+
+                    //mandar a la queue fecha de cierre
+                    QueueClient Client;
+                    Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
+
+                    //creo dataproductoqueue
+                    DataProductoQueue dpq = new DataProductoQueue { OwnerProducto=u.Email, nombre = p.nombre, fecha_cierre= p.fecha_cierre, ProductoID=p.ProductoID, TiendaID=idTienda };
+
+                    //MODIFICAR
+                    var message = new BrokeredMessage(dpq) { ScheduledEnqueueTimeUtc = DateTime.UtcNow };
+                    Client.Send(message);
+                    System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
+
                     return p.ProductoID;
                 }
             }
@@ -1080,6 +1097,12 @@ namespace DataAccessLayer
                     context.compras.Add(c);
                     
                     context.SaveChanges();
+
+                    //notifico inmediatamente al comprador
+                    BLNotificaciones bl = new BLNotificaciones();
+                    DataProductoQueue dp = new DataProductoQueue {ProductoID=p.ProductoID, TiendaID=idTienda, nombre=p.nombre };
+                    bl.sendEmailNotification(u.Email, dp);
+
                 }
             }
             catch (Exception e)

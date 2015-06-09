@@ -4,7 +4,7 @@
     <Instances count="2" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=cloudmystore;AccountKey=QxmRu7BZa7nl372ybUrW2tUHYFwUo8nPhZCmgurT3bsKrI+NYJsL+I6JmO7Bvb9nEntSmQuntYki7054NNKroQ==" />
-      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://algorithm-ns.servicebus.windows.net/;SharedAccessKeyName=access;SharedAccessKey=Ki0UPOxgqImNX9SZ2s6Xpo8nd/DX0ah6gGcy0x1l1oc=" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=28kpwQRjIQfjhrhGrYkH6qk7PWtqLaeS3QLzb1PcL9Y=" />
       <Setting name="Instances" value="2" />
     </ConfigurationSettings>
   </Role>
@@ -12,7 +12,7 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://algorithm-ns.servicebus.windows.net/;SharedAccessKeyName=connection;SharedAccessKey=Lvmmzm2JRfWZOrOqJl84S/4lkq66TUsBCDTqYHl/rac=" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=uhmSiIuxIPI7HLoa1vCq92bRvGvQDmIka6hCvcvTpn0=" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

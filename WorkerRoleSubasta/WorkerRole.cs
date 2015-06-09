@@ -8,59 +8,64 @@ using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
 using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using Shared.Entities;
 using Shared.DataTypes;
+using Shared.Entities;
 using DataAccessLayer;
+using Microsoft.Azure;
 
-namespace NotificationsWorkerRole
+namespace WorkerRoleSubasta
 {
     public class WorkerRole : RoleEntryPoint
     {
         // Nombre de la cola
-        const string QueueName = "notificacionescompra";
+        const string QueueName = "subasta";
 
         // QueueClient es seguro para subprocesos. Se recomienda almacenarlo en caché 
         // en lugar de crearlo de nuevo con cada solicitud
         QueueClient Client;
         ManualResetEvent CompletedEvent = new ManualResetEvent(false);
 
+
         private void procesarSubasta(DataProductoQueue p)
         {
             IDALSubasta ip = new DALSubastaEF();
-            var bl = new BLNotificaciones();
+            BLNotificaciones bl = new BLNotificaciones();
+            IDALUsuario ubl = new DALUsuarioEF();
 
             //Si fue comprado por CompraDirecta
-            if (ip.ExisteCompra(p.ProductoID, p.TiendaID))
+            if (!ip.ExisteCompra(p.ProductoID, p.TiendaID))
             {
-                //Notifico al ganador.
-                Compra compra = ip.ObtenerCompra(p.ProductoID, p.TiendaID);
-                bl.sendEmailNotification(compra, p);
-            }
-            //Si fue comprado por Subasta.
-            else if (ip.TieneOfertas(p.ProductoID, p.TiendaID))
-            {
-                //Obtengo la oferta ganadora.
-                Oferta o = ip.ObtenerOfertaGanadora(p.ProductoID, p.TiendaID);
-
-                //Creo una compra entre el Producto y el Usuario.
-                Compra c = new Compra
+                if (ip.TieneOfertas(p.ProductoID, p.TiendaID))
                 {
-                    fecha_compra = p.fecha_cierre,
-                    monto = o.monto,
-                    ProductoID = o.ProductoID,
-                    UsuarioID = o.UsuarioID
-                };
-                ip.AgregarCompra(c, p.TiendaID);
+                    //Obtengo la oferta ganadora.
+                    Oferta o = ip.ObtenerOfertaGanadora(p.ProductoID, p.TiendaID);
 
-                //Notifico al ganador.
-                bl.sendEmailNotification(c, p);
-            }
-            //Si no fue comprado.
-            else
-            {
-                bl.sendEmailNotification(null, p);
-            }
+                    //Creo una compra entre el Producto y el Usuario.
+                    Compra c = new Compra
+                    {
+                        fecha_compra = p.fecha_cierre,
+                        monto = o.monto,
+                        ProductoID = o.ProductoID,
+                        UsuarioID = o.UsuarioID
+                    };
+                    ip.AgregarCompra(c, p.TiendaID);
+
+                    //obtengo mail ganador
+                    Usuario u = ubl.ObtenerUsuario(c.UsuarioID, p.TiendaID);
+                    //Notifico al ganador.
+                    bl.sendEmailNotification(u.Email, p);
+                }
+                else
+                {
+                    //no fue comprado
+                    Debug.WriteLine("NO TIENE COMPRAS MAIL AL VENDEDOR");
+                    bl.sendEmailNotification(null, p);
+                }
+                
+            }//si fue comprado se descarta el mensaje.
+         
         }
+
 
         public override void Run()
         {
@@ -71,12 +76,10 @@ namespace NotificationsWorkerRole
                 {
                     try
                     {
-                        
                         // Procesar el mensaje
+                        Trace.WriteLine("Procesando el mensaje: " + receivedMessage.SequenceNumber.ToString());
                         DataProductoQueue message = receivedMessage.GetBody<DataProductoQueue>();
-                        procesarSubasta( message);
-                        Trace.WriteLine("###################QUEUE#####################");
-                        Trace.WriteLine("Procesando el mensaje de Service Bus: " + receivedMessage.SequenceNumber.ToString());
+                        procesarSubasta(message);
                     }
                     catch
                     {

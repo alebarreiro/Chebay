@@ -58,7 +58,8 @@ namespace DataAccessLayer
                     //app.config...
 
                     string QueueName = "subasta";
-                    string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+                    string connectionString = "Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=uhmSiIuxIPI7HLoa1vCq92bRvGvQDmIka6hCvcvTpn0=";
+                        //CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
 
                     //mandar a la queue fecha de cierre
                     QueueClient Client;

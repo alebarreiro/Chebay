@@ -175,16 +175,15 @@
             auctions.each(function () {
                 var that = this;
                 var finishTime = that.endTime,
-                    duration = moment.duration(finishTime.diff(moment())),
+                    duration = moment.duration(finishTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss"))),
                     interval = 1000;
                 if (duration._milliseconds <= 0) {
                     that.timeDiv.text("Finalizado!");
                     $('#bidButton-' + that.productId).addClass("disabled");
                 } else {
                     that.currentInterval = setInterval(function () {
-                        duration = moment.duration(finishTime.diff(moment()));
+                        duration = moment.duration(finishTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss")));
                         if (duration._milliseconds <= 0) {
-                            console.log(duration);
                             that.timeDiv.text("Finalizado!");
                             $('#bidButton-' + that.productId).addClass("disabled");
                             clearInterval(that.currentInterval);

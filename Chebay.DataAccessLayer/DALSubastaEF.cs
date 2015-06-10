@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Data.Entity.Validation;
 using Microsoft.ServiceBus.Messaging;
 using Microsoft.Azure;
+using System.Net.Mail;
 
 namespace DataAccessLayer
 {
@@ -1099,14 +1100,37 @@ namespace DataAccessLayer
                     //notifico inmediatamente al comprador
                     BLNotificaciones bl = new BLNotificaciones();
                     DataProductoQueue dp = new DataProductoQueue {ProductoID=p.ProductoID, TiendaID=idTienda, nombre=p.nombre };
-                    bl.sendEmailNotification(u.Email, dp);
-
+                    if (u.Email != null)
+                    {
+                        bl.sendEmailNotification(u.Email, dp);
+                    }
+                    else
+                    {
+                        if (IsValidMail(u.UsuarioID))
+                        {
+                            bl.sendEmailNotification(u.UsuarioID, dp);
+                        }
+                        //else... por algun error no tiene mail
+                    }
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 throw e;
+            }
+        }
+
+        public bool IsValidMail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
             }
         }
 

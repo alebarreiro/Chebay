@@ -21,10 +21,101 @@
                 @Html.Partial("_PerfilUsuarioPartial")
             </div>
             <div role="tabpanel" class="tab-pane fade" id="iniciarsubasta">
-               @Html.Partial("_IniciarSubastaPartial")
+                @Html.Partial("_IniciarSubastaPartial")
             </div>
             <div role="tabpanel" class="tab-pane fade" id="balance">
-
+                <div>
+                    <table class="table">
+                        <caption>Detalles</caption>
+                        <thead>
+                            <tr>
+                                <th>
+                                    Fecha
+                                </th>
+                                <th>
+                                    Tipo
+                                </th>
+                                <th>
+                                    Producto
+                                </th>
+                                <th>
+                                    Monto
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach (var df in ViewBag.CompraVenta)
+                            {
+                                if (@df.esCompra)
+                                {
+                                    <tr>
+                                        <td>
+                                            @df.fecha
+                                        </td>
+                                        <td>
+                                            Compra
+                                        </td>
+                                        <td>
+                                            @df.nombreProducto <a href="@Url.Action("Details", "Product", new { productId = @df.ProductoID })"><i class="fa fa-external-link"></i></a>
+                                        </td>
+                                        <td>
+                                            <span class="c-negative">
+                                                @df.monto
+                                            </span>
+                                            <svg height="12px" width="12px">
+                                                <path d="M2,2 L12,2 L7,10 Z" fill="#ff0000"></path>
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                }
+                                else
+                                {
+                                    <tr>
+                                        <td>
+                                            @df.fecha
+                                        </td>
+                                        <td>
+                                            Venta
+                                        </td>
+                                        <td>
+                                            @df.nombreProducto <a href="@Url.Action("Details", "Product", new { productId = @df.ProductoID })"><i class="fa fa-external-link"></i></a>
+                                        </td>
+                                        <td>
+                                            <span class="c-negative">
+                                                @df.monto
+                                            </span>
+                                            <svg height="12px" width="12px">
+                                                <path d="M2,10 L7,1 L12,10 Z" fill="#A5DC86"></path>
+                                            </svg>
+                                        </td>
+                                    </tr>
+                                }
+                            }
+                            <tr>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    <b>
+                                        Balance: @ViewBag.Balance
+                                    </b>
+                                        @if (ViewBag.Balance > 0)
+                                        {
+                                            <svg height="12px" width="12px">
+                                                <path d="M2,10 L7,1 L12,10 Z" fill="#A5DC86"></path>
+                                            </svg>
+                                        }
+                                        else if (ViewBag.Balance < 0)
+                                        {
+                                            <svg height="12px" width="12px">
+                                                <path d="M2,2 L12,2 L7,10 Z" fill="#ff0000"></path>
+                                            </svg>
+                                        }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
@@ -39,6 +130,6 @@
 
 <style>
     .nav a {
-      background: transparent;
+        background: transparent;
     }
 </style>

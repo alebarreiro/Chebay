@@ -337,7 +337,10 @@ namespace Frontoffice.Controllers
                         userChebay = dalU.ObtenerUsuario(loginInfo.Email, Session["Tienda_Nombre"].ToString());
                         Session["Usuario"] = userChebay;
                     } catch (Exception e) {
-                        userChebay = new Usuario { UsuarioID = loginInfo.Email };
+                        userChebay = new Usuario { 
+                            UsuarioID = loginInfo.Email, 
+                            Email = loginInfo.Email 
+                        };
                         try
                         {
                             Debug.WriteLine(e.Message);

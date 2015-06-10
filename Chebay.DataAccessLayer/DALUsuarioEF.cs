@@ -547,7 +547,8 @@ namespace DataAccessLayer
                             monto = c.monto,
                             esCompra = true,
                             fecha = c.fecha_compra,
-                            nombreProducto = c.producto.nombre
+                            nombreProducto = c.producto.nombre,
+                            ProductoID = c.ProductoID
                         };
                         ret.Add(df);
                     }
@@ -564,7 +565,8 @@ namespace DataAccessLayer
                             monto = c.monto,
                             esCompra = false,
                             fecha = c.fecha_compra,
-                            nombreProducto = c.producto.nombre
+                            nombreProducto = c.producto.nombre,
+                            ProductoID = c.ProductoID
                         };
                         ret.Add(df);
                     }

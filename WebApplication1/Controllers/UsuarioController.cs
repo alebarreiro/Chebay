@@ -60,6 +60,22 @@ namespace WebApplication1.Controllers
             }
             else
             {
+                List<DataFactura> dfs = uC.ObtenerFactura(User.Identity.Name, Session["Tienda_Nombre"].ToString());
+                dfs.Sort((x, y) => DateTime.Compare(x.fecha, y.fecha));
+                int balance = 0;
+                foreach (DataFactura df in dfs)
+                {
+                    if (df.esCompra)
+                    {
+                        balance -= df.monto;
+                    }
+                    else 
+                    {
+                        balance += df.monto;
+                    }
+                }
+                ViewBag.Balance = balance;
+                ViewBag.CompraVenta = dfs;
                 return View();
             }
         }

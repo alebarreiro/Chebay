@@ -214,7 +214,7 @@
     $(document).ready(function () {
         //Para el manejo del timer
 
-        var duration = moment.duration(auction.endTime.diff(moment())),
+        var duration = moment.duration(auction.endTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss"))),
             interval = 1000;
         console.log("Al producto " + auction.auctionId + " le faltan: "); console.log(duration);
 
@@ -222,7 +222,7 @@
             auction.timeDiv.text("Finalizado.")
         } else {
             auction.currentInterval = setInterval(function () {
-                duration = moment.duration(auction.endTime.diff(moment()));
+                duration = moment.duration(auction.endTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss")));
                 if (duration._milliseconds <= 0) {
                     auction.timeDiv.text("Finalizado.");
                     clearInterval(auction.currentInterval);

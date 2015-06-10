@@ -206,7 +206,7 @@ confirmarProducto = function () {
             'descripcion': descripcion,
             'precioBase': precioBase,
             'precioComprarYa': precioComprarYa,
-            'fechaCierre': fechaCierre + " " + horaCierre,
+            'fechaCierre': moment(moment(fechaCierre + " " + horaCierre)).utc().format("YYYY-MM-DD HH:mm").toString(),
             'catID': categoriaSeleccionada,
             'latitud': '' + marker.getPosition().lat(),
             'longitud': '' + marker.getPosition().lng()

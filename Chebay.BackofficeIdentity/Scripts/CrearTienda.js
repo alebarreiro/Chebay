@@ -2,6 +2,7 @@
 var categoriasCreadas = false;
 var tiendaBorrar;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
+var estiloGlobal;
 
 var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingCargarDatos, categoriaAgregarTipoAtributo;
 $('[data-toggle="popover"]').popover();
@@ -11,7 +12,8 @@ function modalAgregarCategoria(padre) {
 }
 
 function personalizar() {
-    var estilo = parseInt($("#estiloTienda").val());
+    //var estilo = parseInt($("#estiloTienda").val());
+    var estilo = estiloGlobal;
     var datos;
     
     var url;
@@ -372,15 +374,20 @@ function obtenerPaginaTiendas(pagina) {
     });
 }
 
-function cambiarEstilo() {
-    var estilo = parseInt($("#estiloTienda").val());
+function cambiarEstilo(estilo) {
+    //var estilo = parseInt($("#estiloTienda").val());
+    estiloGlobal = estilo;
     if (estilo == 1) {
         $("#botonImagen").hide();
         $("#botonColores").show();
+        $("#estiloUno").css('background-color', 'blue');
+        $("#estiloDos").css('background-color', 'transparent');
     }
     else {
         $("#botonColores").hide();
         $("#botonImagen").show();
+        $("#estiloUno").css('background-color', 'transparent');
+        $("#estiloDos").css('background-color', 'blue');
     }
 }
 

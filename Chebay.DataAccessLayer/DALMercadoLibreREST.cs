@@ -53,6 +53,12 @@ namespace DataAccessLayer
         }
 
 
+        public Dictionary<string, int> listarCategoriasHijas(string categoria)
+        {
+            return null;
+        }
+
+
         //parametro json /categories/id_cat
         public Dictionary<string, Dictionary<string, string>> getCategoriesSons(string categoria)
         {

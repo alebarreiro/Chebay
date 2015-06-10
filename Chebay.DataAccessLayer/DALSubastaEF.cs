@@ -59,19 +59,16 @@ namespace DataAccessLayer
 
                     string QueueName = "subasta";
                     string connectionString = "Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=uhmSiIuxIPI7HLoa1vCq92bRvGvQDmIka6hCvcvTpn0=";
-                        //CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
-
+                    //CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
                     //mandar a la queue fecha de cierre
                     QueueClient Client;
                     Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
-
                     //creo dataproductoqueue
                     DataProductoQueue dpq = new DataProductoQueue { OwnerProducto=u.Email, nombre = p.nombre, fecha_cierre= p.fecha_cierre, ProductoID=p.ProductoID, TiendaID=idTienda };
 
-                    //MODIFICAR
-                    var message = new BrokeredMessage(dpq) { ScheduledEnqueueTimeUtc = DateTime.UtcNow };
+                    var message = new BrokeredMessage(dpq) { ScheduledEnqueueTimeUtc = p.fecha_cierre };
                     Client.Send(message);
-                    System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
+                    System.Console.WriteLine(p.fecha_cierre.ToString());
 
                     return p.ProductoID;
                 }

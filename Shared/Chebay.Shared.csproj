@@ -53,6 +53,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DataTypes\DataCalificacion.cs" />
+    <Compile Include="DataTypes\DataCategoria.cs" />
     <Compile Include="DataTypes\DataFactura.cs" />
     <Compile Include="DataTypes\DataProducto.cs" />
     <Compile Include="DataTypes\DataProductoQueue.cs" />

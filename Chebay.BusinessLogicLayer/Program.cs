@@ -18,9 +18,19 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+            IDALMercadoLibreREST ml = new DALMercadoLibreREST();
+            var rootcat = ml.ListarCategoriasSitio("MLU");
+            foreach (var cat in rootcat)
+            {
+                Console.WriteLine(cat.id+cat.name);
+                var sons = ml.listarCategoriasHijas(cat.id);
+                foreach (var s in sons)
+                {
+                    Console.WriteLine("    " + s.id + s.name);
+                }
+            }
 
-            WorkerRoleRecomendacion.Algorithms a= new WorkerRoleRecomendacion.Algorithms();
-            a.Run("MobileCenter");
+
             Console.Read();
 
             //ChebayDBPublic.ProvidePublicSchema();

@@ -9,6 +9,7 @@ using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
 using Shared.DataTypes;
 using System.IO;
+using Newtonsoft.Json;
 
 namespace WebApplication1.Controllers
 {
@@ -18,6 +19,8 @@ namespace WebApplication1.Controllers
         IDALTienda cT = new DALTiendaEF();
         IDALSubasta cS = new DALSubastaEF();
         IDALUsuario cU = new DALUsuarioEF();
+
+        private static DateTime _jan1st1970 = new DateTime(1970, 1, 1);
 
         public class DatosCrearProducto
         {
@@ -94,6 +97,7 @@ namespace WebApplication1.Controllers
             }
             ViewBag.InfoProducto = infoFullP;
             ViewBag.atributos = atributos;
+            ViewBag.fecha_cierre = JsonConvert.SerializeObject(System.Convert.ToInt64((infoFullP.fecha_cierre - _jan1st1970).TotalMilliseconds));
             return View();
         }
 

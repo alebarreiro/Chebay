@@ -6,6 +6,7 @@
     var cantImagenes = Producto.imagenes.Count;
     var atributos = ViewBag.atributos;
     var valores = ViewBag.valores;
+    var cierre_parsed = ViewBag.fecha_cierre;
     
 }
 
@@ -52,8 +53,8 @@
                     <div class="infoProducto-precioActual">
                        $ <span id="precioMayorSubasta"> @Producto.precio_base_subasta </span>  <!-- Aca va a ir el precio actual (mayor oferta)-->
                     </div>
-                    <div class="infoProducto-cowndown" data-id="@Producto.ProductoID">
-                        @Producto.fecha_cierre.Date.ToString("yyyy-MM-dd HH:mm:ss")
+                    <div class="infoProducto-cowndown" data-id="@Producto.ProductoID" data-cierre="@cierre_parsed">
+                        -
                     </div>     
                     <h3>
                         <span id="hayGanador">
@@ -189,6 +190,7 @@
 </script>
 
 <script>
+    debugger;
     var prodId = "@Producto.ProductoID"
     var montoTotal = parseInt("@Producto.precio_compra")
     var userId = "@Context.User.Identity.Name"
@@ -198,7 +200,7 @@
     $cowntdown = $(".infoProducto-cowndown");
     var auction = {
         auctionId: $cowntdown.data("id"),
-        endTime: moment($cowntdown.text(), "YYYY-MM-DD HH:mm:ss"),
+        endTime: moment(parseInt($(".infoProducto-cowndown").data('cierre'))),
         timeDiv: $cowntdown
     };
 
@@ -213,8 +215,7 @@
 
     $(document).ready(function () {
         //Para el manejo del timer
-
-        var duration = moment.duration(auction.endTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss"))),
+        var duration = moment.duration(auction.endTime.diff(moment())),
             interval = 1000;
         console.log("Al producto " + auction.auctionId + " le faltan: "); console.log(duration);
 
@@ -222,7 +223,7 @@
             auction.timeDiv.text("Finalizado.")
         } else {
             auction.currentInterval = setInterval(function () {
-                duration = moment.duration(auction.endTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss")));
+                duration = moment.duration(auction.endTime.diff(moment()));
                 if (duration._milliseconds <= 0) {
                     auction.timeDiv.text("Finalizado.");
                     clearInterval(auction.currentInterval);
@@ -447,6 +448,5 @@
     .span-oferflow-fix{
       overflow: hidden;
       text-overflow: ellipsis;
-      display: flex;
     }
 </style>

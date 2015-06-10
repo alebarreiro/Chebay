@@ -8,11 +8,23 @@
 <button class="btn btn-danger" id="botonColores" onclick="$('#seleccionarEstilos').hide(); $('#imagenFondoDiv').hide(); $('#seleccionarAtributosEstilo').show();">Elegir personalización</button>&nbsp;&nbsp;
 <button class="btn btn-primary" id="botonImagen" onclick="$('#seleccionarEstilos').hide(); $('#seleccionarAtributosEstilo').hide(); $('#imagenFondoDiv').show();" style="display : none;">Subir Imagen de Fondo</button>
 <br /><br />
-<div id="seleccionarEstilos" style="display : block;">
-    <select class="form-control" id="estiloTienda" onchange="cambiarEstilo()">
-        <option selected value="1">Estilo 1</option>
-        <option value="2">Estilo 2</option>
-    </select>
+<div id="seleccionarEstilos" style="display : block;height: 350px;">
+
+    <div id="estilos" style="height : 100%;">
+        <div id="estilos" style="height : 100%;">
+            <div id="estiloUno" style="height : 100%;width : 50%;background-color : blue; float:left;">
+                <h3 style="color: red;">Estilo Uno</h3>
+                <img src="../Images/estilo2.jpg" style="width : 80%; height : 75%;margin-right:10%;margin-left:10%;" onclick="cambiarEstilo(1)" />
+            </div>
+            <div id="estiloDos" style="height : 100%;width : 50%;background-color : transparent;float:right;">
+                <h3 style="color: red;">Estilo Dos</h3>
+                <img src="../Images/estilo2.jpg" style="width : 80%; height : 75%;margin-right:10%;margin-left:10%;" onclick="cambiarEstilo(2)" />
+            </div>
+
+
+        </div>
+    </div>
+
 </div>
 
 <div id="seleccionarAtributosEstilo" style="display : none;">

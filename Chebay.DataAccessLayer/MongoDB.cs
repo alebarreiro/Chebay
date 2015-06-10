@@ -15,15 +15,17 @@ namespace DataAccessLayer
     public class MongoDB
     {
         private MongoClient _client;
+        private string _database = "MongoLab-b";
         public MongoDB()
         {
-            string connection = "mongodb://chebaylinux.cloudapp.net:27017";
+            string connection = "mongodb://MongoLab-b:ehWPn5SeNey2phicvNCu.dGxHaAlBo.8ag7Uq16.3sU-@ds036698.mongolab.com:36698/MongoLab-b";
+                //"mongodb://chebaylinux.cloudapp.net:27017";
             _client = new MongoClient(connection);
         }
 
         public async Task createIndexRecomendation(string TiendaID)
-        {          
-            var db = _client.GetDatabase("recomendaciones");
+        {
+            var db = _client.GetDatabase(_database);
             var collection = db.GetCollection<DataRecomendacion>(TiendaID);
             await collection.Indexes.CreateOneAsync(Builders<DataRecomendacion>.IndexKeys.Ascending(_ => _.UsuarioID));
         }
@@ -31,7 +33,7 @@ namespace DataAccessLayer
 
         public async Task InsertProducts(string TiendaID, DataRecomendacion dataRecomendacion)
         {
-            var db = _client.GetDatabase("recomendaciones");
+            var db = _client.GetDatabase(_database);
             var collection = db.GetCollection<DataRecomendacion>(TiendaID);
             var docs = collection.Find(new BsonDocument()).FirstOrDefaultAsync();
 
@@ -40,7 +42,7 @@ namespace DataAccessLayer
         }
         public DataRecomendacion GetRecomendacionesUsuario(string TiendaID, DataRecomendacion dataRecomendacion)
         {
-            var db = _client.GetDatabase("recomendaciones");
+            var db = _client.GetDatabase(_database);
             var collection = db.GetCollection<BsonDocument>(TiendaID);
             var prod =  collection.Find(new BsonDocument("UsuarioID", dataRecomendacion.UsuarioID))//(d => d.UsuarioID==dataRecomendacion.UsuarioID)
                        .FirstAsync();
@@ -58,9 +60,14 @@ namespace DataAccessLayer
                 int precio_compra = a["precio_compra"].AsInt32;
                 DateTime fecha_cierre = a["fecha_cierre"].ToUniversalTime();
                 string idOfertante = a["idOfertante"].AsString;
-                DataProducto dp = new DataProducto {descripcion=descripcion, fecha_cierre=fecha_cierre, idOfertante=idOfertante,
-                                                     nombre=nombre, precio_compra=precio_compra,  precio_base_subasta=precio_base_subasta,
-                                                     ProductoID=productoid };
+                DataProducto dp = new DataProducto {descripcion=descripcion,
+                                                    fecha_cierre=fecha_cierre,
+                                                    idOfertante=idOfertante,
+                                                    nombre=nombre,
+                                                    precio_compra=precio_compra,
+                                                    precio_base_subasta=precio_base_subasta,
+                                                    ProductoID=productoid 
+                                                    };
                 listDP.Add(dp);
             }
             return new DataRecomendacion {  UsuarioID=UsuarioID, productos=listDP };// prod.Result;

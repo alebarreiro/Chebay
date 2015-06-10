@@ -19,7 +19,9 @@ namespace Chebay.BusinessLogicLayer
         static void Main(string[] args)
         {
 
-
+            WorkerRoleRecomendacion.Algorithms a= new WorkerRoleRecomendacion.Algorithms();
+            a.Run("MobileCenter");
+            Console.Read();
 
             //ChebayDBPublic.ProvidePublicSchema();
             //using (var db = ChebayDBPublic.CreatePublic())
@@ -29,11 +31,10 @@ namespace Chebay.BusinessLogicLayer
 
             IDALSubasta sdal = new DALSubastaEF();
             string tenant = "MobileCenter";
-            //ChebayDBContext.ProvisionTenant(tenant);
             using (var db = ChebayDBContext.CreateTenant(tenant))
             {
                 //db.seed();
-                Producto p = new Producto { UsuarioID = "Arquimedes", nombre="ifone6", CategoriaID=3, fecha_cierre=DateTime.UtcNow };
+                ////Producto p = new Producto { UsuarioID = "Arquimedes", nombre="ifone6", CategoriaID=3, fecha_cierre=DateTime.UtcNow };
                 //string QueueName = "subasta";
                 //string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
 
@@ -49,7 +50,7 @@ namespace Chebay.BusinessLogicLayer
                 //Client.Send(message);
                 //System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
 
-                sdal.AgregarProducto(p, tenant);
+                ////sdal.AgregarProducto(p, tenant);
             }
 
             //ChebayDBPublic.ProvidePublicSchema();

@@ -18,28 +18,24 @@ namespace WebAlgorithm
     {
         // Please set the following connection strings in app.config for this WebJob to run:
         // AzureWebJobsDashboard and AzureWebJobsStorage
-        static int _threads = 2;
-        static void Run(object data)
-        {
-            Algorithms a = new Algorithms();
-            a.Run((int)data, _threads);
-        }
-
-
+        
         //Hace broadcast a topic, para todas las instancias del worker role.
         static void Main()
         {
-            string TopicName = CloudConfigurationManager.GetSetting("TopicString"); // "algorithm";
-
-            // get the connection string from config (app.config in this sample)
+            string QueueName = "recomendation";       
             string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
-            TopicClient Client = TopicClient.CreateFromConnectionString(connectionString, TopicName);
-            BrokeredMessage message = new BrokeredMessage(DateTime.Now.ToString());
-            // Send message to the topic
-            Client.Send(message);
-            System.Console.WriteLine("Message Send...");
-            System.Console.Read();
 
+            QueueClient Client;
+            Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
+
+            IDALTienda tdal = new DALTiendaEF();
+            var tiendas = tdal.ObtenerTodasTiendas();
+            foreach (var t in tiendas)
+            {
+                Console.WriteLine(t.TiendaID);
+                var message = new BrokeredMessage(t.TiendaID);
+                Client.Send(message);
+            }
         }
     }
 }

@@ -37,6 +37,14 @@
     <ServiceConfiguration Include="ServiceConfiguration.Cloud.cscfg" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\WorkerRoleRecomendacion\WorkerRoleRecomendacion.csproj">
+      <Name>WorkerRoleRecomendacion</Name>
+      <Project>{3e875032-a54d-4aa3-874a-854acfd48f93}</Project>
+      <Private>True</Private>
+      <RoleType>Worker</RoleType>
+      <RoleName>WorkerRoleRecomendacion</RoleName>
+      <UpdateDiagnosticsConnectionStringOnPublish>True</UpdateDiagnosticsConnectionStringOnPublish>
+    </ProjectReference>
     <ProjectReference Include="..\WorkerRoleSubasta\WorkerRoleSubasta.csproj">
       <Name>WorkerRoleSubasta</Name>
       <Project>{488f372d-ba82-4e68-9936-3ccd17ac6168}</Project>
@@ -47,9 +55,11 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="WorkerRoleRecomendacionContent\" />
     <Folder Include="WorkerRoleSubastaContent\" />
   </ItemGroup>
   <ItemGroup>
+    <DiagnosticsConfiguration Include="WorkerRoleRecomendacionContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="WorkerRoleSubastaContent\diagnostics.wadcfgx" />
   </ItemGroup>
   <!-- Import the target files for this project template -->

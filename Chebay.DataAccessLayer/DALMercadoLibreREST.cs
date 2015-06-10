@@ -87,7 +87,7 @@ namespace DataAccessLayer
         public void getProductsByCategory(string category)
         {
             List<Producto> productos = new List<Producto>();
-            dynamic json = ripJson("/sites/MLA/search?category="+category);
+            dynamic json = ripJson("/sites/MLU/search?category="+category);
             foreach (var p in json.results)
             {
                 string categoria = (string)p.category_id;

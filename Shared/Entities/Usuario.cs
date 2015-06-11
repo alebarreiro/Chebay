@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shared.Entities
@@ -38,6 +35,5 @@ namespace Shared.Entities
         public virtual ICollection<Calificacion> calificacionesrecibidas { get; set; }
 
         public virtual ImagenUsuario Imagen { get; set; }
-
     }
 }

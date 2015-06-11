@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shared.DataTypes;
 using Shared.Entities;
-using Shared.DataTypes;
+using System.Collections.Generic;
 
 
 namespace DataAccessLayer
@@ -63,6 +59,5 @@ namespace DataAccessLayer
 
         //--ALGORITMO PERSONALIZACION--
         void ActualizarAlgoritmoPersonalizacion(Personalizacion pers);
-
     }
 }

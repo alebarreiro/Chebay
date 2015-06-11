@@ -87,7 +87,6 @@ namespace DataAccessLayer
                     ps.MapRightKey("ProductoID");
                     ps.ToTable("Visitas", schemaName);
                 });
-
             builder.Entity<Usuario>().HasMany<Producto>(s => s.favoritos)
                 .WithMany(s => s.favoritos)
                 .Map(ps =>
@@ -96,10 +95,8 @@ namespace DataAccessLayer
                     ps.MapRightKey("ProductoID");
                     ps.ToTable("Favoritos", schemaName);
                 });
-
             builder.Entity<Producto>().HasMany<Oferta>(p => p.ofertas);
             builder.Entity<Producto>().HasMany<Comentario>(p => p.comentarios);
-            //builder.Entity<Producto>().HasMany<Compra>(p=> p.compras);
             builder.Entity<Producto>().HasMany<Atributo>(s => s.atributos)
                 .WithMany(s => s.productos)
                 .Map(ps =>
@@ -108,17 +105,13 @@ namespace DataAccessLayer
                     ps.MapRightKey("AtributoID");
                     ps.ToTable("ProductoAtributo", schemaName);
                 });
-
             builder.Entity<CategoriaSimple>().HasMany<Producto>(s => s.productos);
-
             builder.Entity<Usuario>().HasMany<Oferta>(p => p.ofertas);
             builder.Entity<Usuario>().HasMany<Comentario>(p => p.comentarios);
             builder.Entity<Usuario>().HasMany<Compra>(p => p.compras);
             builder.Entity<Usuario>().HasMany<Producto>(p => p.publicados);
             builder.Entity<Usuario>().HasMany<Calificacion>(c => c.calificaciones);
             builder.Entity<Usuario>().HasMany<Calificacion>(c => c.calificacionesrecibidas);
-            //builder.Entity<Categoria>().HasMany<Atributo>(s => s.atributos);
-
             builder.Entity<Categoria>().HasMany<TipoAtributo>(s => s.tipoatributos)
                 .WithMany(s => s.categorias)
                 .Map(ps =>
@@ -144,7 +137,6 @@ namespace DataAccessLayer
         {
             try
             {
-
                 using (var ctx = CreateTenant(tenantSchema))
                 {
                     if (!ctx.Database.Exists())
@@ -164,14 +156,15 @@ namespace DataAccessLayer
             }
         }
         
-        public void seed()
+        public void SeedMobileCenter()
         {
-            Usuario[] users = { new Usuario{ UsuarioID="Dexter", fecha_ingreso= DateTime.Now},
-                                new Usuario{ UsuarioID="Newton", fecha_ingreso= DateTime.Now },
-                                new Usuario{ UsuarioID="Cantor" , fecha_ingreso= DateTime.Now},
-                                new Usuario{ UsuarioID="Arquimedes", fecha_ingreso= DateTime.Now},
-                                new Usuario{ UsuarioID="Gauss", fecha_ingreso= DateTime.Now},
-                                new Usuario{ UsuarioID="Euler", fecha_ingreso= DateTime.Now}
+            Usuario[] users = { 
+                                new Usuario{ UsuarioID="open_pirsaoz_user@tfbnw.net", Email="chebaysend+dexter@gmail.com" ,Nombre="Dexter", fecha_ingreso= DateTime.UtcNow},
+                                new Usuario{ UsuarioID="zvfkqao_seligsteinson_1431382456@tfbnw.net", Email="chebaysend+newton@gmail.com", Nombre="Newton", fecha_ingreso= DateTime.UtcNow },
+                                new Usuario{ UsuarioID="donna_hdoteew_warmanstein@tfbnw.net", Email="chebaysend+cantor@gmail.com", Nombre="Cantor" , fecha_ingreso= DateTime.UtcNow},
+                                new Usuario{ UsuarioID="roberta_tjfvmfn_lauwitz@tfbnw.net", Email="chebaysend+arquimedes@gmail.com", Nombre="Arquimedes", fecha_ingreso= DateTime.UtcNow},
+                                new Usuario{ UsuarioID="bob_rmselzb_seligstein@tfbnw.net", Email="chebaysend+gauss@gmail.com", Nombre="Gauss", fecha_ingreso= DateTime.UtcNow},
+                                new Usuario{ UsuarioID="alice_ipkxzlk_alice@tfbnw.net", Email="chebaysend+euler@gmail.com", Nombre="Euler", fecha_ingreso= DateTime.UtcNow}
                               };
             foreach (var u in users)
             {
@@ -179,17 +172,28 @@ namespace DataAccessLayer
             }
             SaveChanges();
 
-            Categoria[] cats = {new CategoriaCompuesta {Nombre = "Raiz", padre=null},
-                                new CategoriaSimple { Nombre = "Samsung" },
-                                new CategoriaSimple { Nombre = "Apple"},
-                                new CategoriaSimple { Nombre = "LG"},
-                                new CategoriaSimple { Nombre = "Sony"}
-                               };
-            foreach (var c in cats)
+            CategoriaCompuesta[] catscom = {
+                                    new CategoriaCompuesta { CategoriaID=1, Nombre = "Raiz", padre=null},
+                                  };
+            Categoria[] catssim = { 
+                                    new CategoriaSimple { CategoriaID=2, Nombre = "Samsung", padre= catscom[0] },
+                                    new CategoriaSimple { CategoriaID=3, Nombre = "Apple", padre= catscom[0]},
+                                    new CategoriaSimple { CategoriaID=4, Nombre = "LG", padre= catscom[0]},
+                                    new CategoriaSimple { CategoriaID=5, Nombre = "Sony", padre= catscom[0]},
+                                    new CategoriaSimple { CategoriaID=6, Nombre = "Motorola", padre= catscom[0]}
+                                  };
+            foreach (var c in catscom)
             {
                 categorias.Add(c);
             }
             SaveChanges();
+
+            foreach (var c in catssim)
+            {
+                categorias.Add(c);
+            }
+            SaveChanges();
+
 
             TipoAtributo[] tatrs = { 
                                      new TipoAtributo{TipoAtributoID="CamaraRes", tipodato=TipoDato.INTEGER},
@@ -223,8 +227,8 @@ namespace DataAccessLayer
             SaveChanges();
 
             Producto[] products = { 
-                                    new Producto{ UsuarioID="Dexter", CategoriaID=2, nombre="Samsung S6", descripcion="bestia", fecha_cierre= DateTime.Now },
-                                    new Producto{ UsuarioID="Newton", CategoriaID=2, nombre="Samsung S5", descripcion="bestia", fecha_cierre= DateTime.Now }
+                                    new Producto{ UsuarioID="bob_rmselzb_seligstein@tfbnw.net", CategoriaID=2, nombre="Samsung S6", descripcion="bestia", fecha_cierre= DateTime.UtcNow },
+                                    new Producto{ UsuarioID="alice_ipkxzlk_alice@tfbnw.net", CategoriaID=2, nombre="Samsung S5", descripcion="bestia", fecha_cierre= DateTime.UtcNow }
                                   };
             foreach (var p in products)
             {
@@ -305,8 +309,6 @@ namespace DataAccessLayer
             builder.Entity<Tienda>().ToTable("Tiendas", schema);
             builder.Entity<AtributoSesion>().ToTable("AtributoSesion", schema);
             builder.Entity<Personalizacion>().ToTable("Personalizaciones", schema);
-
-
             builder.Entity<Tienda>().HasMany<Administrador>(s => s.administradores)
                 .WithMany(s => s.tiendas)
                 .Map(ps =>
@@ -315,7 +317,6 @@ namespace DataAccessLayer
                     ps.MapRightKey("AdministradorID");
                     ps.ToTable("AdminTienda", schema);
                 });
-
             builder.Entity<Administrador>().HasMany<AtributoSesion>(p => p.atributosSesion);
             
             var model = builder.Build(connection);
@@ -352,19 +353,11 @@ namespace DataAccessLayer
         public void Seed()
         {
             Tienda[] tiendasarray = {   
-                                        //new Tienda { TiendaID="LaTienda", nombre= "LaTienda", descripcion= "LaTienda.com", administradores=new List<Administrador>() },
-                                        //new Tienda { TiendaID="TestURL", nombre= "Tienda testing", descripcion= "Productos", administradores=new List<Administrador>() },
-                                        //new Tienda { TiendaID="uruFutbol", nombre= "Fobal-CAP", descripcion= "Fobal uruguayo", administradores=new List<Administrador>() },
-                                        new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() }
-                                        //new Tienda { TiendaID="HardShop", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
-
+                                        new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() },
+                                        new Tienda { TiendaID="HardPC", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
                                     };
             Administrador[] admins = { 
-                                       //new Administrador { AdministradorID= "test@chebay.com", password= "#!Chebay1", tiendas = new List<Tienda>() },
-                                       //new Administrador { AdministradorID= "adminTestURL", password= "pass123", tiendas = new List<Tienda>() },
-                                       //new Administrador { AdministradorID= "adminuruFutbol", password= "pass123", tiendas = new List<Tienda>() },
-                                       new Administrador { AdministradorID= "adminMobileCenter", password= "pass123", tiendas = new List<Tienda>() }                               
-                                       //new Administrador { AdministradorID= "adminHardShop", password= "pass123", tiendas = new List<Tienda>() }                                     
+                                        new Administrador { AdministradorID= "open_pirsaoz_user@tfbnw.net", password= "1234", tiendas = new List<Tienda>() }                               
                                      };
 
             for (int i = 0; i < admins.Count(); i++ )
@@ -398,7 +391,7 @@ namespace DataAccessLayer
                                         //new Personalizacion{PersonalizacionID="uruFutbol", datos="Blue"},
                                         //new Personalizacion{PersonalizacionID="TestURL", datos="Black"},
                                         //new Personalizacion{PersonalizacionID="LaTienda", datos="Black"},                 
-                                        new Personalizacion{PersonalizacionID="MobileCenter", datos="Black"}   
+                                        //new Personalizacion{PersonalizacionID="MobileCenter", datos="Black"}   
                                         //new Personalizacion{PersonalizacionID="HardShop", datos="Black"}                             
                                      };
             foreach (var p in pers)

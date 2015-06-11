@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson;
 using MongoDB.Driver;
-using MongoDB.Bson;
-using System.Data.Entity;
-using Shared.Entities;
 using Shared.DataTypes;
-using MongoDB.Bson.Serialization;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DataAccessLayer
 {
@@ -19,7 +14,6 @@ namespace DataAccessLayer
         public MongoDB()
         {
             string connection = "mongodb://MongoLab-b:ehWPn5SeNey2phicvNCu.dGxHaAlBo.8ag7Uq16.3sU-@ds036698.mongolab.com:36698/MongoLab-b";
-                //"mongodb://chebaylinux.cloudapp.net:27017";
             _client = new MongoClient(connection);
         }
 
@@ -44,7 +38,7 @@ namespace DataAccessLayer
         {
             var db = _client.GetDatabase(_database);
             var collection = db.GetCollection<BsonDocument>(TiendaID);
-            var prod =  collection.Find(new BsonDocument("UsuarioID", dataRecomendacion.UsuarioID))//(d => d.UsuarioID==dataRecomendacion.UsuarioID)
+            var prod =  collection.Find(new BsonDocument("UsuarioID", dataRecomendacion.UsuarioID))
                        .FirstAsync();
 
             List<DataProducto> listDP = new List<DataProducto>();
@@ -70,7 +64,7 @@ namespace DataAccessLayer
                                                     };
                 listDP.Add(dp);
             }
-            return new DataRecomendacion {  UsuarioID=UsuarioID, productos=listDP };// prod.Result;
+            return new DataRecomendacion { UsuarioID=UsuarioID, productos=listDP };
         }
 
     }

@@ -91,7 +91,6 @@
     <Compile Include="IDALSubasta.cs" />
     <Compile Include="IDALUsuario.cs" />
     <Compile Include="MongoDB.cs" />
-    <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,6 @@
-﻿using System;		
-using System.Collections.Generic;		
-using System.Linq;		
-using System.Text;		
-using System.Threading.Tasks;		
+﻿using MongoDB.Bson.Serialization.Attributes;
 using Shared.Entities;
-using MongoDB.Bson.Serialization.Attributes;
-using MongoDB.Bson;
+using System;
 
 namespace Shared.DataTypes		
 {		
@@ -15,6 +10,7 @@ namespace Shared.DataTypes
         {
 
         }
+
         public DataProducto(Producto p)
         {            
             ProductoID = p.ProductoID;

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shared.DataTypes;
 using Shared.Entities;
-using Shared.DataTypes;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 
 namespace DataAccessLayer
@@ -40,6 +37,5 @@ namespace DataAccessLayer
         Task InicializarColeccionRecomendaciones(string TiendaID);
 
         List<DataFactura> ObtenerFactura(string idUsuario, string idTienda);
-
     }
 }

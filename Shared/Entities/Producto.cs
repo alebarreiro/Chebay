@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.ComponentModel.DataAnnotations.Schema;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Shared.Entities
 {
@@ -34,7 +31,7 @@ namespace Shared.Entities
         [ForeignKey("CategoriaID")]
         public virtual CategoriaSimple categoria { get; set; }
         
-        public virtual Compra compra { get; set; } //tiene una única compra.
+        public virtual Compra compra { get; set; }
 
         public virtual ICollection<Usuario> visitas { get; set; }
         public virtual ICollection<Usuario> favoritos { get; set; }

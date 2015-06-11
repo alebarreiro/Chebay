@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Shared.DataTypes;
 using Shared.Entities;
-using Shared.DataTypes;
+using System;
+using System.Collections.Generic;
 
 namespace DataAccessLayer
 {
     public interface IDALSubasta
     {
-
         //--PRODUCTO--
         long AgregarProducto(Producto p, string idTienda);
         Producto ObtenerProducto(long idProducto, string idTienda);
@@ -79,7 +75,5 @@ namespace DataAccessLayer
         List<Producto> ObtenerProductosPublicados(string idUsuario);
         */
         
-        
-
     }
 }

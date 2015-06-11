@@ -1,14 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Diagnostics;
 using System.Net;
 using System.Net.Mail;
-using System.Diagnostics;
-using System.Net.Mime;
-using Shared.Entities;
-using Shared.DataTypes;
 
 namespace DataAccessLayer
 {
@@ -35,7 +28,7 @@ namespace DataAccessLayer
 
         public void sendEmailNotification(string email, string asunto, string mensaje)
         {
-            MailAddress toAddress = new MailAddress(email);//(p.OwnerProducto, "");
+            MailAddress toAddress = new MailAddress(email);
 
             try
             {
@@ -53,7 +46,6 @@ namespace DataAccessLayer
             {
                 Debug.WriteLine("Error enviar mensaje: "+ e.Message);
             }
-
         }
     }
 }

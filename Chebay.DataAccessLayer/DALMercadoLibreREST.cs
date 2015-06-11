@@ -1,16 +1,14 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using Shared.DataTypes;
+using Shared.Entities;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
-using Newtonsoft.Json;
-using Shared.Entities;
-using Shared.DataTypes;
-using System.Diagnostics;
-using System.Net;
 
 namespace DataAccessLayer
 {
@@ -155,14 +153,12 @@ namespace DataAccessLayer
                 int total = 0;
                 foreach (var p in json.results)
                 {
-                    //string categoria = ;
                     string nombre = (string)p.title;
                     int price = (int)double.Parse((string)p.price);
                     int subasta = price / 2;
                     string latitud = (string)p.seller_address.latitude;
                     string longitud = (string)p.seller_address.longitude;
                     DateTime fecha_cierre = Convert.ToDateTime((string)p.stop_time);
-                    //string id_vendedor = (string)p.seller.id;
                     Producto producto = new Producto
                     {
                         fecha_cierre = fecha_cierre,
@@ -200,21 +196,6 @@ namespace DataAccessLayer
 
         public void test()
         {
-            ObtenerProductosMLporCategoria("MobileCenter", "2", "MLU3502", 6);
-            //var cat = ListarCategoriasSitio("MLA");
-            //foreach (var i in cat)
-            //{
-            //    System.Console.WriteLine(i);
-            //}
-            //var dic = getCategoriesSons("MLA7076");//("MLA126844");//("MLA1648");
-            //getProductsByCategory("MLA7076");
-        
-            //pasos:
-            //armo categorias
-            //armo productos lista
-            //de lo anterior voy agregando los usuarios mercadolibre-userid
-            //obtenerImagenesProducto(idproducto)
-            //createUser(..)
         }
        
     }

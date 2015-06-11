@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccessLayer;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using DataAccessLayer;
 using Shared.Entities;
-using System.Diagnostics;
+using System;
 
 namespace Chebay.DataAccessLayerTests
 {   [TestClass]

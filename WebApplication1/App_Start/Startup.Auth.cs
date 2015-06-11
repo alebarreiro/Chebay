@@ -47,16 +47,6 @@ namespace Frontoffice
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            // Uncomment the following lines to enable logging in with third party login providers
-            //app.UseMicrosoftAccountAuthentication(
-            //    clientId: "",
-            //    clientSecret: "");
-
-            //app.UseTwitterAuthentication(
-            //   consumerKey: "",
-            //   consumerSecret: "");
-
-
             /* CREDENCIALES http://localhost:56094/ */
 
             var x = new FacebookAuthenticationOptions();
@@ -73,14 +63,8 @@ namespace Frontoffice
             x.AppId = "934307863287869";
             x.AppSecret = "b1c707f2a41b570dd32f6a010dd2efe8";
             
-            app.UseFacebookAuthentication(x); */
-            
-
-            //app.UseGoogleAuthentication(new GoogleOAuth2AuthenticationOptions()
-            //{
-            //    ClientId = "",
-            //    ClientSecret = ""
-            //});
+            app.UseFacebookAuthentication(x); 
+            */
         }
     }
 }

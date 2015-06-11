@@ -8,10 +8,13 @@ using System.Threading.Tasks;
 using System.Web.Script.Serialization;
 using Newtonsoft.Json;
 using Shared.Entities;
+using Shared.DataTypes;
+using System.Diagnostics;
+using System.Net;
 
 namespace DataAccessLayer
 {
-    public class DALMercadoLibreREST
+    public class DALMercadoLibreREST:IDALMercadoLibreREST
     {
         private HttpClient _client = new HttpClient();
         public DALMercadoLibreREST()
@@ -23,20 +26,19 @@ namespace DataAccessLayer
         }
 
         //pasar dynob.categories
-        public Dictionary<string,string> ListarCategoriasSitio(string sitio)
-        {
-
+        public List<DataCategoria> ListarCategoriasSitio(string sitio)
+        {         
             dynamic json = ripJson("/sites/"+sitio);
-            Dictionary<string,string> ret = new Dictionary<string,string>();
+            List<DataCategoria> ret = new List<DataCategoria>();
             foreach (var i in json.categories)
             {
-                ret.Add((string)i.id, (string)i.name);
+                ret.Add(new DataCategoria { id=(string)i.id, name = (string)i.name });
             }
             return ret;
         }
 
 
-        public dynamic ripJson(string url)
+        private dynamic ripJson(string url)
         {
             Task<HttpResponseMessage> taskresponse = _client.GetAsync(url);
             taskresponse.Wait();
@@ -53,14 +55,24 @@ namespace DataAccessLayer
         }
 
 
-        public Dictionary<string, int> listarCategoriasHijas(string categoria)
+        public List<DataCategoria> listarCategoriasHijas(string categoria)
         {
-            return null;
+            List<DataCategoria> lista = new List<DataCategoria>();
+            dynamic json = ripJson("/categories/" + categoria);
+            foreach (var cat in json.children_categories)
+            {
+                lista.Add(new DataCategoria 
+                                    {id=(string)cat.id,
+                                     name=(string)cat.name,
+                                     total_items_in_this_category = int.Parse((string)cat.total_items_in_this_category)
+                                    });
+            }
+            return lista;
         }
 
 
         //parametro json /categories/id_cat
-        public Dictionary<string, Dictionary<string, string>> getCategoriesSons(string categoria)
+        private Dictionary<string, Dictionary<string, string>> getCategoriesSons(string categoria)
         {
             var mycategories = new Dictionary<string, Dictionary<string, string>>();
             List<string> stack = new List<string>();
@@ -89,47 +101,113 @@ namespace DataAccessLayer
             return mycategories;
         }
 
-
-        public void getProductsByCategory(string category)
+        private void CrearUsuarioML(string TiendaID)
         {
-            List<Producto> productos = new List<Producto>();
-            dynamic json = ripJson("/sites/MLU/search?category="+category);
-            foreach (var p in json.results)
+            string usermail = "chebaysend@gmail.com";
+            Usuario u = new Usuario {   Nombre="MercadoLibreWebscraping",
+                                        Pais="Uruguay",
+                                        Email=usermail,
+                                        UsuarioID=usermail,
+                                        fecha_ingreso= DateTime.UtcNow
+                                        };
+            using (var db = ChebayDBContext.CreateTenant(TiendaID))
             {
-                string categoria = (string)p.category_id;
-                string nombre = (string)p.name;
-                int price = (int)double.Parse((string)p.price);
-                string latitud = (string)p.seller_address.latitude;
-                string longitud = (string)p.seller_address.longitude;
-                DateTime fecha_cierre = Convert.ToDateTime((string)p.stop_time);
-                string id_vendedor = (string)p.seller.id;
-                //faltan imagenes
-                //buscar categoria
-                //crear usuario
-                Producto producto = new Producto { 
-                                                    fecha_cierre=fecha_cierre,
-                                                    latitud = latitud,
-                                                    longitud = longitud,
-                                                    nombre = nombre,
-                                                    precio_compra = price,
-                                                    UsuarioID="mercadolibre-"+id_vendedor,
-                                                    //imagenes
-                                                    //categoria
-                                                    };
-                productos.Add(producto);
-                System.Console.WriteLine((string)p.title + fecha_cierre.ToString());
+                db.usuarios.Add(u);
+                db.SaveChanges();
+            }
+        }
+
+        private List<ImagenProducto> ObtenerImagenesProducto(long ProductoID, string item)
+        {
+            List<ImagenProducto> lista = new List<ImagenProducto>();
+            var json = ripJson("/items/" + item);
+            foreach (var picture in json.pictures)
+            {
+
+                var webCli = new WebClient();
+                byte[] bytes = webCli.DownloadData((string)picture.url);
+                ImagenProducto im = new ImagenProducto { ProductoID=ProductoID, Imagen = bytes};
+                lista.Add(im);
+            }
+            return lista; 
+        }
+
+        public void ObtenerProductosMLporCategoria(string TiendaID, string limit, string categoryML, long categoryLocal)
+        {
+            IDALSubasta sdal = new DALSubastaEF();
+
+            string user_ml = "chebaysend@gmail.com";
+            //verifico si usuario existe
+            using (var db = ChebayDBContext.CreateTenant(TiendaID))
+            {
+                var query = from u in db.usuarios
+                            where u.UsuarioID == user_ml
+                            select u;
+                if (query.Count() == 0)
+                {
+                    CrearUsuarioML(TiendaID);
+                }
+
+
+                List<Producto> productos = new List<Producto>();
+                dynamic json = ripJson("/sites/MLU/search?limit=" + limit + "&category=" + categoryML);
+
+                int total = 0;
+                foreach (var p in json.results)
+                {
+                    //string categoria = ;
+                    string nombre = (string)p.title;
+                    int price = (int)double.Parse((string)p.price);
+                    int subasta = price / 2;
+                    string latitud = (string)p.seller_address.latitude;
+                    string longitud = (string)p.seller_address.longitude;
+                    DateTime fecha_cierre = Convert.ToDateTime((string)p.stop_time);
+                    //string id_vendedor = (string)p.seller.id;
+                    Producto producto = new Producto
+                    {
+                        fecha_cierre = fecha_cierre,
+                        latitud = latitud,
+                        longitud = longitud,
+                        nombre = nombre,
+                        precio_compra = price,
+                        precio_base_subasta =subasta,
+                        UsuarioID = user_ml,
+                        CategoriaID = categoryLocal,
+                        imagenes = new List<ImagenProducto>()
+                    };
+                    long idprod = sdal.AgregarProducto(producto, TiendaID);
+                    //agrego producto
+                    
+                    var imagenes = ObtenerImagenesProducto(idprod, (string)p.id);
+                    foreach (var im in imagenes)
+                    {
+                        sdal.AgregarImagenProducto(im, TiendaID);
+                    }
+
+                    total++;
+                    Debug.WriteLine(producto.nombre+" "
+                                            +producto.UsuarioID+" "
+                                            +producto.latitud + " "
+                                            +producto.longitud + " "
+                                            +producto.precio_compra + " "
+                                            +producto.CategoriaID
+                                            );
+                }
+                Debug.WriteLine("Total: " + total);
+
             }
         }
 
         public void test()
         {
+            ObtenerProductosMLporCategoria("MobileCenter", "2", "MLU3502", 6);
             //var cat = ListarCategoriasSitio("MLA");
             //foreach (var i in cat)
             //{
             //    System.Console.WriteLine(i);
             //}
             //var dic = getCategoriesSons("MLA7076");//("MLA126844");//("MLA1648");
-            getProductsByCategory("MLA7076");
+            //getProductsByCategory("MLA7076");
         
             //pasos:
             //armo categorias

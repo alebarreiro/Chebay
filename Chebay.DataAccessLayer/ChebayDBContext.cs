@@ -1,20 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.Entity;
-using System.Data.Entity.ModelConfiguration.Conventions;
-using Shared.Entities;
-using System.Data.Common;
+﻿using Shared.Entities;
+using System;
 using System.Collections.Concurrent;
-using System.Data.Entity.Infrastructure;
-using System.Data.Entity.ModelConfiguration;
+using System.Collections.Generic;
 using System.Configuration;
-using Shared;
-using System.Diagnostics;
+using System.Data.Common;
+using System.Data.Entity;
+using System.Data.Entity.Infrastructure;
 using System.Data.SqlClient;
-
+using System.Diagnostics;
+using System.Linq;
 
 namespace DataAccessLayer
 {
@@ -26,7 +20,7 @@ namespace DataAccessLayer
         static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
-        public ChebayDBContext()//(string connection): base(connection)
+        public ChebayDBContext()
         {
             Database.SetInitializer<ChebayDBContext>(null);
             this.Configuration.LazyLoadingEnabled = false;
@@ -275,7 +269,6 @@ namespace DataAccessLayer
         //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
         //static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Database=chebay;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
         static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
-        //@"Server=qln8u7yf2c.database.windows.net,1433;Database=chebaytesting;User ID=chebaydb@qln8u7yf2c;Password=#!Chebay;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBPublic()

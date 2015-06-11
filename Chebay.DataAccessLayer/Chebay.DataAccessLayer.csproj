@@ -86,6 +86,7 @@
     <Compile Include="DALSubastaEF.cs" />
     <Compile Include="DALTiendaEF.cs" />
     <Compile Include="DALUsuarioEF.cs" />
+    <Compile Include="IDALMercadoLibreREST.cs" />
     <Compile Include="IDALTienda.cs" />
     <Compile Include="IDALSubasta.cs" />
     <Compile Include="IDALUsuario.cs" />

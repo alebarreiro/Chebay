@@ -1,15 +1,11 @@
-﻿using Shared.Entities;
+﻿using Microsoft.ServiceBus.Messaging;
 using Shared.DataTypes;
+using Shared.Entities;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Data.SqlClient;
 using System.Diagnostics;
-using System.Data.Entity.Validation;
-using Microsoft.ServiceBus.Messaging;
-using Microsoft.Azure;
+using System.Linq;
+using System.Net.Mail;
 
 namespace DataAccessLayer
 {
@@ -58,20 +54,17 @@ namespace DataAccessLayer
                     //app.config...
 
                     string QueueName = "subasta";
-                    string connectionString = "Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=uhmSiIuxIPI7HLoa1vCq92bRvGvQDmIka6hCvcvTpn0=";
-                        //CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
-
+                    string connectionString = "Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=Jd/ztAsr+7snQ02QpUfn9bIvb9QvTjup+nox7GDw1dM=";
+                    //CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+                   
                     //mandar a la queue fecha de cierre
-                    QueueClient Client;
-                    Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
-
+                    QueueClient Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
                     //creo dataproductoqueue
-                    DataProductoQueue dpq = new DataProductoQueue { OwnerProducto=u.Email, nombre = p.nombre, fecha_cierre= p.fecha_cierre, ProductoID=p.ProductoID, TiendaID=idTienda };
+                    DataProductoQueue dpq = new DataProductoQueue { OwnerProducto=u.UsuarioID, nombre = p.nombre, fecha_cierre= p.fecha_cierre, ProductoID=p.ProductoID, TiendaID=idTienda };
 
-                    //MODIFICAR
-                    var message = new BrokeredMessage(dpq) { ScheduledEnqueueTimeUtc = DateTime.UtcNow };
+                    var message = new BrokeredMessage(dpq) { ScheduledEnqueueTimeUtc = p.fecha_cierre };
                     Client.Send(message);
-                    System.Console.WriteLine(DateTime.UtcNow.AddMinutes(1).ToString());
+                    System.Console.WriteLine(p.fecha_cierre.ToString());
 
                     return p.ProductoID;
                 }
@@ -1101,15 +1094,41 @@ namespace DataAccessLayer
 
                     //notifico inmediatamente al comprador
                     BLNotificaciones bl = new BLNotificaciones();
-                    DataProductoQueue dp = new DataProductoQueue {ProductoID=p.ProductoID, TiendaID=idTienda, nombre=p.nombre };
-                    bl.sendEmailNotification(u.Email, dp);
+                    string asunto ="Venta de producto!";
+                    string mensaje = "El producto " + p.ProductoID + " " + p.nombre+ " se ha vendido al usuario "
+                                      +c.UsuarioID + " por el valor de $" + c.monto +".";
 
+                    if (u.Email != null)
+                    {
+                        bl.sendEmailNotification(u.Email, asunto, mensaje);
+                    }
+                    else
+                    {
+                        if (IsValidMail(u.UsuarioID))
+                        {
+                            bl.sendEmailNotification(u.UsuarioID, asunto, mensaje);
+                        }
+                        //else... por algun error no tiene mail
+                    }
                 }
             }
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
                 throw e;
+            }
+        }
+
+        public bool IsValidMail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
             }
         }
 

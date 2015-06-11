@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading;
+﻿using DataAccessLayer;
+using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Shared.DataTypes;
 using Shared.Entities;
-using DataAccessLayer;
-using Microsoft.Azure;
+using System.Diagnostics;
+using System.Net;
+using System.Threading;
 
 namespace WorkerRoleSubasta
 {
@@ -32,9 +28,12 @@ namespace WorkerRoleSubasta
             BLNotificaciones bl = new BLNotificaciones();
             IDALUsuario ubl = new DALUsuarioEF();
 
-            //Si fue comprado por CompraDirecta
+            //Si no fue comprado por CompraDirecta
             if (!ip.ExisteCompra(p.ProductoID, p.TiendaID))
             {
+                //vendedor
+                Usuario vendedor = ubl.ObtenerUsuario(p.OwnerProducto, p.TiendaID);
+
                 if (ip.TieneOfertas(p.ProductoID, p.TiendaID))
                 {
                     //Obtengo la oferta ganadora.
@@ -48,18 +47,27 @@ namespace WorkerRoleSubasta
                         ProductoID = o.ProductoID,
                         UsuarioID = o.UsuarioID
                     };
+                    //se envia mensaje al vendedor en AgregarCompra
                     ip.AgregarCompra(c, p.TiendaID);
 
                     //obtengo mail ganador
+                    
                     Usuario u = ubl.ObtenerUsuario(c.UsuarioID, p.TiendaID);
                     //Notifico al ganador.
-                    bl.sendEmailNotification(u.Email, p);
+                    string mensaje = "<p>Has ganado una subasta sobre el producto "
+                                     + p.ProductoID + " " + p.nombre + "!</p>" +
+                                     "<p> Te invitamos a calificar al vendedor accediendo al siguiente enlace: "
+                                     + " http://chebuynow.azurewebsites.net/" + p.TiendaID + "/Usuario/CalificarUsuario?prodId=" + p.ProductoID + " </p>";
+                    string asunto = "¡Has ganado una subasta en Chebay!";
+                    bl.sendEmailNotification(u.Email, asunto, mensaje);
                 }
                 else
                 {
                     //no fue comprado
                     Debug.WriteLine("NO TIENE COMPRAS MAIL AL VENDEDOR");
-                    bl.sendEmailNotification(null, p);
+                    string asunto = "Producto " + p.nombre;
+                    string mensaje = "<p>Lo sentimos... El producto " + p.ProductoID + " " + p.nombre + " ha alcanzado su fecha de finalizacion y no se ha vendido.</p>";
+                    bl.sendEmailNotification(vendedor.Email, asunto, mensaje);
                 }
                 
             }//si fue comprado se descarta el mensaje.
@@ -77,12 +85,13 @@ namespace WorkerRoleSubasta
                     try
                     {
                         // Procesar el mensaje
-                        Trace.WriteLine("Procesando el mensaje: " + receivedMessage.SequenceNumber.ToString());
                         DataProductoQueue message = receivedMessage.GetBody<DataProductoQueue>();
+                        Trace.WriteLine("Procesando mensaje del producto " + message.nombre);
                         procesarSubasta(message);
                     }
                     catch
                     {
+                        Trace.WriteLine("ERROR AL PROCESAR MENSAJE QUEUE SUBASTA...");
                         // Controlar cualquier excepción específica del procesamiento de mensajes aquí
                     }
                 });

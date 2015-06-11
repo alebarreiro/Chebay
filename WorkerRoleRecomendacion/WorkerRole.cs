@@ -1,21 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading;
+﻿using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
-using Microsoft.Azure;
+using System.Diagnostics;
+using System.Net;
+using System.Threading;
 
 namespace WorkerRoleRecomendacion
 {
     public class WorkerRole : RoleEntryPoint
     {
         // Nombre de la cola
-        const string QueueName = "recomendation";
+        const string QueueName = "recomendacion";
 
         // QueueClient es seguro para subprocesos. Se recomienda almacenarlo en caché 
         // en lugar de crearlo de nuevo con cada solicitud

@@ -75,6 +75,10 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Chebay.DataAccessLayerTests\Chebay.DataAccessLayerTests.csproj">
+      <Project>{85a04b25-6f5a-4e66-915b-4986b568a1cd}</Project>
+      <Name>Chebay.DataAccessLayerTests</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Chebay.DataAccessLayer\Chebay.DataAccessLayer.csproj">
       <Project>{e087801e-b9b8-4ce0-813d-5527a19396a0}</Project>
       <Name>Chebay.DataAccessLayer</Name>

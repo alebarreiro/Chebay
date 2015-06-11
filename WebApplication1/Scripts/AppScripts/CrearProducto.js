@@ -12,14 +12,16 @@ var marker;
 var map;
 
 function cargarMapa() {
+
     if (document.getElementById('map') != null) {
 
         map = new GMaps({
             el: '#map',
-            lat: -34.905510300,
-            lng: -56.192056200,
+            mapTypeId: google.maps.MapTypeId.HYBRID,
+            center: new google.maps.LatLng(-34.905510300, -56.192056200),
             width: '100%',
             height: '400px',
+            zoom: 16,
             click: function (event) {
                 map.removeMarkers();
                 var lat = event.latLng.lat();
@@ -70,6 +72,7 @@ datosAtributos = function () {
     divActual.hide();
     $("#geolocalizacion").show();
     divActual = $("#geolocalizacion");
+    cargarMapa();
 }
 
 datosImagenes = function () {

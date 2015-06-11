@@ -4,14 +4,14 @@
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=uhmSiIuxIPI7HLoa1vCq92bRvGvQDmIka6hCvcvTpn0=" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=Jd/ztAsr+7snQ02QpUfn9bIvb9QvTjup+nox7GDw1dM=" />
     </ConfigurationSettings>
   </Role>
   <Role name="WorkerRoleRecomendacion">
     <Instances count="1" />
     <ConfigurationSettings>
       <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
-      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=28kpwQRjIQfjhrhGrYkH6qk7PWtqLaeS3QLzb1PcL9Y=" />
+      <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=S7iWiUrWVafAyLY8sf3P32xjzvvpTKQU9khPyddYGkY=" />
     </ConfigurationSettings>
   </Role>
 </ServiceConfiguration>

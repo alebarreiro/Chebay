@@ -59,11 +59,11 @@ namespace DataAccessLayer
                     //app.config...
 
                     string QueueName = "subasta";
-                    string connectionString = "Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=uhmSiIuxIPI7HLoa1vCq92bRvGvQDmIka6hCvcvTpn0=";
+                    string connectionString = "Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=Jd/ztAsr+7snQ02QpUfn9bIvb9QvTjup+nox7GDw1dM=";
                     //CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
+                   
                     //mandar a la queue fecha de cierre
-                    QueueClient Client;
-                    Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
+                    QueueClient Client = QueueClient.CreateFromConnectionString(connectionString, QueueName);
                     //creo dataproductoqueue
                     DataProductoQueue dpq = new DataProductoQueue { OwnerProducto=u.Email, nombre = p.nombre, fecha_cierre= p.fecha_cierre, ProductoID=p.ProductoID, TiendaID=idTienda };
 
@@ -1099,16 +1099,19 @@ namespace DataAccessLayer
 
                     //notifico inmediatamente al comprador
                     BLNotificaciones bl = new BLNotificaciones();
-                    DataProductoQueue dp = new DataProductoQueue {ProductoID=p.ProductoID, TiendaID=idTienda, nombre=p.nombre };
+                    string asunto ="Venta de producto!";
+                    string mensaje = "El producto " + p.ProductoID + " " + p.nombre+ "se ha vendido al usuario "
+                                      +c.UsuarioID + " por el valor de $"+c.monto +".";
+
                     if (u.Email != null)
                     {
-                        bl.sendEmailNotification(u.Email, dp);
+                        bl.sendEmailNotification(u.Email, asunto, mensaje);
                     }
                     else
                     {
                         if (IsValidMail(u.UsuarioID))
                         {
-                            bl.sendEmailNotification(u.UsuarioID, dp);
+                            bl.sendEmailNotification(u.UsuarioID, asunto, mensaje);
                         }
                         //else... por algun error no tiene mail
                     }

@@ -18,7 +18,10 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
+
             IDALMercadoLibreREST ml = new DALMercadoLibreREST();
+            //ml.ObtenerProductosMLporCategoria("MobileCenter", "10", "MLU3502", 4);
+            
             var rootcat = ml.ListarCategoriasSitio("MLU");
             foreach (var cat in rootcat)
             {

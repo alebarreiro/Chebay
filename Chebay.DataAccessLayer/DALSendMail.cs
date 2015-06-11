@@ -33,37 +33,27 @@ namespace DataAccessLayer
             };
         }
 
-        public void sendEmailNotification(string emailcomprador, DataProductoQueue p)
+        public void sendEmailNotification(string email, string asunto, string mensaje)
         {
-            MailAddress toAddress;
-            string subject;
-            string body;
+            MailAddress toAddress = new MailAddress(email);//(p.OwnerProducto, "");
 
-            if (emailcomprador == null)
+            try
             {
-                toAddress = new MailAddress(p.OwnerProducto, "");
-                subject = "Producto "+p.nombre;
-                body = "<p>Lo sentimos... El producto " + p.ProductoID + " " + p.nombre + " ha alcanzado su fecha de finalizacion y no se ha vendido.</p>";
-                //mando mail al que publico el producto informando que no se vendio
+                using (var message = new MailMessage(fromAddress, toAddress)
+                {
+                    Subject = asunto,
+                    IsBodyHtml = true,
+                    Body = mensaje
+                })
+                {
+                    smtp.Send(message);
+                }
             }
-            else
+            catch (Exception e)
             {
-                //aviso al usuario que gano la subasta
-                toAddress = new MailAddress(emailcomprador, "");
-                subject = "¡Has ganado una subasta en Chebay!";
-                body = "<p>Has ganado una subasta sobre el producto " + p.ProductoID + " " + p.nombre + "!</p>";
+                Debug.WriteLine("Error enviar mensaje: "+ e.Message);
             }
-            
-            
-            using (var message = new MailMessage(fromAddress, toAddress)
-            {
-                Subject = subject,
-                IsBodyHtml = true,
-                Body = body
-            })
-            {
-                smtp.Send(message);
-            }
+
         }
     }
 }

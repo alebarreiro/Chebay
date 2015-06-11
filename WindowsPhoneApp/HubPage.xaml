@@ -108,7 +108,7 @@
                  IsTextPredictionEnabled="True"
                  FontSize="18"
                  FontFamily="Helvetica"
-                 Margin="20,20,70,20"/>
+                 Margin="70,20,70,20"/>
 
         <ProgressRing Name="ProgressRing"
                       Grid.Row="1"
@@ -120,5 +120,12 @@
                       Label="Buscar"
                       Click="BuscarButton_Click"
                       HorizontalAlignment="Right"/>
+        
+        <AppBarButton Icon="Zoom" 
+                      Grid.Row="2"
+                      Name="exampleButton"
+                      Label="Buscar"
+                      Click="ExampleButton_Click"
+                      HorizontalAlignment="Left"/>
     </Grid>
 </Page>

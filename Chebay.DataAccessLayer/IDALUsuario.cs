@@ -25,6 +25,7 @@ namespace DataAccessLayer
         Calificacion ObtenerCalificacion(long idCalificacion, string idTienda);
         List<Calificacion> ObtenerCalificaciones(string idTienda);
         void EliminarCalificacion(long idCalificacion, string idTienda);
+
         DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda);
         DataPuedoCalificar PuedoCalificar(long idProducto, string idUsuario, string idTienda);
 

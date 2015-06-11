@@ -13,6 +13,8 @@ namespace ChebayREST.Controllers
 {
     public class SubastaController : ApiController
     {
+
+        //URL: http://chebayrest1930.azurewebsites.net/api/subasta
         public Subasta[] Get()
         {
             IDALSubasta ip = new DALSubastaEF();
@@ -37,7 +39,8 @@ namespace ChebayREST.Controllers
             }
             return ret;
         }
-        //CHEQUEAR
+
+        //URL: api/subasta?searchTerm=terminosdebusqueda;
         public Subasta[] Get(string searchTerm)
         {
             IDALSubasta ip = new DALSubastaEF();
@@ -62,6 +65,8 @@ namespace ChebayREST.Controllers
             }
             return ret;
         }
+
+
 
     }
 }

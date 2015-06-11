@@ -19,7 +19,7 @@ namespace DataAccessLayer
             //Console.WriteLine("Utilizar en caso de pruebas minimas...");
             //DALMercadoLibreREST ml = new DALMercadoLibreREST();
             //ml.test();
-            //Console.Read();
+            Console.Read();
         }
        
 

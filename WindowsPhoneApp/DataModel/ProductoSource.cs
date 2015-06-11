@@ -29,23 +29,7 @@ namespace WindowsPhoneApp.Data
         {
             get { return this._items; }
         }
-        /*
-        public static async Task<IEnumerable<SampleDataGroup>> GetGroupsAsync()
-        {
-            await _sampleDataSource.GetSampleDataAsync();
-
-            return _sampleDataSource.Groups;
-        }
-
-        public static async Task<SampleDataGroup> GetGroupAsync(string uniqueId)
-        {
-            await _sampleDataSource.GetSampleDataAsync();
-            // Simple linear search is acceptable for small data sets
-            var matches = _sampleDataSource.Groups.Where((group) => group.UniqueId.Equals(uniqueId));
-            if (matches.Count() == 1) return matches.First();
-            return null;
-        }
-        */
+     
         public static async Task<ProductoItem> GetItemAsync(long uniqueId)
         {
             //await _sampleDataSource.GetSampleDataAsync();
@@ -60,41 +44,6 @@ namespace WindowsPhoneApp.Data
         {
             _sampleDataSource.Items.Add(pi);
         }
-
-       /* private async Task GetSampleDataAsync()
-        {
-            if (this._items.Count != 0)
-                return;
-
-            Uri dataUri = new Uri("ms-appx:///DataModel/data.json");
-
-            StorageFile file = await StorageFile.GetFileFromApplicationUriAsync(dataUri);
-            string jsonText = await FileIO.ReadTextAsync(file);
-            JsonObject jsonObject = JsonObject.Parse(jsonText);
-            JsonArray jsonArray = jsonObject["Groups"].GetArray();
-
-            foreach (JsonValue groupValue in jsonArray)
-            {
-                JsonObject groupObject = groupValue.GetObject();
-                SampleDataGroup group = new SampleDataGroup(groupObject["UniqueId"].GetString(),
-                                                            groupObject["Title"].GetString(),
-                                                            groupObject["Subtitle"].GetString(),
-                                                            groupObject["ImagePath"].GetString(),
-                                                            groupObject["Description"].GetString());
-
-                foreach (JsonValue itemValue in groupObject["Items"].GetArray())
-                {
-                    JsonObject itemObject = itemValue.GetObject();
-                    group.Items.Add(new SampleDataItem(itemObject["UniqueId"].GetString(),
-                                                       itemObject["Title"].GetString(),
-                                                       itemObject["Subtitle"].GetString(),
-                                                       itemObject["ImagePath"].GetString(),
-                                                       itemObject["Description"].GetString(),
-                                                       itemObject["Content"].GetString()));
-                }
-                this.Items.Add(group);
-            }
-        }*/
     }
 
 

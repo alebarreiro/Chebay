@@ -26,8 +26,8 @@ namespace Chebay.DataAccessLayerTests
         public void SuperTest()
         {
             
-         //   AgregarTienda();
-         //   AgregarVariasCategorias();
+            AgregarTienda();
+            AgregarVariasCategorias();
             AgregarVariosTipoAtributo();
         }
 

@@ -1,16 +1,7 @@
 ﻿using DataAccessLayer;
-
 using Shared.Entities;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
-using Shared.DataTypes;
-using Microsoft.Azure;
-using Microsoft.ServiceBus.Messaging;
+using Chebay.DataAccessLayerTests;
 
 namespace Chebay.BusinessLogicLayer
 {
@@ -19,19 +10,22 @@ namespace Chebay.BusinessLogicLayer
         static void Main(string[] args)
         {
 
-            IDALMercadoLibreREST ml = new DALMercadoLibreREST();
-            //ml.ObtenerProductosMLporCategoria("MobileCenter", "10", "MLU3502", 4);
-            
-            var rootcat = ml.ListarCategoriasSitio("MLU");
-            foreach (var cat in rootcat)
-            {
-                Console.WriteLine(cat.id+cat.name);
-                var sons = ml.listarCategoriasHijas(cat.id);
-                foreach (var s in sons)
-                {
-                    Console.WriteLine("    " + s.id + s.name);
-                }
-            }
+            CustomTests test = new CustomTests();
+            test.CierreSubastaCompraDirecta();
+            test.CierreSubastaConOferta();
+            test.CierreSubastaNoCompras();
+
+
+            //var rootcat = ml.ListarCategoriasSitio("MLU");
+            //foreach (var cat in rootcat)
+            //{
+            //    Console.WriteLine(cat.id+cat.name);
+            //    var sons = ml.listarCategoriasHijas(cat.id);
+            //    foreach (var s in sons)
+            //    {
+            //        Console.WriteLine("    " + s.id + s.name);
+            //    }
+            //}
 
 
             Console.Read();
@@ -42,7 +36,7 @@ namespace Chebay.BusinessLogicLayer
             //    db.Seed();
             //}
 
-            IDALSubasta sdal = new DALSubastaEF();
+            //IDALSubasta sdal = new DALSubastaEF();
             string tenant = "MobileCenter";
             using (var db = ChebayDBContext.CreateTenant(tenant))
             {

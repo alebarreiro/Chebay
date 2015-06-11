@@ -1,17 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Net;
-using System.Threading;
+﻿using DataAccessLayer;
+using Microsoft.Azure;
 using Microsoft.ServiceBus;
 using Microsoft.ServiceBus.Messaging;
-using Microsoft.WindowsAzure;
 using Microsoft.WindowsAzure.ServiceRuntime;
 using Shared.DataTypes;
 using Shared.Entities;
-using DataAccessLayer;
-using Microsoft.Azure;
+using System.Diagnostics;
+using System.Net;
+using System.Threading;
 
 namespace WorkerRoleSubasta
 {

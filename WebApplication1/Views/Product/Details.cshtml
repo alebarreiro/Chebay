@@ -129,7 +129,7 @@
                     <h4>Descripción</h4>
                     <div class="panel panel-default">
                         <div class="panel-body">
-                            @Producto.descripcion
+                            @Html.Raw(Producto.descripcion)
                         </div>
                     </div>
                     <h4>Atributos</h4>
@@ -389,7 +389,7 @@
                     $.each(data.Ofertas, function () {
                         contador++;
                         this.index = contador;
-                        this.UsuarioID = showUserName(this.UsuarioID);
+                        this.UsuarioID = showUserName(this.UsuarioID)
                     });
                     var templateOfertas = $('#ofertas-template').html();
                     Mustache.parse(templateOfertas);

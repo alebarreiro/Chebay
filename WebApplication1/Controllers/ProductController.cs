@@ -97,6 +97,7 @@ namespace WebApplication1.Controllers
             }
             ViewBag.InfoProducto = infoFullP;
             ViewBag.atributos = atributos;
+            ViewBag.testDescripcion = "<b> Esto es un test con HTML </b>";
             ViewBag.fecha_cierre = JsonConvert.SerializeObject(System.Convert.ToInt64((infoFullP.fecha_cierre - _jan1st1970).TotalMilliseconds));
             return View();
         }

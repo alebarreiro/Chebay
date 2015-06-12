@@ -14,8 +14,8 @@ namespace Frontoffice.Controllers
     public class HomeController : Controller
     {
         IDALSubasta controladorSubasta = new DALSubastaEF();
-        IDALTienda controladorTienda = new DALTiendaEF();
-        IDALTienda it = new DALTiendaEF();
+        IDALTienda cT = new DALTiendaEF();
+        IDALUsuario cU = new DALUsuarioEF();
 
         public ActionResult Index(string urlTienda)
         {
@@ -44,10 +44,17 @@ namespace Frontoffice.Controllers
 
                     Response.Redirect(Request.Url.ToString(), true);
                 }
-                List<DataProducto> prods = new List<DataProducto>();  //controladorSubasta.ObtenerProductosPorTerminar(8, urlTienda);
-                //List<DataProducto> prods = controladorSubasta.ObtenerProductosPersonalizados(urlTienda);
-                Tienda t = controladorTienda.ObtenerTienda(urlTienda);
-                ViewBag.descripcion = t.descripcion;
+                List<DataProducto> prods = new List<DataProducto>(); 
+              /*  if (User.Identity.IsAuthenticated)
+                {
+                    String user = User.Identity.Name;
+                    DataRecomendacion dr = new DataRecomendacion{
+                        UsuarioID = user,
+                        productos = prods
+                    };
+                    DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
+                    ViewBag.productos = drRes.productos;
+                } */
                 ViewBag.productos = prods;
                 Session["Tienda_Nombre"] = urlTienda;
                 ViewBag.Message = urlTienda;

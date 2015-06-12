@@ -92,7 +92,7 @@
                 <button class="offer-section-button" onclick="incrementOffer({{ProductoID}})"> + </button>
             </div>
             <div class="product-user-winner" style="overflow: hidden; text-overflow: ellipsis;">
-                <p id="userIdGanador">{{idOfertante}}</p>
+                <p id="userIdGanador" title="Usuario que va ganando la subasta">{{idOfertante}}</p>
             </div>
         </div>
     </div>
@@ -309,6 +309,7 @@
                         prod.find('.bid-button').html("OFERTAR!");
                     }
                     prod.find('.offer-section-price').text(newBid);
+                    prod.find('.offer-section-price').effect("highlight", 1000);
                     prod.find('#userIdGanador').text(showUserName(userId));
                 }
             });
@@ -326,6 +327,7 @@
                 if (productId == prodId) {
                     prod.find('.bid-button').addClass("disabled");
                     prod.find('.offer-section-price').text(monto);
+                    prod.find('.offer-section-price').effect("highlight", 1000);
                     prod.find('#userIdGanador').text(showUserName(userId));
                 }
             });

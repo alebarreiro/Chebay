@@ -36,11 +36,11 @@
                         </div>
 
                         <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
-                        <a class="left carousel-control" style="background-image: none"  href="#myCarousel-" data-slide="prev">
-                            <span class="icon-prev"></span>
+                        <a class="left carousel-control" style="background-image: none; height: 370px;  top: 185px;"  href="#myCarousel-" data-slide="prev">
+                            <i class="fa fa-chevron-circle-left"></i>
                         </a>
-                        <a class="right carousel-control" style="background-image: none" href="#myCarousel-" data-slide="next">
-                            <span class="icon-next"></span>
+                        <a class="right carousel-control" style="background-image: none; height: 370px; top: 185px;" href="#myCarousel-" data-slide="next">
+                            <i class="fa fa-chevron-circle-right"></i>
                         </a>
                     </div>
                 </div>
@@ -291,8 +291,9 @@
 
         proxy.client.newBuyPosted = function (productId, monto, usuarioPoster) {
             if (productId == prodId) {
-                $("#comprarYa").html("VENDIDO");
-                $("#hayGanador").text("Hay ganador!!");
+                obtenerMejoresOfertas();
+                $("#comprarYa").html("Ofertar!");
+                $("#hayGanador").text("Usuario ganador:");
                 $("#userGanador").text(showUserName(usuarioPoster));
                 $("#precioMayorSubasta").text(monto);
                 clearInterval(auction.currentInterval);
@@ -389,7 +390,7 @@
                     $.each(data.Ofertas, function () {
                         contador++;
                         this.index = contador;
-                        this.UsuarioID = showUserName(this.UsuarioID)
+                        this.UsuarioID = showUserName(this.UsuarioID);
                     });
                     var templateOfertas = $('#ofertas-template').html();
                     Mustache.parse(templateOfertas);
@@ -403,6 +404,7 @@
                     });
                     $("#userGanador").text(showUserName(data.Ofertas[0].UsuarioID));
                     $("#precioMayorSubasta").text(data.Ofertas[0].monto);
+                    $('#precioMayorSubasta').effect("highlight", 1000);
                 }
                 else
                 {
@@ -428,6 +430,8 @@
       display: block;
       height: auto;
       max-width: 100%;
+      max-height: 370px;
+      margin: auto;
     }
 
     .fa-star,

@@ -291,8 +291,9 @@
 
         proxy.client.newBuyPosted = function (productId, monto, usuarioPoster) {
             if (productId == prodId) {
-                $("#comprarYa").html("VENDIDO");
-                $("#hayGanador").text("Hay ganador!!");
+                obtenerMejoresOfertas();
+                $("#comprarYa").html("Ofertar!");
+                $("#hayGanador").text("Usuario ganador:");
                 $("#userGanador").text(showUserName(usuarioPoster));
                 $("#precioMayorSubasta").text(monto);
                 clearInterval(auction.currentInterval);
@@ -389,7 +390,7 @@
                     $.each(data.Ofertas, function () {
                         contador++;
                         this.index = contador;
-                        this.UsuarioID = showUserName(this.UsuarioID)
+                        this.UsuarioID = showUserName(this.UsuarioID);
                     });
                     var templateOfertas = $('#ofertas-template').html();
                     Mustache.parse(templateOfertas);
@@ -403,6 +404,7 @@
                     });
                     $("#userGanador").text(showUserName(data.Ofertas[0].UsuarioID));
                     $("#precioMayorSubasta").text(data.Ofertas[0].monto);
+                    $('#precioMayorSubasta').effect("highlight", 1000);
                 }
                 else
                 {

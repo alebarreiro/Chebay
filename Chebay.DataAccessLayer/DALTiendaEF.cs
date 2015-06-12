@@ -922,30 +922,15 @@ namespace DataAccessLayer
                     DataReporte ret = new DataReporte();
                     
                     //REPORTE DE USUARIOS.
-                    ret.usuarios = new List<DataReporteUsr>();
                     var qUsuarios = from usr in context.usuarios
-                                    orderby usr.fecha_ingreso
                                     select usr;
-                    List<Usuario> lu = qUsuarios.ToList();
-                    ret.cantUsuarios = lu.Count;
-                    foreach (Usuario u in lu)
-                    {
-                        
-                    }
-
-
+                    ret.cantUsuarios = qUsuarios.Count();
+                    
                     //REPORTE DE TRANSACCIONES.
-                    ret.transacciones = new List<DataReporteTrans>();
                     var qCompras = from cmp in context.compras
-                                   orderby cmp.fecha_compra
                                    select cmp;
-                    List<Compra> lc = qCompras.ToList();
-                    ret.cantTransacciones = lc.Count;
-                    foreach (Compra c in lc)
-                    {
-
-                    }
-
+                    ret.cantTransacciones = qCompras.Count();
+                    
                     return ret;
                 }
             }

@@ -1092,7 +1092,7 @@ namespace DataAccessLayer
                     
                     context.SaveChanges();
 
-                    //notifico inmediatamente al comprador
+                    //Notifico inmediatamente al comprador
                     BLNotificaciones bl = new BLNotificaciones();
                     string asunto ="Venta de producto!";
                     string mensaje = "El producto " + p.ProductoID + " " + p.nombre+ " se ha vendido al usuario "

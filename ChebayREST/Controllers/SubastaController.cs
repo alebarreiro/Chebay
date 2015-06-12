@@ -41,6 +41,27 @@ namespace ChebayREST.Controllers
             return ret;
         }
 
+        //URL: http://chebayrest1930.azurewebsites.net/api/subasta?idProducto=
+        public Subasta[] Get(string idProducto)
+        {
+            IDALSubasta ip = new DALSubastaEF();
+            int idProd = Int32.Parse(idProducto);
+            Producto p = ip.ObtenerProducto(idProd,"MobileCenter");
+            
+            Subasta[] ret = new Subasta[1];
+            
+            Subasta s = new Subasta
+            {
+                Descripcion = p.descripcion,
+                ProductoID = p.ProductoID,
+                
+                Nombre = p.nombre,
+                PrecioActual = p.precio_base_subasta;
+            };
+            ret[0] = s;
+            return ret;
+        }
+
         //URL: api/subasta?searchTerm=terminosdebusqueda;
         public Subasta[] Get(string searchTerm)
         {
@@ -68,7 +89,7 @@ namespace ChebayREST.Controllers
         }
 
         //URL: api/subasta?monto=xx&idProducto=xx&idUsuario=xx&idTienda=xx;
-        public void Get(int monto, long idProducto, string idUsuario)
+        public string Get(int monto, long idProducto, string idUsuario)
         {
             try
             { 
@@ -80,6 +101,7 @@ namespace ChebayREST.Controllers
                     UsuarioID = idUsuario
                 };
                 ip.OfertarProducto(o, "MobileCenter");
+                return "Oferta realizada correctamente.";
             }
             catch (Exception e)
             {

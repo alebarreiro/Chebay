@@ -6,7 +6,5 @@ namespace Shared.DataTypes
     {
         public int cantUsuarios { get; set; }
         public int cantTransacciones { get; set; }
-        public List<DataReporteUsr> usuarios { get; set; }
-        public List<DataReporteTrans> transacciones { get; set; }
     }
 }

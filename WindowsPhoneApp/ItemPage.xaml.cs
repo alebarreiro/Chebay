@@ -16,6 +16,8 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using System.Net.Http;
+using System.Diagnostics;
 
 // The Hub Application template is documented at http://go.microsoft.com/fwlink/?LinkID=391641
 
@@ -28,6 +30,8 @@ namespace WindowsPhoneApp
     {
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
+        private long idProducto;
+        
 
         public ItemPage()
         {
@@ -71,6 +75,8 @@ namespace WindowsPhoneApp
             // TODO: Create an appropriate data model for your problem domain to replace the sample data
             //var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
             var item = await ProductoSource.GetItemAsync((long)e.NavigationParameter);
+            idProducto = (long)e.NavigationParameter;
+            //idUsuario = item.IDOfertante;
             this.DefaultViewModel["Item"] = item;
             SubastaPrecio.Text = String.Format("{0:C}",item.PrecioActual);
         }
@@ -117,18 +123,30 @@ namespace WindowsPhoneApp
 
         private void SubastaOferta_LostFocus(object sender, RoutedEventArgs e)
         {
-            SubastaOferta.Text = String.Format("{0:C}", SubastaOferta.Text);
+            //SubastaOferta.Text = String.Format("{0:C}", SubastaOferta.Text);
         }
 
-        private void RealizarOferta_Click(object sender, RoutedEventArgs e)
+        private async void RealizarOferta_Click(object sender, RoutedEventArgs e)
         {
-            //Hace el pedido a la API Rest para obtener las tiendas.
-            HttpClient client = new HttpClient();
-            string url = "http://chebayrest1956.azurewebsites.net/api/tienda";
-            Debug.WriteLine(url);
-            var baseUrl = string.Format(url);
-            string result = await client.GetStringAsync(baseUrl);
-            return result;
+            try
+            { 
+                string monto = SubastaOferta.Text;
+            
+                //Hace el pedido a la API Rest para ofertar
+                HttpClient client = new HttpClient();
+                string url = "http://chebayrest1930.azurewebsites.net/api/subasta?monto=" + monto + "&idProducto=" + idProducto + "&idUsuario=alebarreiro%40live.com";
+                Debug.WriteLine(url);
+                var baseUrl = string.Format(url);
+                Debug.WriteLine("luego de Format " + baseUrl);
+                string result = await client.GetStringAsync(baseUrl);
+                Debug.WriteLine(result);
+
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
     }

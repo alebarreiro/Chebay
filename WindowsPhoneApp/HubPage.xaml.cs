@@ -180,7 +180,7 @@ namespace WindowsPhoneApp
         {
             //Hace el pedido a la API Rest para buscar searchTerm.
             HttpClient client = new HttpClient();
-            string url = "http://chebayrest1956.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
+            string url = "http://chebayrest1930.azurewebsites.net/api/subasta?searchTerm=" + searchTerm;
             Debug.WriteLine(url);
             var baseUrl = string.Format(url);
             string result = await client.GetStringAsync(baseUrl);
@@ -220,15 +220,7 @@ namespace WindowsPhoneApp
             }
         }
 
-        private void ExampleButton_Click(object sender, RoutedEventArgs e)
-        {
-            //Navega hacia la página de información de producto, pasando el ProductoID.
-            //var itemId = ((TiendaItem)e.ClickedItem).idTienda;
-            if (!Frame.Navigate(typeof(ElegirTienda)))
-            {
-                throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
-            }
-        }
+        
 
         
 

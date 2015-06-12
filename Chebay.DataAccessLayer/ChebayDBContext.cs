@@ -16,10 +16,12 @@ namespace DataAccessLayer
     public class ChebayDBContext : DbContext
     {
         //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        //static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Database=chebay;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
-        static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Database=chebay;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        //static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
+        string tenant_name;
+ 
         public ChebayDBContext()
         {
             Database.SetInitializer<ChebayDBContext>(null);
@@ -43,9 +45,10 @@ namespace DataAccessLayer
         public DbSet<ImagenProducto> imagenesproducto { get; set; }
         public DbSet<ImagenUsuario> imagenesusuario { get; set; }
 
-        private ChebayDBContext(DbCompiledModel model)
+        private ChebayDBContext(DbCompiledModel model, string name)
             : base(con, model)
         {
+            tenant_name = name;
             Database.SetInitializer<ChebayDBContext>(null);
             this.Configuration.LazyLoadingEnabled = false;
         }
@@ -129,7 +132,7 @@ namespace DataAccessLayer
             var model = builder.Build(connection);
             DbCompiledModel compModel = model.Compile();
             var compiledModel = modelCache.GetOrAdd(schemaName, compModel);
-            ChebayDBContext ret = new ChebayDBContext(compiledModel);
+            ChebayDBContext ret = new ChebayDBContext(compiledModel, schemaName);
             return ret;
         }
 
@@ -241,6 +244,14 @@ namespace DataAccessLayer
             }
 
             SaveChanges();
+            
+            //* Cargo productos con webscraping*//
+            IDALMercadoLibreREST ml = new DALMercadoLibreREST();
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU3518", 2); //samsung MLU3518
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU32089", 3); //apple iphone MLU32089
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU7076", 4); //lg MLU7076
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU3514", 5); //sony MLU3514
+            //nokia MLU3506
 
             System.Console.WriteLine("Lista de Usuarios:");
             foreach (var u in usuarios)
@@ -271,8 +282,8 @@ namespace DataAccessLayer
     public class ChebayDBPublic : DbContext
     {
         //static string con = ConfigurationManager.ConnectionStrings["ChebayDBContext"].ToString();
-        //static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Database=chebay;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
-        static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
+        static string con = @"Data Source=SLAVE-PC\SQLEXPRESS;Database=chebay;Integrated Security=True;Connect Timeout=15;Encrypt=False;TrustServerCertificate=False";
+        //static string con = @"Server=tcp:tb5xxtzdlj.database.windows.net,1433;Database=chebay;User ID=master@tb5xxtzdlj;Password=#!Chebay1;Trusted_Connection=False;Encrypt=True;Connection Timeout=30;";
         static DbConnection connection = new SqlConnection(con);
 
         public ChebayDBPublic()
@@ -354,7 +365,7 @@ namespace DataAccessLayer
         {
             Tienda[] tiendasarray = {   
                                         new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() },
-                                        new Tienda { TiendaID="HardPC", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
+                                        //new Tienda { TiendaID="HardPC", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
                                     };
             Administrador[] admins = { 
                                         new Administrador { AdministradorID= "open_pirsaoz_user@tfbnw.net", password= "1234", tiendas = new List<Tienda>() }                               

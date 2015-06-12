@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using DataAccessLayer;
 using Shared.DataTypes;
 using Shared.Entities;
-using DataAccessLayer;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
-using System.Diagnostics;
+using System.Threading.Tasks;
 
 namespace WorkerRoleRecomendacion
 {
@@ -23,6 +22,7 @@ namespace WorkerRoleRecomendacion
                         orderby (p.visitas.Count) descending
                         select p;
             DataRecomendacion dr = new DataRecomendacion { UsuarioID = user.UsuarioID, productos = new List<DataProducto>() };
+         
             foreach (var p in query.ToList())
             {
                 dr.productos.Add(new DataProducto(p));
@@ -34,7 +34,6 @@ namespace WorkerRoleRecomendacion
 
         public void custom_algorithm(Personalizacion personalizacion, List<Producto> products, Usuario user, string tiendaID)
         {
-
             Assembly ddl = Assembly.Load(personalizacion.algoritmo);
             var t = ddl.GetType("Chebay.AlgorithmDLL.ChebayAlgorithm");
             dynamic c = Activator.CreateInstance(t);
@@ -52,8 +51,8 @@ namespace WorkerRoleRecomendacion
                     //si falla entonces default
                     default_recomendation_algorithm(products, user, tiendaID);
                 }
-
             });
+
             timeThread.Start();
 
             bool finished = timeThread.Join(5000);
@@ -62,8 +61,7 @@ namespace WorkerRoleRecomendacion
                 Debug.WriteLine("ALGORITMO PERSONALIZADO SUSPENDIDO... EXCESO TIEMPO");
                 timeThread.Abort();
                 default_recomendation_algorithm(products,user,tiendaID);
-            }
-                    
+            }        
         }
 
 

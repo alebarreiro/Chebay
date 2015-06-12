@@ -223,8 +223,8 @@ namespace WindowsPhoneApp
         private void ExampleButton_Click(object sender, RoutedEventArgs e)
         {
             //Navega hacia la página de información de producto, pasando el ProductoID.
-            var itemId = ((TiendaItem)e.ClickedItem).ProductoID;
-            if (!Frame.Navigate(typeof(ItemPage), itemId))
+            //var itemId = ((TiendaItem)e.ClickedItem).idTienda;
+            if (!Frame.Navigate(typeof(ElegirTienda)))
             {
                 throw new Exception(this.resourceLoader.GetString("NavigationFailedExceptionMessage"));
             }

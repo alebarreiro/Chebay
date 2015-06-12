@@ -33,14 +33,10 @@ namespace WindowsPhoneApp
         private NavigationHelper navigationHelper;
         private ObservableDictionary defaultViewModel = new ObservableDictionary();
 
-        public async Task ElegirTienda()
+        public ElegirTienda()
         {
             this.InitializeComponent();
-
-            string json = await ObtenerTiendas();
-            Debug.WriteLine(json);
-            deserializeJsonAsync(json);
-
+            
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;
@@ -48,6 +44,10 @@ namespace WindowsPhoneApp
 
         private async Task<string> ObtenerTiendas()
         {
+            string json = await ObtenerTiendas();
+            Debug.WriteLine(json);
+            deserializeJsonAsync(json);
+
             //Hace el pedido a la API Rest para obtener las tiendas.
             HttpClient client = new HttpClient();
             string url = "http://chebayrest1956.azurewebsites.net/api/tienda";

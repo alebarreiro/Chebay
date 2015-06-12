@@ -1,6 +1,7 @@
 ﻿using ChebayREST.Models;
 using DataAccessLayer;
 using Shared.DataTypes;
+using Shared.Entities;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -66,7 +67,26 @@ namespace ChebayREST.Controllers
             return ret;
         }
 
-
-
+        //URL: api/subasta?monto=xx&idProducto=xx&idUsuario=xx&idTienda=xx;
+        public void Get(int monto, long idProducto, string idUsuario)
+        {
+            try
+            { 
+                IDALSubasta ip = new DALSubastaEF();
+                Oferta o = new Oferta
+                {
+                    monto = monto,
+                    ProductoID = idProducto,
+                    UsuarioID = idUsuario
+                };
+                ip.OfertarProducto(o, "MobileCenter");
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
+                throw;
+            }
+        }
     }
 }

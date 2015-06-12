@@ -75,6 +75,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Content="Ofertar"
+                    Click="RealizarOferta_Click"
                     />
         </Grid>
 

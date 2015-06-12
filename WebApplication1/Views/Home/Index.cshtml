@@ -4,40 +4,74 @@
     var productos = ViewBag.productos;
     var usuario = @Context.User.Identity.Name;
     var tienda = @Session["Tienda_Nombre"].ToString();
+    var prodActive = ViewBag.prodActive;
+    var nextProds = ViewBag.nextProds;
 }
 
+@if (ViewBag.hayRecomendados)
+{
 
-<div class="row">
-    @foreach (var dp in productos)
-    {
-        <div class="product-item">
-            <a href="@Url.Action("Details", "Product", new { productId = @dp.ProductoID })">
-                <div class="product-item-header">@dp.nombre</div>
-            </a>
-            <div class="c-wrapper">
-                <img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" class="img-centrada" alt="Responsive image" />
-            </div>
-            <div class="product-item-footer">
-                <div class="product-item-countdown" data-id="@dp.ProductoID"> @dp.fecha_cierre.Date.ToString("yyyy-MM-dd HH:mm:ss") </div>
-                @if (User.Identity.IsAuthenticated)
-                {
-                    <button class="btn btn-success bid-button" id="bidButton-@dp.ProductoID" data-id="@dp.ProductoID" onclick="onNewBidClick(@dp.ProductoID, '@usuario','@tienda');"> OFERTAR! </button>
-                }
-                else
-                {
-                    <button class="btn btn-success bid-button disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
-                }
-                <div class="offer-section">
-                    <div class="offer-section-price" id="bidValue-@dp.ProductoID"> @dp.precio_actual </div>
-                    <button class="offer-section-button" onclick="incrementOffer(@dp.ProductoID)"> + </button>
+    <h2>
+        Productos recomendados para tí
+    </h2>
+
+    <hr />
+
+    <div class="row">
+        <div class="responsiveCarrousel">
+            <div id="myCarousel" class="carousel slide">
+                <!-- SE ARMA EL VISOR -->
+                <div class="carousel-inner">
+                    <div class="item active">
+                        <img src="@Url.Action("getProductImg", "Product", new { productId = @prodActive.ProductoID, index = 0 })" class="img-responsive" alt="Responsive image" />
+                        <div class="container">
+                            <div class="carousel-caption">
+                                <h2>@prodActive.nombre</h2>
+                                <p>@prodActive.descripcion</p>
+                                <p><a class="btn btn-primary" href="@Url.Action("Details", "Product", new { productId = @prodActive.ProductoID })" role="button">Ver más</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    @foreach (var dp in nextProds)
+                    {
+                        <div class="item">
+                            <img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" class="img-responsive" alt="Responsive image" />
+                            <div class="container">
+                                <div class="carousel-caption">
+                                    <h2>@dp.nombre</h2>
+                                    <p>@dp.descripcion</p>
+                                    <p><a class="btn btn-primary" href="@Url.Action("Details", "Product", new { productId = @dp.ProductoID })" role="button">Ver más</a></p>
+                                </div>
+                            </div>
+                        </div>
+                    }
                 </div>
-                <div class="product-user-winner">
-                    <p id="userIdGanador-@dp.ProductoID">@dp.idOfertante</p>
-                </div>
+                <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
+                <a class="left carousel-control"  href="#myCarousel" style="border-bottom-left-radius: 50px; border-top-left-radius: 50px;" data-slide="prev">
+                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
+                </a>
+                <a class="right carousel-control" href="#myCarousel" style="border-bottom-right-radius: 50px; border-top-right-radius: 50px;" data-slide="next">
+                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
+                </a>
             </div>
         </div>
-    }
-</div>
+    </div>
+
+
+}
+    
+
+
+
+
+
+
+
+<h2>
+    Subastas en vivo
+</h2>
+
+<hr />
 
 <div class="dropdown" style="width:100%">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -382,8 +416,7 @@
 
     .carousel-inner > .item > img, 
     .carousel-inner > .item > a > img{
-        width:auto;
-        height:170px;
+        max-height: 400px;
         margin: auto;
     }
 </style>

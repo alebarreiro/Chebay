@@ -45,6 +45,8 @@ namespace Frontoffice.Controllers
                     Response.Redirect(Request.Url.ToString(), true);
                 }
                 List<DataProducto> prods = new List<DataProducto>(); 
+                List<DataProducto> nextProds = new List<DataProducto>();
+                DataProducto prodActive;
               /*  if (User.Identity.IsAuthenticated)
                 {
                     String user = User.Identity.Name;
@@ -55,7 +57,18 @@ namespace Frontoffice.Controllers
                     DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
                     ViewBag.productos = drRes.productos;
                 } */
+                prods = controladorSubasta.ObtenerProductosPorTerminar(3, urlTienda);
                 ViewBag.productos = prods;
+                if (prods.Count > 0)
+                {
+                    ViewBag.hayRecomendados = true;
+                    ViewBag.prodActive = prods.ElementAt(0);
+                    if (prods.Count > 1)
+                    {
+                        nextProds = prods.GetRange(1, prods.Count -1);
+                    }
+                }
+                ViewBag.nextProds = nextProds;
                 Session["Tienda_Nombre"] = urlTienda;
                 ViewBag.Message = urlTienda;
             }

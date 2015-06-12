@@ -293,7 +293,7 @@
             if (productId == prodId) {
                 $("#comprarYa").html("VENDIDO");
                 $("#hayGanador").text("Hay ganador!!");
-                $("#userGanador").text(usuarioPoster);
+                $("#userGanador").text(showUserName(usuarioPoster));
                 $("#precioMayorSubasta").text(monto);
                 clearInterval(auction.currentInterval);
                 $cowntdown.text("Producto vendido.");
@@ -389,6 +389,7 @@
                     $.each(data.Ofertas, function () {
                         contador++;
                         this.index = contador;
+                        this.UsuarioID = showUserName(this.UsuarioID);
                     });
                     var templateOfertas = $('#ofertas-template').html();
                     Mustache.parse(templateOfertas);
@@ -400,7 +401,7 @@
                     $('#ultimasOfertas').removeClass().addClass('flash' + ' animated').one('webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend', function () {
                         $(this).removeClass();
                     });
-                    $("#userGanador").text(data.Ofertas[0].UsuarioID);
+                    $("#userGanador").text(showUserName(data.Ofertas[0].UsuarioID));
                     $("#precioMayorSubasta").text(data.Ofertas[0].monto);
                 }
                 else

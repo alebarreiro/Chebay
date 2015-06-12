@@ -70,7 +70,7 @@
 </script>
 
 <script id="productItem" type="text/x-template">
-    <div class="product-item">
+    <div class="product-item" data-id="{{ProductoID}}">
         <a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId={{ProductoID}}">
             <div class="product-item-header" title="{{title}}">{{nombre}}</div>
         </a>
@@ -92,7 +92,7 @@
                 <button class="offer-section-button" onclick="incrementOffer({{ProductoID}})"> + </button>
             </div>
             <div class="product-user-winner" style="overflow: hidden; text-overflow: ellipsis;">
-                <p id="userIdGanador-{{ProductoID}}">{{idOfertante}}</p>
+                <p id="userIdGanador">{{idOfertante}}</p>
             </div>
         </div>
     </div>
@@ -105,6 +105,7 @@
     var templateItem = $('#productItem').html();
     var pageSize = 8; //8 productos por pagina
     var cantPaginas = 1; //Calculado despues de obtener todos los prods
+    var auctionsTimers; //Productos con los timers
     Mustache.parse(template);
 
     $(document).ready(function () {
@@ -159,7 +160,7 @@
             y se muestra el timer (countdown hasta 0)
         */
         inicializarTimers = function () {
-            var auctions = $([]);
+            auctionsTimers = $([]);
             $('.product-item-countdown').each(function () {
                 var _this = $(this);
                 var auction = {
@@ -167,9 +168,9 @@
                     endTime: moment(_this.data("value")),
                     timeDiv: _this
                 };
-                auctions.push(auction);
+                auctionsTimers.push(auction);
             });
-            auctions.each(function () {
+            auctionsTimers.each(function () {
                 var that = this;
                 var finishTime = that.endTime,
                     duration = moment.duration(finishTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss"))),
@@ -259,7 +260,7 @@
                 var prodItem = {};
                 prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
                 prodItem.ProductoID = this.ProductoID;
-                prodItem.idOfertante = this.idOfertante;
+                prodItem.idOfertante = showUserName(this.idOfertante);
                 prodItem.nombre = this.nombre.length > 43 ? this.nombre.substring(0, 40) + "..." : this.nombre;
                 prodItem.title = this.nombre;
                 prodItem.precio_actual = this.precio_actual;
@@ -300,11 +301,17 @@
 
         // Server callback methods
         proxy.client.newBidPosted = function (productId, newBid, userId) {
-            if (userId == usuario) {
-                $("#bidButton-" + productId).html("OFERTAR!");
-            }
-            $('#bidValue-' + productId).text(newBid);
-            $('#userIdGanador-' + productId).text(userId);
+            $('.product-item').each(function () {
+                var prod = $(this),
+                    prodId = prod.data('id');
+                if (productId == prodId) {
+                    if (userId == usuario) {
+                        prod.find('.bid-button').html("OFERTAR!");
+                    }
+                    prod.find('.offer-section-price').text(newBid);
+                    prod.find('#userIdGanador').text(showUserName(userId));
+                }
+            });
         };
 
         proxy.client.onError = function (productId, msg) {
@@ -313,13 +320,20 @@
         };
 
         proxy.client.newBuyPosted = function (productId, monto, userId) {
-            auctions.each(function () {
+            $('.product-item').each(function () {
+                var prod = $(this),
+                    prodId = prod.data('id');
+                if (productId == prodId) {
+                    prod.find('.bid-button').addClass("disabled");
+                    prod.find('.offer-section-price').text(monto);
+                    prod.find('#userIdGanador').text(showUserName(userId));
+                }
+            });
+            //Limpiamos el timer 
+            auctionsTimers.each(function () {
                 if (this.auctionId == productId) {
                     clearInterval(this.currentInterval);
                     this.timeDiv.text("Producto vendido!")
-                    $('#bidValue-' + productId).text(monto);
-                    $('#userIdGanador-' + productId).text(userId);
-                    $('#bidButton-' + productId).addClass("disabled");
                     return false;
                 }
             });
@@ -336,6 +350,7 @@
         incrementOffer = function (id) {
             $('#bidValue-' + id).text(parseInt($('#bidValue-' + id).text(), 10) + 1);
         }
+
     });
 
 </script>

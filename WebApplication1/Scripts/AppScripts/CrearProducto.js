@@ -284,3 +284,7 @@ seleccionarCategoriaSimple = function (catID) {
     });
 }
 
+showUserName = function (name) {
+    return name && name.indexOf("@") != -1 ? name.substring(0, name.indexOf("@")) : name;
+}
+

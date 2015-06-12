@@ -50,7 +50,7 @@
 </div>
 
 <div class="row" id="allProductos">
-     
+    <i class="fa fa-spinner fa-pulse fa-4x" style="margin-left: 46%;"></i>
 </div>
 <div class="paginador" id="paginador-content" style="width: 100%">
     <ul class="pagination" id="pagination" style="cursor:pointer">
@@ -72,7 +72,7 @@
 <script id="productItem" type="text/x-template">
     <div class="product-item">
         <a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId={{ProductoID}}">
-            <div class="product-item-header"> {{nombre}}</div>
+            <div class="product-item-header" title="{{title}}">{{nombre}}</div>
         </a>
         <div class="c-wrapper">
             <img src="@Session["Tienda_Nombre"].ToString()/Product/getProductImg?productId={{ProductoID}}&index=0" class=" img-centrada" alt="Responsive image" />
@@ -108,27 +108,20 @@
     Mustache.parse(template);
 
     $(document).ready(function () {
-        $(document).ready(function () {
-            $('#categorias-drop').load("@Url.Action("MostrarDropdownCategorias", "Product")")
-        })
+        $('#categorias-drop').load("@Url.Action("MostrarDropdownCategorias", "Product")")
 
+        /** 
+            Función para obtener todos los productos de la tienda
+            ordenados por fecha de cierre
+        */
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerJsonAllProductos", "Product")",
             data: {},
             accept: 'application/json',
             success: function (data) {
-                console.log(data);
                 if (data.Productos.length > 0) {
-                    $.each(data.Productos, function () {
-                        var prodItem = {};
-                        prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
-                        prodItem.ProductoID = this.ProductoID;
-                        prodItem.idOfertante = this.idOfertante;
-                        prodItem.nombre = this.nombre;
-                        prodItem.precio_actual = this.precio_actual;
-                        allProductos.push(prodItem);
-                    });
+                    cargarDatosProducto(data.Productos);
                     cantPaginas = Math.ceil(data.Productos.length / pageSize);
                     var viewObject = {
                         Productos: allProductos
@@ -161,6 +154,10 @@
             }
         });
 
+        /**
+            Para cada producto listado, se calcula cuanto falta para que cierre
+            y se muestra el timer (countdown hasta 0)
+        */
         inicializarTimers = function () {
             var auctions = $([]);
             $('.product-item-countdown').each(function () {
@@ -200,14 +197,10 @@
             });
         }
 
-        showPage = function (page) {
-            $(".product-item").hide();
-            $(".product-item").each(function (n) {
-                if (n >= pageSize * (page - 1) && n < pageSize * page)
-                    $(this).show();
-            });
-        }
-
+        /**
+            Cuando el usuario selecciona una categoría, se obtienen los productos
+            de esa categoría y se vuelven a renderizar.
+        */
         renderProductosCategoria = function (catId) {
             sacarProductosActuales();
             $.ajax({
@@ -220,16 +213,7 @@
                 success: function (data) {
                     console.log(data);
                     if (data.Productos.length > 0) {
-                        $.each(data.Productos, function () {
-                            var prodItem = {};
-                            console.log(this);
-                            prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
-                            prodItem.ProductoID = this.ProductoID;
-                            prodItem.idOfertante = this.idOfertante;
-                            prodItem.nombre = this.nombre;
-                            prodItem.precio_actual = this.precio_actual;
-                            allProductos.push(prodItem);
-                        });
+                        cargarDatosProducto(data.Productos);
                         cantPaginas = Math.ceil(data.Productos.length / pageSize);
                         var viewObject = {
                             Productos: allProductos
@@ -267,12 +251,35 @@
             });
         }
 
+        /**
+            Datos que se muestran en cada product item.
+        */
+        cargarDatosProducto = function (Productos) {
+            $.each(Productos, function () {
+                var prodItem = {};
+                prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
+                prodItem.ProductoID = this.ProductoID;
+                prodItem.idOfertante = this.idOfertante;
+                prodItem.nombre = this.nombre.length > 43 ? this.nombre.substring(0, 40) + "..." : this.nombre;
+                prodItem.title = this.nombre;
+                prodItem.precio_actual = this.precio_actual;
+                allProductos.push(prodItem);
+            });
+        }
+
         sacarProductosActuales = function () {
             $("#dropdownMenu1").html("Filtrar por categoría <i class=\"fa fa-spinner fa-pulse\"></i>");
             $("#allProductos").addClass("zoomOutUp animated");
             $('#pagination').addClass("fadeOutLeft animated");
             allProductos = [];
-            
+        }
+
+        showPage = function (page) {
+            $(".product-item").hide();
+            $(".product-item").each(function (n) {
+                if (n >= pageSize * (page - 1) && n < pageSize * page)
+                    $(this).show();
+            });
         }
     });
     

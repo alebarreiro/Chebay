@@ -11,7 +11,7 @@ namespace WindowsPhoneApp.Data
 {
     public class TiendaItem
     {
-        public string idTienda { get; set; }   
+        public string idTienda { get; set; }
     }
 
     public sealed class TiendaSource

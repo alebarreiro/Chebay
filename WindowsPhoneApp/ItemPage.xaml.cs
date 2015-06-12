@@ -120,5 +120,16 @@ namespace WindowsPhoneApp
             SubastaOferta.Text = String.Format("{0:C}", SubastaOferta.Text);
         }
 
+        private void RealizarOferta_Click(object sender, RoutedEventArgs e)
+        {
+            //Hace el pedido a la API Rest para obtener las tiendas.
+            HttpClient client = new HttpClient();
+            string url = "http://chebayrest1956.azurewebsites.net/api/tienda";
+            Debug.WriteLine(url);
+            var baseUrl = string.Format(url);
+            string result = await client.GetStringAsync(baseUrl);
+            return result;
+        }
+
     }
 }

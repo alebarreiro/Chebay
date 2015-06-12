@@ -86,14 +86,12 @@ namespace Frontoffice
                 else if (p.template != null && p.template == 2)
                 {
                     layout = "@{Layout = \"~/Views/Shared/_Layout2.cshtml\";}";
-                    string desc = p.tienda.descripcion;
-                    Session["Tienda_Desc"] = desc;
                     if (p.backgroud_image != null)
                     {
                         //Copiar imagen
                     }
                 }
-
+                Session["Tienda_Desc"] = p.tienda.descripcion;
                 //Escribimos el layout a usar que carga todos los css para esa pers.
                 System.IO.File.WriteAllText(filePath, layout);
             }

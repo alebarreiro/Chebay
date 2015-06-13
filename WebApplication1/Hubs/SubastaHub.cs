@@ -50,7 +50,7 @@ namespace WebApplication1.Hubs
                 Compra c = new Compra
                 {
                     monto = monto,
-                    fecha_compra = DateTime.Now,
+                    fecha_compra = DateTime.UtcNow,
                     ProductoID = productId,
                     UsuarioID = userId
                 };

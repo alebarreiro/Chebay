@@ -8,6 +8,11 @@ namespace Frontoffice.Models
         [Required]
         [Display(Name = "Email")]
         public string Email { get; set; }
+
+        [Required]
+        [Display(Name = "EmailNotifications")]
+        public string EmailNotification { get; set; }
+
     }
 
     public class ExternalLoginListViewModel

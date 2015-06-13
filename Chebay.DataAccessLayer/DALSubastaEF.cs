@@ -717,7 +717,7 @@ namespace DataAccessLayer
                     var qProducto = from prd in context.productos
                                     where prd.ProductoID == o.ProductoID
                                     select prd;
-                    if (DateTime.Now > qProducto.FirstOrDefault().fecha_cierre)
+                    if (DateTime.UtcNow > qProducto.FirstOrDefault().fecha_cierre)
                         throw new Exception("El producto " + o.ProductoID + " ya ha expirado.");
 
                     //Agrego la oferta a la colección del usuario.
@@ -1064,7 +1064,7 @@ namespace DataAccessLayer
                                     where prd.ProductoID == c.ProductoID
                                     select prd;
                     Producto p = qProducto.FirstOrDefault();
-                    p.fecha_cierre = DateTime.Now;
+                    p.fecha_cierre = DateTime.UtcNow;
 
                     //Obtengo el usuario que esta comprando.
                     var qUsuario = from usr in context.usuarios
@@ -1094,24 +1094,38 @@ namespace DataAccessLayer
                     context.SaveChanges();
 
                     //Notifico inmediatamente al comprador
-                    Thread t = new Thread(delegate(){
+                    Thread t = new Thread(delegate()
+                    {
                         BLNotificaciones bl = new BLNotificaciones();
-                        string asunto = "Venta de producto!";
-                        string mensaje = String.Format("<p>El producto {0} {1} se ha vendido al usuario {2} por el valor de ${3}.</p> <p>Te invitamos a calificar al vendedor accediendo al siguiente enlace :  http://chebuynow.azurewebsites.net/{4}/Usuario/CalificarUsuario?prodId={5} .</p>",
-                            p.ProductoID, p.nombre, c.UsuarioID, c.monto, idTienda, p.ProductoID);
-                        if (u.Email != null)
                         {
-                            bl.sendEmailNotification(u.Email, asunto, mensaje);
+                            string asuntou = "Compra de producto!";
+                            string mensajeu = String.Format("<p>Enhorabuena, haz comprado el producto {0} {1} por el valor de ${2}.</p> <p>Te invitamos a calificar al vendedor accediendo al siguiente enlace :  http://chebuynow.azurewebsites.net/{3}/Usuario/CalificarUsuario?prodId={4} .</p>",
+                                p.ProductoID, p.nombre, c.monto, idTienda, p.ProductoID);
+                            if (u.Email != null)
+                            {
+                                bl.sendEmailNotification(u.Email, asuntou, mensajeu);
+                            }
+                        }
+                        //mail a vendedor
+                        //obtengo vendedor
+                        IDALUsuario udal = new DALUsuarioEF();
+                        Usuario vendedor = udal.ObtenerUsuario(p.UsuarioID, idTienda);
+                        string asunto = "Venta de producto!";
+                        string mensaje = String.Format("<p>El producto {0} {1} se ha vendido al usuario {2} por el valor de ${3}.</p>",
+                            p.ProductoID, p.nombre, c.UsuarioID, c.monto);
+                        if (vendedor.Email != null)
+                        {
+                            bl.sendEmailNotification(vendedor.Email, asunto, mensaje);
                         }
                         else
                         {
-                            if (IsValidMail(u.UsuarioID))
+                            if (IsValidMail(vendedor.UsuarioID))
                             {
-                                bl.sendEmailNotification(u.UsuarioID, asunto, mensaje);
+                                bl.sendEmailNotification(vendedor.UsuarioID, asunto, mensaje);
                             }
                             //else... por algun error no tiene mail
                         }
-                        }
+                    }
                         );
                     //asincronismo
                     Debug.WriteLine("Empieza envio mail...");

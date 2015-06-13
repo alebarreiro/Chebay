@@ -319,7 +319,6 @@ namespace Frontoffice.Controllers
         public async Task<ActionResult> ExternalLoginCallback(string returnUrl)
         {
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
-                            
             if (loginInfo == null)
             {
                 return RedirectToAction("Login");
@@ -339,7 +338,7 @@ namespace Frontoffice.Controllers
                     } catch (Exception e) {
                         userChebay = new Usuario { 
                             UsuarioID = loginInfo.Email, 
-                            Email = loginInfo.Email 
+                            Email = loginInfo.Email
                         };
                         try
                         {
@@ -400,7 +399,7 @@ namespace Frontoffice.Controllers
                     if (result.Succeeded)
                     {
                         IDALUsuario dalU = new DALUsuarioEF();
-                        Usuario userNuevo = new Usuario {UsuarioID = model.Email};
+                        Usuario userNuevo = new Usuario {UsuarioID = model.Email, Email = model.EmailNotification };
                         dalU.AgregarUsuario(userNuevo, Session["Tienda_Nombre"].ToString());
                         await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
                         return RedirectToLocal(returnUrl);

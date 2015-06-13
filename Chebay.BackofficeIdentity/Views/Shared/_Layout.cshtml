@@ -80,18 +80,36 @@
 
 
     <div id="modalBorrarTienda" class="modal fade">
+        <div class=" modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color : blue;color:white">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title">Está seguro que desea borrar la tienda seleccionada?</h4>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger" onclick="borrarTienda()">Si</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+            </div>
+        </div>
+    </div>
+    </div>
+
+    <div id="modalReporteTienda" class="modal fade">
         <div class="modal-dialog modal-sm">
             <div class="modal-content">
-                <div class="modal-header">
+                <div class="modal-header" style="background-color : blue;color:white">
                     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Está seguro que desea borrar la tienda seleccionada?</h4>
+                    <h4 class="modal-title">Reporte de la Tienda</h4>
+                </div>
+                <div class="modal-body" id="bodyVerReporte">
+
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-danger" onclick="borrarTienda()">Si</button>
-                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
                 </div>
             </div>
         </div>
     </div>
+
 </body>
 </html>

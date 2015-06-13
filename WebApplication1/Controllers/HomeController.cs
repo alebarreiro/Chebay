@@ -68,6 +68,10 @@ namespace Frontoffice.Controllers
                         nextProds = prods.GetRange(1, prods.Count -1);
                     }
                 }
+                else
+                {
+                    ViewBag.hayRecomendados = false;
+                }
                 ViewBag.nextProds = nextProds;
                 Session["Tienda_Nombre"] = urlTienda;
                 ViewBag.Message = urlTienda;

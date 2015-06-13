@@ -1240,7 +1240,7 @@ namespace DataAccessLayer
                         + "            </tr>\n"
                         + "          </table>\n";
                     };
-                   cuerpo += "     <table width=\"95%\" border=\"0\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\n"
+                   cuerpo += "     <table width=\"100%\" border=\"0\" style=\"background-color: burlywood;\" align=\"center\" cellpadding=\"0\" cellspacing=\"0\">\n"
                     + "            <tr>\n"
                     + "              <td width=\"50%\" align=\"left\" valign=\"middle\" style=\"padding:10px;\"><table width=\"75%\" border=\"0\" cellspacing=\"0\" cellpadding=\"4\">\n"
                     + "                <tr>\n"

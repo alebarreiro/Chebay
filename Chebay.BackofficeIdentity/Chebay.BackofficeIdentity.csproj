@@ -241,7 +241,7 @@
     <Content Include="Images\bullet.png" />
     <Content Include="Images\cargando.gif" />
     <Content Include="Images\estilo1.png" />
-    <Content Include="Images\estilo2.jpg" />
+    <Content Include="Images\estilo2.png" />
     <Content Include="Images\heroAccent.png" />
     <Content Include="Images\orderedList0.png" />
     <Content Include="Images\orderedList1.png" />

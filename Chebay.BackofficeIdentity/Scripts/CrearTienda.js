@@ -391,6 +391,32 @@ function cambiarEstilo(estilo) {
     }
 }
 
+function modalReporteTienda(tienda) {
+    var datos = {
+        tienda: tienda
+    };
+    $.ajax({
+        url: '/Tienda/VerReporteTienda',
+        type: 'GET',
+        dataType: "json",
+        contentType: 'application/json; charset=UTF-8',
+        data: datos,
+        success: function (data, textStatus, jqxhr) {
+            $("#bodyVerReporte").html(data["Message"]);
+            $("#modalReporteTienda").modal();
+        },
+        error: function (data, textStatus, jqxhr) {
+            $.notify({
+                // options
+                message: '<strong>Error al obtener el reporte de la tienda.</strong>'
+            }, {
+                // settings
+                type: 'danger'
+            });
+        }
+    });
+}
+
 function modalBorrarTienda(tienda) {
     tiendaBorrar = tienda;
     $("#modalBorrarTienda").modal();

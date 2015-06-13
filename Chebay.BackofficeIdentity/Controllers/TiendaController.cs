@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using DataAccessLayer;
 using Shared.Entities;
+using Shared.DataTypes;
 using System.Diagnostics;
 using Microsoft.AspNet.Identity;
 using System.Threading.Tasks;
@@ -59,6 +60,36 @@ namespace Chebay.BackofficeIdentity.Controllers
         //En cada uno de los metodos de abajo, hay que generar la vista como un string, para eso es necesario 
         //crear paginas y copiar su contenido, para una correcta generacion del codigo html
 
+        //GET : /Tienda/VerReporteTienda
+        [HttpGet]
+        public ActionResult VerReporteTienda(DatosVerTienda datos)
+        {
+            try
+            {   
+
+                DataReporte reporte = idalTienda.ObtenerReporte(datos.tienda);
+                string resultado = "<table class=\"table table-hover\">";
+                resultado += "<tr class=\"active\" style=\"font-weight : bold\">";
+                resultado += "<td>Usuarios : </td>";
+                resultado += "<td>" + reporte.cantUsuarios + "</td>";
+                resultado += "</tr>";
+                resultado += "<tr class=\"primary\" style=\"font-weight : bold\">";
+                resultado += "<td>Transacciones : </td>";
+                resultado += "<td>" + reporte.cantTransacciones + "</td>";
+                resultado += "</tr>";
+                resultado += "</table>";
+
+                var result = new { Success = "True", Message = resultado };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+            catch (Exception e)
+            {
+                var result = new { Success = "False", Message = "Error" };
+                return Json(result, JsonRequestBehavior.AllowGet);
+            }
+        }
+
+
         //GET : /Tienda/ObtenerPaginaTiendas
         [HttpGet]
         public ActionResult ObtenerPaginaTiendas(int paginaTienda)
@@ -93,10 +124,13 @@ namespace Chebay.BackofficeIdentity.Controllers
                 pagina += t.nombre;
                 pagina += "</td>";
                 pagina += "<td>";
-                pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda : " + t.nombre + "</button>";
+                pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda</button>";
                 pagina += "</td>";
                 pagina += "<td>";
-                pagina += "<button class=\"btn btn-danger\" onclick=\"modalBorrarTienda('" + t.TiendaID + "')\">Borrar Tienda : " + t.nombre + "</button>";
+                pagina += "<button class=\"btn btn-danger\" onclick=\"modalBorrarTienda('" + t.TiendaID + "')\">Borrar Tienda</button>";
+                pagina += "</td>";
+                pagina += "<td>";
+                pagina += "<button class=\"btn btn-success\" onclick=\"modalReporteTienda('" + t.TiendaID + "')\">Ver Reporte</button>";
                 pagina += "</td>";
                 pagina += "</tr>";
             }
@@ -144,10 +178,13 @@ namespace Chebay.BackofficeIdentity.Controllers
                     pagina += t.nombre;
                     pagina += "</td>";
                     pagina += "<td>";
-                    pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda : " + t.nombre + "</button>";
+                    pagina += "<button class=\"btn btn-info\" onclick=\"seleccionarTienda('" + t.TiendaID + "')\">Ver Tienda</button>";
                     pagina += "</td>";
                     pagina += "<td>";
-                    pagina += "<button class=\"btn btn-danger\" onclick=\"modalBorrarTienda('" + t.TiendaID + "')\">Borrar Tienda : " + t.nombre + "</button>";
+                    pagina += "<button class=\"btn btn-danger\" onclick=\"modalBorrarTienda('" + t.TiendaID + "')\">Borrar Tienda</button>";
+                    pagina += "</td>";
+                    pagina += "<td>";
+                    pagina += "<button class=\"btn btn-success\" onclick=\"modalReporteTienda('" + t.TiendaID + "')\">Ver Reporte</button>";
                     pagina += "</td>";
                     pagina += "</tr>";
             }

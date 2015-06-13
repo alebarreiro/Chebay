@@ -9,19 +9,8 @@ namespace Chebay.BusinessLogicLayer
     {
         static void Main(string[] args)
         {
-            IDALMercadoLibreREST ml = new DALMercadoLibreREST();
-            ChebayDBPublic.ProvidePublicSchema();
-            using (var db = ChebayDBPublic.CreatePublic())
-            {
-                db.Seed();
-            }
-
-            string tenant = "MobileCenter";
-            ChebayDBContext.ProvisionTenant(tenant);
-            using (var db = ChebayDBContext.CreateTenant(tenant))
-            {
-                db.SeedMobileCenter();
-            }
+            CustomTests ct = new CustomTests();
+            ct.CierreSubastaCompraDirecta();
             Console.Read();
         }
     }

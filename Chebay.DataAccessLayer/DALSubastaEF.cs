@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Net.Mail;
+using System.Threading;
 
 namespace DataAccessLayer
 {
@@ -1093,23 +1094,29 @@ namespace DataAccessLayer
                     context.SaveChanges();
 
                     //Notifico inmediatamente al comprador
-                    BLNotificaciones bl = new BLNotificaciones();
-                    string asunto ="Venta de producto!";
-                    string mensaje = "El producto " + p.ProductoID + " " + p.nombre+ " se ha vendido al usuario "
-                                      +c.UsuarioID + " por el valor de $" + c.monto +".";
-
-                    if (u.Email != null)
-                    {
-                        bl.sendEmailNotification(u.Email, asunto, mensaje);
-                    }
-                    else
-                    {
-                        if (IsValidMail(u.UsuarioID))
+                    Thread t = new Thread(delegate(){
+                        BLNotificaciones bl = new BLNotificaciones();
+                        string asunto = "Venta de producto!";
+                        string mensaje = String.Format("<p>El producto {0} {1} se ha vendido al usuario {2} por el valor de ${3}.</p> <p>Te invitamos a calificar al vendedor accediendo al siguiente enlace :  http://chebuynow.azurewebsites.net/{4}/Usuario/CalificarUsuario?prodId={5} .</p>",
+                            p.ProductoID, p.nombre, c.UsuarioID, c.monto, idTienda, p.ProductoID);
+                        if (u.Email != null)
                         {
-                            bl.sendEmailNotification(u.UsuarioID, asunto, mensaje);
+                            bl.sendEmailNotification(u.Email, asunto, mensaje);
                         }
-                        //else... por algun error no tiene mail
-                    }
+                        else
+                        {
+                            if (IsValidMail(u.UsuarioID))
+                            {
+                                bl.sendEmailNotification(u.UsuarioID, asunto, mensaje);
+                            }
+                            //else... por algun error no tiene mail
+                        }
+                        }
+                        );
+                    //asincronismo
+                    Debug.WriteLine("Empieza envio mail...");
+                    t.Start();
+                    Debug.WriteLine("Termina envio de mail...");
                 }
             }
             catch (Exception e)

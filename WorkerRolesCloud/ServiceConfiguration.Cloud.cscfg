@@ -3,14 +3,14 @@
   <Role name="WorkerRoleSubasta">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=chebaystore;AccountKey=vKtKoesGaa1f/v2zuTg6zbCP2qqE9O59vxdHP61pp4j34laS18LCmn5fuY+0bg+qrQ6EEC0TDlTey7PrgC4S8A==" />
       <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=Jd/ztAsr+7snQ02QpUfn9bIvb9QvTjup+nox7GDw1dM=" />
     </ConfigurationSettings>
   </Role>
   <Role name="WorkerRoleRecomendacion">
     <Instances count="1" />
     <ConfigurationSettings>
-      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="UseDevelopmentStorage=true" />
+      <Setting name="Microsoft.WindowsAzure.Plugins.Diagnostics.ConnectionString" value="DefaultEndpointsProtocol=https;AccountName=chebaystore;AccountKey=vKtKoesGaa1f/v2zuTg6zbCP2qqE9O59vxdHP61pp4j34laS18LCmn5fuY+0bg+qrQ6EEC0TDlTey7PrgC4S8A==" />
       <Setting name="Microsoft.ServiceBus.ConnectionString" value="Endpoint=sb://chebay.servicebus.windows.net/;SharedAccessKeyName=auth;SharedAccessKey=S7iWiUrWVafAyLY8sf3P32xjzvvpTKQU9khPyddYGkY=" />
     </ConfigurationSettings>
   </Role>

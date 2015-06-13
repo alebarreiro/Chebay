@@ -1,15 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.Azure.WebJobs;
-using DataAccessLayer;
-using Shared.Entities;
-using System.Threading;
-using Shared.DataTypes;
-using Microsoft.WindowsAzure;
+﻿using DataAccessLayer;
 using Microsoft.ServiceBus.Messaging;
+using Microsoft.WindowsAzure;
+using System;
 
 namespace WebAlgorithm
 {
@@ -22,7 +14,7 @@ namespace WebAlgorithm
         //Hace broadcast a topic, para todas las instancias del worker role.
         static void Main()
         {
-            string QueueName = "recomendation";       
+            string QueueName = "recomendacion";       
             string connectionString = CloudConfigurationManager.GetSetting("Microsoft.ServiceBus.ConnectionString");
 
             QueueClient Client;

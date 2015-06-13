@@ -55,12 +55,16 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Profiles" />
     <Folder Include="WorkerRoleRecomendacionContent\" />
     <Folder Include="WorkerRoleSubastaContent\" />
   </ItemGroup>
   <ItemGroup>
     <DiagnosticsConfiguration Include="WorkerRoleRecomendacionContent\diagnostics.wadcfgx" />
     <DiagnosticsConfiguration Include="WorkerRoleSubastaContent\diagnostics.wadcfgx" />
+  </ItemGroup>
+  <ItemGroup>
+    <PublishProfile Include="Profiles\chebaycloudProduction.azurePubxml" />
   </ItemGroup>
   <!-- Import the target files for this project template -->
   <PropertyGroup>

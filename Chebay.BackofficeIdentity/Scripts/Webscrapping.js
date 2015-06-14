@@ -35,6 +35,7 @@ function seleccionarCategoria() {
         success: function (data, textStatus, jqxhr) {
             finCargandoDatos("#bodySeleccionarCategoria");
             $("#bodySeleccionarCategoria").html(data["Message"]);
+            $("#tituloModalWebscrapping").html("Ingrese la cantidad máxima de productos a importar");
             $("#botonSeleccionarCategoria").hide();
             $("#traerCategorias").show();
             $("#errores").html("");

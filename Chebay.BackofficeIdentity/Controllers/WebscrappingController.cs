@@ -149,7 +149,7 @@ namespace Chebay.BackofficeIdentity.Controllers
         {
             try
             {
-                Debug.WriteLine("WebscrappingController::ObtenerCategoriasHijas:: categoria = " + idCategoria);
+                Debug.WriteLine("WebscrappingController::ConfirmarProductosDeCategoria:: categoria = " + idCategoria);
                 string idAdmin = User.Identity.Name;
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion cantMaxProductos = null;
@@ -170,7 +170,10 @@ namespace Chebay.BackofficeIdentity.Controllers
                         categoriaLocal = a;
                     }
                 }
-                dalMC.ObtenerProductosMLporCategoria(tienda.Datos, cantMaxProductos.Datos, idCategoria.categoria, long.Parse(categoriaLocal.Datos));
+                Debug.WriteLine("WebscrappingController::ConfirmarProductosDeCategoria:: cantMaxProductos = " + cantMaxProductos.Datos);
+                Debug.WriteLine("WebscrappingController::ConfirmarProductosDeCategoria:: tienda = " + tienda.Datos);
+                Debug.WriteLine("WebscrappingController::ConfirmarProductosDeCategoria:: categoriaLocal = " + categoriaLocal.Datos);
+                dalMC.ObtenerProductosMLporCategoria(tienda.Datos, cantMaxProductos.Datos, idCategoria, long.Parse(categoriaLocal.Datos));
                 var result = new { Success = "True", Message = "" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

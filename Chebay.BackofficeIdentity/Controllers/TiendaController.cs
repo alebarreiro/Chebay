@@ -336,7 +336,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" onclick=\"notificarCategoriaSimple()\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalSeleccionarCategoriaWebScrapping(" + hija.CategoriaID + ")\">" + hija.Nombre + "</button></li>";
                         }
                     }
                     resultado += "</ul>";

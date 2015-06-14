@@ -18,33 +18,34 @@
     $(document).ready(function () {
         var cantImagenes = 0;
         $('#btnImagenProd').on('click', function () {
-            $("#btnImagenProd").html($("#btnImagenProd").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
-            var prodId = $("#seccion-imagenes").data('prodid');
-            var data = new FormData();
-            data.append("ProductoID", prodId);
             var files = $("#fileUploadProd").get(0).files;
-
             // Add the uploaded image content to the form data collection
             if (files.length > 0) {
+                $("#btnImagenProd").html("Cargar imágen " + "<i class=\"fa fa-spinner fa-pulse\"></i>");
+                var prodId = $("#seccion-imagenes").data('prodid');
+                var data = new FormData();
+                data.append("ProductoID", prodId);
                 data.append("UploadedImage", files[0]);
+
+                // Make Ajax request with the contentType = false, and procesDate = false
+                var ajaxRequest = $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UploadFile", "Product")",
+                    contentType: false,
+                    processData: false,
+                    data: data
+                });
+
+                ajaxRequest.done(function (xhr, textStatus) {
+                    $("#btnImagenProd").html("<i class=\"fa fa-camera-retro fa-2x\"></i> Cargar imágen ");
+                    var src = "@Url.Action("getProductImg", "Product")" + "?productId=" + prodId + "&index=" + cantImagenes;
+                    var imgTemplate = "<img class=\"img-responsive\" style=\"display: inline\" src=\"" + src + "\" alt=\"Product Image\" width=\"150\" height=\"150\" />";
+                    $("#imagenesCargadas").append(imgTemplate);
+                    cantImagenes++;
+                });
+            } else {
+                swal("Datos incompletos", "Debes seleccionar una imagen.");
             }
-
-            // Make Ajax request with the contentType = false, and procesDate = false
-            var ajaxRequest = $.ajax({
-                type: "POST",
-                url: "@Url.Action("UploadFile", "Product")",
-                contentType: false,
-                processData: false,
-                data: data
-            });
-
-            ajaxRequest.done(function (xhr, textStatus) {
-                $("#btnImagenProd").html("<i class=\"fa fa-camera-retro fa-2x\"></i> Cargar imágen ");
-                var src = "@Url.Action("getProductImg", "Product")" + "?productId=" + prodId + "&index=" + cantImagenes;
-                var imgTemplate = "<img class=\"img-responsive\" style=\"display: inline\" src=\"" + src + "\" alt=\"Product Image\" width=\"150\" height=\"150\" />";
-                $("#imagenesCargadas").append(imgTemplate);
-                cantImagenes++;
-            });
         });
     });
 </script>

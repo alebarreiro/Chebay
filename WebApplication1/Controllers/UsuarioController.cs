@@ -155,15 +155,11 @@ namespace WebApplication1.Controllers
                 String tienda = Session["Tienda_Nombre"].ToString();
                 if (httpPostedFile != null)
                 {
-                    //Nombre unico
-                    String fileName = Guid.NewGuid().ToString("N") + "_" + httpPostedFile.FileName;
-                    // Path
-                    var fileSavePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/UploadedFiles"), fileName);
-
-                    // Guardar la imagen en UplodadedFiles
-                    httpPostedFile.SaveAs(fileSavePath);
-
-                    byte[] imageBytes = System.IO.File.ReadAllBytes(fileSavePath);
+                    byte[] imageBytes = null;
+                    using (var binaryReader = new BinaryReader(httpPostedFile.InputStream))
+                    {
+                        imageBytes = binaryReader.ReadBytes(httpPostedFile.ContentLength);
+                    }
 
                     ImagenUsuario iu = new ImagenUsuario{
                         UsuarioID = usuarioId,

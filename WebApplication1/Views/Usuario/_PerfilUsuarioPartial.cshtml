@@ -107,31 +107,34 @@
         });
 
         $('#btnUploadFileUser').on('click', function () {
-            $("#btnUploadFileUser").html($("#btnUploadFileUser").html() + "<i class=\"fa fa-spinner fa-pulse\"></i>");
             var data = new FormData();
             var files = $("#fileUploadUser").get(0).files;
             // Add the uploaded image content to the form data collection
             if (files.length > 0) {
+                $("#btnUploadFileUser").html("Cargar imágen " + "<i class=\"fa fa-spinner fa-pulse\"></i>");
                 data.append("UploadedImage", files[0]);
+                // Make Ajax request with the contentType = false, and procesDate = false
+                var ajaxRequest = $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UploadFile", "Usuario")",
+                    contentType: false,
+                    processData: false,
+                    data: data
+                });
+
+                ajaxRequest.done(function (xhr, textStatus) {
+                    $("#btnUploadFileUser").html("Cargar imágen");
+                    var src = $("#imgUser").attr('src');
+                    $("#imgUser").attr('src', '');
+                    setTimeout(function () {
+                        $("#imgUser").attr('src', src);
+                    }, 500);
+                });
+            } else {
+                swal("Datos incompletos.", "Debes seleccionar una imagen.")
             }
 
-            // Make Ajax request with the contentType = false, and procesDate = false
-            var ajaxRequest = $.ajax({
-                type: "POST",
-                url: "@Url.Action("UploadFile", "Usuario")",
-                contentType: false,
-                processData: false,
-                data: data
-            });
-
-            ajaxRequest.done(function (xhr, textStatus) {
-                $("#btnUploadFileUser").html("Cargar imágen");
-                var src = $("#imgUser").attr('src');
-                $("#imgUser").attr('src', '');
-                setTimeout(function () {
-                    $("#imgUser").attr('src', src);
-                }, 500);
-            });
+           
         });
     });
 </script>

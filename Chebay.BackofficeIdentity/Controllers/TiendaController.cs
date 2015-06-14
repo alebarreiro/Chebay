@@ -539,6 +539,10 @@ namespace Chebay.BackofficeIdentity.Controllers
                     contenido += "&nbsp;&nbsp;&nbsp";
                 }
             }
+            if (cantTipos == 0)
+            {
+                contenido += "La categoría seleccionada no tiene tipos de atributo";
+            }
             Debug.WriteLine("ObtenerTiposAtributo::contenido = " + contenido);
             var result = new { Success = "True", Message = contenido };
             return Json(result, JsonRequestBehavior.AllowGet);

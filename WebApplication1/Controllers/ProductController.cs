@@ -357,7 +357,7 @@ namespace WebApplication1.Controllers
             }
             catch (Exception e)
             {
-                var result = new { Success = "False", Message = "No se pudo crear el producto: " + e.Message };
+                var result = new { Success = "False", Message = "No se pudo crear el producto" };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
         }

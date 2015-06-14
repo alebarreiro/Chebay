@@ -5,6 +5,11 @@
 <div class="alert alert-info">
     Para agregar una categoría seleccione la categoría padre haciendo click sobre la misma e ingrese los datos
     de la nueva categoría en la ventana emergente.
+    <br /><br />
+    <strong>
+        Para asignarle productos de una categoría de Mercado Libre a una de ésta tienda, debe seleccionar una categoría simple.
+        (Con el punto negro a su izquierda)
+    </strong>
 </div>
 <br /><br />
 
@@ -29,6 +34,32 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-primary" onclick="agregarCategoria('compuesta')">Agregar Categoría Compuesta</button>
                 <button type="button" class="btn btn-success" onclick="agregarCategoria('simple')">Agregar Categoría Simple</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div id="modalSeleccionarCategoria" class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header" style="background-color : blue;color:white">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                <h4 class="modal-title" id="tituloModalWebscrapping">
+                    Desea seleccionar la categoría para importar productos de Mercado Libre?
+                </h4>
+            </div>
+            <div class="modal-body">
+                <div id="bodySeleccionarCategoria">
+
+                </div>
+                <div id="errores">
+
+                </div>
+                </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" id="botonSeleccionarCategoria" onclick="seleccionarCategoria()">Sí</button>
+                <button type="button" class="btn btn-primary" style="display : none;" id="traerCategorias" onclick="traerCategorias()">Elegir Categoría a Importar</button>
                 <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
         </div>

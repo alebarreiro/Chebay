@@ -11,6 +11,7 @@ namespace Chebay.BackofficeIdentity
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include("~/Scripts/bootstrap.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/scripts").Include("~/Scripts/Login.js", "~/Scripts/CrearTienda.js",
+                "~/Scripts/Webscrapping.js",
                 "~/Scripts/bootstrap-notify.min.js",
                 "~/Scripts/bootstrap-notify.js",
                 "~/Scripts/bootstrap.js",

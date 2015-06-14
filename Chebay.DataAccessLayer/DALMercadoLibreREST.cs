@@ -132,6 +132,7 @@ namespace DataAccessLayer
 
         public void ObtenerProductosMLporCategoria(string TiendaID, string limit, string categoryML, long categoryLocal)
         {
+            Debug.Write("DALMERCADOLIBRE::OBTENERPRODUCTOSMLPORCATEGORIA");
             IDALSubasta sdal = new DALSubastaEF();
 
             string user_ml = "chebaysend@gmail.com";
@@ -173,6 +174,8 @@ namespace DataAccessLayer
                     };
                     long idprod = sdal.AgregarProducto(producto, TiendaID);
                     //agrego producto
+
+                    Debug.WriteLine("Se agrego producto "+ nombre);
                     
                     var imagenes = ObtenerImagenesProducto(idprod, (string)p.id);
                     foreach (var im in imagenes)
@@ -192,6 +195,7 @@ namespace DataAccessLayer
                 Debug.WriteLine("Total: " + total);
 
             }
+            Debug.WriteLine("DALMERCADOLIBRE::TERMINO WEBSCRAPPING");
         }
 
         public void test()

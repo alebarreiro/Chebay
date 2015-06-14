@@ -31,6 +31,7 @@ namespace WindowsPhoneApp
         private readonly NavigationHelper navigationHelper;
         private readonly ObservableDictionary defaultViewModel = new ObservableDictionary();
         private long idProducto;
+        private string idUsuario;
         
 
         public ItemPage()
@@ -76,7 +77,7 @@ namespace WindowsPhoneApp
             //var item = await SampleDataSource.GetItemAsync((string)e.NavigationParameter);
             var item = await ProductoSource.GetItemAsync((long)e.NavigationParameter);
             idProducto = (long)e.NavigationParameter;
-            //idUsuario = item.IDOfertante;
+            idUsuario = item.IDOfertante;
             this.DefaultViewModel["Item"] = item;
             SubastaPrecio.Text = String.Format("{0:C}",item.PrecioActual);
         }
@@ -140,8 +141,10 @@ namespace WindowsPhoneApp
                 Debug.WriteLine("luego de Format " + baseUrl);
                 string result = await client.GetStringAsync(baseUrl);
                 Debug.WriteLine(result);
-
-
+                Debug.WriteLine(idUsuario);
+                Debug.WriteLine(monto);
+                SubastaOfertante.Text = "alebarreiro@live.com";
+                SubastaPrecio.Text = String.Format("{0:C}", monto);
             }
             catch (Exception ex)
             {

@@ -269,24 +269,28 @@ namespace DataAccessLayer
                         
                         foreach (var p in cs.productos)
                         {
-                            DataProducto dp = new DataProducto
+                            //Para agregar solo los productos que no vencieron.
+                            if (p.fecha_cierre > DateTime.Now)
                             {
-                                nombre = p.nombre,
-                                descripcion = p.descripcion,
-                                precio_actual = p.precio_base_subasta,
-                                precio_base_subasta = p.precio_base_subasta,
-                                precio_compra = p.precio_compra,
-                                ProductoID = p.ProductoID,
-                                fecha_cierre = p.fecha_cierre
-                            };
-                            //Para agregar idOfertante y mayor oferta recibida
-                            Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
-                            if (of != null)
-                            {
-                                dp.precio_actual = of.monto;
-                                dp.idOfertante = of.UsuarioID;
+                                DataProducto dp = new DataProducto
+                                {
+                                    nombre = p.nombre,
+                                    descripcion = p.descripcion,
+                                    precio_actual = p.precio_base_subasta,
+                                    precio_base_subasta = p.precio_base_subasta,
+                                    precio_compra = p.precio_compra,
+                                    ProductoID = p.ProductoID,
+                                    fecha_cierre = p.fecha_cierre
+                                };
+                                //Para agregar idOfertante y mayor oferta recibida
+                                Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                                if (of != null)
+                                {
+                                    dp.precio_actual = of.monto;
+                                    dp.idOfertante = of.UsuarioID;
+                                }
+                                listadp.Add(dp);
                             }
-                            listadp.Add(dp);
                         }
                     }
                     else

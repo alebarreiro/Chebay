@@ -1,4 +1,9 @@
 ﻿@using Microsoft.AspNet.Identity
+
+<!-- fotorama.css & fotorama.js. -->
+<link href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
+<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
+
 @{
     ViewBag.Title = "Home Page";
     var productos = ViewBag.productos;
@@ -10,63 +15,23 @@
 
 @if (ViewBag.hayRecomendados)
 {
-
     <h2>
         Productos recomendados para tí
     </h2>
-
+    
     <hr />
-
+    
     <div class="row">
-        <div class="responsiveCarrousel">
-            <div id="myCarousel" class="carousel slide">
-                <!-- SE ARMA EL VISOR -->
-                <div class="carousel-inner">
-                    <div class="item active">
-                        <img src="@Url.Action("getProductImg", "Product", new { productId = @prodActive.ProductoID, index = 0 })" class="img-responsive" alt="Responsive image" />
-                        <div class="container">
-                            <div class="carousel-caption">
-                                <h2>@prodActive.nombre</h2>
-                                <p>@prodActive.descripcion</p>
-                                <p><a class="btn btn-primary" href="@Url.Action("Details", "Product", new { productId = @prodActive.ProductoID })" role="button">Ver más</a></p>
-                            </div>
-                        </div>
-                    </div>
-                    @foreach (var dp in nextProds)
-                    {
-                        <div class="item">
-                            <img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" class="img-responsive" alt="Responsive image" />
-                            <div class="container">
-                                <div class="carousel-caption">
-                                    <h2>@dp.nombre</h2>
-                                    <p>@dp.descripcion</p>
-                                    <p><a class="btn btn-primary" href="@Url.Action("Details", "Product", new { productId = @dp.ProductoID })" role="button">Ver más</a></p>
-                                </div>
-                            </div>
-                        </div>
-                    }
-                </div>
-                <!-- SE ARMA EL NAVEGADOR DEL VISOR -->
-                <a class="left carousel-control"  href="#myCarousel" style="border-bottom-left-radius: 50px; border-top-left-radius: 50px;" data-slide="prev">
-                    <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-                </a>
-                <a class="right carousel-control" href="#myCarousel" style="border-bottom-right-radius: 50px; border-top-right-radius: 50px;" data-slide="next">
-                    <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-                </a>
-            </div>
+        <div class="fotorama" data-nav="thumbs" data-maxheight="600px" style="width: 35%; margin: 0 auto;">
+            <div class="img-text" onclick="location.href='@Session["Tienda_Nombre"].ToString()'+'/Product/Details?productId=' + @prodActive.ProductoID" data-img="@Url.Action("getProductImg", "Product", new { productId = @prodActive.ProductoID, index = 0 })">@prodActive.nombre</div>
+            @foreach (var dp in nextProds)
+            {
+                <div class="img-text" onclick="location.href='@Session["Tienda_Nombre"].ToString()'+'/Product/Details?productId=' + @dp.ProductoID" data-img="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })">@dp.nombre</div>
+            }
         </div>
     </div>
-
-
 }
     
-
-
-
-
-
-
-
 <h2>
     Subastas en vivo
 </h2>
@@ -397,11 +362,25 @@
         margin: auto;
         height: 57%;
     }*/
-    div.c-wrapper{
+div.c-wrapper{
         margin: 1em 0;
         position: relative;
         height: 48%;
 }
+
+.img-text {
+  text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
+  font-family: Georgia, serif;
+  font-size: 30px;
+  text-align: center;
+  height: 100%;
+  box-sizing: border-box;
+  padding-top: 95%;
+  line-height: normal;
+  cursor: pointer;
+}
+
+
 
 .img-centrada{
         position: absolute;

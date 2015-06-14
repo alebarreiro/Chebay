@@ -95,6 +95,7 @@ namespace WebApplication1.Controllers
             {
                 atributos.Add(a.etiqueta, a.valor);
             }
+            
             ViewBag.InfoProducto = infoFullP;
             ViewBag.atributos = atributos;
             ViewBag.testDescripcion = "<b> Esto es un test con HTML </b>";

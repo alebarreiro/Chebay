@@ -1,0 +1,43 @@
+﻿.img-text {
+  text-align: center;
+  height: 15%;
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  background: #1a1f2c;
+  background: rgba(18, 21, 29, 0.85);
+  width: 100%;
+  padding: 1em;
+  font-weight: 400;
+  line-height: 1em;
+  z-index: 2;
+  color: white;
+
+  font-size: 10px;
+  height: 18%;
+}
+
+.responsive-title{
+   font-size: 20px;
+}
+
+
+.fotorama {
+    width: 35%; 
+    margin: 0 auto; 
+}
+
+@media only screen and (min-width: 380px) {
+    .img-text {
+      font-size: 10px;
+      height: 16%;
+    }
+}
+
+@media only screen and (min-width: 600px) {
+    .img-text{
+       font-size: 18px;
+       height: 16%;
+    }
+}

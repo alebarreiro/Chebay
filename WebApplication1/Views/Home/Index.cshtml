@@ -3,7 +3,6 @@
 <!-- fotorama.css & fotorama.js. -->
 <link href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
 <script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
-
 @{
     ViewBag.Title = "Home Page";
     var productos = ViewBag.productos;
@@ -18,11 +17,12 @@
     <h2>
         Productos recomendados para tí
     </h2>
-    
+
+
     <hr />
-    
+
     <div class="row">
-        <div class="fotorama" data-nav="thumbs" data-maxheight="600px" style="width: 35%; margin: 0 auto;">
+        <div class="fotorama" data-nav="thumbs" data-maxheight="600px">
             <div class="img-text" onclick="location.href='@Session["Tienda_Nombre"].ToString()'+'/Product/Details?productId=' + @prodActive.ProductoID" data-img="@Url.Action("getProductImg", "Product", new { productId = @prodActive.ProductoID, index = 0 })">@prodActive.nombre</div>
             @foreach (var dp in nextProds)
             {
@@ -31,7 +31,7 @@
         </div>
     </div>
 }
-    
+
 <h2>
     Subastas en vivo
 </h2>
@@ -43,29 +43,25 @@
         Filtrar por categoría
         <span class="caret"></span>
     </button>
-    <ul class="dropdown-menu" id="categorias-drop" role="menu" aria-labelledby="dropdownMenu1">
-        
-    </ul>
+    <ul class="dropdown-menu" id="categorias-drop" role="menu" aria-labelledby="dropdownMenu1"></ul>
 </div>
 
 <div class="row" id="allProductos">
     <i class="fa fa-spinner fa-pulse fa-4x" style="margin-left: 46%;"></i>
 </div>
 <div class="paginador" id="paginador-content" style="width: 100%">
-    <ul class="pagination" id="pagination" style="cursor:pointer">
-
-    </ul>
+    <ul class="pagination" id="pagination" style="cursor:pointer"></ul>
 </div>
 
 
 <div class="row" id="recomendadosProductos">
 
 </div>
-     
+
 <script id="listar-productos" type="text/x-template">
-     {{#Productos}}
-     {{>productItem}}
-     {{/Productos}}
+    {{#Productos}}
+    {{>productItem}}
+    {{/Productos}}
 </script>
 
 <script id="productItem" type="text/x-template">
@@ -110,7 +106,7 @@
     $(document).ready(function () {
         $('#categorias-drop').load("@Url.Action("MostrarDropdownCategorias", "Product")")
 
-        /** 
+        /**
             Función para obtener todos los productos de la tienda
             ordenados por fecha de cierre
         */
@@ -129,7 +125,7 @@
                     var rendered = Mustache.render(template, viewObject, { productItem: templateItem });
                     //Armamos el paginador
                     var ul = document.getElementById("pagination");
-                    for (i=1; i <= cantPaginas; i++) {
+                    for (i = 1; i <= cantPaginas; i++) {
                         var li = document.createElement("li"),
                             a = document.createElement("a");
                         a.appendChild(document.createTextNode(i));
@@ -207,7 +203,7 @@
                 type: "GET",
                 url: "@Url.Action("obtenerJsonProductosCategoriaIndex", "Product")",
                 data: {
-                    catId : catId
+                    catId: catId
                 },
                 accept: 'application/json',
                 success: function (data) {
@@ -222,7 +218,7 @@
                         //Armamos el paginador
                         $('#pagination').empty();
                         var ul = document.getElementById("pagination");
-                        for (i=1; i <= cantPaginas; i++) {
+                        for (i = 1; i <= cantPaginas; i++) {
                             var li = document.createElement("li"),
                                 a = document.createElement("a");
                             a.appendChild(document.createTextNode(i));
@@ -234,7 +230,7 @@
                             showPage(parseInt($(this).text()))
                         });
                         //Render del contenido
-                        
+
                         $('#allProductos').html(rendered).removeClass("zoomOutUp").addClass("zoomInDown");
                         $('#pagination').removeClass("fadeOutLeft").addClass("fadeInLeft");
                         //Mostramos primera pagina
@@ -282,7 +278,7 @@
             });
         }
     });
-    
+
 </script>
 
 <script type="text/javascript">
@@ -330,7 +326,7 @@
                     prod.find('#userIdGanador').text(showUserName(userId));
                 }
             });
-            //Limpiamos el timer 
+            //Limpiamos el timer
             auctionsTimers.each(function () {
                 if (this.auctionId == productId) {
                     clearInterval(this.currentInterval);
@@ -358,31 +354,17 @@
 
 <style>
     /*div.c-wrapper{
-        width: auto; 
+        width: auto;
         margin: auto;
         height: 57%;
     }*/
-div.c-wrapper{
+    div.c-wrapper {
         margin: 1em 0;
         position: relative;
         height: 48%;
-}
+    }
 
-.img-text {
-  text-shadow: 0 1px 0 rgba(255, 255, 255, .5);
-  font-family: Georgia, serif;
-  font-size: 30px;
-  text-align: center;
-  height: 100%;
-  box-sizing: border-box;
-  padding-top: 95%;
-  line-height: normal;
-  cursor: pointer;
-}
-
-
-
-.img-centrada{
+    .img-centrada {
         position: absolute;
         top: 0;
         bottom: 0;
@@ -391,10 +373,10 @@ div.c-wrapper{
         margin: auto;
         max-width: 100%;
         max-height: 100%;
-}
+    }
 
-    .carousel-inner > .item > img, 
-    .carousel-inner > .item > a > img{
+    .carousel-inner > .item > img,
+    .carousel-inner > .item > a > img {
         max-height: 400px;
         margin: auto;
     }

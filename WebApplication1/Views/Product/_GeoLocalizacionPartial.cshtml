@@ -8,36 +8,35 @@
 </section>
 
 <script>
+    var mapa,
+        longitud,
+        latitud;
 
     $(document).ready(function () {
-        var mapa = new GMaps({
+        debugger;
+        longitud = $('.infoProducto-container').data("longitud"),
+        latitud = $('.infoProducto-container').data("latitud");
+                    
+        mapa = new GMaps({
             el: '#mapa',
-            lat: -34.905510300,
-            lng: -56.192056200,
+            lat: latitud,
+            lng: longitud,
             width: '100%',
-            height: '400px'
+            height: '400px',
+            mapTypeId: google.maps.MapTypeId.TERRAIN
         });
-        var productId = $('.infoProducto-container').data("key");
-
-        $.ajax({
-            url: "@Url.Action("ObtenerCoordenadas", "Product")",
-            type: 'GET',
-            data: { productID: productId },
-            dataType: 'json',
-            contentType: 'application/json; charset=UTF-8',
-            success: function (data, textStatus, jqxhr) {
-                mapa.addMarker({
-                    lat: parseFloat(data['coordenadaX'].replace(",", ".")),
-                    lng: parseFloat(data['coordenadaY'].replace(",", ".")),
-                    draggable: false,
-                    infoWindow: {
-                        content: '<p>El producto se ubica aquí</p>'
-                    }
-                });
-                //mapa.setCenter(parseFloat(data['coordenadaX'].replace(",", ".")), parseFloat(data['coordenadaY'].replace(",", ".")));
-                //mapa.setZoom(10);
+        mapa.addMarker({
+            lat: latitud,
+            lng: longitud,
+            draggable: false,
+            infoWindow: {
+                content: '<p>El producto se ubica aquí</p>'
             }
         });
+    });
+
+    $('#myTab a[href="#localizacion"]').click(function (e) {
+        mapa.setCenter(latitud, longitud);
     });
 
 </script>

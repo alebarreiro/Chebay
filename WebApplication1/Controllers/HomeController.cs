@@ -57,12 +57,15 @@ namespace Frontoffice.Controllers
                     DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
                     ViewBag.productos = drRes.productos;
                 } */
+
+                //Importante: El diseño esta hecho para mostrar TRES productos recomendados
                 prods = controladorSubasta.ObtenerProductosPorTerminar(3, urlTienda);
                 ViewBag.productos = prods;
                 if (prods.Count > 0)
                 {
                     ViewBag.hayRecomendados = true;
                     ViewBag.prodActive = prods.ElementAt(0);
+
                     if (prods.Count > 1)
                     {
                         nextProds = prods.GetRange(1, prods.Count -1);

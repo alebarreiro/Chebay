@@ -531,7 +531,6 @@ namespace WebApplication1.Controllers
         }
 
         //GET Producto/obtenerJsonComentarios
-        [Authorize]
         [HttpGet]
         public JsonResult obtenerJsonComentarios(long prodId)
         {

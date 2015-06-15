@@ -1,9 +1,9 @@
 ﻿<section id="seccion-comentarios">
-
+    <i class="fa fa-spinner fa-pulse fa-2x" style="margin-left: 46%; margin-top: 15px"></i>
 </section>
 <section id="seccion-menu">
     <textarea class="form-control" rows="3" placeholder="Agrega tu comentario aquí" id="comentarioValue"></textarea>
-    <button class="btn btn-info commentBoton" id="agregarCommentButton" onclick="agregarComentario()"> Agregar comentario </button>
+    <button class="btn btn-info commentBoton" id="agregarCommentButton" onclick="agregarComentario()"> Agregar comentario </button>  
 </section>
 <script id="comment-template" type="text/x-template">
     {{#comentarios}}
@@ -41,18 +41,20 @@
     var userId = "@Context.User.Identity.Name"
     var isAuth = "@User.Identity.IsAuthenticated"
     var productId = $('.infoProducto-container').data("key");
+    var template = $('#comment-template').html();
+    var templateItem = $('#commentItem').html();
+    
+    Mustache.parse(template);
 
-    $(function() {
-        var template = $('#comment-template').html();
-        var templateItem = $('#commentItem').html();
+    $('#myTab a[href="#comentarios"]').click(function (e) {
+        debugger;
         var comentarios = [];
-        Mustache.parse(template);
 
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerJsonComentarios", "Product")",
             data: {
-                prodId : productId
+                prodId: productId
             },
             accept: 'application/json',
             success: function (data) {
@@ -64,7 +66,7 @@
                         var comentario = {
                             userId: this.UsuarioID,
                             fechaVal: moment(fecha).format("DD MMM YYYY, HH:mm"),
-                            texto : this.texto
+                            texto: this.texto
                         }
                         comentarios.push(comentario);
                     });
@@ -74,25 +76,28 @@
                     };
                     var rendered = Mustache.render(template, viewObject, { commentItem: templateItem });
                     $('#seccion-comentarios').html(rendered);
+                } else {
+                    $('#seccion-comentarios').html("<div id=\"sincomentarios\"><h3>Se el primero en comentar!</h3> </div>")
                 }
             },
             error: function (error) {
                 console.log(error);
             }
         });
-        
+    });
 
-        agregarComentario = function () {
-            debugger;
-            if (isAuth) {
+    agregarComentario = function () {
+        debugger;
+        if (isAuth == "True") {
+            var commentText = $('#comentarioValue').val();
+            if (commentText != "") {
                 $("#agregarCommentButton").html("Agregar comentario <i class=\"fa fa-spinner fa-pulse\"></i>");
-                var commentText = $('#comentarioValue').val();
                 comentario = {
-                    "userId" : userId,
+                    "userId": userId,
                     "fechaVal": moment().format("DD MMM YYYY, HH:mm"), //Para mostrar
-                    "fecha"   : moment().format("YYYY-MM-DD HH:mm:ss"), //Para guardar
-                    "texto"   : commentText,
-                    "prodId"  : productId
+                    "fecha": moment().format("YYYY-MM-DD HH:mm:ss"), //Para guardar
+                    "texto": commentText,
+                    "prodId": productId
                 };
                 $.ajax({
                     type: "POST",
@@ -100,6 +105,7 @@
                     data: comentario,
                     accept: 'application/json',
                     success: function (response) {
+                        $("#sincomentarios").hide();
                         $("#agregarCommentButton").html("Agregar comentario");
                         $('#comentarioValue').val("");
                         var templateNuevoComentario = Mustache.render(templateItem, comentario);
@@ -114,8 +120,12 @@
                     }
                 });
             } else {
-                swal("Inicia sesión para comentar.");
+                swal("Ingresa un comentario.");
             }
-        };
-    });
+            
+        } else {
+            swal("Inicia sesión para comentar.");
+        }
+    };
+
 </script>

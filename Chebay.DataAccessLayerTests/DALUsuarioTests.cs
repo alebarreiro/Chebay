@@ -118,5 +118,18 @@ namespace Chebay.DataAccessLayerTests
         void EliminarImagenUsuario(string idUsuario, string idTienda);
 
         */
+
+        [TestMethod]
+        public void ObtenerCalificacionUsuario()
+        {
+            DataCalificacionFull dc = iu.ObtenerCalificacionUsuario("alebarreiro@live.com", "TodoPC");
+            Debug.WriteLine(dc.cant1.Count);
+            foreach (DataCalificacion data in dc.cant1)
+            {
+                Debug.WriteLine(data.comentario);
+                Debug.WriteLine(data.usuarioEvalua);
+            }
+        }
+        
     }
 }

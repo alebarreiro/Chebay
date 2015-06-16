@@ -291,7 +291,7 @@ namespace Chebay.BackofficeIdentity.Controllers
         public string RecursionCategoriasTipoAtributo(CategoriaCompuesta categoria)
         {
             string resultado = "";
-            resultado += "<li><button class=\"btn btn-link\" data-toggle=\"popover\" data-original-title=\"Agregar Tipo de Atributo\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + categoria.CategoriaID + ",'" + categoria.Nombre + "')\">" + categoria.Nombre + "</button>";
+            resultado += "<li><button class=\"btn btn-link\"  style=\"font-weight : bold; font-size : 18px; font-family: monospace;\"  data-toggle=\"popover\" data-original-title=\"Agregar Tipo de Atributo\" id=\"" + categoria.CategoriaID + "\" onclick=\"mostrarPopover(" + categoria.CategoriaID + ",'" + categoria.Nombre + "')\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {
@@ -306,10 +306,10 @@ namespace Chebay.BackofficeIdentity.Controllers
                         }
                         else
                         {
-                            resultado += "<li><button class=\"btn btn-link\" data-toggle=\"popover\" data-original-title=\"Agregar Tipo de Atributo\" id=\"" + hija.CategoriaID + "\" onclick=\"mostrarPopover(" + hija.CategoriaID + ",'" + hija.Nombre +"')\">" + hija.Nombre + "</button></li>";
+                            resultado += "<li><button class=\"btn btn-link\" data-toggle=\"popover\" data-original-title=\"Agregar Tipo de Atributo\" id=\"" + hija.CategoriaID + "\" onclick=\"mostrarPopover(" + hija.CategoriaID + ",'" + hija.Nombre + "')\">" + hija.Nombre + "</button></li>";
                         }
                     }
-                    resultado += "</ul>";
+                    resultado += "</ul><hr>";
                 }
 
 
@@ -321,7 +321,7 @@ namespace Chebay.BackofficeIdentity.Controllers
         public string RecursionCategorias(CategoriaCompuesta categoria)
         {
             string resultado = "";
-            resultado += "<li><button class=\"btn btn-link\" onclick=\"modalAgregarCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
+            resultado += "<li><button class=\"btn btn-link\" style=\"font-weight : bold; font-size : 18px; font-family: monospace;\"  onclick=\"modalAgregarCategoria(" + categoria.CategoriaID + ")\">" + categoria.Nombre + "</button>";
             //debo crear un arreglo JSON con las categorias
             if (categoria.hijas != null)
             {

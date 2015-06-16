@@ -1104,8 +1104,6 @@ namespace DataAccessLayer
                         BLNotificaciones bl = new BLNotificaciones();
                         {
                             string asuntou = "Chebay: Compra de producto!";
-                            /*string mensajeu = String.Format("<p>Enhorabuena, haz comprado el producto {0} {1} por el valor de ${2}.</p> <p>Te invitamos a calificar al vendedor accediendo al siguiente enlace :  http://chebuynow.azurewebsites.net/{3}/Usuario/CalificarUsuario?prodId={4} .</p>",
-                                p.ProductoID, p.nombre, c.monto, idTienda, p.ProductoID);*/
                             String dest = "";
                             String linkCalif = "http://chebuynow.azurewebsites.net/" + idTienda + "/Usuario/CalificarUsuario?prodId=" + p.ProductoID;
 
@@ -1126,11 +1124,11 @@ namespace DataAccessLayer
                         //mail a vendedor
                         //obtengo vendedor
                         IDALUsuario udal = new DALUsuarioEF();
+                        
                         Usuario vendedor = udal.ObtenerUsuario(p.UsuarioID, idTienda);
                         string asunto = "Chebay: Venta de producto!";
-                        string mensaje = String.Format("<p>El producto {0} {1} se ha vendido al usuario {2} por el valor de ${3}.</p>",
-                            p.ProductoID, p.nombre, c.UsuarioID, c.monto);
                         string bodyMensajeVendedor = getBodyMailHTML(idTienda + ": Producto vendido!", "Has vendido un nuevo producto!", u, p, c.monto, false, "", linkTienda);
+                        
                         if (vendedor.Email != null)
                         {
                             bl.sendEmailNotification(vendedor.Email, asunto, bodyMensajeVendedor);
@@ -1144,6 +1142,7 @@ namespace DataAccessLayer
                             //else... por algun error no tiene mail
                         }
                     });
+
                     //asincronismo
                     Debug.WriteLine("Empieza envio mail...");
                     t.Start();

@@ -270,7 +270,7 @@ namespace DataAccessLayer
                         foreach (var p in cs.productos)
                         {
                             //Para agregar solo los productos que no vencieron.
-                            if (p.fecha_cierre > DateTime.Now)
+                            if (p.fecha_cierre > DateTime.UtcNow)
                             {
                                 DataProducto dp = new DataProducto
                                 {
@@ -333,7 +333,7 @@ namespace DataAccessLayer
                     foreach (Producto p in prods)
                     {
                         //Para agregar solo los productos que no vencieron.
-                        if (p.fecha_cierre > DateTime.Now)
+                        if (p.fecha_cierre > DateTime.UtcNow)
                         {
                             DataProducto dp = new DataProducto
                             {
@@ -386,7 +386,7 @@ namespace DataAccessLayer
                     foreach (Producto p in prods)
                     {
                         //Para agregar solo los productos que no vencieron.
-                        if (p.fecha_cierre > DateTime.Now)
+                        if (p.fecha_cierre > DateTime.UtcNow)
                         {
                             DataProducto dp = new DataProducto
                             {
@@ -523,7 +523,7 @@ namespace DataAccessLayer
                 {
                     var qProd = from p in context.productos
                                 orderby p.fecha_cierre
-                                where p.fecha_cierre > DateTime.Now
+                                where p.fecha_cierre > DateTime.UtcNow
                                 select p;
                     List<DataProducto> ret = new List<DataProducto>();
                     List<Producto> aux = qProd.ToList();

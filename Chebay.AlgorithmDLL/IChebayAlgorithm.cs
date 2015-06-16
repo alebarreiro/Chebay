@@ -8,7 +8,7 @@ using Shared.DataTypes;
 
 namespace Chebay.AlgorithmDLL
 {
-    interface IChebayAlgorithm
+    public interface IChebayAlgorithm
     {
         List<DataProducto> getProducts(List<Producto> productos, Usuario user);
     }

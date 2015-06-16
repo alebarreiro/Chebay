@@ -53,3 +53,28 @@ nav a {
 .offer-section-button {
     background: #e44d26;
 }
+
+.mi-slider cnav a.mi-selected:before {
+	border-top-color: #e44d26;
+}
+
+.mi-slider cnav {
+  border-top: 5px solid #e44d26;
+}
+
+.mi-slider cnav a:hover,
+.mi-slider cnav a.mi-selected {
+	color: #e44d26;
+}
+
+.mi-slider cnav a {
+    color: #f16529;
+}
+
+.ihr {
+   border-top: 5px solid #e44d26;
+}
+
+.responsive-title{
+    color: #e44d26;
+}

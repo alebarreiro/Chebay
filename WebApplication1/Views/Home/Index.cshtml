@@ -1,42 +1,50 @@
 ﻿@using Microsoft.AspNet.Identity
 
-<!-- fotorama.css & fotorama.js. -->
-<link href="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.css" rel="stylesheet"> <!-- 3 KB -->
-<script src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.4/fotorama.js"></script> <!-- 16 KB -->
 @{
     ViewBag.Title = "Home Page";
     var productos = ViewBag.productos;
     var usuario = @Context.User.Identity.Name;
     var tienda = @Session["Tienda_Nombre"].ToString();
-    var prodActive = ViewBag.prodActive;
-    var nextProds = ViewBag.nextProds;
 }
 
-@if (ViewBag.hayRecomendados)
-{
-    <h2>
-        Productos recomendados para tí
-    </h2>
 
-
-    <hr />
-
-    <div class="row">
-        <div class="fotorama" data-nav="thumbs" data-maxheight="600px">
-            <div class="img-text" onclick="location.href='@Session["Tienda_Nombre"].ToString()'+'/Product/Details?productId=' + @prodActive.ProductoID" data-img="@Url.Action("getProductImg", "Product", new { productId = @prodActive.ProductoID, index = 0 })">@prodActive.nombre</div>
-            @foreach (var dp in nextProds)
+<div class="row">
+    <div class="main">
+        <div id="mi-slider" class="mi-slider">
+            @if (ViewBag.hayRecomendados)
             {
-                <div class="img-text" onclick="location.href='@Session["Tienda_Nombre"].ToString()'+'/Product/Details?productId=' + @dp.ProductoID" data-img="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })">@dp.nombre</div>
+            <ul>
+                @foreach (var dp in productos)
+                {
+                    <li><a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId=@dp.ProductoID"><img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" alt="img01"><h4>@dp.nombre</h4></a></li>
+                }
+            </ul>
             }
+            <ul>
+                <li><a href="#"><img src="~/Content/Images/wat.png" alt="img05"><h4>La viejaa</h4></a></li>
+                <li><a href="#"><img src="~/Content/Images/wat2.jpg" alt="img06"><h4> Watafak &amp; e</h4></a></li>
+            </ul>
+            <ul>
+                <li><a href="#"><img src="~/Content/Images/wat.png" alt="img05"><h4>La viejaa fav</h4></a></li>
+                <li><a href="#"><img src="~/Content/Images/wat2.jpg" alt="img06"><h4> Wata &amp; fak</h4></a></li>
+            </ul>
+            <cnav>
+                @if (ViewBag.hayRecomendados)
+                {
+                <a href="#">Recomendados para tí</a>
+                }
+                <a href="#">Visitados</a>
+                <a href="#">Favoritos</a>
+            </cnav>
         </div>
     </div>
-}
+</div>
 
-<h2>
+<div class="responsive-title">
     Subastas en vivo
-</h2>
+</div>
 
-<hr />
+<hr class="ihr" />
 
 <div class="dropdown" style="width:100%">
     <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-expanded="true">
@@ -293,6 +301,10 @@
         $.connection.hub.start()
             .done(function () { console.log('Now connected, connection ID=' + $.connection.hub.id); })
             .fail(function () { console.log('Could not Connect!'); });
+
+        $(function () {
+            $('#mi-slider').catslider();
+        });
 
         // Server callback methods
         proxy.client.newBidPosted = function (productId, newBid, userId) {

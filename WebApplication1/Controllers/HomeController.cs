@@ -46,49 +46,61 @@ namespace Frontoffice.Controllers
                 }
                 ViewBag.Message = urlTienda;
                 Session["Tienda_Nombre"] = urlTienda;
-                List<DataProducto> prods = new List<DataProducto>(); 
-                List<DataProducto> nextProds = new List<DataProducto>();
+                List<DataProducto> prodsRec = new List<DataProducto>();
+                List<DataProducto> prodsFav = new List<DataProducto>();
+                bool hayFav = false;
+                bool hayRec = false;
                 int counter = 0;
                 if (User.Identity.IsAuthenticated)
                 {
                     String user = User.Identity.Name;
                     DataRecomendacion dr = new DataRecomendacion{
                         UsuarioID = user,
-                        productos = prods
+                        productos = prodsRec
                     };
                     try
                     {
+                        //Recomendados para el usuario
                         DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
                         foreach (DataProducto dp in drRes.productos)
                         {
                             if (dp.fecha_cierre >= DateTime.UtcNow && counter < 3)
                             {
-                                prods.Add(dp);
+                                prodsRec.Add(dp);
                                 counter++;
+                                hayRec = true;
                             }
                         }
-                        if (prods.Count > 0)
+
+                        ViewBag.productosRec = prodsRec;
+                        ViewBag.hayRecomendados = hayRec;
+                        //Favoritos del usuario
+                        List<DataProducto> dpFav = controladorSubasta.ObtenerProductosFavoritos(user, urlTienda);
+                        if (dpFav.Count > 0)
                         {
-                            ViewBag.hayRecomendados = true;
+                            if (dpFav.Count > 2)
+                            {
+                                prodsFav = dpFav.GetRange(0, 2);
+                            }
+                            else
+                            {
+                                prodsFav = dpFav;
+                            }
+                            hayFav = true;
                         }
-                        else
-                        {
-                            ViewBag.hayRecomendados = false;
-                        }
-                        ViewBag.productos = prods;
+                        ViewBag.hayFavoritos = hayFav;
+                        ViewBag.productosFav = prodsFav;
                     }
                     catch (Exception eRec)
                     {
-                        prods = controladorSubasta.ObtenerProductosPorTerminar(3, urlTienda);
-                        ViewBag.productos = prods;
-                        if (prods.Count > 0)
+                        prodsRec = controladorSubasta.ObtenerProductosPorTerminar(3, urlTienda);
+                        ViewBag.productosRec = prodsRec;
+                        if (prodsRec.Count > 0)
                         {
-                            ViewBag.hayRecomendados = true;
+                            hayRec = true;
                         }
-                        else
-                        {
-                            ViewBag.hayRecomendados = false;
-                        }
+                        ViewBag.hayRecomendados = hayRec;
+                        ViewBag.hayFavoritos = hayFav;
                         return View();
                     }
                     
@@ -96,8 +108,8 @@ namespace Frontoffice.Controllers
                 else
                 {
                     ViewBag.hayRecomendados = false;
+                    ViewBag.hayFavoritos = false;
                 }
-
             }
             catch (Exception e)
             {

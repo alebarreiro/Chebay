@@ -248,6 +248,8 @@
     <Content Include="Chat.html" />
     <Content Include="Content\animate.css" />
     <Content Include="Content\bootstrap.css" />
+    <Content Include="Content\catslider.css" />
+    <Content Include="Content\demo.css" />
     <Content Include="Content\font-awesome.css" />
     <Content Include="Content\Images\no-photo.png" />
     <Content Include="Content\Images\prod_sin_imagen_100.jpg" />
@@ -260,6 +262,7 @@
     <Content Include="Content\normalize.css" />
     <Content Include="Content\normalize.min.css" />
     <Content Include="Content\partials\comentarios.css" />
+    <Content Include="Content\partials\recomendados.css" />
     <Content Include="Content\personalizacion\EstiloDos\fixes.css" />
     <Content Include="Content\personalizacion\EstiloDos\images\wat1.png" />
     <Content Include="Content\personalizacion\EstiloDos\product_item2.css" />
@@ -296,7 +299,9 @@
     <Content Include="Scripts\gmaps.min.js" />
     <Content Include="Scripts\gmapsapi.js" />
     <Content Include="Scripts\jquery-1.11.2.min.js" />
+    <Content Include="Scripts\jquery.catslider.js" />
     <Content Include="Scripts\modernizr-2.8.3-respond-1.4.2.min.js" />
+    <Content Include="Scripts\modernizr.custom.63321.js" />
     <Content Include="Scripts\moment-with-locales.js" />
     <Content Include="Scripts\moment-with-locales.min.js" />
     <Content Include="Scripts\moment.js" />

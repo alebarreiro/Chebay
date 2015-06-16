@@ -1,33 +1,65 @@
-﻿<ul class="infoProducto-stars">
-    <li>
-        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i>
-        <span id="cal5Value">(0)</span>
-    </li>
-    <li>
-        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i>
-        <span id="cal4Value">(0)</span>
-    </li>
-    <li>
-        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
-        <span id="cal3Value">(0)</span>
-    </li>
-    <li>
-        <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
-        <span id="cal2Value">(0)</span>
-    </li>
-    <li>
-        <i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
-        <span id="cal1Value">(0)</span>
-    </li>
-</ul>
+﻿
+<div class="stars-content">
+    <ul class="infoProducto-stars">
+        <li class="star-li" onclick="mostrarComentarios(5)">
+            <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i>
+            <span id="cal5Value">(-)</span>
+        </li>
+        <li class="star-li" onclick="mostrarComentarios(4)">
+            <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i>
+            <span id="cal4Value">(-)</span>
+        </li>
+        <li class="star-li" onclick="mostrarComentarios(3)">
+            <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+            <span id="cal3Value">(-)</span>
+        </li>
+        <li class="star-li" onclick="mostrarComentarios(2)">
+            <i class="fa fa fa-star"></i><i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+            <span id="cal2Value">(-)</span>
+        </li>
+        <li class="star-li" onclick="mostrarComentarios(1)">
+            <i class="fa fa fa-star"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i><i class="fa fa fa-star-o"></i>
+            <span id="cal1Value">(-)</span>
+        </li>
+    </ul>
+</div>
+<div id="comentarios-calif" class="comentarios-calif">
+    <i class="fa fa-spinner fa-pulse fa-2x" style="margin-left: 46%; margin-top: 15px"></i>
+</div>
+
+
+<script id="calificacion-template" type="text/x-template">
+    {{#calificacion}}
+    {{>califItem}}
+    {{/calificacion}}
+</script>
+
+<script id="califItem" type="text/x-template">
+    <div class="commentItem-Container">
+        <div class="commentItem-Details">
+            <div class="commentItem-Autor">
+                <i class="fa fa-comment" style="color: #77AAEF;"></i>
+                <span style="margin-left: 5px;">
+                    {{userId}}: 
+                </span>
+                <span style="font-weight: normal;">
+                    {{texto}}
+                </span>
+            </div>
+        </div>
+        <hr>
+    </div>
+</script>
+
 
 <script>
-    $('#myTab a[href="#reviews"]').click(function (e) {
-        debugger;
-        var ownerUserId = $('.infoProducto-container').data("ownerid");
-        console.log("hola reviews " + ownerUserId);
-        $(this).tab('show');
 
+
+    $('#myTab a[href="#reviews"]').click(function (e) {
+        var calificacionesGuardadas;
+
+        var ownerUserId = $('.infoProducto-container').data("ownerid");
+        $(this).tab('show');
         $.ajax({
             type: "GET",
             url: "@Url.Action("obtenerJsonCalificaciones", "Product")",
@@ -36,17 +68,63 @@
             },
             accept: 'application/json',
             success: function (data) {
-                console.log(data);
-                $("#cal5Value").html("(" + data.Calificaciones.cant5 + ")");
-                $("#cal4Value").html("(" + data.Calificaciones.cant4 + ")");
-                $("#cal3Value").html("(" + data.Calificaciones.cant3 + ")");
-                $("#cal2Value").html("(" + data.Calificaciones.cant2 + ")");
-                $("#cal1Value").html("(" + data.Calificaciones.cant1 + ")");
+                calificacionesGuardadas = data.Calificaciones;
+                if (data.Calificaciones) {
+                    $("#cal5Value").html("(" + data.Calificaciones.cant5.length + ")");
+                    $("#cal4Value").html("(" + data.Calificaciones.cant4.length + ")");
+                    $("#cal3Value").html("(" + data.Calificaciones.cant3.length + ")");
+                    $("#cal2Value").html("(" + data.Calificaciones.cant2.length + ")");
+                    $("#cal1Value").html("(" + data.Calificaciones.cant1.length + ")");
+                }
+                $(".comentarios-calif").html("<h4>Seleccione una calificación.</h4>");
             },
             error: function (error) {
                 console.log(error);
                 sweetAlert("Oops...", "Algo va mal con el servidor!", "error");
             }
         });
+
+        mostrarComentarios = function (value) {
+            var cant,
+                template = $('#calificacion-template').html(),
+                templateItem = $('#califItem').html(),
+                calificaciones = calificacionesGuardadas;
+            if (calificaciones) {
+                Mustache.parse(template);
+                if (value == 5) {
+                    cant = calificaciones.cant5;
+                } else if (value == 4) {
+                    cant = calificaciones.cant4;
+                } else if (value == 3) {
+                    cant = calificaciones.cant3;
+                } else if (value == 2) {
+                    cant = calificaciones.cant2;
+                } else if (value == 1) {
+                    cant = calificaciones.cant1;
+                };
+                if (cant.length > 0) {
+                    var calificacionesValue = [];
+                    $.each(cant, function () {
+                        var califItem = {
+                            userId: this.usuarioEvalua,
+                            texto: this.comentario,
+                            urlImg: "@Url.Action("getUserImg", "Usuario")" + "?userId=" + this.usuarioEvalua
+                        }
+                        calificacionesValue.push(califItem);
+                    });
+
+                    var viewObject = {
+                        calificacion: calificacionesValue
+                    };
+                    var rendered = Mustache.render(template, viewObject, { califItem: templateItem });
+                    $('.comentarios-calif').html(rendered);
+                } else {
+                    $('.comentarios-calif').html("<div><h4>No hay calificaciones.</h4> </div>")
+                }
+            }
+
+        }
     });
+
+
 </script>

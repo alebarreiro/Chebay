@@ -199,12 +199,12 @@ nav a:hover {
   -moz-box-shadow: 0 5px 10px #aaa;
   box-shadow: 0 5px 10px #aaa;
   font-size: 15px;
-  top: 100px;
   width: inherit;
   z-index: 9999;
   margin-left: 5px;
   border-left: 5px solid white;
-  margin-top: -9px;
+  margin-top: 10px;
+  position: relative;
 }
 
 .search-item{
@@ -216,6 +216,8 @@ nav a:hover {
   text-indent: 25px;
   color: white;
   cursor: pointer;
+  text-overflow: ellipsis;
+  overflow: hidden;
 }
 
 .search-link:hover{

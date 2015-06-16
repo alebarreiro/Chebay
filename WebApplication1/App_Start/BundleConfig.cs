@@ -27,7 +27,9 @@ namespace Frontoffice
                         "~/Scripts/sweet-alert.js",
                         "~/Scripts/mustache.js",
                         "~/Scripts/AppScripts/Subasta.js",
-                        "~/Scripts/star-rating.min.js"
+                        "~/Scripts/star-rating.min.js",
+                        "~/Scripts/modernizr.custom.63321.js",
+                        "~/Scripts/jquery.catslider.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
@@ -51,11 +53,13 @@ namespace Frontoffice
                       "~/Content/normalize.min.css",
                       "~/Content/star-rating.min.css",
                       "~/Content/partials/comentarios.css",
+                      "~/Content/partials/recomendados.css",
                       "~/Content/jquery-ui.css",
                       "~/Content/jquery.ui.chatbox.css",
                       "~/Content/animate.css",
                       "~/Content/font-awesome.css",
-                      "~/Content/sweet-alert.css"));
+                      "~/Content/sweet-alert.css",
+                      "~/Content/catslider.css"));
 
             bundles.Add(new StyleBundle("~/Content/personalizacion/EstiloDos/css").Include(
                 "~/Content/personalizacion/EstiloDos/ie8.css",

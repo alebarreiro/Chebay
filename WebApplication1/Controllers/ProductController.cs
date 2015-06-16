@@ -95,6 +95,7 @@ namespace WebApplication1.Controllers
             {
                 atributos.Add(a.etiqueta, a.valor);
             }
+            
             ViewBag.InfoProducto = infoFullP;
             ViewBag.atributos = atributos;
             ViewBag.testDescripcion = "<b> Esto es un test con HTML </b>";
@@ -530,7 +531,6 @@ namespace WebApplication1.Controllers
         }
 
         //GET Producto/obtenerJsonComentarios
-        [Authorize]
         [HttpGet]
         public JsonResult obtenerJsonComentarios(long prodId)
         {
@@ -556,7 +556,8 @@ namespace WebApplication1.Controllers
             try
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
-                DataCalificacion dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
+
+                DataCalificacionFull dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
                 var result = new { Success = "True", Calificaciones = dataCal };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

@@ -291,56 +291,52 @@ namespace DataAccessLayer
             }
         }
 
-        public DataCalificacion ObtenerCalificacionUsuario(string idUsuario, string idTienda)
+        public DataCalificacionFull ObtenerCalificacionUsuario(string idUsuario, string idTienda)
         {
             try
             {
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var qCalif = from clf in context.usuarios.Include("calificacionesrecibidas")
-                                 where clf.UsuarioID == idUsuario
+                    var qCalif = from clf in context.calificaciones
+                                 where clf.UsuarioCalificado == idUsuario
                                  select clf;
-                    Usuario u = qCalif.FirstOrDefault();
-                    List<Calificacion> CalificacionesUsuario = u.calificacionesrecibidas.ToList();
-                    DataCalificacion ret = new DataCalificacion 
+                    List<Calificacion> CalificacionesUsuario = qCalif.ToList();
+                    DataCalificacionFull ret = new DataCalificacionFull 
                     { 
-                        promedio = 0, 
-                        cantCalificaciones = 0,
-                        cant1 = 0,
-                        cant2 = 0,
-                        cant3 = 0,
-                        cant4 = 0,
-                        cant5 = 0
+                        cant1 = new List<DataCalificacion>(),
+                        cant2 = new List<DataCalificacion>(),
+                        cant3 = new List<DataCalificacion>(),
+                        cant4 = new List<DataCalificacion>(),
+                        cant5 = new List<DataCalificacion>()
                     };
                     double prom = 0;
                     foreach (Calificacion c in CalificacionesUsuario)
                     {
+                        DataCalificacion tmp = new DataCalificacion
+                        {
+                            comentario = c.comentario,
+                            usuarioEvalua = c.UsuarioEvalua
+                        };
                         prom += c.puntaje;
                         switch (c.puntaje)
                         {
                             case 1:
-                                ret.cant1++;
+                                ret.cant1.Add(tmp);
                                 break;
                             case 2:
-                                ret.cant2++;
+                                ret.cant2.Add(tmp);
                                 break;
                             case 3:
-                                ret.cant3++;
+                                ret.cant3.Add(tmp);
                                 break;
                             case 4:
-                                ret.cant4++;
+                                ret.cant4.Add(tmp);
                                 break;
                             case 5:
-                                ret.cant5++;
+                                ret.cant5.Add(tmp);
                                 break;
                         }
-                    }
-                    if (CalificacionesUsuario.Count > 0)
-                    {
-                        prom = prom / CalificacionesUsuario.Count;
-                        ret.promedio = prom;
-                        ret.cantCalificaciones = CalificacionesUsuario.Count;
                     }
                     return ret;
                 }

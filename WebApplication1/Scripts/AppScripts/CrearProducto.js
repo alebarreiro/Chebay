@@ -288,3 +288,10 @@ showUserName = function (name) {
     return name && name.indexOf("@") != -1 ? name.substring(0, name.indexOf("@")) : name;
 }
 
+parseUtfName = function (name) {
+    if (name) {
+        return name.replace("@","%40")
+    } else {
+        return "";
+    }
+}

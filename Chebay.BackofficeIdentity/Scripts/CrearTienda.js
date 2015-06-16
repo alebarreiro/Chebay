@@ -382,12 +382,16 @@ function cambiarEstilo(estilo) {
         $("#botonColores").show();
         $("#estiloUno").css('background-color', 'blue');
         $("#estiloDos").css('background-color', 'transparent');
+        $("#tituloEstiloUno").css('color', 'white');
+        $("#tituloEstiloDos").css('color', 'red');
     }
     else {
         $("#botonColores").hide();
         $("#botonImagen").show();
         $("#estiloUno").css('background-color', 'transparent');
         $("#estiloDos").css('background-color', 'blue');
+        $("#tituloEstiloUno").css('color', 'red');
+        $("#tituloEstiloDos").css('color', 'white');
     }
 }
 
@@ -545,7 +549,7 @@ function crearCategorias() {
         });
     }
     else {
-        setTimeout(function () {
+        
             $.ajax({
                 url: '/Tienda/CrearCategorias',
                 type: 'GET',
@@ -554,23 +558,23 @@ function crearCategorias() {
                     cargandoDatos("#divCategorias");
                 }
             });
-
-            $.ajax({
-                url: '/Tienda/ObtenerCategorias',
-                type: 'GET',
-                success: function (data, textStatus, jqxhr) {
-                    finCargandoDatos("#divCategorias");
-                    $('#divCategorias').html(data);
-                }
-            });
-        }, 1000);
+            setTimeout(function () {
+                $.ajax({
+                    url: '/Tienda/ObtenerCategorias',
+                    type: 'GET',
+                    success: function (data, textStatus, jqxhr) {
+                        finCargandoDatos("#divCategorias");
+                        $('#divCategorias').html(data);
+                    }
+                });
+            }, 1000);
         
     }
 
 }
 
 function crearCategoriasVerTienda() {
-    setTimeout(function () {
+    
         $.ajax({
             url: '/Tienda/CrearCategorias',
             type: 'GET',
@@ -580,15 +584,16 @@ function crearCategoriasVerTienda() {
             }
         });
 
-        $.ajax({
-            url: '/Tienda/ObtenerCategorias',
-            type: 'GET',
-            success: function (data, textStatus, jqxhr) {
-                finCargandoDatos("#divCategorias");
-                $('#divCategorias').html(data);
-            }
-        });
-    }, 1000);
+        setTimeout(function () {
+            $.ajax({
+                url: '/Tienda/ObtenerCategorias',
+                type: 'GET',
+                success: function (data, textStatus, jqxhr) {
+                    finCargandoDatos("#divCategorias");
+                    $('#divCategorias').html(data);
+                }
+            });
+        }, 1000);
 
 }
 
@@ -603,7 +608,7 @@ function crearTiposAtributo() {
         });
     }
     else {
-        setTimeout(function () {
+        
             $.ajax({
                 url: '/Tienda/CrearTiposAtributo',
                 type: 'GET',
@@ -612,6 +617,31 @@ function crearTiposAtributo() {
                     cargandoDatos("#divTiposAtributo");
                 }
             });
+            setTimeout(function () {
+                $.ajax({
+                    url: '/Tienda/ObtenerCategoriasTipoAtributo',
+                    type: 'GET',
+                    success: function (data, textStatus, jqxhr) {
+                        finCargandoDatos("#divTiposAtributo");
+                        $('#divTiposAtributo').html(data);
+                    }
+                });
+            }, 1000);
+    }
+
+}
+
+function crearTiposAtributoVerTienda() {
+    
+        $.ajax({
+            url: '/Tienda/CrearTiposAtributo',
+            type: 'GET',
+            success: function (data, textStatus, jqxhr) {
+                $('#contenidoCrearTienda').html(data);
+                cargandoDatos("#divTiposAtributo");
+            }
+        });
+        setTimeout(function () {
             $.ajax({
                 url: '/Tienda/ObtenerCategoriasTipoAtributo',
                 type: 'GET',
@@ -621,29 +651,6 @@ function crearTiposAtributo() {
                 }
             });
         }, 1000);
-    }
-
-}
-
-function crearTiposAtributoVerTienda() {
-    setTimeout(function () {
-        $.ajax({
-            url: '/Tienda/CrearTiposAtributo',
-            type: 'GET',
-            success: function (data, textStatus, jqxhr) {
-                $('#contenidoCrearTienda').html(data);
-                cargandoDatos("#divTiposAtributo");
-            }
-        });
-        $.ajax({
-            url: '/Tienda/ObtenerCategoriasTipoAtributo',
-            type: 'GET',
-            success: function (data, textStatus, jqxhr) {
-                finCargandoDatos("#divTiposAtributo");
-                $('#divTiposAtributo').html(data);
-            }
-        });
-    }, 1000);
 
 }
 

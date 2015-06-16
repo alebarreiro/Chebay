@@ -1119,7 +1119,7 @@ namespace DataAccessLayer
                             }
                             if (dest != "")
                             {
-                                string bodyMensaje = getBodyMailHTML("Subasta ganada!", "Haz ganado una nueva subasta!", u, p, c.monto, true, linkCalif, linkTienda);
+                                string bodyMensaje = getBodyMailHTML(idTienda + ": Subasta ganada!", "Has ganado una nueva subasta!", u, p, c.monto, true, linkCalif, linkTienda);
                                 bl.sendEmailNotification(dest, asuntou, bodyMensaje);
                             }
                         }
@@ -1130,7 +1130,7 @@ namespace DataAccessLayer
                         string asunto = "Chebay: Venta de producto!";
                         string mensaje = String.Format("<p>El producto {0} {1} se ha vendido al usuario {2} por el valor de ${3}.</p>",
                             p.ProductoID, p.nombre, c.UsuarioID, c.monto);
-                        string bodyMensajeVendedor = getBodyMailHTML("Producto vendido!", "Haz vendido un nuevo producto!", u, p, c.monto, false, "", linkTienda);
+                        string bodyMensajeVendedor = getBodyMailHTML(idTienda + ": Producto vendido!", "Has vendido un nuevo producto!", u, p, c.monto, false, "", linkTienda);
                         if (vendedor.Email != null)
                         {
                             bl.sendEmailNotification(vendedor.Email, asunto, bodyMensajeVendedor);
@@ -1174,7 +1174,7 @@ namespace DataAccessLayer
          * Función para mandar un mail formato HTML al cliente o al vendedor de producto
          * 
          * {titulo} Subasta ganada! ó Producto vendido!
-         * {motivo} Haz ganado una nueva subasta ó Haz vendido un nuevo producto
+         * {motivo} Has ganado una nueva subasta ó Has vendido un nuevo producto
          * {u} Usuario vendedor o comprador
          * {p} Producto vendido o comprado
          * {monto} Monto de la compra / venta
@@ -1207,7 +1207,7 @@ namespace DataAccessLayer
                     + "      <tr>\n"
                     + "      </tr>\n"
                     + "      <tr>\n"
-                    + "        <td align=\"left\" valign=\"top\" bgcolor=\"#f89406\" style=\"background-color:#f89406; font-family:Arial, Helvetica, sans-serif; padding:10px;\"><div style=\"font-size:46px; color:#ff5500;\"><b>Chebay</b></div>\n"
+                    + "        <td align=\"left\" valign=\"top\" bgcolor=\"#f89406\" style=\"background-color:#f89406; font-family:Arial, Helvetica, sans-serif; padding:10px;\"><div style=\"font-size:46px; color:#ff5500;\"><b>" + titulo + "</b></div>\n"
                     + "  <div style=\"font-size:13px; color:#000;\"><b>Estimado cliente " + dest + ", "+ motivo +"</b></div>\n"
                     + "          </td>\n"
                     + "      </tr>\n"

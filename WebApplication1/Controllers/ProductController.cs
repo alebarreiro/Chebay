@@ -556,7 +556,8 @@ namespace WebApplication1.Controllers
             try
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
-                DataCalificacion dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
+
+                DataCalificacionFull dataCal = cU.ObtenerCalificacionUsuario(userId, tiendaId);
                 var result = new { Success = "True", Calificaciones = dataCal };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }

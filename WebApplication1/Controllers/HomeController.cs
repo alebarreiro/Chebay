@@ -44,33 +44,60 @@ namespace Frontoffice.Controllers
 
                     Response.Redirect(Request.Url.ToString(), true);
                 }
+                ViewBag.Message = urlTienda;
+                Session["Tienda_Nombre"] = urlTienda;
                 List<DataProducto> prods = new List<DataProducto>(); 
                 List<DataProducto> nextProds = new List<DataProducto>();
-                DataProducto prodActive;
-              /*  if (User.Identity.IsAuthenticated)
+                int counter = 0;
+                if (User.Identity.IsAuthenticated)
                 {
                     String user = User.Identity.Name;
                     DataRecomendacion dr = new DataRecomendacion{
                         UsuarioID = user,
                         productos = prods
                     };
-                    DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
-                    ViewBag.productos = drRes.productos;
-                } */
-
-                //Importante: El diseño esta hecho para mostrar TRES productos recomendados
-                prods = controladorSubasta.ObtenerProductosPorTerminar(4, urlTienda);
-                ViewBag.productos = prods;
-                if (prods.Count > 0)
-                {
-                    ViewBag.hayRecomendados = true;
+                    try
+                    {
+                        DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
+                        foreach (DataProducto dp in drRes.productos)
+                        {
+                            if (dp.fecha_cierre >= DateTime.UtcNow && counter < 3)
+                            {
+                                prods.Add(dp);
+                                counter++;
+                            }
+                        }
+                        if (prods.Count > 0)
+                        {
+                            ViewBag.hayRecomendados = true;
+                        }
+                        else
+                        {
+                            ViewBag.hayRecomendados = false;
+                        }
+                        ViewBag.productos = prods;
+                    }
+                    catch (Exception eRec)
+                    {
+                        prods = controladorSubasta.ObtenerProductosPorTerminar(3, urlTienda);
+                        ViewBag.productos = prods;
+                        if (prods.Count > 0)
+                        {
+                            ViewBag.hayRecomendados = true;
+                        }
+                        else
+                        {
+                            ViewBag.hayRecomendados = false;
+                        }
+                        return View();
+                    }
+                    
                 }
                 else
                 {
                     ViewBag.hayRecomendados = false;
                 }
-                Session["Tienda_Nombre"] = urlTienda;
-                ViewBag.Message = urlTienda;
+
             }
             catch (Exception e)
             {

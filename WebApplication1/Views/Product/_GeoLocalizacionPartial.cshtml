@@ -13,7 +13,6 @@
         latitud;
 
     $(document).ready(function () {
-        debugger;
         longitud = $('.infoProducto-container').data("longitud"),
         latitud = $('.infoProducto-container').data("latitud");
                     
@@ -36,7 +35,9 @@
     });
 
     $('#myTab a[href="#localizacion"]').click(function (e) {
-        mapa.setCenter(latitud, longitud);
+        setTimeout(function () {
+            mapa.setCenter(latitud, longitud);
+        }, 500);
     });
 
 </script>

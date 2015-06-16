@@ -161,8 +161,30 @@
 }
 
 .infoProducto-stars{
-    font-size: 30px;
-    list-style: none;
+  font-size: 20px;
+  list-style: none;
+  margin-left: -20px;
+  cursor: pointer;
+}
+
+.stars-content{
+    width: 180px; 
+    border-right: 1px solid #e1e1e1; 
+    float:left; 
+    margin-bottom: 20px;
+}
+
+.star-li:hover{
+    background-color: #f0f0f0;
+}
+
+
+.comentarios-calif{
+  vertical-align: top;
+  padding-left: 20px;
+  max-height: 380px;
+  overflow-y: scroll;
+  overflow-x: hidden;
 }
 
 .infoProducto-pane{

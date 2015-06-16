@@ -3,6 +3,7 @@ var categoriasCreadas = false;
 var tiendaBorrar;
 hayAtributos = hayCategorias = hayDatosGenerales = hayPersonalizacion = tiendaCreada = false;
 var estiloGlobal;
+var popoverAbierto = false;
 
 var paginaAntesLoading, padreAgregarCategoria, paginaAntesLoadingCargarDatos, categoriaAgregarTipoAtributo;
 $('[data-toggle="popover"]').popover();
@@ -654,30 +655,46 @@ function crearTiposAtributoVerTienda() {
 
 }
 
-var popoverAbierto = false;
+
 
 function mostrarPopover(categoria, nombre) {
     if (!popoverAbierto) {
-        var html = '<button class=\"btn btn-primary\" onclick=\"verTiposAtributo(' + categoria + ',\'' + nombre + '\')\">Ver Tipos de Atributo</button>'
+        var html = '<br><button class=\"btn btn-primary\" onclick=\"verTiposAtributo(' + categoria + ',\'' + nombre + '\')\">Ver Tipos de Atributo</button>'
         + '<button class=\"btn btn-success\" onclick=\"modalAgregarTipoAtributo(' + categoria + ',\'' + nombre + '\')\">Agregar Tipo de Atributo</button>';
 
-        var options = {
-            animation: true,
-            html: true,
-            content: html,
-            placement: 'right'
-        }
-        $("#" + categoria).popover(options);
-        $("#" + categoria).popover('show');
+        $("#" + categoria + "Div").html(html);
+
+        //var options = {
+            //animation: true,
+            //html: true,
+            //content: html,
+            //placement: 'right'
+        //}
+        //$("#" + categoria).popover(options);
+        //$("#" + categoria).popover('show');
         popoverAbierto = true;
     }
     else {
-        $("#" + categoria).popover('hide');
+        //$("#" + categoria).popover('destroy');
+        $("#" + categoria + "Div").html("");
         popoverAbierto = false;
     }
     
 
 }
+
+$('body').on('click', '[rel="popover"]', function (e) {
+    e.stopPropagation();
+
+    var i = $(this);
+    var thisPopover = $('.popoverClose').filter('[data-info-id="' + i.data('info-id') + '"]').closest('.popover');
+    if (thisPopover.is(':visible')) {
+        $('.popover').remove();
+    }
+    else {
+        $(this).popover('show');
+    }
+});
 
 function algoritmoRecomendacion() {
     if (!tiendaCreada) {

@@ -2631,7 +2631,7 @@
   -moz-box-shadow: 0 5px 10px #aaa;
   box-shadow: 0 5px 10px #aaa;
   font-size: 15px;
-  top: 100px;
+  position: relative;
   width: inherit;
   z-index: 9999;
   margin-left: 5px !important;
@@ -2647,6 +2647,8 @@
   text-indent: 25px;
   color: white;
   cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .search-link:hover{

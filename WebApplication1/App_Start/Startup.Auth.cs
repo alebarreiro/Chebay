@@ -47,8 +47,9 @@ namespace Frontoffice
             // This is similar to the RememberMe option when you log in.
             app.UseTwoFactorRememberBrowserCookie(DefaultAuthenticationTypes.TwoFactorRememberBrowserCookie);
 
-            /* CREDENCIALES http://localhost:56094/ */
+            //CREDENCIALES http://localhost:56094/ 
 
+           
             var x = new FacebookAuthenticationOptions();
             x.Scope.Add("email");
             x.AppId = "943741452344510";
@@ -56,8 +57,9 @@ namespace Frontoffice
 
             app.UseFacebookAuthentication(x); 
 
-            /* PARA CUANDO HAGAMOS DEPLOY A AZURE USAR ESTAS: 
+            //PARA CUANDO HAGAMOS DEPLOY A AZURE USAR ESTAS: 
             
+          /*
             var x = new FacebookAuthenticationOptions();
             x.Scope.Add("email");
             x.AppId = "934307863287869";

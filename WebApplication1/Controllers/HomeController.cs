@@ -44,33 +44,72 @@ namespace Frontoffice.Controllers
 
                     Response.Redirect(Request.Url.ToString(), true);
                 }
-                List<DataProducto> prods = new List<DataProducto>(); 
-                List<DataProducto> nextProds = new List<DataProducto>();
-                DataProducto prodActive;
-              /*  if (User.Identity.IsAuthenticated)
+                ViewBag.Message = urlTienda;
+                Session["Tienda_Nombre"] = urlTienda;
+                List<DataProducto> prodsRec = new List<DataProducto>();
+                List<DataProducto> prodsFav = new List<DataProducto>();
+                bool hayFav = false;
+                bool hayRec = false;
+                int counter = 0;
+                if (User.Identity.IsAuthenticated)
                 {
                     String user = User.Identity.Name;
                     DataRecomendacion dr = new DataRecomendacion{
                         UsuarioID = user,
-                        productos = prods
+                        productos = prodsRec
                     };
-                    DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
-                    ViewBag.productos = drRes.productos;
-                } */
+                    try
+                    {
+                        //Recomendados para el usuario
+                        DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
+                        foreach (DataProducto dp in drRes.productos)
+                        {
+                            if (dp.fecha_cierre >= DateTime.UtcNow && counter < 3)
+                            {
+                                prodsRec.Add(dp);
+                                counter++;
+                                hayRec = true;
+                            }
+                        }
 
-                //Importante: El diseño esta hecho para mostrar TRES productos recomendados
-                prods = controladorSubasta.ObtenerProductosPorTerminar(4, urlTienda);
-                ViewBag.productos = prods;
-                if (prods.Count > 0)
-                {
-                    ViewBag.hayRecomendados = true;
+                        ViewBag.productosRec = prodsRec;
+                        ViewBag.hayRecomendados = hayRec;
+                        //Favoritos del usuario
+                        List<DataProducto> dpFav = controladorSubasta.ObtenerProductosFavoritos(user, urlTienda);
+                        if (dpFav.Count > 0)
+                        {
+                            if (dpFav.Count > 2)
+                            {
+                                prodsFav = dpFav.GetRange(0, 2);
+                            }
+                            else
+                            {
+                                prodsFav = dpFav;
+                            }
+                            hayFav = true;
+                        }
+                        ViewBag.hayFavoritos = hayFav;
+                        ViewBag.productosFav = prodsFav;
+                    }
+                    catch (Exception eRec)
+                    {
+                        prodsRec = controladorSubasta.ObtenerProductosPorTerminar(3, urlTienda);
+                        ViewBag.productosRec = prodsRec;
+                        if (prodsRec.Count > 0)
+                        {
+                            hayRec = true;
+                        }
+                        ViewBag.hayRecomendados = hayRec;
+                        ViewBag.hayFavoritos = hayFav;
+                        return View();
+                    }
+                    
                 }
                 else
                 {
                     ViewBag.hayRecomendados = false;
+                    ViewBag.hayFavoritos = false;
                 }
-                Session["Tienda_Nombre"] = urlTienda;
-                ViewBag.Message = urlTienda;
             }
             catch (Exception e)
             {

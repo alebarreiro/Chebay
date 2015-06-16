@@ -9,3 +9,44 @@
 .titlefix{
    width: 100%;
 }
+
+.ihr{
+   border-top: 5px solid #0090c5;
+   width: 95%;
+   margin-bottom: -20px;
+}
+
+.mi-slider cnav {
+  border-top: 5px solid #10a0d5;
+  top: 345px;
+}
+
+.mi-slider cnav a:hover,
+.mi-slider cnav a.mi-selected {
+	color: #0090c5;
+}
+
+.mi-slider cnav a {
+    color: #10a0d5;
+}
+
+.mi-slider cnav a.mi-selected:before {
+	border-top-color: #0090c5;
+}
+
+.responsive-title{
+    width: 100%;
+    color: #0090c5;
+}
+
+.row{
+    width: 100%;
+}
+
+.main{
+    width: 100%;
+}
+
+.mi-slider ul li h4 {
+    display: inline-table;
+}

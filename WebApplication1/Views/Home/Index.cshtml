@@ -2,43 +2,50 @@
 
 @{
     ViewBag.Title = "Home Page";
-    var productos = ViewBag.productos;
+    var productosRec = ViewBag.productosRec;
+    var productosFav = ViewBag.productosFav;
     var usuario = @Context.User.Identity.Name;
     var tienda = @Session["Tienda_Nombre"].ToString();
 }
 
-
-<div class="row">
-    <div class="main">
-        <div id="mi-slider" class="mi-slider">
-            @if (ViewBag.hayRecomendados)
-            {
-            <ul>
-                @foreach (var dp in productos)
-                {
-                    <li><a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId=@dp.ProductoID"><img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" alt="img01"><h4>@dp.nombre</h4></a></li>
-                }
-            </ul>
-            }
-            <ul>
-                <li><a href="#"><img src="~/Content/Images/wat.png" alt="img05"><h4>La viejaa</h4></a></li>
-                <li><a href="#"><img src="~/Content/Images/wat2.jpg" alt="img06"><h4> Watafak &amp; e</h4></a></li>
-            </ul>
-            <ul>
-                <li><a href="#"><img src="~/Content/Images/wat.png" alt="img05"><h4>La viejaa fav</h4></a></li>
-                <li><a href="#"><img src="~/Content/Images/wat2.jpg" alt="img06"><h4> Wata &amp; fak</h4></a></li>
-            </ul>
-            <cnav>
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row">
+        <div class="main">
+            <div id="mi-slider" class="mi-slider">
                 @if (ViewBag.hayRecomendados)
                 {
-                <a href="#">Recomendados para tí</a>
+                    <ul>
+                        @foreach (var dp in productosRec)
+                        {
+                            <li><a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId=@dp.ProductoID"><img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" alt="img01"><h4>@dp.nombre</h4></a></li>
+                        }
+                    </ul>
                 }
-                <a href="#">Visitados</a>
-                <a href="#">Favoritos</a>
-            </cnav>
+                @if (ViewBag.hayFavoritos)
+                {
+                    <ul>
+                        @foreach (var dp in productosFav)
+                        {
+                            <li><a href="@Session["Tienda_Nombre"].ToString()/Product/Details?productId=@dp.ProductoID"><img src="@Url.Action("getProductImg", "Product", new { productId = @dp.ProductoID, index = 0 })" alt="img01"><h4>@dp.nombre</h4></a></li>
+                        }
+                    </ul>
+                }
+
+                <cnav>
+                    @if (ViewBag.hayRecomendados)
+                    {
+                        <a href="#">Recomendados para tí</a>
+                    }
+                    @if (ViewBag.hayFavoritos)
+                    {
+                        <a href="#">Favoritos</a>
+                    }
+                </cnav>
+            </div>
         </div>
     </div>
-</div>
+}
 
 <div class="responsive-title">
     Subastas en vivo
@@ -84,11 +91,11 @@
             <div class="product-item-countdown" data-id="{{ProductoID}}" data-value="{{fecha_cierre}}"> --:-- </div>
             @if (User.Identity.IsAuthenticated)
             {
-                <button class="btn btn-success bid-button" id="bidButton-{{ProductoID}}" data-id="{{ProductoID}}" onclick="onNewBidClick({{ProductoID}}, '@usuario','@tienda');"> OFERTAR! </button>
+                <button class="btn btn-success bid-button fixbutton" id="bidButton-{{ProductoID}}" data-id="{{ProductoID}}" onclick="onNewBidClick({{ProductoID}}, '@usuario','@tienda');"> OFERTAR! </button>
             }
             else
             {
-                <button class="btn btn-success bid-button disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
+                <button class="btn btn-success bid-button fixbutton disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
             }
             <div class="offer-section">
                 <div class="offer-section-price" id="bidValue-{{ProductoID}}"> {{precio_actual}} </div>

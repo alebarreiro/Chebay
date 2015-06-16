@@ -38,22 +38,42 @@ namespace DataAccessLayer
         {
             var db = _client.GetDatabase(_database);
             var collection = db.GetCollection<BsonDocument>(TiendaID);
-            var prod =  collection.Find(new BsonDocument("UsuarioID", dataRecomendacion.UsuarioID))
-                       .FirstAsync();
+            var query =  collection.Find(new BsonDocument("UsuarioID", dataRecomendacion.UsuarioID));
+            var count = query.CountAsync();
+            count.Wait();
+            if(count.Result == 0)
+                return null;
 
+            var prod= query.FirstAsync();
+            
             List<DataProducto> listDP = new List<DataProducto>();
             string UsuarioID = prod.Result["UsuarioID"].AsString;
             BsonArray ar = prod.Result["productos"].AsBsonArray;
             
+            string nombre = "";
+            long productoid = 0;
+            string descripcion = "";
+            int precio_base_subasta = 0;
+            int precio_compra = 0;
+            DateTime fecha_cierre = DateTime.UtcNow;
+            string idOfertante = "";
             foreach (var a in ar)
             {
-                string nombre = a["nombre"].AsString;
-                long productoid = a["ProductoID"].AsInt64;
-                string descripcion = a["descripcion"].AsString;
-                int precio_base_subasta = a["precio_base_subasta"].AsInt32;
-                int precio_compra = a["precio_compra"].AsInt32;
-                DateTime fecha_cierre = a["fecha_cierre"].ToUniversalTime();
-                string idOfertante = a["idOfertante"].AsString;
+                if(!a["nombre"].IsBsonNull)
+                    nombre = a["nombre"].AsString;
+                if(!a["ProductoID"].IsBsonNull)
+                    productoid = a["ProductoID"].AsInt64;
+                if(!a["descripcion"].IsBsonNull)
+                    descripcion = a["descripcion"].AsString;
+                if (!a["precio_base_subasta"].IsBsonNull)
+                    precio_base_subasta = a["precio_base_subasta"].AsInt32;
+                if (!a["precio_compra"].IsBsonNull)
+                    precio_compra = a["precio_compra"].AsInt32;
+                if (!a["fecha_cierre"].IsBsonNull)
+                    fecha_cierre = a["fecha_cierre"].ToUniversalTime();
+                if (!a["idOfertante"].IsBsonNull)
+                    idOfertante = a["idOfertante"].AsString;
+
                 DataProducto dp = new DataProducto {descripcion=descripcion,
                                                     fecha_cierre=fecha_cierre,
                                                     idOfertante=idOfertante,

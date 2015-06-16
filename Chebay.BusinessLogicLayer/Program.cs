@@ -3,6 +3,7 @@ using Shared.Entities;
 using System;
 using Chebay.DataAccessLayerTests;
 using Chebay.AlgorithmDLL;
+using Shared.DataTypes;
 
 namespace Chebay.BusinessLogicLayer
 {
@@ -15,14 +16,27 @@ namespace Chebay.BusinessLogicLayer
             IChebayAlgorithm al = new ChebayAlgorithm();
             IDALSubasta sdal = new DALSubastaEF();
             IDALUsuario udal = new DALUsuarioEF();
+            DataRecomendacion dr = new DataRecomendacion{ UsuarioID = "alebarreiro@live .com"};
+            
 
-            var listaprod = sdal.ObtenerTodosProductos("MobileCenter");
-            var user = udal.ObtenerUsuarioFull("open_pirsaoz_user@tfbnw.net", "MobileCenter");
-            var res = al.getProducts(listaprod,user);
-            foreach (var r in res)
+            var prod = udal.ObtenerRecomendacionesUsuario("MobileCenter",dr);
+            if (prod == null)
+                Console.WriteLine("ES NULL");
+            else
             {
-                Console.WriteLine(r.nombre+r.ProductoID);
+                foreach (var i in prod.productos)
+                {
+                    Console.WriteLine(i.nombre);
+                }
             }
+            
+            //var listaprod = sdal.ObtenerTodosProductos("MobileCenter");
+            //var user = udal.ObtenerUsuarioFull("open_pirsaoz_user@tfbnw.net", "MobileCenter");
+            //var res = al.getProducts(listaprod,user);
+            //foreach (var r in res)
+            //{
+            //    Console.WriteLine(r.nombre+r.ProductoID);
+            //}
             Console.Read();
         }
     }

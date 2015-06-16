@@ -4,7 +4,7 @@
   -moz-box-shadow: 0 5px 10px #aaa;
   box-shadow: 0 5px 10px #aaa;
   float: left;
-  height: 440px;
+  height: 460px;
   margin: 15px;
   position: relative;
   width: 285px;
@@ -166,3 +166,6 @@
     }
 }
 
+.product-item-header{
+    height: 70px;
+}

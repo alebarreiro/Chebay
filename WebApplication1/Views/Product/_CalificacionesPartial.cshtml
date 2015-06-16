@@ -68,7 +68,6 @@
             },
             accept: 'application/json',
             success: function (data) {
-                console.log(data);
                 calificacionesGuardadas = data.Calificaciones;
                 if (data.Calificaciones) {
                     $("#cal5Value").html("(" + data.Calificaciones.cant5.length + ")");
@@ -86,7 +85,6 @@
         });
 
         mostrarComentarios = function (value) {
-            debugger;
             var cant,
                 template = $('#calificacion-template').html(),
                 templateItem = $('#califItem').html(),
@@ -107,7 +105,6 @@
                 if (cant.length > 0) {
                     var calificacionesValue = [];
                     $.each(cant, function () {
-                        console.log(this);
                         var califItem = {
                             userId: this.usuarioEvalua,
                             texto: this.comentario,

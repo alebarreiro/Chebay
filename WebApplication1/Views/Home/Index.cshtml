@@ -84,11 +84,11 @@
             <div class="product-item-countdown" data-id="{{ProductoID}}" data-value="{{fecha_cierre}}"> --:-- </div>
             @if (User.Identity.IsAuthenticated)
             {
-                <button class="btn btn-success bid-button" id="bidButton-{{ProductoID}}" data-id="{{ProductoID}}" onclick="onNewBidClick({{ProductoID}}, '@usuario','@tienda');"> OFERTAR! </button>
+                <button class="btn btn-success bid-button fixbutton" id="bidButton-{{ProductoID}}" data-id="{{ProductoID}}" onclick="onNewBidClick({{ProductoID}}, '@usuario','@tienda');"> OFERTAR! </button>
             }
             else
             {
-                <button class="btn btn-success bid-button disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
+                <button class="btn btn-success bid-button fixbutton disabled" title="Inicia sesión para ofertar."> OFERTAR! </button>
             }
             <div class="offer-section">
                 <div class="offer-section-price" id="bidValue-{{ProductoID}}"> {{precio_actual}} </div>

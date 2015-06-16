@@ -15,9 +15,10 @@ namespace DataAccessLayer
         List<DataProducto> ObtenerProductosPersonalizados(string urlTienda); //Devuelve los últimos 10 productos publicados para el index.
         List<DataProducto> ObtenerProductosPorTerminar(int cantProductos, string urlTienda); //Devuelve los 10 productos más cercanos a su fecha de cierre.
         List<DataProducto> ObtenerProductosBuscados(string searchTerm, string urlTienda);
+        List<DataProducto> ObtenerProductosVisitados(string idUsuario, string idTienda);
+        List<DataProducto> ObtenerProductosFavoritos(string idUsuario, string idTienda);
 
-        //ELIMINAR POST IMPLEMENTACION
-        List<Producto> ObtenerProductosVencidos(DateTime ini, DateTime fin, string idTienda); //FALTA IMPLEMENTAR
+        List<Producto> ObtenerProductosVencidos(DateTime ini, DateTime fin, string idTienda);
         //Devuelve los productos que se vencieron entre ini y fin.
 
         List<DataProducto> ObtenerProductosCategoria(long idCategoria, string idTienda);

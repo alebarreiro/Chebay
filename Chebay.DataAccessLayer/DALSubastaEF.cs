@@ -312,7 +312,7 @@ namespace DataAccessLayer
             return listadp;
         }
 
-        public List<Producto> ObtenerProductosVisitados(string idUsuario, string idTienda)
+        public List<DataProducto> ObtenerProductosVisitados(string idUsuario, string idTienda)
         {
             try
             {
@@ -321,17 +321,41 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
+                    var query = from usr in context.usuarios.Include("visitas")
+                                where usr.UsuarioID == idUsuario
+                                select usr;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe el usuario " + idUsuario);
+                    
+                    Usuario u = query.FirstOrDefault();
+                    List<Producto> prods = u.visitas.ToList();
+                    List<DataProducto> ret = new List<DataProducto>();
+                    foreach (Producto p in prods)
                     {
-                        Usuario u = query.FirstOrDefault();
-                        List<Producto> ret = u.visitas.ToList();
-                        return ret;
+                        //Para agregar solo los productos que no vencieron.
+                        if (p.fecha_cierre > DateTime.Now)
+                        {
+                            DataProducto dp = new DataProducto
+                            {
+                                nombre = p.nombre,
+                                descripcion = p.descripcion,
+                                precio_actual = p.precio_base_subasta,
+                                precio_base_subasta = p.precio_base_subasta,
+                                precio_compra = p.precio_compra,
+                                ProductoID = p.ProductoID,
+                                fecha_cierre = p.fecha_cierre
+                            };
+                            //Para agregar idOfertante y mayor oferta recibida
+                            Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                            if (of != null)
+                            {
+                                dp.precio_actual = of.monto;
+                                dp.idOfertante = of.UsuarioID;
+                            }
+                            ret.Add(dp);
+                        }
                     }
+                    return ret;
                 }
             }
             catch (Exception e)
@@ -341,7 +365,7 @@ namespace DataAccessLayer
             }
         }
 
-        public List<Producto> ObtenerProductosFavoritos(string idUsuario, string idTienda)
+        public List<DataProducto> ObtenerProductosFavoritos(string idUsuario, string idTienda)
         {
             try
             {
@@ -350,16 +374,41 @@ namespace DataAccessLayer
                 chequearTienda(idTienda);
                 using (var context = ChebayDBContext.CreateTenant(idTienda))
                 {
-                    var query = from u in context.usuarios
-                                where u.UsuarioID == idUsuario
-                                select u;
-                    if (query == null)
-                        return null;
-                    else
+                    var query = from usr in context.usuarios.Include("favoritos")
+                                where usr.UsuarioID == idUsuario
+                                select usr;
+                    if (query.Count() == 0)
+                        throw new Exception("No existe el usuario " + idUsuario);
+
+                    Usuario u = query.FirstOrDefault();
+                    List<Producto> prods = u.favoritos.ToList();
+                    List<DataProducto> ret = new List<DataProducto>();
+                    foreach (Producto p in prods)
                     {
-                        Usuario u = query.FirstOrDefault();
-                        return u.favoritos.ToList();
+                        //Para agregar solo los productos que no vencieron.
+                        if (p.fecha_cierre > DateTime.Now)
+                        {
+                            DataProducto dp = new DataProducto
+                            {
+                                nombre = p.nombre,
+                                descripcion = p.descripcion,
+                                precio_actual = p.precio_base_subasta,
+                                precio_base_subasta = p.precio_base_subasta,
+                                precio_compra = p.precio_compra,
+                                ProductoID = p.ProductoID,
+                                fecha_cierre = p.fecha_cierre
+                            };
+                            //Para agregar idOfertante y mayor oferta recibida
+                            Oferta of = ObtenerMayorOferta(p.ProductoID, idTienda);
+                            if (of != null)
+                            {
+                                dp.precio_actual = of.monto;
+                                dp.idOfertante = of.UsuarioID;
+                            }
+                            ret.Add(dp);
+                        }
                     }
+                    return ret;
                 }
             }
             catch (Exception e)

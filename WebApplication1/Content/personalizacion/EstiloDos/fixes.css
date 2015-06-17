@@ -50,3 +50,7 @@
 .mi-slider ul li h4 {
     display: inline-table;
 }
+
+.mi-slider ul {
+    bottom: 100px;
+}

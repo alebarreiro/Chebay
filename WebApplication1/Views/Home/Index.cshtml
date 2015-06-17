@@ -8,7 +8,7 @@
     var tienda = @Session["Tienda_Nombre"].ToString();
 }
 
-@if (User.Identity.IsAuthenticated)
+@if (User.Identity.IsAuthenticated && (ViewBag.hayRecomendados || ViewBag.hayFavoritos))
 {
     <div class="row">
         <div class="main">
@@ -31,7 +31,6 @@
                         }
                     </ul>
                 }
-
                 <cnav>
                     @if (ViewBag.hayRecomendados)
                     {

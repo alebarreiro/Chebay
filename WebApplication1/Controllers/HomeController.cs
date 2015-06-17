@@ -62,13 +62,16 @@ namespace Frontoffice.Controllers
                     {
                         //Recomendados para el usuario
                         DataRecomendacion drRes = cU.ObtenerRecomendacionesUsuario(urlTienda, dr);
-                        foreach (DataProducto dp in drRes.productos)
+                        if (drRes != null)
                         {
-                            if (dp.fecha_cierre >= DateTime.UtcNow && counter < 3)
+                            foreach (DataProducto dp in drRes.productos)
                             {
-                                prodsRec.Add(dp);
-                                counter++;
-                                hayRec = true;
+                                if (dp.fecha_cierre >= DateTime.UtcNow && counter < 3)
+                                {
+                                    prodsRec.Add(dp);
+                                    counter++;
+                                    hayRec = true;
+                                }
                             }
                         }
 

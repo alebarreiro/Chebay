@@ -862,8 +862,7 @@ namespace DataAccessLayer
             {
                 //AtributoSesion atrs = context.atributossesion.Find(AtributoS.AtributoSesionID);
                 var query = from a in context.administradores.Find(AtributoS.AdministradorID).atributosSesion
-                            where a.AtributoSesionID.Equals(AtributoS.AtributoSesionID) 
-                            
+                            where a.AtributoSesionID.Equals(AtributoS.AtributoSesionID)        
                             select a;
                 
                 Debug.WriteLine(AtributoS.AdministradorID + AtributoS.AtributoSesionID);
@@ -902,10 +901,6 @@ namespace DataAccessLayer
         {
             using (var context = ChebayDBPublic.CreatePublic())
             {
-                //var query = from ats in context.atributossesion
-                //            where ats.AdministradorID.Equals(AdminID)
-                //            select ats;
-                //return query.ToList();
                 return context.administradores.Find(AdminID).atributosSesion.ToList();
             }
         }

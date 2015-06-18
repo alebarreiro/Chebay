@@ -25,7 +25,6 @@ using System.Threading.Tasks;
 using System.Runtime.Serialization.Json;
 using Windows.Storage;
 using Windows.ApplicationModel;
-using Facebook.Client;
 using Windows.ApplicationModel.Activation;
 using Windows.Security.Authentication.Web;
 
@@ -51,7 +50,7 @@ namespace WindowsPhoneApp
             DisplayInformation.AutoRotationPreferences = DisplayOrientations.Portrait;
 
             this.NavigationCacheMode = NavigationCacheMode.Required;
-
+            Hub.Header = "Mobile Center";
             this.navigationHelper = new NavigationHelper(this);
             this.navigationHelper.LoadState += this.NavigationHelper_LoadState;
             this.navigationHelper.SaveState += this.NavigationHelper_SaveState;

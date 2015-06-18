@@ -82,7 +82,6 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Common\FacebookHelper.cs" />
     <Compile Include="Common\NavigationHelper.cs" />
     <Compile Include="Common\ObservableDictionary.cs" />
     <Compile Include="Common\RelayCommand.cs" />
@@ -157,11 +156,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="data.json" />
-  </ItemGroup>
-  <ItemGroup>
-    <Reference Include="Facebook.Client">
-      <HintPath>..\packages\Facebook.Client.1.0.3\lib\wpa81\Facebook.Client.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

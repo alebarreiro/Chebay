@@ -618,12 +618,14 @@ namespace Chebay.BackofficeIdentity.Controllers
             AtributoSesion tienda = null;
             foreach (AtributoSesion a in atributos)
             {
+                Debug.WriteLine("TiendaController::ObtenerCategorias::Atributos Sesion de la tienda " + a.Datos + " del admin " + idAdmin);
                 if (a.AtributoSesionID.Equals("tienda"))
                 {
                     tienda = a;
                     break;
                 }
             }
+            Debug.WriteLine("TiendaController::ObtenerCategorias::ObtenerCategorias de la tienda " + tienda.Datos  + " del admin " + idAdmin);
             List<Categoria> categorias = idalTienda.ListarCategorias(tienda.Datos);
             tablaCategorias += "<div class=\"well\" style=\"background-color : whitesmoke\"><ul>";
             tablaCategorias += RecursionCategorias((CategoriaCompuesta) categorias.ElementAt(0));
@@ -789,7 +791,8 @@ namespace Chebay.BackofficeIdentity.Controllers
                 atr.Datos = t.TiendaID;
                 atr.AdministradorID = idAdmin;
 
-                Debug.WriteLine("TiendaController::GuardarDatosgenerales::GuardarAtributo");
+
+                Debug.WriteLine("TiendaController::GuardarDatosgenerales::GuardarAtributoSesion del admin " + idAdmin);
                 idalTienda.AgregarAtributoSesion(atr);
                     
                 var result = new { Success = "True", Message = "Se han guardado los datos generales correctamente" };

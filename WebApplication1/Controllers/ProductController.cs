@@ -644,6 +644,27 @@ namespace WebApplication1.Controllers
             }
         }
 
+        // To convert the Byte Array to the author Image
+        public FileContentResult getTiendaImg()
+        {
+            String tienda = Session["Tienda_Nombre"].ToString();
+            Personalizacion p = cT.ObtenerPersonalizacionTienda(tienda);
+            if (p != null && p.template == 2 && p.backgroud_image != null)
+            {
+                byte[] byteArray = p.backgroud_image;
+                return byteArray != null
+                ? new FileContentResult(byteArray, "image/jpeg")
+                : null;
+            }
+            else
+            {
+                var dir = Server.MapPath("~/Content/personalizacion/EstiloDos/images");
+                var path = Path.Combine(dir, "bg01.png");
+                return new FileContentResult(System.IO.File.ReadAllBytes(path), "image/jpeg");
+            }
+        }
+
+
 
 
         // GET: Product/Edit/5

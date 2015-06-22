@@ -263,6 +263,7 @@
     <Content Include="Content\normalize.min.css" />
     <Content Include="Content\partials\comentarios.css" />
     <Content Include="Content\partials\recomendados.css" />
+    <Content Include="Content\personalizacion\EstiloDos\fixes_backup.css" />
     <Content Include="Content\personalizacion\EstiloDos\fixes.css" />
     <Content Include="Content\personalizacion\EstiloDos\images\wat1.png" />
     <Content Include="Content\personalizacion\EstiloDos\product_item2.css" />

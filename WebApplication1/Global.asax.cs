@@ -43,6 +43,7 @@ namespace Frontoffice
                     /* Inciamos la tienda por primera vez en la sesion */
 
                         //Inicializamos el nombre de la tienda por primera vez en la sesion
+                        Session["Tienda_Desc"] = "";
                         Session["Tienda_Nombre"] = url;
                         //Personalización de la tienda
                     
@@ -51,19 +52,21 @@ namespace Frontoffice
                 else if (Session["Tienda_Nombre"].ToString() != url)
                 {
                     /*Cambiamos de tienda en la misma sesion*/
-                    
-                    //Seteamos la nueva id de la tienda
-                    Session["Tienda_Anterior"] = Session["Tienda_Nombre"];
-                    Session["Tienda_Nombre"] = url;
-
-                    cargarPersonalizacion(url);
-
-                    //Borramos cache
+                  
                     HttpContext.Current.Response.Cache.SetAllowResponseInBrowserHistory(false);
                     HttpContext.Current.Response.Cache.SetCacheability(HttpCacheability.NoCache);
                     HttpContext.Current.Response.Cache.SetNoStore();
                     Response.Cache.SetExpires(DateTime.Now);
                     Response.Cache.SetValidUntilExpires(true);
+
+                    //Seteamos la nueva id de la tienda
+                    Debug.WriteLine(Session["Tienda_Nombre"].ToString());
+                    //Debug.WriteLine(Session["Tienda_Anterior"].ToString());
+                    Session["Tienda_Anterior"] = Session["Tienda_Nombre"];
+                    Session["Tienda_Nombre"] = url;
+                    Session["Tienda_Desc"] = "";
+
+                    cargarPersonalizacion(url);
                 }
             }
         }
@@ -93,10 +96,26 @@ namespace Frontoffice
                 else if (p.template != null && p.template == 2)
                 {
                     layout = "@{Layout = \"~/Views/Shared/_Layout2.cshtml\";}";
+
+                    String cssFile = "fixes.css";
+                    String cssFileBackup = "fixes_backup.css";
+                    var cssPathBackup = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/personalizacion/EstiloDos"), cssFileBackup);
+                    //Original css
+                    String cssText = System.IO.File.ReadAllText(cssPathBackup);
+                    var imgUrl = "";
                     if (p.backgroud_image != null)
                     {
-                        //Copiar imagen
+                        imgUrl = Request.Url.Scheme + "://" + Request.Url.Authority + "/" + url + "/Product/getTiendaImg";
                     }
+                    else
+                    {
+                        //Por default
+                        imgUrl = "images/bg01.png";
+                    }
+                    cssText = cssText.Replace("body {}", "body {background-image: url("+ imgUrl +")}");
+                    //Escribimos el css editado
+                    var cssPath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/personalizacion/EstiloDos"), cssFile);
+                    System.IO.File.WriteAllText(cssPath, cssText);
                 }
                 Session["Tienda_Desc"] = p.tienda.descripcion;
                 //Escribimos el layout a usar que carga todos los css para esa pers.

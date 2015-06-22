@@ -8,6 +8,7 @@ using Shared.DataTypes;
 using Shared.Entities;
 using System.Net;
 using System.Web.Security;
+using System.IO;
 
 namespace Frontoffice.Controllers
 {
@@ -21,6 +22,7 @@ namespace Frontoffice.Controllers
         {
             try
             {
+                Tienda t = cT.ObtenerTienda(urlTienda);
                 //Si cambio de tienda destruimos la sesion
                 if (Session["Tienda_Nombre"] != null && Session["Tienda_Anterior"] != null && Session["Tienda_Nombre"].ToString() != Session["Tienda_Anterior"].ToString())
                 {
@@ -122,6 +124,7 @@ namespace Frontoffice.Controllers
             return View();
         }
 
+        
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";

@@ -791,7 +791,7 @@ namespace DataAccessLayer
             }
             else // if (estilo == 2)
             {
-                p = it.ObtenerPersonalizacionTienda("template2");
+                p = it.ObtenerPersonalizacionTienda(idTienda);
                 p.backgroud_image = img;
             }
                 

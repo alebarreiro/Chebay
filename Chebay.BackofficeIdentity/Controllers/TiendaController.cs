@@ -432,6 +432,8 @@ namespace Chebay.BackofficeIdentity.Controllers
                 string idAdmin = User.Identity.GetUserName();
                 List<AtributoSesion> atributos = idalTienda.ObtenerAtributosSesion(idAdmin);
                 AtributoSesion tienda = null;
+                bool imagenSubida = false;
+                Personalizacion p = null;
                 foreach (AtributoSesion a in atributos)
                 {
                     if (a.AtributoSesionID.Equals("tienda"))
@@ -440,6 +442,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         break;
                     }
                 }
+
                 foreach (string file in Request.Files)
                 {
                     var fileContent = Request.Files[file];
@@ -449,7 +452,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         var stream = fileContent.InputStream;
                         // and optionally write the file to disk
                         Debug.WriteLine("El nombre del archivo subido es : " + fileContent.FileName);
-                        Personalizacion p = idalTienda.ObtenerPersonalizacionTienda(tienda.Datos);
+                        p = idalTienda.ObtenerPersonalizacionTienda(tienda.Datos);
                         if (p == null)
                         {
                             p = new Personalizacion();
@@ -459,6 +462,7 @@ namespace Chebay.BackofficeIdentity.Controllers
                         stream.Read(buf, 0, buf.Length);
                         //aca iria lo de personalizar la tienda 
                         idalTienda.PersonalizarTienda(null, null, 2, buf, tienda.Datos);
+                        imagenSubida = true;
 
                         //var fileName = Path.GetFileName(file);
                         //var path = Path.Combine(Server.MapPath("~/App_Data/Images"), fileName);
@@ -467,6 +471,10 @@ namespace Chebay.BackofficeIdentity.Controllers
                         //  stream.CopyTo(fileStream);
                         //}
                     }
+                }
+                if (!imagenSubida)
+                {
+                    idalTienda.PersonalizarTienda(null, null, 2, null, tienda.Datos);
                 }
             }
             catch (Exception)

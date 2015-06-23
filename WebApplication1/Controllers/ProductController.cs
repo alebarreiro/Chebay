@@ -132,7 +132,7 @@ namespace WebApplication1.Controllers
             try
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
-                List<DataProducto> prods = cS.ObtenerProductosPorTerminar(100, tiendaId);
+                List<DataProducto> prods = cS.ObtenerProductosPorTerminar(24, tiendaId);
                 List<DataProductoTime> prodT = new List<DataProductoTime>();
                 foreach (DataProducto p in prods)
                 {

@@ -8,6 +8,7 @@ using Shared.Entities;
 using System;
 using System.Diagnostics;
 using System.Net;
+using System.Net.Mail;
 using System.Threading;
 
 namespace WorkerRoleSubasta
@@ -21,6 +22,20 @@ namespace WorkerRoleSubasta
         // en lugar de crearlo de nuevo con cada solicitud
         QueueClient Client;
         ManualResetEvent CompletedEvent = new ManualResetEvent(false);
+
+
+        public bool IsValidMail(string emailaddress)
+        {
+            try
+            {
+                MailAddress m = new MailAddress(emailaddress);
+                return true;
+            }
+            catch (FormatException)
+            {
+                return false;
+            }
+        }
 
 
         private void procesarSubasta(DataProductoQueue p)
@@ -52,10 +67,9 @@ namespace WorkerRoleSubasta
                         UsuarioID = o.UsuarioID
                     };
                     //se envia mensaje al vendedor en AgregarCompra
-                    ip.AgregarCompra(c, p.TiendaID);
+                    ip.AgregarCompraPostSubasta(c, p.TiendaID);
 
-                    //obtengo mail ganador
-                    
+                    //obtengo mail ganador           
                     Usuario u = ubl.ObtenerUsuario(c.UsuarioID, p.TiendaID);
                     //Notifico al ganador.
                     String linkTienda = "http://chebuynow.azurewebsites.net/" + p.TiendaID;
@@ -65,8 +79,29 @@ namespace WorkerRoleSubasta
                     string asunto = "Chebay: Subasta de producto!";
                     bl.sendEmailNotification(u.Email, asunto, bodyMensaje);
 
+
                     //en agregar compra se notifica al vendedor.
-                    
+
+                    //mail a vendedor
+                    //obtengo vendedor
+                    IDALUsuario udal = new DALUsuarioEF();
+
+                    string asuntovendedor = "Chebay: Venta de producto!";
+                    string bodyMensajeVendedor = getBodyMailHTML(p.TiendaID + ": Producto vendido!", "Has vendido un nuevo producto!", vendedor, prod, c.monto, false, "", linkTienda);
+
+                    if (vendedor.Email != null)
+                    {
+                        bl.sendEmailNotification(vendedor.Email, asuntovendedor, bodyMensajeVendedor);
+                    }
+                    else
+                    {
+                        if (IsValidMail(vendedor.UsuarioID))
+                        {
+                            bl.sendEmailNotification(vendedor.UsuarioID, asuntovendedor, bodyMensajeVendedor);
+                        }
+                        //else... por algun error no tiene mail
+                    }
+         
                 }
                 else
                 {

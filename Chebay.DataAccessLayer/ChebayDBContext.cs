@@ -158,7 +158,19 @@ namespace DataAccessLayer
                 throw;
             }
         }
-        
+
+        public void importMobileCenterProducts()
+        {
+            DALMercadoLibreREST ml = new DALMercadoLibreREST();
+            string tenant_name = "MobileCenter";
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU3518", 5); //samsung MLU3518
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU32089", 4); //apple iphone MLU32089
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU7076", 8); //lg MLU7076
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU3514", 9); //sony MLU3514
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU3506", 6); //nokia
+            ml.ObtenerProductosMLporCategoria(tenant_name, "10", "MLU3502", 7);//motorola
+        }
+
         public void SeedMobileCenter()
         {
             Usuario[] users = { 
@@ -364,11 +376,11 @@ namespace DataAccessLayer
         public void Seed()
         {
             Tienda[] tiendasarray = {   
-                                        new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() },
+                                        //new Tienda { TiendaID="MobileCenter", nombre= "MobileCenter", descripcion= "Productos", administradores=new List<Administrador>() },
                                         //new Tienda { TiendaID="HardPC", nombre= "HardShop", descripcion= "Hardware pc", administradores=new List<Administrador>() }
                                     };
             Administrador[] admins = { 
-                                        new Administrador { AdministradorID= "open_pirsaoz_user@tfbnw.net", password= "1234", tiendas = new List<Tienda>() }                               
+                                       // new Administrador { AdministradorID= "open_pirsaoz_user@tfbnw.net", password= "1234", tiendas = new List<Tienda>() }                               
                                      };
 
             for (int i = 0; i < admins.Count(); i++ )

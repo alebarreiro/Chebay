@@ -34,6 +34,18 @@ namespace WebApplication1.Controllers
             public string longitud { get; set; }
         }
 
+        public class DataProductoTime
+        {
+            public long ProductoID { get; set; }
+            public string nombre { get; set; }
+            public string descripcion { get; set; }
+            public int precio_base_subasta { get; set; }
+            public int precio_compra { get; set; }
+            public int precio_actual { get; set; }
+            public string idOfertante { get; set; }
+            public string fecha_cierre { get; set; }
+        }
+
         public class DatosCrearComentario
         {
             public string userId { get; set; }
@@ -98,7 +110,6 @@ namespace WebApplication1.Controllers
             
             ViewBag.InfoProducto = infoFullP;
             ViewBag.atributos = atributos;
-            ViewBag.testDescripcion = "<b> Esto es un test con HTML </b>";
             ViewBag.fecha_cierre = JsonConvert.SerializeObject(System.Convert.ToInt64((infoFullP.fecha_cierre - _jan1st1970).TotalMilliseconds));
             return View();
         }
@@ -122,7 +133,23 @@ namespace WebApplication1.Controllers
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 List<DataProducto> prods = cS.ObtenerProductosPorTerminar(100, tiendaId);
-                var result = new { Success = "True", Productos = prods };
+                List<DataProductoTime> prodT = new List<DataProductoTime>();
+                foreach (DataProducto p in prods)
+                {
+                    DataProductoTime dt = new DataProductoTime
+                    {
+                        ProductoID = p.ProductoID,
+                        nombre = p.nombre,
+                        descripcion = p.descripcion,
+                        precio_base_subasta = p.precio_base_subasta,
+                        precio_compra = p.precio_compra,
+                        precio_actual = p.precio_actual,
+                        idOfertante = p.idOfertante,
+                        fecha_cierre = JsonConvert.SerializeObject(System.Convert.ToInt64((p.fecha_cierre - _jan1st1970).TotalMilliseconds))
+                    };
+                    prodT.Add(dt);
+                }
+                var result = new { Success = "True", Productos = prodT };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)
@@ -578,8 +605,23 @@ namespace WebApplication1.Controllers
             {
                 String tiendaId = Session["Tienda_Nombre"].ToString();
                 List<DataProducto> prods = cS.ObtenerProductosCategoria(catId, tiendaId);
-
-                var result = new { Success = "True", Productos = prods };
+                List<DataProductoTime> prodT = new List<DataProductoTime>();
+                foreach (DataProducto p in prods)
+                {
+                    DataProductoTime dt = new DataProductoTime
+                    {
+                        ProductoID = p.ProductoID,
+                        nombre = p.nombre,
+                        descripcion = p.descripcion,
+                        precio_base_subasta = p.precio_base_subasta,
+                        precio_compra = p.precio_compra,
+                        precio_actual = p.precio_actual,
+                        idOfertante = p.idOfertante,
+                        fecha_cierre = JsonConvert.SerializeObject(System.Convert.ToInt64((p.fecha_cierre - _jan1st1970).TotalMilliseconds))
+                    };
+                    prodT.Add(dt);
+                }
+                var result = new { Success = "True", Productos = prodT };
                 return Json(result, JsonRequestBehavior.AllowGet);
             }
             catch (Exception e)

@@ -174,7 +174,7 @@
                 var _this = $(this);
                 var auction = {
                     auctionId: _this.data('id'),
-                    endTime: moment(_this.data("value")),
+                    endTime: moment(parseInt(_this.data("value"))),
                     timeDiv: _this
                 };
                 auctionsTimers.push(auction);
@@ -182,14 +182,14 @@
             auctionsTimers.each(function () {
                 var that = this;
                 var finishTime = that.endTime,
-                    duration = moment.duration(finishTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss"))),
+                    duration = moment.duration(finishTime.diff(moment()));
                     interval = 1000;
                 if (duration._milliseconds <= 0) {
                     that.timeDiv.text("Finalizado!");
                     $('#bidButton-' + that.productId).addClass("disabled");
                 } else {
                     that.currentInterval = setInterval(function () {
-                        duration = moment.duration(finishTime.diff(moment().utc().format("YYYY-MM-DD HH:mm:ss")));
+                        duration = moment.duration(finishTime.diff(moment()));
                         if (duration._milliseconds <= 0) {
                             that.timeDiv.text("Finalizado!");
                             $('#bidButton-' + that.productId).addClass("disabled");
@@ -267,7 +267,7 @@
         cargarDatosProducto = function (Productos) {
             $.each(Productos, function () {
                 var prodItem = {};
-                prodItem.fecha_cierre = moment(parseInt(this.fecha_cierre.replace("/Date(", "").replace(")/", ""), 10));
+                prodItem.fecha_cierre = this.fecha_cierre;
                 prodItem.ProductoID = this.ProductoID;
                 prodItem.idOfertante = showUserName(this.idOfertante);
                 prodItem.nombre = this.nombre.length > 43 ? this.nombre.substring(0, 40) + "..." : this.nombre;

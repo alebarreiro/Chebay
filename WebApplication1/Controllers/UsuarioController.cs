@@ -26,6 +26,7 @@ namespace WebApplication1.Controllers
             public string Ciudad { get; set; }
             public string Direccion { get; set; }
             public string NumeroContacto { get; set; }
+            public string Email { get; set; }
         }
 
         public class DataProductoUsuario
@@ -131,7 +132,8 @@ namespace WebApplication1.Controllers
                     Pais = du.Pais,
                     Ciudad = du.Ciudad,
                     Direccion = du.Direccion,
-                    NumeroContacto = du.NumeroContacto
+                    NumeroContacto = du.NumeroContacto,
+                    Email = du.Email
                 };
                 uC.ActualizarUsuario(u, Session["Tienda_Nombre"].ToString());
                 var result = new { Success = "True", Message = "Usuario actualizado" };

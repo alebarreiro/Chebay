@@ -205,6 +205,8 @@ nav a:hover {
   border-left: 5px solid white;
   margin-top: 10px;
   position: relative;
+  max-height: 400px;
+  overflow-y: scroll;
 }
 
 .search-item{

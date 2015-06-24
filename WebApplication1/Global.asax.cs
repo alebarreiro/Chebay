@@ -85,12 +85,18 @@ namespace Frontoffice
                 if (p.template != null && p.template == 1)
                 {
                     layout = "@{Layout = \"~/Views/Shared/_Layout.cshtml\";}";
+                    String cssFileName = "orangeStyle.css";
+                    var cssFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/personalizacion/EstiloUno"), cssFileName);
                     if (p.css != null)
                     {
                         //Escribir css
-                        String cssFileName = "orangeStyle.css";
-                        var cssFilePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/personalizacion/EstiloUno"), cssFileName);
                         System.IO.File.WriteAllText(cssFilePath, p.css);
+                    }
+                    else
+                    {
+                        var orangePath = Path.Combine(System.Web.HttpContext.Current.Server.MapPath("~/Content/personalizacion/EstiloUno"), "orangeStyle_backup.css");
+                        String orangeStyle = System.IO.File.ReadAllText(orangePath);
+                        System.IO.File.WriteAllText(cssFilePath, orangeStyle);
                     }
                 }
                 else if (p.template != null && p.template == 2)

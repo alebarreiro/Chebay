@@ -18,7 +18,7 @@
 
 <script id="template-productItem" type="text/x-template">
     <li class="search-item">
-        <div class="search-link" onclick="location.href= '@Session["Tienda_Nombre"].ToString()' + '/Product/Details?productId=' + {{ProductoID}}">
+        <div class="search-link" onclick="location.assign('/@Session["Tienda_Nombre"].ToString()/Product/Details?productId={{ProductoID}}')">
             <span> {{nombre}}   -   Precio actual: {{precio_actual}} </span>
         </div>
     </li>
